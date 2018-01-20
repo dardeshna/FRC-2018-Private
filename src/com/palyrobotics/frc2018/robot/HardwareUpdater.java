@@ -60,11 +60,11 @@ class HardwareUpdater {
 
 		//Disable drivetrain talons
 		HardwareAdapter.getInstance().getDrivetrain().leftMasterTalon.set(ControlMode.Disabled, 0);
-		HardwareAdapter.getInstance().getDrivetrain().leftSlave1Talon.set(ControlMode.Disabled, 0);
+		HardwareAdapter.getInstance().getDrivetrain().leftSlave1Victor.set(ControlMode.Disabled, 0);
+		HardwareAdapter.getInstance().getDrivetrain().leftSlave2Victor.set(ControlMode.Disabled, 0);
 		HardwareAdapter.getInstance().getDrivetrain().rightMasterTalon.set(ControlMode.Disabled, 0);
-		HardwareAdapter.getInstance().getDrivetrain().rightSlave1Talon.set(ControlMode.Disabled, 0);
-		HardwareAdapter.getInstance().getDrivetrain().leftSlave2Talon.set(ControlMode.Disabled, 0);
-		HardwareAdapter.getInstance().getDrivetrain().rightSlave2Talon.set(ControlMode.Disabled, 0);
+		HardwareAdapter.getInstance().getDrivetrain().rightSlave1Victor.set(ControlMode.Disabled, 0);
+		HardwareAdapter.getInstance().getDrivetrain().rightSlave2Victor.set(ControlMode.Disabled, 0);
 
 		//Disable climber talons
 		HardwareAdapter.getInstance().getClimber().leftVictor.set(ControlMode.Disabled, 0);
@@ -88,66 +88,66 @@ class HardwareUpdater {
 
 	void configureDriveTalons() {
 		WPI_TalonSRX leftMasterTalon = HardwareAdapter.getInstance().getDrivetrain().leftMasterTalon;
-		WPI_TalonSRX leftSlave1Talon = HardwareAdapter.getInstance().getDrivetrain().leftSlave1Talon;
-		WPI_TalonSRX leftSlave2Talon = HardwareAdapter.getInstance().getDrivetrain().leftSlave2Talon;
+		WPI_VictorSPX leftSlave1Victor = HardwareAdapter.getInstance().getDrivetrain().leftSlave1Victor;
+		WPI_VictorSPX leftSlave2Victor = HardwareAdapter.getInstance().getDrivetrain().leftSlave2Victor;
 		WPI_TalonSRX rightMasterTalon = HardwareAdapter.getInstance().getDrivetrain().rightMasterTalon;
-		WPI_TalonSRX rightSlave1Talon = HardwareAdapter.getInstance().getDrivetrain().rightSlave1Talon;
-		WPI_TalonSRX rightSlave2Talon = HardwareAdapter.getInstance().getDrivetrain().rightSlave2Talon;
-
+		WPI_VictorSPX rightSlave1Victor = HardwareAdapter.getInstance().getDrivetrain().rightSlave1Victor;
+		WPI_VictorSPX rightSlave2Victor = HardwareAdapter.getInstance().getDrivetrain().rightSlave2Victor;
+		
 		// Enable all talons' brake mode and disables forward and reverse soft
 		leftMasterTalon.setNeutralMode(NeutralMode.Brake);
-		leftSlave1Talon.setNeutralMode(NeutralMode.Brake);
-		if (leftSlave2Talon != null) leftSlave2Talon.setNeutralMode(NeutralMode.Brake);
+		leftSlave1Victor.setNeutralMode(NeutralMode.Brake);
+		leftSlave2Victor.setNeutralMode(NeutralMode.Brake);
 		rightMasterTalon.setNeutralMode(NeutralMode.Brake);
-		rightSlave1Talon.setNeutralMode(NeutralMode.Brake);
-		if (rightSlave2Talon != null) rightSlave2Talon.setNeutralMode(NeutralMode.Brake);
+		rightSlave1Victor.setNeutralMode(NeutralMode.Brake);
+		rightSlave2Victor.setNeutralMode(NeutralMode.Brake);
 
 		leftMasterTalon.enableVoltageCompensation(true);
-		leftSlave1Talon.enableVoltageCompensation(true);
-		leftSlave2Talon.enableVoltageCompensation(true);
-
+		leftSlave1Victor.enableVoltageCompensation(true);
+		leftSlave2Victor.enableVoltageCompensation(true);
 		rightMasterTalon.enableVoltageCompensation(true);
-		rightSlave1Talon.enableVoltageCompensation(true);
-		rightSlave2Talon.enableVoltageCompensation(true);
+		rightSlave1Victor.enableVoltageCompensation(true);
+		rightSlave2Victor.enableVoltageCompensation(true);
+		
+		leftMasterTalon.configVoltageCompSaturation(14, 0);
+		leftSlave1Victor.configVoltageCompSaturation(14, 0);
+		leftSlave2Victor.configVoltageCompSaturation(14, 0);
+		rightMasterTalon.configVoltageCompSaturation(14, 0);
+		rightSlave1Victor.configVoltageCompSaturation(14, 0);
+		rightSlave2Victor.configVoltageCompSaturation(14, 0);
 
 		leftMasterTalon.configForwardSoftLimitEnable(false, 0);
 		leftMasterTalon.configReverseSoftLimitEnable(false, 0);
-		leftSlave1Talon.configForwardSoftLimitEnable(false, 0);
-		leftSlave1Talon.configReverseSoftLimitEnable(false, 0);
-
-		if (rightSlave2Talon != null) {rightSlave2Talon.configForwardSoftLimitEnable(false, 0); rightSlave2Talon.configReverseSoftLimitEnable(false, 0);}
+		leftSlave1Victor.configForwardSoftLimitEnable(false, 0);
+		leftSlave1Victor.configReverseSoftLimitEnable(false, 0);
+		rightSlave2Victor.configForwardSoftLimitEnable(false, 0); 
+		rightSlave2Victor.configReverseSoftLimitEnable(false, 0);
 
 		rightMasterTalon.configForwardSoftLimitEnable(false, 0);
 		rightMasterTalon.configReverseSoftLimitEnable(false, 0);
-		rightSlave1Talon.configForwardSoftLimitEnable(false, 0);
-		rightSlave1Talon.configReverseSoftLimitEnable(false, 0);
-
-		if (rightSlave2Talon != null) {rightSlave2Talon.configForwardSoftLimitEnable(false, 0); rightSlave2Talon.configReverseSoftLimitEnable(false, 0);}
+		rightSlave1Victor.configForwardSoftLimitEnable(false, 0);
+		rightSlave1Victor.configReverseSoftLimitEnable(false, 0);
+		rightSlave2Victor.configForwardSoftLimitEnable(false, 0); 
+		rightSlave2Victor.configReverseSoftLimitEnable(false, 0);
 
 		// Allow max voltage for closed loop control
 		leftMasterTalon.configPeakOutputForward(Constants.kDriveMaxClosedLoopOutput, 0);
 		leftMasterTalon.configPeakOutputReverse(-Constants.kDriveMaxClosedLoopOutput, 0);
-		leftSlave1Talon.configPeakOutputForward(Constants.kDriveMaxClosedLoopOutput, 0);
-		leftSlave1Talon.configPeakOutputReverse(-Constants.kDriveMaxClosedLoopOutput, 0);
-
-		if (leftSlave2Talon != null) {
-			leftSlave2Talon.configPeakOutputForward(Constants.kDriveMaxClosedLoopOutput, 0);
-			leftSlave2Talon.configPeakOutputReverse(-Constants.kDriveMaxClosedLoopOutput, 0);
-		}
+		leftSlave1Victor.configPeakOutputForward(Constants.kDriveMaxClosedLoopOutput, 0);
+		leftSlave1Victor.configPeakOutputReverse(-Constants.kDriveMaxClosedLoopOutput, 0);
+		leftSlave2Victor.configPeakOutputForward(Constants.kDriveMaxClosedLoopOutput, 0);
+		leftSlave2Victor.configPeakOutputReverse(-Constants.kDriveMaxClosedLoopOutput, 0);
 
 		rightMasterTalon.configPeakOutputForward(Constants.kDriveMaxClosedLoopOutput, 0);
 		rightMasterTalon.configPeakOutputReverse(-Constants.kDriveMaxClosedLoopOutput, 0);
-		rightSlave1Talon.configPeakOutputForward(Constants.kDriveMaxClosedLoopOutput, 0);
-		rightSlave1Talon.configPeakOutputReverse(-Constants.kDriveMaxClosedLoopOutput, 0);
-
-		if (rightSlave2Talon != null) {
-			rightSlave2Talon.configPeakOutputForward(Constants.kDriveMaxClosedLoopOutput, 0);
-			rightSlave2Talon.configPeakOutputReverse(-Constants.kDriveMaxClosedLoopOutput, 0);
-		}
+		rightSlave1Victor.configPeakOutputForward(Constants.kDriveMaxClosedLoopOutput, 0);
+		rightSlave1Victor.configPeakOutputReverse(-Constants.kDriveMaxClosedLoopOutput, 0);
+		rightSlave2Victor.configPeakOutputForward(Constants.kDriveMaxClosedLoopOutput, 0);
+		rightSlave2Victor.configPeakOutputReverse(-Constants.kDriveMaxClosedLoopOutput, 0);
 
 		// Configure master talon feedback devices
-		leftMasterTalon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
-		rightMasterTalon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
+		leftMasterTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
+		rightMasterTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
 
 		leftMasterTalon.setSensorPhase(false);
 		rightMasterTalon.setSensorPhase(false);
@@ -167,18 +167,14 @@ class HardwareUpdater {
 
 		// Reverse right side
 		rightMasterTalon.setInverted(true);
-		rightSlave1Talon.setInverted(true);
-		rightSlave2Talon.setInverted(true);
+		rightSlave1Victor.setInverted(true);
+		rightSlave2Victor.setInverted(true);
 
-		// Set slave talons to follower mode
-		leftSlave1Talon.set(ControlMode.Follower, leftMasterTalon.getDeviceID());
-		if (leftSlave2Talon != null) {
-			leftSlave2Talon.set(ControlMode.Follower, leftMasterTalon.getDeviceID());
-		}
-		rightSlave1Talon.set(ControlMode.Follower, rightMasterTalon.getDeviceID());
-		if (rightSlave2Talon != null) {
-			rightSlave2Talon.set(ControlMode.Follower, rightMasterTalon.getDeviceID());
-		}
+		// Set slave victors to follower mode
+		leftSlave1Victor.set(ControlMode.Follower, leftMasterTalon.getDeviceID());
+		leftSlave2Victor.set(ControlMode.Follower, leftMasterTalon.getDeviceID());
+		rightSlave1Victor.set(ControlMode.Follower, rightMasterTalon.getDeviceID());
+		rightSlave2Victor.set(ControlMode.Follower, rightMasterTalon.getDeviceID());
 	}
 	
 	void configureElevatorTalons() {
@@ -300,6 +296,8 @@ class HardwareUpdater {
             case PercentOutput:
                 robotState.leftSetpoint = leftMasterTalon.getMotorOutputPercent();
                 break;
+		default:
+			break;
         }
 
         switch(robotState.rightControlMode) {
@@ -320,6 +318,8 @@ class HardwareUpdater {
             case PercentOutput:
                 robotState.rightSetpoint = rightMasterTalon.getMotorOutputPercent();
                 break;
+		default:
+			break;
         }
 		
 		PigeonIMU gyro = HardwareAdapter.getInstance().getDrivetrain().gyro;

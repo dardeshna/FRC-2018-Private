@@ -3,7 +3,6 @@ package com.palyrobotics.frc2018.subsystems;
 import com.palyrobotics.frc2018.config.Commands;
 import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.config.RobotState;
-import com.palyrobotics.frc2018.config.dashboard.DashboardManager;
 import com.palyrobotics.frc2018.config.dashboard.DashboardValue;
 import com.palyrobotics.frc2018.subsystems.controllers.*;
 import com.palyrobotics.frc2018.util.CheesyDriveHelper;
@@ -25,10 +24,15 @@ public class Drive extends Subsystem {
 		return instance;
 	}
 
-	/* Various control states for the drivetrain
-	 * Chezy - chezy drive with joystick values, offboard - can talon offboard loop
-	 * on board - control loop calculated in code, open loop - use drive outputs passed in through commands
-	 * neutral - do nothing
+	/** <h1> Various control states for the drivetrain </h1>
+	 * 
+	 * <p>
+	 * 
+	 * {@code CHEZY} creates a {@link ChezyDriveHelper} drive with joystick values. 
+	 * {@code OFF_BOARD_CONTROLLER} creates a CANTalon offboard loop.
+	 * {@code ON_BOARD_CONTROLLER} makes a control loop calculated in code with an open loop. 
+	 * It uses drive outputs passed in through commands
+	 * {@code NEUTRAL} does nothing.
 	 */
 	public enum DriveState {CHEZY, OFF_BOARD_CONTROLLER, ON_BOARD_CONTROLLER, OPEN_LOOP, NEUTRAL}
 	private DriveState mState = DriveState.NEUTRAL;
@@ -84,8 +88,10 @@ public class Drive extends Subsystem {
 	}
 
 	/**
-	 * Updates the drivetrain and its DriveSignal
-	 * Pass in the newest RobotState
+	 * Updates the drivetrain and its {@link DriveSignal}
+	 * 
+	 * @param state {@link RobotState}
+	 * @param commands {@link Commands}
 	 */
 	@Override
 	public void update(Commands commands, RobotState state) {
@@ -134,16 +140,18 @@ public class Drive extends Subsystem {
 				break;
 		}
 		
-		mIsNewState = false;
 		mState = commands.wantedDriveState;
 		
 		leftEncoder.updateValue(state.drivePose.leftEnc);
 		rightEncoder.updateValue(state.drivePose.rightEnc);
 		
-		DashboardManager.getInstance().publishKVPair(leftEncoder);
-		DashboardManager.getInstance().publishKVPair(rightEncoder);
+		Logger.getInstance().logSubsystemThread(Level.FINEST, "Left drive encoder", leftEncoder);
+		Logger.getInstance().logSubsystemThread(Level.FINEST, "Right drive encoder", rightEncoder);
 
-		DashboardManager.getInstance().publishKVPair(motors);
+//		DashboardManager.getInstance().publishKVPair(leftEncoder);
+//		DashboardManager.getInstance().publishKVPair(rightEncoder);
+//
+//		DashboardManager.getInstance().publishKVPair(motors);
 	}
 
 	@Override

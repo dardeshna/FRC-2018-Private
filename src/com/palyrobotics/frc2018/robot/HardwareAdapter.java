@@ -17,20 +17,19 @@ import edu.wpi.first.wpilibj.*;
 public class HardwareAdapter {
 	// Hardware components at the top for maintenance purposes, variables and getters at bottom
 	/* 
-	 * DRIVETRAIN - 6 WPI_TalonSRX's
+	 * DRIVETRAIN - 2 WPI_TalonSRX's and 4 WPI_VictorSPX's
 	 */
 	public static class DrivetrainHardware {
 		private static DrivetrainHardware instance = new DrivetrainHardware();
 		private static DrivetrainHardware getInstance() {
 			return instance;
 		}
-
-		public final WPI_TalonSRX leftSlave1Talon;
 		public final WPI_TalonSRX leftMasterTalon;
-		public final WPI_TalonSRX leftSlave2Talon;
-		public final WPI_TalonSRX rightSlave1Talon;
+		public final WPI_VictorSPX leftSlave1Victor;
+		public final WPI_VictorSPX leftSlave2Victor;
 		public final WPI_TalonSRX rightMasterTalon;
-		public final WPI_TalonSRX rightSlave2Talon;
+		public final WPI_VictorSPX rightSlave1Victor;
+		public final WPI_VictorSPX rightSlave2Victor;
 
 		public final PigeonIMU gyro;
 
@@ -44,13 +43,13 @@ public class HardwareAdapter {
 
 		private DrivetrainHardware() {
 				leftMasterTalon = new WPI_TalonSRX(Constants.kForsetiLeftDriveMasterDeviceID);
-				leftSlave1Talon = new WPI_TalonSRX(Constants.kForsetiLeftDriveSlaveDeviceID);
-				leftSlave2Talon = new WPI_TalonSRX(Constants.kForsetiLeftDriveOtherSlaveDeviceID);
+				leftSlave1Victor = new WPI_VictorSPX(Constants.kForsetiLeftDriveSlaveDeviceID);
+				leftSlave2Victor = new WPI_VictorSPX(Constants.kForsetiLeftDriveOtherSlaveDeviceID);
 				rightMasterTalon = new WPI_TalonSRX(Constants.kForsetiRightDriveMasterDeviceID);
-				rightSlave1Talon = new WPI_TalonSRX(Constants.kForsetiRightDriveSlaveDeviceID);
-				rightSlave2Talon = new WPI_TalonSRX(Constants.kForsetiRightDriveOtherSlaveDeviceID);
-				gyro = new PigeonIMU(leftSlave2Talon);
-        }
+				rightSlave1Victor = new WPI_VictorSPX(Constants.kForsetiRightDriveSlaveDeviceID);
+				rightSlave2Victor = new WPI_VictorSPX(Constants.kForsetiRightDriveOtherSlaveDeviceID);
+				gyro = new PigeonIMU(leftMasterTalon);
+		}
 	}
 	
 	/*

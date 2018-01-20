@@ -87,7 +87,7 @@ public class Constants {
 	public static final double kAcceptableDriveVelocityError = 5;
 	public static final double kAcceptableShortDrivePositionError = 1;
 	public static final double kAcceptableShortDriveVelocityError = 3;
-	public static final double kAcceptableTurnAngleError = 1; // 0.5
+	public static final double kAcceptableTurnAngleError = 1;
 	public static final double kAcceptableGyroZeroError = 3;
 	public static final double kAcceptableEncoderZeroError = 10;
 
@@ -95,8 +95,8 @@ public class Constants {
 	public static final double kElevatorAcceptableVelocityError = 0.01;
 
 	//Intake
-	public static double kIntakingMotorVelocity = 0.75;
-	public static double kExpellingMotorVelocity = -0.75;
+	public static final double kIntakingMotorVelocity = 1.0;
+	public static final double kExpellingMotorVelocity = -1.0;
 
 
 	/* !!! End of editable Constants! !!!
@@ -148,13 +148,13 @@ public class Constants {
 	public static final int kForsetiTopElevatorHFXID = 10;
 
 	// INTAKE
-    public static int kForsetiIntakeMasterDeviceID = 7;
-    public static int kForsetiIntakeSlaveDeviceID = 8;
-    public static int kForsetiIntakeDistanceSensorID = 0;
-    public static int kForsetiIntakeUpDownSolenoidForwardID = 1;
-    public static int kForsetiIntakeUpDownSolenoidReverseID = 2;
-    public static int kForsetiIntakeOpenCloseSolenoidForwardID = 3;
-    public static int kForsetiIntakeOpenCloseSolenoidReverseID = 4;
+    public static final int kForsetiIntakeMasterDeviceID = 7;
+    public static final int kForsetiIntakeSlaveDeviceID = 8;
+    public static final int kForsetiIntakeDistanceSensorID = 0;
+    public static final int kForsetiIntakeUpDownSolenoidForwardID = 1;
+    public static final int kForsetiIntakeUpDownSolenoidReverseID = 2;
+    public static final int kForsetiIntakeOpenCloseSolenoidForwardID = 3;
+    public static final int kForsetiIntakeOpenCloseSolenoidReverseID = 4;
 
 	// !!! Physical constants
 
