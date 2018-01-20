@@ -1,0 +1,66 @@
+<html>
+	<head>
+		<title>Nexus Video Viewer</title>
+		<style>
+			p, h1, h2, h3, h4, h5 {
+				font-family: "Tahoma";
+			}
+			h1 {
+				text-align: center;
+			}
+			canvas {
+				display: block;
+				margin: auto;
+				border: 1px solid gray;
+			}
+		</style>
+	</head>
+
+	<body onload="init()">
+		<h1>Nexus Viewer</h1>
+		<hr>
+		<canvas id="canvas" width="480" height="640"></canvas>
+
+		<script type="text/JavaScript">
+			
+			var refreshInterval = 100;
+			var canvas;
+			var context;
+			var counter = 0;
+			var image;
+
+			var url;
+			var testing_pc = true;
+			if (testing_pc) {
+				url = "http://localhost:1180/";
+			} else {	
+				url = "http://10.0.8.13:1180/"
+			}
+
+			function init() {
+
+				console.log("Initializing...");
+
+				canvas = document.getElementById("canvas");
+				context = canvas.getContext("2d");
+
+				image = new Image(480, 640);
+				
+				setInterval(refresh, refreshInterval);
+			}
+
+			function refresh() {
+
+				image.src = url + "?t=" + counter;
+<<<<<<< HEAD
+				counter++;
+=======
+				
+				counter++;
+
+>>>>>>> e764f83892c064c7631f1747fd170824c3913973
+				context.drawImage(image, 0, 0, 480, 640);
+			}		
+		</script>
+	</body>
+</html> 
