@@ -3,6 +3,7 @@ package com.palyrobotics.frc2018.util;
 import com.palyrobotics.frc2018.config.Commands;
 import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.config.RobotState;
+import com.palyrobotics.frc2018.util.ChezyMath;
 
 /**
  * CheesyDriveHelper implements the calculations used in CheesyDrive for teleop control.
@@ -27,8 +28,8 @@ public class CheesyDriveHelper {
 
 		double wheelNonLinearity;
 
-		wheel = handleDeadband(wheel, kWheelStickDeadband);
-		throttle = handleDeadband(throttle, kThrottleStickDeadband);
+		wheel = ChezyMath.handleDeadband(wheel, kWheelStickDeadband);
+		throttle = ChezyMath.handleDeadband(throttle, kThrottleStickDeadband);
 
 		double negInertia = wheel - mOldWheel;
 		mOldWheel = wheel;
@@ -158,16 +159,6 @@ public class CheesyDriveHelper {
 		mSignal.leftMotor.setPercentOutput(leftPwm);
 		mSignal.rightMotor.setPercentOutput(rightPwm);
 		return mSignal;
-	}
-
-	/**
-	 * Neutralizes a value within a deadband
-	 * @param val Value to control deadband
-	 * @param deadband Value of deadband
-	 * @return 0 if within deadband, otherwise value
-	 */
-	private double handleDeadband(double val, double deadband) {
-		return (Math.abs(val) > Math.abs(deadband)) ? val : 0.0;
 	}
 
 	/**

@@ -103,6 +103,22 @@ public class Constants {
 	public static int k2018_UnnamedRightDriveBackMotorPDP = 0;
 	public static int k2018_UnnamedRightDriveThirdMotorPDP = 0;
 
+	// CLIMBER
+	
+	public static int k2018_ClimberMotorLeftDeviceID = 1;
+	public static int k2018_ClimberMotorRightDeviceID = 2;
+	
+	public static int k2018_ClimberLeftArmForward = 3;
+	public static int k2018_ClimberLeftArmBack = 3;
+
+	public static int k2018_ClimberRightArmForward = 3;
+	public static int k2018_ClimberRightArmBack = 3;
+
+	public static int k2018_ClimberLeftBrakeSolenoid = 4;
+	public static int k2018_ClimberRightBrakeSolenoid = 5;
+
+	public static final double kClimberStickDeadband = 0.02;
+
 
 	// !!! Physical constants
 

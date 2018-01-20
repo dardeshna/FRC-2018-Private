@@ -2,8 +2,12 @@ package com.palyrobotics.frc2018.robot;
 
 import com.palyrobotics.frc2018.behavior.Routine;
 import com.palyrobotics.frc2018.config.Commands;
+import com.palyrobotics.frc2018.config.Constants;
+import com.palyrobotics.frc2018.subsystems.Climber;
 import com.palyrobotics.frc2018.subsystems.Drive;
+import com.palyrobotics.frc2018.util.ChezyMath;
 import com.palyrobotics.frc2018.util.JoystickInput;
+
 
 /**
  * Used to produce Commands {@link Commands} from human input
@@ -49,6 +53,18 @@ public class OperatorInterface {
 				&& prevCommands.wantedDriveState != Drive.DriveState.ON_BOARD_CONTROLLER) {
 			newCommands.wantedDriveState = Drive.DriveState.CHEZY;
 		}
+
+		if (Math.abs(ChezyMath.handleDeadband(Robot.getRobotState().operatorStickInput.y, Constants.kClimberStickDeadband)) > 0.0) {
+			newCommands.wantedClimbMovement = Climber.MotionSubstate.MOVING;
+		} else {
+			newCommands.wantedClimbMovement = Climber.MotionSubstate.LOCKED;
+		}
+
+		if (Robot.getRobotState().operatorStickInput.triggerPressed) {
+			newCommands.wantedLockState = (Climber.LockState.LOCKED == prevCommands.wantedLockState) ?
+											Climber.LockState.UNLOCKED : Climber.LockState.LOCKED;
+		}
+
 		return newCommands;
 	}
 }

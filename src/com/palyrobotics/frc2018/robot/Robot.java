@@ -8,6 +8,7 @@ import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.config.RobotState;
 import com.palyrobotics.frc2018.config.dashboard.DashboardManager;
 import com.palyrobotics.frc2018.config.driveteam.DriveTeam;
+import com.palyrobotics.frc2018.subsystems.Climber;
 import com.palyrobotics.frc2018.subsystems.Drive;
 import com.palyrobotics.frc2018.util.logger.Logger;
 import com.palyrobotics.frc2018.util.trajectory.RigidTransform2d;
@@ -34,6 +35,7 @@ public class Robot extends TimedRobot {
 
 	// Subsystem controllers
 	private Drive mDrive = Drive.getInstance();
+	private Climber mClimber = Climber.getInstance();
 
 	// Hardware Updater
 	private HardwareUpdater mHardwareUpdater;
@@ -62,7 +64,7 @@ public class Robot extends TimedRobot {
 		}
 
 		try {
-			mHardwareUpdater = new HardwareUpdater(mDrive);
+			mHardwareUpdater = new HardwareUpdater(mDrive, mClimber);
 		} catch (Exception e) {
 			Logger.getInstance().logRobotThread(Level.SEVERE, e);
 			System.exit(1);

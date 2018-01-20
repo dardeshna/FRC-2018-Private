@@ -1,6 +1,7 @@
 package com.palyrobotics.frc2018.config;
 
 import com.palyrobotics.frc2018.behavior.Routine;
+import com.palyrobotics.frc2018.subsystems.Climber;
 import com.palyrobotics.frc2018.subsystems.Drive;
 import com.palyrobotics.frc2018.util.DriveSignal;
 import com.palyrobotics.frc2018.util.logger.Logger;
@@ -29,6 +30,9 @@ public class Commands {
 
 	// Store WantedStates for each subsystem state machine
 	public Drive.DriveState wantedDriveState = Drive.DriveState.NEUTRAL;
+	public Climber.MotionSubstate wantedClimbMovement = Climber.MotionSubstate.LOCKED;
+	public Climber.Side wantedClimbSide = Climber.Side.NOT_SET;
+	public Climber.LockState wantedLockState = Climber.LockState.UNLOCKED;
 
 	public void addWantedRoutine(Routine wantedRoutine) {
 		for(Routine routine : wantedRoutines) {
@@ -52,17 +56,19 @@ public class Commands {
 		public static final Optional<Double> NULLOPT = Optional.empty();
 		
 		public Optional<DriveSignal> drivePowerSetpoint = Optional.empty();
+		public Optional<Double> climbPowerSetpoint = Optional.empty();
 
 		/**
 		 * Resets all the setpoints
 		 */
 		public void reset() {
 			drivePowerSetpoint = Optional.empty();
+			climbPowerSetpoint = Optional.empty();
 		}
 	}
 	// All robot setpoints
 	public Setpoints robotSetpoints = new Setpoints();
-	
+
 	// Allows you to cancel all running routines
 	public boolean cancelCurrentRoutines = false;
 
@@ -72,7 +78,9 @@ public class Commands {
 	public Commands copy() {
 		Commands copy = new Commands();
 		copy.wantedDriveState = this.wantedDriveState;
-
+		copy.wantedClimbSide = this.wantedClimbSide;
+		copy.wantedClimbMovement = this.wantedClimbMovement;
+		copy.wantedLockState = this.wantedLockState;
 		copy.cancelCurrentRoutines = this.cancelCurrentRoutines;
 
 		for (Routine r : this.wantedRoutines) {

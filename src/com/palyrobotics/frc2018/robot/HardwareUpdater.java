@@ -5,15 +5,20 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.config.RobotState;
+import com.palyrobotics.frc2018.subsystems.Climber;
 import com.palyrobotics.frc2018.subsystems.Drive;
+import com.palyrobotics.frc2018.util.ClimberSignal;
 import com.palyrobotics.frc2018.util.TalonSRXOutput;
 import com.palyrobotics.frc2018.util.logger.Logger;
 import com.palyrobotics.frc2018.util.trajectory.Kinematics;
 import com.palyrobotics.frc2018.util.trajectory.RigidTransform2d;
 import com.palyrobotics.frc2018.util.trajectory.Rotation2d;
+
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Timer;
 
 import java.util.Optional;
@@ -27,13 +32,14 @@ class HardwareUpdater {
 	// Subsystem references
 
 	private Drive mDrive;
+	private Climber mClimb;
 
 	/**
 	 * Hardware Updater for 2018_Unnamed
 	 */
-	HardwareUpdater(Drive drive) throws Exception {
-
+	HardwareUpdater(Drive drive, Climber climber) throws Exception {
 		this.mDrive = drive;
+		this.mClimb = climber;
 	}
 
 	/**
@@ -59,6 +65,7 @@ class HardwareUpdater {
 
 	void configureTalons() {
 		configureDriveTalons();
+		configureClimberTalons();
 	}
 
 	void configureDriveTalons() {
@@ -157,6 +164,22 @@ class HardwareUpdater {
 		}
 	}
 
+	void configureClimberTalons() {
+		WPI_VictorSPX climberLeft = HardwareAdapter.getInstance().getClimber().leftVictor;
+		WPI_VictorSPX climberRight = HardwareAdapter.getInstance().getClimber().rightVictor;
+
+		climberLeft.enableVoltageCompensation(true);
+		climberRight.enableVoltageCompensation(true);
+
+		climberLeft.setNeutralMode(NeutralMode.Brake);
+		climberRight.setNeutralMode(NeutralMode.Brake);
+
+		climberLeft.configForwardSoftLimitEnable(false, 0);
+		climberLeft.configReverseSoftLimitEnable(false, 0);
+		climberRight.configForwardSoftLimitEnable(false, 0);
+		climberRight.configReverseSoftLimitEnable(false, 0);
+	}
+
 	/**
 	 * Updates all the sensor data taken from the hardware
 	 */
@@ -169,7 +192,8 @@ class HardwareUpdater {
 		robotState.rightControlMode = rightMasterTalon.getControlMode();
 
 		robotState.leftStickInput.update(HardwareAdapter.Joysticks.getInstance().driveStick); 
-		robotState.rightStickInput.update(HardwareAdapter.Joysticks.getInstance().turnStick); 
+		robotState.rightStickInput.update(HardwareAdapter.Joysticks.getInstance().turnStick);
+		robotState.operatorStickInput.update(HardwareAdapter.Joysticks.getInstance().operatorStick);
 		
         switch (robotState.leftControlMode) {
             //Fall through
@@ -275,6 +299,7 @@ class HardwareUpdater {
 	}
 
 	private void update2018_UnnamedSubsystems() {
+		updateClimber();
 	}
 
 	/**
@@ -286,6 +311,16 @@ class HardwareUpdater {
 		updateTalonSRX(HardwareAdapter.getInstance().getDrivetrain().rightMasterTalon, mDrive.getDriveSignal().rightMotor);
 	}
 
+	private void updateClimber() {
+		ClimberSignal signal = Climber.getInstance().getSignal();
+		HardwareAdapter.getInstance().getClimber().leftVictor.set(signal.leftVelocity);
+		HardwareAdapter.getInstance().getClimber().rightVictor.set(signal.rightVelocity);
+		HardwareAdapter.getInstance().getClimber().leftBrake.set(signal.leftBrake);
+		HardwareAdapter.getInstance().getClimber().rightBrake.set(signal.rightBrake);
+		HardwareAdapter.getInstance().getClimber().leftArmLock.set(signal.latchLock ? Value.kForward : Value.kReverse);
+		HardwareAdapter.getInstance().getClimber().rightArmLock.set(signal.latchLockRight ? Value.kForward : Value.kReverse);
+	}
+	
 	/**
 	 * Helper method for processing a TalonSRXOutput for an SRX
 	 */

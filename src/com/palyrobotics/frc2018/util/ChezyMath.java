@@ -5,6 +5,17 @@ package com.palyrobotics.frc2018.util;
  * mathematics
  */
 public class ChezyMath {
+
+    /**
+     * Neutralizes a value within a deadband
+     * @param val Value to control deadband
+     * @param deadband Value of deadband
+     * @return 0 if within deadband, otherwise value
+     */
+    public static double handleDeadband(double val, double deadband) {
+        return (Math.abs(val) > Math.abs(deadband)) ? val : 0.0;
+    }
+
     /**
      * Get the difference in angle between two angles.
      *
@@ -71,8 +82,5 @@ public class ChezyMath {
             angle += 2.0 * Math.PI;
         }
         return angle;
-    }
-
-    public ChezyMath() {
     }
 }
