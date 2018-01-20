@@ -11,6 +11,7 @@ import com.palyrobotics.frc2018.config.driveteam.DriveTeam;
 import com.palyrobotics.frc2018.subsystems.Climber;
 import com.palyrobotics.frc2018.subsystems.Drive;
 import com.palyrobotics.frc2018.subsystems.Elevator;
+import com.palyrobotics.frc2018.subsystems.Intake;
 import com.palyrobotics.frc2018.util.logger.Logger;
 import com.palyrobotics.frc2018.util.trajectory.RigidTransform2d;
 import com.palyrobotics.frc2018.vision.VisionManager;
@@ -37,6 +38,7 @@ public class Robot extends TimedRobot {
 	private Drive mDrive = Drive.getInstance();
 	private Climber mClimber = Climber.getInstance();
 	private Elevator mElevator = Elevator.getInstance();
+	private Intake mIntake = Intake.getInstance();
 
 	// Hardware Updater
 	private HardwareUpdater mHardwareUpdater;
@@ -65,7 +67,7 @@ public class Robot extends TimedRobot {
 		}
 
 		try {
-			mHardwareUpdater = new HardwareUpdater(mDrive, mClimber, mElevator);
+			mHardwareUpdater = new HardwareUpdater(mDrive, mClimber, mElevator, mIntake);
 		} catch (Exception e) {
 			Logger.getInstance().logRobotThread(Level.SEVERE, e);
 			System.exit(1);
@@ -209,17 +211,20 @@ public class Robot extends TimedRobot {
 		mDrive.start();
 		mClimber.start();
 		mElevator.start();
+		mIntake.start();
 	}
 
 	private void updateSubsystems() {
 		mDrive.update(commands, robotState);
 		mClimber.update(commands, robotState);
 		mElevator.update(commands, robotState);
+		mIntake.update(commands, robotState);
 	}
 
 	private void stopSubsystems() {
 		mDrive.stop();
 		mClimber.stop();
 		mElevator.stop();
+		mIntake.stop();
 	}
 }

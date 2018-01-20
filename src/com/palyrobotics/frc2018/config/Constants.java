@@ -94,6 +94,10 @@ public class Constants {
 	public static final double kElevatorAcceptablePositionError = 0.01;
 	public static final double kElevatorAcceptableVelocityError = 0.01;
 
+	//Intake
+	public static double kIntakingMotorVelocity = 0.75;
+	public static double kExpellingMotorVelocity = -0.75;
+
 
 	/* !!! End of editable Constants! !!!
 	 **********************************************************************************
@@ -143,15 +147,21 @@ public class Constants {
 	public static final int kForsetiBottomElevatorHFXID = 8;
 	public static final int kForsetiTopElevatorHFXID = 10;
 
+	// INTAKE
+    public static int kForsetiIntakeMasterDeviceID = 7;
+    public static int kForsetiIntakeSlaveDeviceID = 8;
+    public static int kForsetiIntakeDistanceSensorID = 0;
+    public static int kForsetiIntakeUpDownSolenoidForwardID = 1;
+    public static int kForsetiIntakeUpDownSolenoidReverseID = 2;
+    public static int kForsetiIntakeOpenCloseSolenoidForwardID = 3;
+    public static int kForsetiIntakeOpenCloseSolenoidReverseID = 4;
 
 	// !!! Physical constants
-
 
 	// !!! Loop rate of normal Looper
 	public static final double kNormalLoopsDt = 0.02;
 
 	// Adaptive Pure Pursuit Controller
-
 	public static final double kDriveWheelDiameterInches = 7.3;
 	public static final double kTrackLengthInches = 8.265;
 	public static final double kTrackWidthInches = 23.8;

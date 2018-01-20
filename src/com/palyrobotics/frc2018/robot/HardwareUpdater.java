@@ -9,12 +9,14 @@ import com.palyrobotics.frc2018.config.RobotState;
 import com.palyrobotics.frc2018.subsystems.Climber;
 import com.palyrobotics.frc2018.subsystems.Drive;
 import com.palyrobotics.frc2018.subsystems.Elevator;
+import com.palyrobotics.frc2018.subsystems.Intake;
 import com.palyrobotics.frc2018.util.ClimberSignal;
 import com.palyrobotics.frc2018.util.TalonSRXOutput;
 import com.palyrobotics.frc2018.util.logger.Logger;
 import com.palyrobotics.frc2018.util.trajectory.Kinematics;
 import com.palyrobotics.frc2018.util.trajectory.RigidTransform2d;
 import com.palyrobotics.frc2018.util.trajectory.Rotation2d;
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Timer;
 
@@ -30,14 +32,16 @@ class HardwareUpdater {
 	private Drive mDrive;
 	private Climber mClimber;
 	private Elevator mElevator;
+	private Intake mIntake;
 
 	/**
 	 * Hardware Updater for Forseti
 	 */
-	HardwareUpdater(Drive drive, Climber climber, Elevator elevator) throws Exception {
+	HardwareUpdater(Drive drive, Climber climber, Elevator elevator, Intake intake) throws Exception {
 		this.mDrive = drive;
 		this.mClimber = climber;
 		this.mElevator = elevator;
+		this.mIntake = intake;
 	}
 
 	/**
@@ -54,7 +58,7 @@ class HardwareUpdater {
 	void disableTalons() {
 		Logger.getInstance().logRobotThread(Level.INFO,"Disabling talons");
 
-		//Drivetrain disables
+		//Disable drivetrain talons
 		HardwareAdapter.getInstance().getDrivetrain().leftMasterTalon.set(ControlMode.Disabled, 0);
 		HardwareAdapter.getInstance().getDrivetrain().leftSlave1Talon.set(ControlMode.Disabled, 0);
 		HardwareAdapter.getInstance().getDrivetrain().rightMasterTalon.set(ControlMode.Disabled, 0);
@@ -62,19 +66,24 @@ class HardwareUpdater {
 		HardwareAdapter.getInstance().getDrivetrain().leftSlave2Talon.set(ControlMode.Disabled, 0);
 		HardwareAdapter.getInstance().getDrivetrain().rightSlave2Talon.set(ControlMode.Disabled, 0);
 
-		//Climber disables
+		//Disable climber talons
 		HardwareAdapter.getInstance().getClimber().leftVictor.set(ControlMode.Disabled, 0);
 		HardwareAdapter.getInstance().getClimber().rightVictor.set(ControlMode.Disabled, 0);
 
-		//Elevator disables
+		//Disable elevator talons
 		HardwareAdapter.getInstance().getElevator().elevatorMasterTalon.set(ControlMode.Disabled, 0);
 		HardwareAdapter.getInstance().getElevator().elevatorSlaveTalon.set(ControlMode.Disabled, 0);
+
+		//Disable intake talons
+		HardwareAdapter.getInstance().getIntake().masterTalon.set(ControlMode.Disabled, 0);
+		HardwareAdapter.getInstance().getIntake().slaveTalon.set(ControlMode.Disabled, 0);
 	}
 
 	void configureTalons() {
 		configureDriveTalons();
 		configureClimberTalons();
 		configureElevatorTalons();
+		configureIntakeTalons();
 	}
 
 	void configureDriveTalons() {
@@ -215,6 +224,9 @@ class HardwareUpdater {
 		climberLeft.enableVoltageCompensation(true);
 		climberRight.enableVoltageCompensation(true);
 
+		climberLeft.configVoltageCompSaturation(14, 0);
+		climberRight.configVoltageCompSaturation(14, 0);
+
 		climberLeft.setNeutralMode(NeutralMode.Brake);
 		climberRight.setNeutralMode(NeutralMode.Brake);
 
@@ -224,12 +236,40 @@ class HardwareUpdater {
 		climberRight.configReverseSoftLimitEnable(false, 0);
 	}
 
-	/**
+	void configureIntakeTalons() {
+	    WPI_TalonSRX masterTalon = HardwareAdapter.getInstance().getIntake().masterTalon;
+	    WPI_TalonSRX slaveTalon = HardwareAdapter.getInstance().getIntake().slaveTalon;
+
+	    masterTalon.setNeutralMode(NeutralMode.Brake);
+	    slaveTalon.setNeutralMode(NeutralMode.Brake);
+
+	    masterTalon.enableVoltageCompensation(true);
+	    slaveTalon.enableVoltageCompensation(true);
+
+	    masterTalon.configVoltageCompSaturation(14, 0);
+	    slaveTalon.configVoltageCompSaturation(14, 0);
+
+	    //Disables forwards and reverse soft limits
+	    masterTalon.configForwardSoftLimitEnable(false, 0);
+	    masterTalon.configReverseSoftLimitEnable(false, 0);
+	    slaveTalon.configForwardSoftLimitEnable(false, 0);
+	    slaveTalon.configReverseSoftLimitEnable(false, 0);
+
+	    //Reverse right side
+	    slaveTalon.setInverted(true);
+
+	    //Set slave talons to follower mode
+        slaveTalon.set(ControlMode.Follower, masterTalon.getDeviceID());
+    }
+
+    /**
 	 * Updates all the sensor data taken from the hardware
 	 */
 	void updateState(RobotState robotState) {
 		WPI_TalonSRX leftMasterTalon = HardwareAdapter.getInstance().getDrivetrain().leftMasterTalon;
 		WPI_TalonSRX rightMasterTalon = HardwareAdapter.getInstance().getDrivetrain().rightMasterTalon;
+
+		AnalogInput intakeDistanceSensor = HardwareAdapter.getInstance().getIntake().distanceSensor;
 
 		robotState.leftControlMode = leftMasterTalon.getControlMode();
 		robotState.rightControlMode = rightMasterTalon.getControlMode();
@@ -239,6 +279,9 @@ class HardwareUpdater {
 		robotState.operatorStickInput.update(HardwareAdapter.getInstance().getJoysticks().operatorStick);
 		robotState.elevatorStickInput.update(HardwareAdapter.getInstance().getJoysticks().elevatorStick);
 		
+		//Currently represents the voltage returned from the distance sensor, but the actual sensor is undetermined so we do not know the conversion.
+		robotState.cubeDistance = intakeDistanceSensor.getValue();
+
         switch(robotState.leftControlMode) {
             //Fall through
             case Position:
@@ -347,6 +390,7 @@ class HardwareUpdater {
 		updateDrivetrain();
 		updateClimber();
 		updateElevator();
+		updateIntake();
 	}
 
 	/**
@@ -375,6 +419,14 @@ class HardwareUpdater {
 		HardwareAdapter.getInstance().getClimber().rightArmLock.set(signal.latchLockRight ? Value.kForward : Value.kReverse);
 	}
 	
+	/**
+	 * Updates the intake
+	 */
+	private void updateIntake() {
+		updateTalonSRX(HardwareAdapter.getInstance().getIntake().masterTalon, mIntake.getTalonOutput());
+		HardwareAdapter.getInstance().getIntake().openCloseSolenoid.set(mIntake.getOpenCloseOutput());
+		HardwareAdapter.getInstance().getIntake().upDownSolenoid.set(mIntake.getUpDownOutput());
+	}
 	/**
 	 * Helper method for processing a TalonSRXOutput for an SRX
 	 */

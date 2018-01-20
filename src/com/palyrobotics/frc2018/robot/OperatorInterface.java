@@ -7,6 +7,7 @@ import com.palyrobotics.frc2018.subsystems.Climber;
 import com.palyrobotics.frc2018.subsystems.Drive;
 import com.palyrobotics.frc2018.subsystems.Elevator;
 import com.palyrobotics.frc2018.subsystems.Elevator.ElevatorState;
+import com.palyrobotics.frc2018.subsystems.Intake;
 import com.palyrobotics.frc2018.util.ChezyMath;
 import com.palyrobotics.frc2018.util.JoystickInput;
 
@@ -71,7 +72,7 @@ public class OperatorInterface {
 			newCommands.wantedClimbMovement = Climber.MotionSubstate.LOCKED;
 		}
 
-		if (mOperatorStick.getTriggerPressed()) {
+		if (mOperatorStick.getButtonPressed(10)) {
 			newCommands.wantedLockState = (Climber.LockState.LOCKED == prevCommands.wantedLockState) ?
 											Climber.LockState.UNLOCKED : Climber.LockState.LOCKED;
 		}
@@ -88,12 +89,6 @@ public class OperatorInterface {
 			newCommands.wantedUpDownState = Intake.UpDownState.UP;
 		} else if(prevCommands.wantedOpenCloseState == Intake.OpenCloseState.CLOSED && mOperatorStick.getButtonPressed(9)) {
 			newCommands.wantedUpDownState = Intake.UpDownState.DOWN;
-		}
-
-		if(prevCommands.wantedUpDownState == Intake.UpDownState.DOWN && prevCommands.wantedOpenCloseState == Intake.OpenCloseState.CLOSED && mOperatorStick.getButtonPressed(4)) {
-			newCommands.wantedOpenCloseState = Intake.OpenCloseState.OPEN;
-		} else if(prevCommands.wantedUpDownState == Intake.UpDownState.DOWN && prevCommands.wantedOpenCloseState == Intake.OpenCloseState.OPEN && mOperatorStick.getButtonPressed(4)) {
-			newCommands.wantedOpenCloseState = Intake.OpenCloseState.CLOSED;
 		}
 
 		return newCommands;

@@ -50,7 +50,7 @@ public class HardwareAdapter {
 				rightSlave1Talon = new WPI_TalonSRX(Constants.kForsetiRightDriveSlaveDeviceID);
 				rightSlave2Talon = new WPI_TalonSRX(Constants.kForsetiRightDriveOtherSlaveDeviceID);
 				gyro = new PigeonIMU(leftSlave2Talon);
-		}
+        }
 	}
 	
 	/*
@@ -83,7 +83,9 @@ public class HardwareAdapter {
 		}
 	}
 
-	// ELEVATOR - 2 WPI_TalonSRX's, 2 HFX (DigitalInputs)
+	/**
+	 * Elevator - 2 WPI_TalonSRX's, 2 HFX (DigitalInputs)
+	 */
 	public static class ElevatorHardware {
 		private static ElevatorHardware instance = new ElevatorHardware();
 		private static ElevatorHardware getInstance() {
@@ -105,6 +107,30 @@ public class HardwareAdapter {
 		}
 	}
 
+	/**
+	 * Intake - 2 WPI_TalonSRX's, 2 DoubleSolenoids, 1 Distance Sensor (AnalogInput)
+	 */
+	public static class IntakeHardware {
+	    private static IntakeHardware instance = new IntakeHardware();
+	    private static IntakeHardware getInstance() {
+	        return instance;
+        }
+	    
+        public final WPI_TalonSRX masterTalon;
+	    public final WPI_TalonSRX slaveTalon;
+	    public final DoubleSolenoid upDownSolenoid;
+	    public final DoubleSolenoid openCloseSolenoid;
+	    public final AnalogInput distanceSensor;
+
+        private IntakeHardware() {
+	        masterTalon = new WPI_TalonSRX(Constants.kForsetiIntakeMasterDeviceID);
+	        slaveTalon = new WPI_TalonSRX(Constants.kForsetiIntakeSlaveDeviceID);
+	        upDownSolenoid = new DoubleSolenoid(Constants.kForsetiIntakeUpDownSolenoidForwardID, Constants.kForsetiIntakeUpDownSolenoidReverseID);
+	        openCloseSolenoid = new DoubleSolenoid(Constants.kForsetiIntakeOpenCloseSolenoidForwardID, Constants.kForsetiIntakeOpenCloseSolenoidReverseID);
+	        distanceSensor = new AnalogInput(Constants.kForsetiIntakeDistanceSensorID);
+        }
+    }
+
 	// Joysticks for operator interface
 	protected static class Joysticks {
 		private static Joysticks instance = new Joysticks();
@@ -125,10 +151,14 @@ public class HardwareAdapter {
 	public DrivetrainHardware getDrivetrain() {
 		return DrivetrainHardware.getInstance();
 	}
-	
+
 	public ElevatorHardware getElevator() {
 		return ElevatorHardware.getInstance();
 	}
+
+	public IntakeHardware getIntake() {
+	    return IntakeHardware.getInstance();
+    }
 
 	public ClimberHardware getClimber() {
 		return ClimberHardware.getInstance();
