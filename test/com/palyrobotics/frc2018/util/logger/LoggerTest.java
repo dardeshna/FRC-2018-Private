@@ -3,7 +3,6 @@ package com.palyrobotics.frc2018.util.logger;
 import com.palyrobotics.frc2018.config.RobotState;
 import com.palyrobotics.frc2018.robot.Robot;
 import com.palyrobotics.frc2018.subsystems.Drive;
-import com.palyrobotics.frc2018.util.logger.Logger;
 import org.junit.Test;
 
 import java.util.logging.Level;

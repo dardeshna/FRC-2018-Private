@@ -1,7 +1,5 @@
 package com.palyrobotics.frc2018.behavior;
 
-import com.palyrobotics.frc2018.behavior.Routine;
-import com.palyrobotics.frc2018.behavior.RoutineManager;
 import com.palyrobotics.frc2018.config.Commands;
 import com.palyrobotics.frc2018.subsystems.Drive;
 import com.palyrobotics.frc2018.subsystems.Subsystem;
@@ -10,7 +8,7 @@ import com.palyrobotics.frc2018.subsystems.Subsystem;
  * Created by Nihar on 1/22/17.
  * Used for testing {@link RoutineManager} in {@link com.palyrobotics.frc2018.behavior.RoutineManagerTest}
  */
-public class DrivetrainRoutine extends Routine {
+public class DrivetrainRoutine extends MockRoutine {
 	
 	private boolean isFinished;
 	

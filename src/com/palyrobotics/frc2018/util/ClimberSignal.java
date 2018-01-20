@@ -1,7 +1,5 @@
 package com.palyrobotics.frc2018.util;
 
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-
 public class ClimberSignal {
 
     public double leftVelocity;

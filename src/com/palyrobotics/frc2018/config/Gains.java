@@ -70,6 +70,25 @@ public class Gains {
 	public static final Gains forsetiTurnMotionMagicGains = new Gains(kForsetiTurnMotionMagickP, kForsetiTurnMotionMagickI, kForsetiTurnMotionMagickD,
 			kForsetiTurnMotionMagickF, kForsetiTurnMotionMagickIzone, kForsetiTurnMotionMagickRampRate);
 
+	public static final double k2018_elevatorPositionkP = 6.0/2;
+	public static final double k2018_elevatorPositionkI = 0.002/2;
+	public static final double k2018_elevatorPositionkD = 85/2;
+	public static final double k2018_elevatorPositionkF = 2.624/2;
+	public static final int k2018_elevatorPositionkIzone = 800/2;
+	public static final double k2018_elevatorPositionkRampRate = 0.0;
+	public static final Gains elevatorPosition = new Gains(k2018_elevatorPositionkP, k2018_elevatorPositionkI, k2018_elevatorPositionkD,
+			k2018_elevatorPositionkF, k2018_elevatorPositionkIzone, k2018_elevatorPositionkRampRate);
+	
+	public static final double k2018_elevatorHoldkP = 6.0/2;
+	public static final double k2018_elevatorHoldkI = 0.002/2;
+	public static final double k2018_elevatorHoldkD = 85/2;
+	public static final double k2018_elevatorHoldkF = 2.624/2;
+	public static final int k2018_elevatorHoldkIzone = 800/2;
+	public static final double k2018_elevatorHoldkRampRate = 0.0;
+	public static final Gains elevatorHold = new Gains(k2018_elevatorHoldkP, k2018_elevatorHoldkI, k2018_elevatorHoldkD,
+			k2018_elevatorHoldkF, k2018_elevatorHoldkIzone, k2018_elevatorHoldkRampRate);
+
+	
 	public static class TrajectoryGains {
 		public final double P,D,V,A, turnP, turnD;
 		public TrajectoryGains(double p, double d, double v, double a, double turnP, double turnD) {

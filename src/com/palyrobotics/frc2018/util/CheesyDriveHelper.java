@@ -3,7 +3,6 @@ package com.palyrobotics.frc2018.util;
 import com.palyrobotics.frc2018.config.Commands;
 import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.config.RobotState;
-import com.palyrobotics.frc2018.util.ChezyMath;
 
 /**
  * CheesyDriveHelper implements the calculations used in CheesyDrive for teleop control.
@@ -13,23 +12,21 @@ public class CheesyDriveHelper {
 	private double mOldWheel, mQuickStopAccumulator;
 	private boolean mInitialBrake;
 	private double mOldThrottle, mBrakeRate;
-	private final double kWheelStickDeadband = 0.02;
-	private final double kThrottleStickDeadband = 0.02;
 
 	public DriveSignal cheesyDrive(Commands commands, RobotState robotState) {
-		double throttle = -robotState.leftStickInput.y;
-		double wheel = robotState.rightStickInput.x;
+		double throttle = -robotState.leftStickInput.getY();
+		double wheel = robotState.rightStickInput.getX();
 
 		//Quickturn if right trigger is pressed
-		boolean isQuickTurn = robotState.rightStickInput.triggerPressed;
+		boolean isQuickTurn = robotState.rightStickInput.getTriggerPressed();
 
 		//Braking if left trigger is pressed
-		boolean isBraking = robotState.leftStickInput.triggerPressed;
+		boolean isBraking = robotState.leftStickInput.getTriggerPressed();
 
 		double wheelNonLinearity;
 
-		wheel = ChezyMath.handleDeadband(wheel, kWheelStickDeadband);
-		throttle = ChezyMath.handleDeadband(throttle, kThrottleStickDeadband);
+		wheel = ChezyMath.handleDeadband(wheel, Constants.kDeadband);
+		throttle = ChezyMath.handleDeadband(throttle, Constants.kDeadband);
 
 		double negInertia = wheel - mOldWheel;
 		mOldWheel = wheel;
@@ -114,7 +111,7 @@ public class CheesyDriveHelper {
 			
 			overPower = 1.0;
 			
-			if(Math.abs(robotState.rightStickInput.x) < Constants.kQuickTurnSensitivityThreshold) {
+			if(Math.abs(robotState.rightStickInput.getX()) < Constants.kQuickTurnSensitivityThreshold) {
 				sensitivity = Constants.kPreciseQuickTurnSensitivity;
 			} else {
 				sensitivity = Constants.kQuickTurnSensitivity;

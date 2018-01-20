@@ -3,6 +3,7 @@ package com.palyrobotics.frc2018.config;
 import com.palyrobotics.frc2018.behavior.Routine;
 import com.palyrobotics.frc2018.subsystems.Climber;
 import com.palyrobotics.frc2018.subsystems.Drive;
+import com.palyrobotics.frc2018.subsystems.Elevator;
 import com.palyrobotics.frc2018.util.DriveSignal;
 import com.palyrobotics.frc2018.util.logger.Logger;
 
@@ -33,6 +34,7 @@ public class Commands {
 	public Climber.MotionSubstate wantedClimbMovement = Climber.MotionSubstate.LOCKED;
 	public Climber.Side wantedClimbSide = Climber.Side.NOT_SET;
 	public Climber.LockState wantedLockState = Climber.LockState.UNLOCKED;
+	public Elevator.ElevatorState wantedElevatorState = Elevator.ElevatorState.CALIBRATING;
 
 	public void addWantedRoutine(Routine wantedRoutine) {
 		for(Routine routine : wantedRoutines) {
@@ -53,10 +55,9 @@ public class Commands {
 	 * @author Nihar
 	 */
 	public static class Setpoints {
-		public static final Optional<Double> NULLOPT = Optional.empty();
-		
 		public Optional<DriveSignal> drivePowerSetpoint = Optional.empty();
 		public Optional<Double> climbPowerSetpoint = Optional.empty();
+		public Optional<Double> elevatorPositionSetpoint = Optional.empty();
 
 		/**
 		 * Resets all the setpoints
@@ -64,6 +65,7 @@ public class Commands {
 		public void reset() {
 			drivePowerSetpoint = Optional.empty();
 			climbPowerSetpoint = Optional.empty();
+			elevatorPositionSetpoint = Optional.empty();
 		}
 	}
 	// All robot setpoints
@@ -81,6 +83,8 @@ public class Commands {
 		copy.wantedClimbSide = this.wantedClimbSide;
 		copy.wantedClimbMovement = this.wantedClimbMovement;
 		copy.wantedLockState = this.wantedLockState;
+		copy.wantedElevatorState = this.wantedElevatorState;
+		copy.cancelCurrentRoutines = this.cancelCurrentRoutines;
 		copy.cancelCurrentRoutines = this.cancelCurrentRoutines;
 
 		for (Routine r : this.wantedRoutines) {
@@ -91,6 +95,7 @@ public class Commands {
 		copy.robotSetpoints = new Setpoints();
 		// Copy optionals that are present
 		robotSetpoints.drivePowerSetpoint.ifPresent((DriveSignal signal) -> copy.robotSetpoints.drivePowerSetpoint = Optional.of(signal));
+		robotSetpoints.elevatorPositionSetpoint.ifPresent((Double elevatorPositionSetpoint) -> copy.robotSetpoints.elevatorPositionSetpoint = Optional.of(elevatorPositionSetpoint));
 		return copy;
 	}
 

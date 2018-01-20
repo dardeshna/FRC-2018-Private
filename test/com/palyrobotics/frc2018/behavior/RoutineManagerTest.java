@@ -1,9 +1,7 @@
 package com.palyrobotics.frc2018.behavior;
 
-import com.palyrobotics.frc2018.robot.RobotTest;
-import com.palyrobotics.frc2018.behavior.Routine;
-import com.palyrobotics.frc2018.behavior.RoutineManager;
 import com.palyrobotics.frc2018.config.Commands;
+import com.palyrobotics.frc2018.robot.MockRobot;
 import com.palyrobotics.frc2018.subsystems.Drive;
 import com.palyrobotics.frc2018.subsystems.Subsystem;
 import org.junit.Rule;
@@ -28,12 +26,12 @@ public class RoutineManagerTest {
 	
 	@Test
 	public void testUpdate() {
-		Commands commands = RobotTest.getCommands();
+		Commands commands = MockRobot.getCommands();
 		
 		thrown.expect(NullPointerException.class);
 		mRoutineManager.addNewRoutine(null);
 		
-		SampleRoutine mRoutine = new SampleRoutine();
+		MockRoutine mRoutine = new MockRoutine();
 		ArrayList<Routine> correct = new ArrayList<Routine>();
 		correct.add(mRoutine);
 		
@@ -61,9 +59,9 @@ public class RoutineManagerTest {
 	 */
 	@Test
 	public void testResetMethod() {
-		Commands commands = RobotTest.getCommands();
+		Commands commands = MockRobot.getCommands();
 		mRoutineManager.reset(commands);
-		SampleRoutine mRoutine = new SampleRoutine();
+		MockRoutine mRoutine = new MockRoutine();
 		DrivetrainRoutine mDriveRoutine = new DrivetrainRoutine();
 		mRoutineManager.addNewRoutine(mRoutine);
 		mRoutineManager.addNewRoutine(mDriveRoutine);
@@ -81,44 +79,44 @@ public class RoutineManagerTest {
 	@Test
 	public void testConflictingRoutinesMethod() {
 		ArrayList<Routine> correctConflicts = new ArrayList<Routine>();
-		correctConflicts.add(new SampleRoutine());
+		correctConflicts.add(new MockRoutine());
 		@SuppressWarnings("unchecked")
 		ArrayList<Routine> routinesList = (ArrayList<Routine>) correctConflicts.clone();
 		routinesList.add(new DrivetrainRoutine());
-		ArrayList<Routine> conflicts = mRoutineManager.conflictingRoutines(routinesList, new SampleRoutine());
+		ArrayList<Routine> conflicts = mRoutineManager.conflictingRoutines(routinesList, new MockRoutine());
 		assertThat("Not all conflicts were detected with just one conflict", conflicts, equalTo(correctConflicts));
 		
 		correctConflicts = new ArrayList<Routine>();
 		correctConflicts.add(new DrivetrainRoutine());
 		@SuppressWarnings("unchecked")
 		ArrayList<Routine> routinesList2 = (ArrayList<Routine>) correctConflicts.clone();
-		routinesList2.add(new SampleRoutine());	
+		routinesList2.add(new MockRoutine());	
 		conflicts = mRoutineManager.conflictingRoutines(routinesList2, new DrivetrainRoutine());
 		assertThat("Not all conflicts were detected with multiple conflicts", conflicts, equalTo(correctConflicts));
 		
 		correctConflicts = new ArrayList<Routine>();
-		correctConflicts.add(new SampleRoutine());	
+		correctConflicts.add(new MockRoutine());	
 		@SuppressWarnings("unchecked")
 		ArrayList<Routine> routinesList3 = (ArrayList<Routine>) correctConflicts.clone();
 		routinesList3.add(new DrivetrainRoutine());
-		conflicts = mRoutineManager.conflictingRoutines(routinesList3, new SampleRoutine());
+		conflicts = mRoutineManager.conflictingRoutines(routinesList3, new MockRoutine());
 		assertThat("Not all conflicts were detected with multiple non-conflicts", conflicts, equalTo(correctConflicts));
 		
 		correctConflicts = new ArrayList<Routine>();
 		correctConflicts.add(new DrivetrainRoutine());
 		ArrayList<Routine> routinesList4 = (ArrayList<Routine>) correctConflicts.clone();
-		routinesList4.add(new SampleRoutine());
+		routinesList4.add(new MockRoutine());
 		assertThat("Not all conflicts were detected with multiple conflicting subsystems", conflicts, equalTo(correctConflicts));
 		
 		thrown.expect(NullPointerException.class);
 		mRoutineManager.conflictingRoutines(null, null);
 	}
 	
-// 	ERROR: using SampleRoutine gives NullPointerException
+// 	ERROR: using MockRoutine gives NullPointerException
 	@Test
 	public void testSubsystemSuperset() {
 		ArrayList<Routine> routinesList = new ArrayList<Routine>();
-//		routinesList.add(new SampleRoutine());
+//		routinesList.add(new MockRoutine());
 //		Subsystem[] superset1 = {};
 //		assertThat("Should not detect any subsystems", RoutineManager.subsystemSuperset(routinesList), equalTo(superset1));
 		
@@ -137,12 +135,12 @@ public class RoutineManagerTest {
 	@Test
 	public void testSharedSubsystems() {
 		ArrayList<Routine> routinesList = new ArrayList<Routine>();
-		routinesList.add(new SampleRoutine());
+		routinesList.add(new MockRoutine());
 		routinesList.add(new DrivetrainRoutine());
 		assertThat("Conflicts when none should exist", RoutineManager.sharedSubsystems(routinesList).length, equalTo(0));
 		
 		routinesList = new ArrayList<Routine>();
-		routinesList.add(new SampleRoutine());
+		routinesList.add(new MockRoutine());
 		routinesList.add(new DrivetrainRoutine());
 		Subsystem[] conflicts = {Drive.getInstance()};
 		assertThat("Not catching conflicts with conflicts", RoutineManager.sharedSubsystems(routinesList), equalTo(conflicts));

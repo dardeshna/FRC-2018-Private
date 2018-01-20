@@ -1,7 +1,6 @@
 package com.palyrobotics.frc2018.vision;
 
 import com.palyrobotics.frc2018.config.Constants;
-import com.palyrobotics.frc2018.vision.VisionManager;
 
 /**
  * Created by Alvin on 2/15/2017.

@@ -1,6 +1,5 @@
 package com.palyrobotics.frc2018.config;
 
-import com.palyrobotics.frc2018.config.Constants;
 import org.junit.Test;
 
 public class CalibrationCalculator {	

@@ -1,7 +1,6 @@
 package com.palyrobotics.frc2018.config;
 
-import com.palyrobotics.frc2018.robot.RobotTest;
-import com.palyrobotics.frc2018.config.Commands;
+import com.palyrobotics.frc2018.robot.MockRobot;
 import com.palyrobotics.frc2018.subsystems.Drive;
 import com.palyrobotics.frc2018.util.DriveSignal;
 import org.junit.Test;
@@ -17,7 +16,7 @@ import static org.junit.Assert.assertThat;
  * @author Nihar
  */
 public class CommandsTest {
-	private Commands mCommands = RobotTest.getCommands();
+	private Commands mCommands = MockRobot.getCommands();
 
 	/**
 	 * Tests for null pointer exceptions when initially setting values in Commands
@@ -35,7 +34,7 @@ public class CommandsTest {
 	 */
 	@Test
 	public void testCopyMethod() {
-		mCommands = RobotTest.getCommands();
+		mCommands = MockRobot.getCommands();
 		Commands copy = mCommands.copy();
 
 		// Test the

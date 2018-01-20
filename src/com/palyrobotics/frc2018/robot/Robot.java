@@ -10,6 +10,7 @@ import com.palyrobotics.frc2018.config.dashboard.DashboardManager;
 import com.palyrobotics.frc2018.config.driveteam.DriveTeam;
 import com.palyrobotics.frc2018.subsystems.Climber;
 import com.palyrobotics.frc2018.subsystems.Drive;
+import com.palyrobotics.frc2018.subsystems.Elevator;
 import com.palyrobotics.frc2018.util.logger.Logger;
 import com.palyrobotics.frc2018.util.trajectory.RigidTransform2d;
 import com.palyrobotics.frc2018.vision.VisionManager;
@@ -28,7 +29,6 @@ public class Robot extends TimedRobot {
 	// Single instance to be passed around
 	private static Commands commands = Commands.getInstance();
 	public static Commands getCommands() {return commands;}
-	
 
 	private OperatorInterface operatorInterface = OperatorInterface.getInstance();
 	private RoutineManager mRoutineManager = new RoutineManager();
@@ -36,6 +36,7 @@ public class Robot extends TimedRobot {
 	// Subsystem controllers
 	private Drive mDrive = Drive.getInstance();
 	private Climber mClimber = Climber.getInstance();
+	private Elevator mElevator = Elevator.getInstance();
 
 	// Hardware Updater
 	private HardwareUpdater mHardwareUpdater;
@@ -64,7 +65,7 @@ public class Robot extends TimedRobot {
 		}
 
 		try {
-			mHardwareUpdater = new HardwareUpdater(mDrive, mClimber);
+			mHardwareUpdater = new HardwareUpdater(mDrive, mClimber, mElevator);
 		} catch (Exception e) {
 			Logger.getInstance().logRobotThread(Level.SEVERE, e);
 			System.exit(1);
@@ -82,7 +83,6 @@ public class Robot extends TimedRobot {
 	public void autonomousInit() {
 		Logger.getInstance().start();
 		Logger.getInstance().logRobotThread(Level.INFO, "Start autoInit()");
-
 
 		DashboardManager.getInstance().toggleCANTable(true);
 		robotState.gamePeriod = RobotState.GamePeriod.AUTO;
@@ -142,7 +142,6 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void teleopPeriodic() {
-
 		commands = mRoutineManager.update(operatorInterface.updateCommands(commands));
 		mHardwareUpdater.updateState(robotState);
 		updateSubsystems();
@@ -169,7 +168,7 @@ public class Robot extends TimedRobot {
 		
 		// Stop controllers
 		mDrive.setNeutral();
-		mHardwareUpdater.configureDriveTalons();
+		mHardwareUpdater.configureTalons();
 		mHardwareUpdater.disableTalons();
 		DashboardManager.getInstance().toggleCANTable(false);
 
@@ -209,15 +208,18 @@ public class Robot extends TimedRobot {
 	private void startSubsystems() {
 		mDrive.start();
 		mClimber.start();
+		mElevator.start();
 	}
 
 	private void updateSubsystems() {
 		mDrive.update(commands, robotState);
 		mClimber.update(commands, robotState);
+		mElevator.update(commands, robotState);
 	}
 
 	private void stopSubsystems() {
 		mDrive.stop();
 		mClimber.stop();
+		mElevator.stop();
 	}
 }

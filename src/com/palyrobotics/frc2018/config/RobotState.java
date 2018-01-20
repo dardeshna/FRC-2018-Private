@@ -33,6 +33,12 @@ public class RobotState {
 
 	// Pose stores drivetrain sensor data
 	public Pose drivePose = new Pose(0,0,0, 0, 0,0,0,0);
+	
+	//Elevator sensor data
+	public double elevatorPosition = 0;
+	public double elevatorVelocity = 0;
+	public boolean elevatorTopHFX = false;
+	public boolean elevatorBottomHFX = false;
 
 	//Robot position
     public final int kObservationBufferSize = 100;
@@ -47,6 +53,7 @@ public class RobotState {
 	public JoystickInput leftStickInput = new JoystickInput();
 	public JoystickInput rightStickInput = new JoystickInput();
 	public JoystickInput operatorStickInput = new JoystickInput();
+	public JoystickInput elevatorStickInput = new JoystickInput();
     
     public synchronized void reset(double start_time, RigidTransform2d initial_field_to_vehicle) {
         field_to_vehicle_ = new InterpolatingTreeMap<>(kObservationBufferSize);

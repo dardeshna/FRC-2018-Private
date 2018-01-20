@@ -1,10 +1,8 @@
 package com.palyrobotics.frc2018.util;
 
-import com.palyrobotics.frc2018.robot.RobotTest;
 import com.palyrobotics.frc2018.config.Commands;
 import com.palyrobotics.frc2018.config.RobotState;
-import com.palyrobotics.frc2018.util.CheesyDriveHelper;
-import com.palyrobotics.frc2018.util.DriveSignal;
+import com.palyrobotics.frc2018.robot.MockRobot;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertFalse;
@@ -33,19 +31,19 @@ public class CheesyDriveHelperTest {
 
 		// Robot state is not used by CDH
 		RobotState testRobotState = new RobotState();
-		Commands testCommands = RobotTest.getCommands();
+		Commands testCommands = MockRobot.getCommands();
 
 		// Test that 0 input leads to 0 output (no negative inertia to start)
-		RobotTest.getRobotState().leftStickInput.y = 0;
-		RobotTest.getRobotState().rightStickInput.x = 0;
+        MockRobot.getRobotState().leftStickInput.setY(0);
+        MockRobot.getRobotState().leftStickInput.setX(0);
 		mTestCDH.cheesyDrive(testCommands, testRobotState);
 		DriveSignal output = mTestCDH.cheesyDrive(testCommands, testRobotState);
 		DriveSignal zeroOutput = DriveSignal.getNeutralSignal();
 		assertTrue("Zero input should have zero output", output.equals(zeroOutput));
 
 		// Test turning
-		RobotTest.getRobotState().leftStickInput.y = 0.5;
-		RobotTest.getRobotState().rightStickInput.x = -0.5;
+        MockRobot.getRobotState().leftStickInput.setY(0.5);
+        MockRobot.getRobotState().leftStickInput.setX(-0.5);
 	}
 
 	@Test

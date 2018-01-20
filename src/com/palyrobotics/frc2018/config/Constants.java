@@ -17,22 +17,24 @@ public class Constants {
 	public static final OperatorName kOperatorName = OperatorName.JACOB; 
 	
 	// Android app information
-	public static String kPackageName = "com.frc8.team8vision";
-	public static String kActivityName = "MainActivity";
-	public static String kVisionDataFileName = "data.json";
-	public static String kVisionVideoFileName = "video.json";
-	public static int kAndroidConnectionUpdateRate = 5;	// Update rate in milliseconds
-	public static int kAndroidDataSocketUpdateRate = 100;
-	public static int kAndroidVisionSocketUpdateRate = 10;
-	public static int kMJPEGVisionSocketUpdateRate = 20;
-	public static int kVisionDataPort = 8008;
-	public static int kVideoPort = 8009;
-	public static int kMJPEGServerSocketPort = 1180;
+	public static final String kPackageName = "com.frc8.team8vision";
+	public static final String kActivityName = "MainActivity";
+	public static final String kVisionDataFileName = "data.json";
+	public static final String kVisionVideoFileName = "video.json";
+	public static final int kAndroidConnectionUpdateRate = 5;	// Update rate in milliseconds
+	public static final int kAndroidDataSocketUpdateRate = 100;
+	public static final int kAndroidVisionSocketUpdateRate = 10;
+	public static final int kMJPEGVisionSocketUpdateRate = 20;
+	public static final int kVisionDataPort = 8008;
+	public static final int kVideoPort = 8009;
+	public static final int kMJPEGServerSocketPort = 1180;
 
 	/**
 	 * Cheesy Drive Constants
 	 * Set by DriverProfiles
 	 */
+	//Deadband for joysticks
+	public static double kDeadband;
 	//Threshold for quickturn sensitivity change
 	public static double kQuickTurnSensitivityThreshold;
 	//Sensitivities for how fast non-quickturn turning is
@@ -51,33 +53,52 @@ public class Constants {
 	public static double kAlpha;
 	public static double kCyclesUntilStop;
 
+	/**
+	 * Elevator Constants
+	 */
+	public static final double kTopBottomEncoderDifference = 1000;
+	public static final double kNominalUpwardsOutput = 0.1;
+
 	/*
 	 * Control loop constants for both robots
 	 */
-	public static double kTurnInPlacePower = 0.17; // for bang bang
-	public static double kDriveMaxClosedLoopOutput = 8.0;
-	// Unit Conversions for CANTalons
-	public static double kDriveTicksPerInch = 360 / (3.95 * Math.PI);
-	public static double kDriveInchesPerDegree = 0.99*21.5/90;
-	public static double kDriveSpeedUnitConversion = 360 / (3.95 * Math.PI * 10);
+	public static final double kTurnInPlacePower = 0.17; // for bang bang
+	public static final double kCalibratePower = -0.4;
+	public static final double kDriveMaxClosedLoopOutput = 8.0;
+	public static final double kElevatorMaxClosedLoopOutput = 0.666;
 
+	/**
+	 * Unit conversions for Talons
+	 */
+	public static final double kDriveTicksPerInch = 360 / (3.95 * Math.PI);
+	public static final double kDriveInchesPerDegree = 0.99*21.5/90;
+	public static final double kDriveSpeedUnitConversion = 360 / (3.95 * Math.PI * 10);
+
+	/**
+	 * Physical robot Constants
+	 */
 	public static final double kRobotWidthInches = 40.0;
 	public static final double kRobotLengthInches = 31.0;
 
-	// Tolerances
-	public static double kAcceptableDrivePositionError = 15;
-	public static double kAcceptableDriveVelocityError = 5;
-	public static double kAcceptableShortDrivePositionError = 1;
-	public static double kAcceptableShortDriveVelocityError = 3;
-	public static double kAcceptableTurnAngleError = 1; // 0.5
-	public static double kAcceptableGyroZeroError = 3;
-	public static double kAcceptableEncoderZeroError = 10;
+	/**
+	 * Tolerances
+	 */
+	public static final double kAcceptableDrivePositionError = 15;
+	public static final double kAcceptableDriveVelocityError = 5;
+	public static final double kAcceptableShortDrivePositionError = 1;
+	public static final double kAcceptableShortDriveVelocityError = 3;
+	public static final double kAcceptableTurnAngleError = 1; // 0.5
+	public static final double kAcceptableGyroZeroError = 3;
+	public static final double kAcceptableEncoderZeroError = 10;
+
+	public static final double kElevatorAcceptablePositionError = 0.01;
+	public static final double kElevatorAcceptableVelocityError = 0.01;
 
 
 	/* !!! End of editable Constants! !!!
 	 **********************************************************************************
 	 */
-	public static int kEndEditableArea = 0;
+	public static final int kEndEditableArea = 0;
 
 	/*
 	 * ************************************
@@ -85,58 +106,62 @@ public class Constants {
 	 * ************************************
 	 */
 	// PDP
-	public static int kForsetiPDPDeviceID = 0;
+	public static final int kForsetiPDPDeviceID = 0;
 	
 	// DRIVETRAIN
 	// PDP slots for drivetrain 0, 1, 2, 3, 12, 13
-	public static int kForsetiLeftDriveMasterDeviceID  = 1;
-	public static int kForsetiLeftDriveSlaveDeviceID = 2;
-	public static int kForsetiLeftDriveOtherSlaveDeviceID = 3;
-	public static int kForsetiLeftDriveFrontMotorPDP = 0;
-	public static int kForsetiLeftDriveBackMotorPDP = 0;
-	public static int kForsetiLeftDriveThirdMotorPDP = 0;
-	public static int kForsetiRightDriveMasterDeviceID = 6;
-	public static int kForsetiRightDriveSlaveDeviceID = 5;
-	public static int kForsetiRightDriveOtherSlaveDeviceID = 4;
-	public static int kForsetiRightDriveFrontMotorPDP = 0;
-	public static int kForsetiRightDriveBackMotorPDP = 0;
-	public static int kForsetiRightDriveThirdMotorPDP = 0;
+	public static final int kForsetiLeftDriveMasterDeviceID  = 1;
+	public static final int kForsetiLeftDriveSlaveDeviceID = 2;
+	public static final int kForsetiLeftDriveOtherSlaveDeviceID = 3;
+	public static final int kForsetiLeftDriveFrontMotorPDP = 0;
+	public static final int kForsetiLeftDriveBackMotorPDP = 0;
+	public static final int kForsetiLeftDriveThirdMotorPDP = 0;
+	public static final int kForsetiRightDriveMasterDeviceID = 6;
+	public static final int kForsetiRightDriveSlaveDeviceID = 5;
+	public static final int kForsetiRightDriveOtherSlaveDeviceID = 4;
+	public static final int kForsetiRightDriveFrontMotorPDP = 0;
+	public static final int kForsetiRightDriveBackMotorPDP = 0;
+	public static final int kForsetiRightDriveThirdMotorPDP = 0;
 
 	// CLIMBER
+	public static final int kForsetiClimberMotorLeftDeviceID = 1;
+	public static final int kForsetiClimberMotorRightDeviceID = 2;
 	
-	public static int kForsetiClimberMotorLeftDeviceID = 1;
-	public static int kForsetiClimberMotorRightDeviceID = 2;
-	
-	public static int kForsetiClimberLeftArmForward = 3;
-	public static int kForsetiClimberLeftArmBack = 3;
+	public static final int kForsetiClimberLeftArmForward = 3;
+	public static final int kForsetiClimberLeftArmBack = 3;
 
-	public static int kForsetiClimberRightArmForward = 3;
-	public static int kForsetiClimberRightArmBack = 3;
+	public static final int kForsetiClimberRightArmForward = 3;
+	public static final int kForsetiClimberRightArmBack = 3;
 
-	public static int kForsetiClimberLeftBrakeSolenoid = 4;
-	public static int kForsetiClimberRightBrakeSolenoid = 5;
+	public static final int kForsetiClimberLeftBrakeSolenoid = 4;
+	public static final int kForsetiClimberRightBrakeSolenoid = 5;
 
-	public static final double kClimberStickDeadband = 0.02;
+	// ELEVATOR
+	// PDP slots for elevator TBD (currently 7, 8, 9, 10)
+	public static final int kForsetiElevatorMasterTalonID = 7;
+	public static final int kForsetiElevatorSlaveTalonID = 9;
+	public static final int kForsetiBottomElevatorHFXID = 8;
+	public static final int kForsetiTopElevatorHFXID = 10;
 
 
 	// !!! Physical constants
 
 
 	// !!! Loop rate of normal Looper
-	public static double kNormalLoopsDt = 0.02;
+	public static final double kNormalLoopsDt = 0.02;
 
 	// Adaptive Pure Pursuit Controller
 
-	public static double kDriveWheelDiameterInches = 7.3;
-	public static double kTrackLengthInches = 8.265;
-	public static double kTrackWidthInches = 23.8;
-	public static double kTrackEffectiveDiameter = (kTrackWidthInches * kTrackWidthInches
+	public static final double kDriveWheelDiameterInches = 7.3;
+	public static final double kTrackLengthInches = 8.265;
+	public static final double kTrackWidthInches = 23.8;
+	public static final double kTrackEffectiveDiameter = (kTrackWidthInches * kTrackWidthInches
 			+ kTrackLengthInches * kTrackLengthInches) / kTrackWidthInches;
-	public static double kTrackScrubFactor = 0.9;
-	public static double kPathFollowingLookahead = 20.0;
-	public static double kPathFollowingMaxAccel = 5.0 * kDriveTicksPerInch;
-	public static double kPathFollowingMaxVel = 10.0 * kDriveTicksPerInch;
-	public static double kPathFollowingTolerance = 0.20;
+	public static final double kTrackScrubFactor = 0.9;
+	public static final double kPathFollowingLookahead = 20.0;
+	public static final double kPathFollowingMaxAccel = 5.0 * kDriveTicksPerInch;
+	public static final double kPathFollowingMaxVel = 10.0 * kDriveTicksPerInch;
+	public static final double kPathFollowingTolerance = 0.20;
 
 	@Override
 	public String toString() {

@@ -11,6 +11,8 @@ public class DriverProfiles {
 	public static void configConstants() {
 		switch(Constants.kDriverName) {
 		case ERIC:
+			Constants.kDeadband = 0.02;
+
 			Constants.kDriveSensitivity = .70;
 			
 			Constants.kQuickTurnSensitivity = 0.8;

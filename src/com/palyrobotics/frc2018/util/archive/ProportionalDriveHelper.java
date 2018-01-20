@@ -7,8 +7,8 @@ public class ProportionalDriveHelper {
 	private DriveSignal mSignal = DriveSignal.getNeutralSignal();
 
 	public DriveSignal pDrive(Commands commands) {
-		double throttle = -Robot.getRobotState().leftStickInput.y;
-		double wheel = Robot.getRobotState().rightStickInput.x;
+		double throttle = -Robot.getRobotState().leftStickInput.getY();
+		double wheel = Robot.getRobotState().rightStickInput.getX();
 
 		double rightPwm = throttle - wheel;
 		double leftPwm = throttle + wheel;

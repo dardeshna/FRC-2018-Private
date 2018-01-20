@@ -1,9 +1,8 @@
 package com.palyrobotics.frc2018.subsystems;
 
-import com.palyrobotics.frc2018.robot.RobotTest;
 import com.palyrobotics.frc2018.config.Commands;
 import com.palyrobotics.frc2018.config.RobotState;
-import com.palyrobotics.frc2018.subsystems.Drive;
+import com.palyrobotics.frc2018.robot.MockRobot;
 import org.junit.Test;
 
 /**
@@ -16,7 +15,7 @@ public class SubsystemUpdateTest {
 	
 	@Test
 	public void test() {
-		Commands c = RobotTest.getCommands();
+		Commands c = MockRobot.getCommands();
 		RobotState r = new RobotState();
 		
 		Drive.getInstance().update(c, r);

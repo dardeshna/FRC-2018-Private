@@ -4,11 +4,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.palyrobotics.frc2018.config.Constants;
-
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
-import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.*;
 
 /**
  * Represents all hardware components of the robot.
@@ -57,7 +53,7 @@ public class HardwareAdapter {
 		}
 	}
 	
-	/* 
+	/*
 	 * Climber - 2 WPI_TalonSRX's, 2 DoubleSolenoids, 2 Solenoids
 	 */
 	public static class ClimberHardware {
@@ -87,17 +83,39 @@ public class HardwareAdapter {
 		}
 	}
 
+	// ELEVATOR - 2 WPI_TalonSRX's, 2 HFX (DigitalInputs)
+	public static class ElevatorHardware {
+		private static ElevatorHardware instance = new ElevatorHardware();
+		private static ElevatorHardware getInstance() {
+			return instance;
+		}
+
+		public final WPI_TalonSRX elevatorMasterTalon;
+		public final WPI_TalonSRX elevatorSlaveTalon;
+
+		public final DigitalInput bottomHFX;
+		public final DigitalInput topHFX;
+
+		private ElevatorHardware() {
+			elevatorMasterTalon = new WPI_TalonSRX(Constants.kForsetiElevatorMasterTalonID);
+			elevatorSlaveTalon = new WPI_TalonSRX(Constants.kForsetiElevatorSlaveTalonID);
+
+			topHFX = new DigitalInput(Constants.kForsetiTopElevatorHFXID);
+			bottomHFX = new DigitalInput(Constants.kForsetiBottomElevatorHFXID);
+		}
+	}
+
 	// Joysticks for operator interface
 	protected static class Joysticks {
 		private static Joysticks instance = new Joysticks();
-
-		public static Joysticks getInstance() {
+		private static Joysticks getInstance() {
 			return instance;
 		}
 
 		public final Joystick driveStick = new Joystick(0);
 		public final Joystick turnStick = new Joystick(1);
 		public final Joystick operatorStick = new Joystick(2);
+		public final Joystick elevatorStick = new Joystick(3);
 
 		private Joysticks() {
 		}
@@ -106,6 +124,10 @@ public class HardwareAdapter {
 	// Wrappers to access hardware groups
 	public DrivetrainHardware getDrivetrain() {
 		return DrivetrainHardware.getInstance();
+	}
+	
+	public ElevatorHardware getElevator() {
+		return ElevatorHardware.getInstance();
 	}
 
 	public ClimberHardware getClimber() {

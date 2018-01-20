@@ -1,9 +1,6 @@
 package com.palyrobotics.frc2018.robot;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
+import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.ctre.phoenix.sensors.PigeonIMU;
@@ -11,13 +8,13 @@ import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.config.RobotState;
 import com.palyrobotics.frc2018.subsystems.Climber;
 import com.palyrobotics.frc2018.subsystems.Drive;
+import com.palyrobotics.frc2018.subsystems.Elevator;
 import com.palyrobotics.frc2018.util.ClimberSignal;
 import com.palyrobotics.frc2018.util.TalonSRXOutput;
 import com.palyrobotics.frc2018.util.logger.Logger;
 import com.palyrobotics.frc2018.util.trajectory.Kinematics;
 import com.palyrobotics.frc2018.util.trajectory.RigidTransform2d;
 import com.palyrobotics.frc2018.util.trajectory.Rotation2d;
-
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Timer;
 
@@ -32,13 +29,15 @@ class HardwareUpdater {
 	// Subsystem references
 	private Drive mDrive;
 	private Climber mClimber;
+	private Elevator mElevator;
 
 	/**
-	 * Hardware Updater for 2018_Unnamed
+	 * Hardware Updater for Forseti
 	 */
-	HardwareUpdater(Drive drive, Climber climber) throws Exception {
+	HardwareUpdater(Drive drive, Climber climber, Elevator elevator) throws Exception {
 		this.mDrive = drive;
 		this.mClimber = climber;
+		this.mElevator = elevator;
 	}
 
 	/**
@@ -66,11 +65,16 @@ class HardwareUpdater {
 		//Climber disables
 		HardwareAdapter.getInstance().getClimber().leftVictor.set(ControlMode.Disabled, 0);
 		HardwareAdapter.getInstance().getClimber().rightVictor.set(ControlMode.Disabled, 0);
+
+		//Elevator disables
+		HardwareAdapter.getInstance().getElevator().elevatorMasterTalon.set(ControlMode.Disabled, 0);
+		HardwareAdapter.getInstance().getElevator().elevatorSlaveTalon.set(ControlMode.Disabled, 0);
 	}
 
 	void configureTalons() {
 		configureDriveTalons();
 		configureClimberTalons();
+		configureElevatorTalons();
 	}
 
 	void configureDriveTalons() {
@@ -167,6 +171,42 @@ class HardwareUpdater {
 			rightSlave2Talon.set(ControlMode.Follower, rightMasterTalon.getDeviceID());
 		}
 	}
+	
+	void configureElevatorTalons() {
+		WPI_TalonSRX masterTalon = HardwareAdapter.getInstance().getElevator().elevatorMasterTalon;
+		WPI_TalonSRX slaveTalon = HardwareAdapter.getInstance().getElevator().elevatorSlaveTalon;
+		slaveTalon.set(ControlMode.Follower, masterTalon.getDeviceID());
+
+		masterTalon.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 100);
+		masterTalon.configReverseLimitSwitchSource(RemoteLimitSwitchSource.RemoteTalonSRX, LimitSwitchNormal.NormallyOpen, Constants.kForsetiElevatorSlaveTalonID, 100);
+
+		masterTalon.enableVoltageCompensation(true);
+		slaveTalon.enableVoltageCompensation(true);
+
+		masterTalon.configVoltageCompSaturation(14, 0);
+		slaveTalon.configVoltageCompSaturation(14, 0);
+
+		//TODO: which way is up and how does it work w/ inverted
+		masterTalon.configNominalOutputForward(Constants.kNominalUpwardsOutput, 0);
+		masterTalon.configNominalOutputReverse(0, 0);
+		slaveTalon.configNominalOutputForward(Constants.kNominalUpwardsOutput, 0);
+		slaveTalon.configNominalOutputReverse(0, 0);
+
+		masterTalon.configPeakOutputForward(Constants.kElevatorMaxClosedLoopOutput, 0);
+		masterTalon.configPeakOutputReverse(-Constants.kElevatorMaxClosedLoopOutput, 0);
+		slaveTalon.configPeakOutputForward(Constants.kElevatorMaxClosedLoopOutput, 0);
+		slaveTalon.configPeakOutputReverse(-Constants.kElevatorMaxClosedLoopOutput, 0);
+
+		masterTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
+		//TODO: in phase or not?
+		masterTalon.setSensorPhase(true);
+
+		// Zero encoders
+		masterTalon.setSelectedSensorPosition(0, 0, 0);
+
+		// Reverse right side
+		slaveTalon.setInverted(true);
+	}
 
 	void configureClimberTalons() {
 		WPI_VictorSPX climberLeft = HardwareAdapter.getInstance().getClimber().leftVictor;
@@ -194,11 +234,12 @@ class HardwareUpdater {
 		robotState.leftControlMode = leftMasterTalon.getControlMode();
 		robotState.rightControlMode = rightMasterTalon.getControlMode();
 
-		robotState.leftStickInput.update(HardwareAdapter.Joysticks.getInstance().driveStick); 
-		robotState.rightStickInput.update(HardwareAdapter.Joysticks.getInstance().turnStick);
-		robotState.operatorStickInput.update(HardwareAdapter.Joysticks.getInstance().operatorStick);
+		robotState.leftStickInput.update(HardwareAdapter.getInstance().getJoysticks().driveStick);
+		robotState.rightStickInput.update(HardwareAdapter.getInstance().getJoysticks().turnStick);
+		robotState.operatorStickInput.update(HardwareAdapter.getInstance().getJoysticks().operatorStick);
+		robotState.elevatorStickInput.update(HardwareAdapter.getInstance().getJoysticks().elevatorStick);
 		
-        switch (robotState.leftControlMode) {
+        switch(robotState.leftControlMode) {
             //Fall through
             case Position:
             case Velocity:
@@ -218,7 +259,7 @@ class HardwareUpdater {
                 break;
         }
 
-        switch (robotState.rightControlMode) {
+        switch(robotState.rightControlMode) {
             //Fall through
             case Position:
             case Velocity:
@@ -291,6 +332,12 @@ class HardwareUpdater {
         );
 
         robotState.addObservations(time, odometry, velocity);
+        
+        // Update elevator sensors
+		robotState.elevatorPosition = HardwareAdapter.getInstance().getElevator().elevatorMasterTalon.getSelectedSensorPosition(0);
+		robotState.elevatorVelocity = HardwareAdapter.getInstance().getElevator().elevatorMasterTalon.getSelectedSensorVelocity(0);
+        robotState.elevatorBottomHFX = HardwareAdapter.getInstance().getElevator().bottomHFX.get();
+        robotState.elevatorTopHFX = HardwareAdapter.getInstance().getElevator().topHFX.get();
 	}
 
 	/**
@@ -299,6 +346,7 @@ class HardwareUpdater {
 	void updateHardware() {
 		updateDrivetrain();
 		updateClimber();
+		updateElevator();
 	}
 
 	/**
@@ -308,6 +356,13 @@ class HardwareUpdater {
 	private void updateDrivetrain() {
 		updateTalonSRX(HardwareAdapter.getInstance().getDrivetrain().leftMasterTalon, mDrive.getDriveSignal().leftMotor);
 		updateTalonSRX(HardwareAdapter.getInstance().getDrivetrain().rightMasterTalon, mDrive.getDriveSignal().rightMotor);
+	}
+	
+	/**
+	 * Updates the elevator
+	 */
+	private void updateElevator() {
+		updateTalonSRX(HardwareAdapter.getInstance().getElevator().elevatorMasterTalon, mElevator.getOutput());
 	}
 
 	private void updateClimber() {
