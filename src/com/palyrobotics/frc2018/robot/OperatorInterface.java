@@ -2,9 +2,8 @@ package com.palyrobotics.frc2018.robot;
 
 import com.palyrobotics.frc2018.behavior.Routine;
 import com.palyrobotics.frc2018.config.Commands;
-import com.palyrobotics.frc2018.config.Commands.JoystickInput;
 import com.palyrobotics.frc2018.subsystems.Drive;
-import edu.wpi.first.wpilibj.Joystick;
+import com.palyrobotics.frc2018.util.JoystickInput;
 
 /**
  * Used to produce Commands {@link Commands} from human input
@@ -21,10 +20,8 @@ public class OperatorInterface {
 
 	private OperatorInterface() {}
 
-	private HardwareAdapter.Joysticks mJoysticks = HardwareAdapter.getInstance().getJoysticks();
-	private Joystick mDriveStick = mJoysticks.driveStick;
-	private Joystick mTurnStick = mJoysticks.turnStick;
-
+	private JoystickInput mDriveStick = Robot.getRobotState().leftStickInput;
+	private JoystickInput mTurnStick = Robot.getRobotState().rightStickInput;
 
 	/**
 	 * Helper method to only add routines that aren't already in wantedRoutines
@@ -52,9 +49,6 @@ public class OperatorInterface {
 				&& prevCommands.wantedDriveState != Drive.DriveState.ON_BOARD_CONTROLLER) {
 			newCommands.wantedDriveState = Drive.DriveState.CHEZY;
 		}
-		newCommands.leftStickInput = new JoystickInput(mDriveStick.getX(), mDriveStick.getY(), mDriveStick.getTrigger());
-		newCommands.rightStickInput = new JoystickInput(mTurnStick.getX(), mTurnStick.getY(), mTurnStick.getTrigger());
-
 		return newCommands;
 	}
 }

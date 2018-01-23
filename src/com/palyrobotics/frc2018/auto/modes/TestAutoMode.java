@@ -9,7 +9,7 @@ import com.palyrobotics.frc2018.behavior.routines.drive.TalonSRXRoutine;
 import com.palyrobotics.frc2018.behavior.routines.drive.TimedDriveRoutine;
 import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.config.Gains;
-import com.palyrobotics.frc2018.util.archive.DriveSignal;
+import com.palyrobotics.frc2018.util.DriveSignal;
 import com.palyrobotics.frc2018.util.logger.Logger;
 
 import java.util.ArrayList;

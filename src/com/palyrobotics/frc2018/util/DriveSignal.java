@@ -1,6 +1,4 @@
-package com.palyrobotics.frc2018.util.archive;
-
-import com.palyrobotics.frc2018.util.TalonSRXOutput;
+package com.palyrobotics.frc2018.util;
 
 public class DriveSignal {
 	public TalonSRXOutput leftMotor;

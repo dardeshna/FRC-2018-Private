@@ -3,7 +3,7 @@ package com.palyrobotics.frc2017.config;
 import com.palyrobotics.frc2017.robot.RobotTest;
 import com.palyrobotics.frc2018.config.Commands;
 import com.palyrobotics.frc2018.subsystems.Drive;
-import com.palyrobotics.frc2018.util.archive.DriveSignal;
+import com.palyrobotics.frc2018.util.DriveSignal;
 import org.junit.Test;
 
 import java.util.Optional;
@@ -27,8 +27,6 @@ public class CommandsTest {
 		// Check for variable construction in Commands if a line throws an Exception
 		mCommands.wantedDriveState.toString();
 		mCommands.robotSetpoints.toString();
-		mCommands.leftStickInput.y = 0;
-		mCommands.rightStickInput.y = 0;
 		System.out.println("No null pointer exceptions!");
 	}
 

@@ -1,4 +1,4 @@
-package com.palyrobotics.frc2018.util.archive;
+package com.palyrobotics.frc2018.util;
 
 import com.palyrobotics.frc2018.config.Commands;
 import com.palyrobotics.frc2018.config.Constants;
@@ -16,14 +16,14 @@ public class CheesyDriveHelper {
 	private final double kThrottleStickDeadband = 0.02;
 
 	public DriveSignal cheesyDrive(Commands commands, RobotState robotState) {
-		double throttle = -commands.leftStickInput.y;
-		double wheel = commands.rightStickInput.x;
+		double throttle = -robotState.leftStickInput.y;
+		double wheel = robotState.rightStickInput.x;
 
 		//Quickturn if right trigger is pressed
-		boolean isQuickTurn = commands.rightStickInput.triggerPressed;
+		boolean isQuickTurn = robotState.rightStickInput.triggerPressed;
 
 		//Braking if left trigger is pressed
-		boolean isBraking = commands.leftStickInput.triggerPressed;
+		boolean isBraking = robotState.leftStickInput.triggerPressed;
 
 		double wheelNonLinearity;
 
@@ -113,7 +113,7 @@ public class CheesyDriveHelper {
 			
 			overPower = 1.0;
 			
-			if(Math.abs(commands.rightStickInput.x) < Constants.kQuickTurnSensitivityThreshold) {
+			if(Math.abs(robotState.rightStickInput.x) < Constants.kQuickTurnSensitivityThreshold) {
 				sensitivity = Constants.kPreciseQuickTurnSensitivity;
 			} else {
 				sensitivity = Constants.kQuickTurnSensitivity;

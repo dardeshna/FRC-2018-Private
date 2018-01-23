@@ -3,14 +3,6 @@ package com.palyrobotics.frc2017.suites;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-import com.palyrobotics.frc2017.util.*;
-import com.palyrobotics.frc2017.util.logger.*;
-import com.palyrobotics.frc2017.subsystems.*;
-import com.palyrobotics.frc2017.config.*;
-import com.palyrobotics.frc2017.auto.*;
-import com.palyrobotics.frc2017.behavior.*;
-import com.palyrobotics.frc2017.robot.*;
-
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
 })

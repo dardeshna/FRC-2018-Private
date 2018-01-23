@@ -94,7 +94,7 @@ public class Robot extends TimedRobot {
 
 		}
 
-		mHardwareUpdater.updateSensors(robotState);
+		mHardwareUpdater.updateState(robotState);
 		mRoutineManager.reset(commands);
 		robotState.reset(0, new RigidTransform2d());
 
@@ -113,7 +113,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic() {
 		commands = mRoutineManager.update(commands);
-		mHardwareUpdater.updateSensors(robotState);
+		mHardwareUpdater.updateState(robotState);
 		updateSubsystems();
 		mHardwareUpdater.updateHardware();
 
@@ -127,7 +127,7 @@ public class Robot extends TimedRobot {
 
 		robotState.gamePeriod = RobotState.GamePeriod.TELEOP;
 		mHardwareUpdater.configureTalons();
-		mHardwareUpdater.updateSensors(robotState);
+		mHardwareUpdater.updateState(robotState);
 		mHardwareUpdater.updateHardware();
 		mRoutineManager.reset(commands);
 		DashboardManager.getInstance().toggleCANTable(true);
@@ -142,7 +142,7 @@ public class Robot extends TimedRobot {
 	public void teleopPeriodic() {
 
 		commands = mRoutineManager.update(operatorInterface.updateCommands(commands));
-		mHardwareUpdater.updateSensors(robotState);
+		mHardwareUpdater.updateState(robotState);
 		updateSubsystems();
 
 		//Update the hardware

@@ -3,8 +3,8 @@ package com.palyrobotics.frc2017.util;
 import com.palyrobotics.frc2017.robot.RobotTest;
 import com.palyrobotics.frc2018.config.Commands;
 import com.palyrobotics.frc2018.config.RobotState;
-import com.palyrobotics.frc2018.util.archive.CheesyDriveHelper;
-import com.palyrobotics.frc2018.util.archive.DriveSignal;
+import com.palyrobotics.frc2018.util.CheesyDriveHelper;
+import com.palyrobotics.frc2018.util.DriveSignal;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertFalse;
@@ -36,16 +36,16 @@ public class CheesyDriveHelperTest {
 		Commands testCommands = RobotTest.getCommands();
 
 		// Test that 0 input leads to 0 output (no negative inertia to start)
-		testCommands.leftStickInput.y = 0;
-		testCommands.rightStickInput.x = 0;
+		RobotTest.getRobotState().leftStickInput.y = 0;
+		RobotTest.getRobotState().rightStickInput.x = 0;
 		mTestCDH.cheesyDrive(testCommands, testRobotState);
 		DriveSignal output = mTestCDH.cheesyDrive(testCommands, testRobotState);
 		DriveSignal zeroOutput = DriveSignal.getNeutralSignal();
 		assertTrue("Zero input should have zero output", output.equals(zeroOutput));
 
 		// Test turning
-		testCommands.leftStickInput.y = 0.5;
-		testCommands.rightStickInput.x = -0.5;
+		RobotTest.getRobotState().leftStickInput.y = 0.5;
+		RobotTest.getRobotState().rightStickInput.x = -0.5;
 	}
 
 	@Test

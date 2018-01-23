@@ -1,12 +1,14 @@
 package com.palyrobotics.frc2018.util.archive;
 import com.palyrobotics.frc2018.config.Commands;
+import com.palyrobotics.frc2018.robot.Robot;
+import com.palyrobotics.frc2018.util.DriveSignal;
 
 public class ProportionalDriveHelper {
 	private DriveSignal mSignal = DriveSignal.getNeutralSignal();
 
 	public DriveSignal pDrive(Commands commands) {
-		double throttle = -commands.leftStickInput.y;
-		double wheel = commands.rightStickInput.x;
+		double throttle = -Robot.getRobotState().leftStickInput.y;
+		double wheel = Robot.getRobotState().rightStickInput.x;
 
 		double rightPwm = throttle - wheel;
 		double leftPwm = throttle + wheel;

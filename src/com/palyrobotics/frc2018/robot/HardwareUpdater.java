@@ -160,7 +160,7 @@ class HardwareUpdater {
 	/**
 	 * Updates all the sensor data taken from the hardware
 	 */
-	void updateSensors(RobotState robotState) {
+	void updateState(RobotState robotState) {
 
 		WPI_TalonSRX leftMasterTalon = HardwareAdapter.DrivetrainHardware.getInstance().leftMasterTalon;
 		WPI_TalonSRX rightMasterTalon = HardwareAdapter.DrivetrainHardware.getInstance().rightMasterTalon;
@@ -168,6 +168,9 @@ class HardwareUpdater {
 		robotState.leftControlMode = leftMasterTalon.getControlMode();
 		robotState.rightControlMode = rightMasterTalon.getControlMode();
 
+		robotState.leftStickInput.update(HardwareAdapter.Joysticks.getInstance().driveStick); 
+		robotState.rightStickInput.update(HardwareAdapter.Joysticks.getInstance().turnStick); 
+		
         switch (robotState.leftControlMode) {
             //Fall through
             case Position:

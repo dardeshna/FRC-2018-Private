@@ -5,9 +5,9 @@ import com.palyrobotics.frc2018.config.Gains;
 import com.palyrobotics.frc2018.config.RobotState;
 import com.palyrobotics.frc2018.robot.Robot;
 import com.palyrobotics.frc2018.subsystems.Drive.DriveController;
+import com.palyrobotics.frc2018.util.DriveSignal;
 import com.palyrobotics.frc2018.util.Pose;
 import com.palyrobotics.frc2018.util.TalonSRXOutput;
-import com.palyrobotics.frc2018.util.archive.DriveSignal;
 import com.palyrobotics.frc2018.util.logger.Logger;
 
 import java.util.logging.Level;

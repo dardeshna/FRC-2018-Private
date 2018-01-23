@@ -8,7 +8,7 @@ import com.palyrobotics.frc2018.robot.Robot;
 import com.palyrobotics.frc2018.subsystems.Drive;
 import com.palyrobotics.frc2018.subsystems.Subsystem;
 import com.palyrobotics.frc2018.subsystems.controllers.TalonSRXDriveController;
-import com.palyrobotics.frc2018.util.archive.DriveSignal;
+import com.palyrobotics.frc2018.util.DriveSignal;
 import com.palyrobotics.frc2018.util.logger.Logger;
 
 import java.util.logging.Level;

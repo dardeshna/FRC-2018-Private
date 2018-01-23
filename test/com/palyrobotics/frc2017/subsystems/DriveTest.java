@@ -5,7 +5,7 @@ import com.palyrobotics.frc2018.config.Commands;
 import com.palyrobotics.frc2018.config.RobotState;
 import com.palyrobotics.frc2018.robot.Robot;
 import com.palyrobotics.frc2018.subsystems.Drive;
-import com.palyrobotics.frc2018.util.archive.DriveSignal;
+import com.palyrobotics.frc2018.util.DriveSignal;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;

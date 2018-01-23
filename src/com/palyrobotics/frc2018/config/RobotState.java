@@ -1,6 +1,7 @@
 package com.palyrobotics.frc2018.config;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.palyrobotics.frc2018.util.JoystickInput;
 import com.palyrobotics.frc2018.util.Pose;
 import com.palyrobotics.frc2018.util.trajectory.*;
 
@@ -16,6 +17,7 @@ public class RobotState {
 	public enum GamePeriod {
 		AUTO, TELEOP, DISABLED
 	}
+
 	// Updated by autoInit, teleopInit, disabledInit
 	public GamePeriod gamePeriod = GamePeriod.DISABLED;
 
@@ -33,13 +35,17 @@ public class RobotState {
 	public Pose drivePose = new Pose(0,0,0, 0, 0,0,0,0);
 
 	//Robot position
-    public static final int kObservationBufferSize = 100;
-    public static final double kMaxTargetAge = 0.4;
+    public final int kObservationBufferSize = 100;
+    public final double kMaxTargetAge = 0.4;
     
     // FPGATimestamp -> RigidTransform2d or Rotation2d
     protected RigidTransform2d.Delta vehicle_velocity_;
     protected double differential_height_;
     protected InterpolatingTreeMap<InterpolatingDouble, RigidTransform2d> field_to_vehicle_;
+	
+	//Joystick input
+	public JoystickInput leftStickInput = new JoystickInput();
+	public JoystickInput rightStickInput = new JoystickInput();
     
     public synchronized void reset(double start_time, RigidTransform2d initial_field_to_vehicle) {
         field_to_vehicle_ = new InterpolatingTreeMap<>(kObservationBufferSize);
