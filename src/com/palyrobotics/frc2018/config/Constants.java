@@ -4,15 +4,18 @@ public class Constants {
 	public enum RobotName {
 		UNNAMED
 	}
-	
 	public enum DriverName {
 		ERIC
+	}
+	public enum OperatorName{
+		JACOB
 	}
 	
 	// Initialization constants
 	public static final RobotName kRobotName = RobotName.UNNAMED;
 	public static final DriverName kDriverName = DriverName.ERIC;
-
+	public static final OperatorName kOperatorName = OperatorName.JACOB; 
+	
 	// Android app information
 	public static String kPackageName = "com.frc8.team8vision";
 	public static String kActivityName = "MainActivity";
