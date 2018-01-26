@@ -2,7 +2,7 @@ package com.palyrobotics.frc2018.config;
 
 public class Constants {
 	public enum RobotName {
-		UNNAMED
+		FORSETI
 	}
 	public enum DriverName {
 		ERIC
@@ -12,7 +12,7 @@ public class Constants {
 	}
 	
 	// Initialization constants
-	public static final RobotName kRobotName = RobotName.UNNAMED;
+	public static final RobotName kRobotName = RobotName.FORSETI;
 	public static final DriverName kDriverName = DriverName.ERIC;
 	public static final OperatorName kOperatorName = OperatorName.JACOB; 
 	
@@ -61,7 +61,6 @@ public class Constants {
 	public static double kDriveInchesPerDegree = 0.99*21.5/90;
 	public static double kDriveSpeedUnitConversion = 360 / (3.95 * Math.PI * 10);
 
-
 	public static final double kRobotWidthInches = 40.0;
 	public static final double kRobotLengthInches = 31.0;
 
@@ -82,40 +81,40 @@ public class Constants {
 
 	/*
 	 * ************************************
-	 *  2018_Unnamed ELECTRONIC CONSTANTS
+	 *  Forseti ELECTRONIC CONSTANTS
 	 * ************************************
 	 */
 	// PDP
-	public static int k2018_UnnamedPDPDeviceID = 0;
+	public static int kForsetiPDPDeviceID = 0;
 	
 	// DRIVETRAIN
 	// PDP slots for drivetrain 0, 1, 2, 3, 12, 13
-	public static int k2018_UnnamedLeftDriveMasterDeviceID  = 1;
-	public static int k2018_UnnamedLeftDriveSlaveDeviceID = 2;
-	public static int k2018_UnnamedLeftDriveOtherSlaveDeviceID = 3;
-	public static int k2018_UnnamedLeftDriveFrontMotorPDP = 0;
-	public static int k2018_UnnamedLeftDriveBackMotorPDP = 0;
-	public static int k2018_UnnamedLeftDriveThirdMotorPDP = 0;
-	public static int k2018_UnnamedRightDriveMasterDeviceID = 6;
-	public static int k2018_UnnamedRightDriveSlaveDeviceID = 5;
-	public static int k2018_UnnamedRightDriveOtherSlaveDeviceID = 4;
-	public static int k2018_UnnamedRightDriveFrontMotorPDP = 0;
-	public static int k2018_UnnamedRightDriveBackMotorPDP = 0;
-	public static int k2018_UnnamedRightDriveThirdMotorPDP = 0;
+	public static int kForsetiLeftDriveMasterDeviceID  = 1;
+	public static int kForsetiLeftDriveSlaveDeviceID = 2;
+	public static int kForsetiLeftDriveOtherSlaveDeviceID = 3;
+	public static int kForsetiLeftDriveFrontMotorPDP = 0;
+	public static int kForsetiLeftDriveBackMotorPDP = 0;
+	public static int kForsetiLeftDriveThirdMotorPDP = 0;
+	public static int kForsetiRightDriveMasterDeviceID = 6;
+	public static int kForsetiRightDriveSlaveDeviceID = 5;
+	public static int kForsetiRightDriveOtherSlaveDeviceID = 4;
+	public static int kForsetiRightDriveFrontMotorPDP = 0;
+	public static int kForsetiRightDriveBackMotorPDP = 0;
+	public static int kForsetiRightDriveThirdMotorPDP = 0;
 
 	// CLIMBER
 	
-	public static int k2018_ClimberMotorLeftDeviceID = 1;
-	public static int k2018_ClimberMotorRightDeviceID = 2;
+	public static int kForsetiClimberMotorLeftDeviceID = 1;
+	public static int kForsetiClimberMotorRightDeviceID = 2;
 	
-	public static int k2018_ClimberLeftArmForward = 3;
-	public static int k2018_ClimberLeftArmBack = 3;
+	public static int kForsetiClimberLeftArmForward = 3;
+	public static int kForsetiClimberLeftArmBack = 3;
 
-	public static int k2018_ClimberRightArmForward = 3;
-	public static int k2018_ClimberRightArmBack = 3;
+	public static int kForsetiClimberRightArmForward = 3;
+	public static int kForsetiClimberRightArmBack = 3;
 
-	public static int k2018_ClimberLeftBrakeSolenoid = 4;
-	public static int k2018_ClimberRightBrakeSolenoid = 5;
+	public static int kForsetiClimberLeftBrakeSolenoid = 4;
+	public static int kForsetiClimberRightBrakeSolenoid = 5;
 
 	public static final double kClimberStickDeadband = 0.02;
 

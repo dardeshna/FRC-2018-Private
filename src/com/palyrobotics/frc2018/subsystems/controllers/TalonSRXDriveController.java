@@ -49,15 +49,6 @@ public class TalonSRXDriveController implements Drive.DriveController {
 		DashboardManager.getInstance().updateCANTable("dt_error_left", Double.toString(mSignal.leftMotor.getSetpoint() - drivePose.leftEnc));
 		DashboardManager.getInstance().updateCANTable("dt_error_right", Double.toString(mSignal.rightMotor.getSetpoint() - drivePose.rightEnc));
 
-//		(drivePose.leftMotionMagicVel.isPresent()) ? drivePose.leftMotionMagicVel.get() : 0,
-//				drivePose.leftEnc,
-//				mSignal.leftMotor.getSetpoint() - drivePose.leftEnc,
-//				(drivePose.rightMotionMagicPos.isPresent()) ? drivePose.rightMotionMagicPos.get() : 0,
-//				(drivePose.rightMotionMagicVel.isPresent()) ? drivePose.rightMotionMagicVel.get() : 0,
-//				drivePose.rightEnc,
-//				mSignal.rightMotor.getSetpoint() - drivePose.rightEnc,
-//		});
-
 		return this.mSignal;
 	}
 
@@ -146,9 +137,9 @@ public class TalonSRXDriveController implements Drive.DriveController {
 		if (mCachedState == null) {
 			return false;
 		}
-		double positionTolerance = (mSignal.leftMotor.gains.equals(Gains.unnamedShortDriveMotionMagicGains)) ?
+		double positionTolerance = (mSignal.leftMotor.gains.equals(Gains.forsetiShortDriveMotionMagicGains)) ?
 				Constants.kAcceptableShortDrivePositionError : Constants.kAcceptableDrivePositionError;
-		double velocityTolerance = (mSignal.leftMotor.gains.equals(Gains.unnamedShortDriveMotionMagicGains)) ?
+		double velocityTolerance = (mSignal.leftMotor.gains.equals(Gains.forsetiShortDriveMotionMagicGains)) ?
 				Constants.kAcceptableShortDriveVelocityError : Constants.kAcceptableDriveVelocityError;
 
 		// Motion magic is not PID so ignore whether talon closed loop error is around

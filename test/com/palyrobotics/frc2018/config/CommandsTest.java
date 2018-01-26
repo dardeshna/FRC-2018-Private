@@ -1,6 +1,6 @@
-package com.palyrobotics.frc2017.config;
+package com.palyrobotics.frc2018.config;
 
-import com.palyrobotics.frc2017.robot.RobotTest;
+import com.palyrobotics.frc2018.robot.RobotTest;
 import com.palyrobotics.frc2018.config.Commands;
 import com.palyrobotics.frc2018.subsystems.Drive;
 import com.palyrobotics.frc2018.util.DriveSignal;

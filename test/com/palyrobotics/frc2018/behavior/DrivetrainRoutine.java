@@ -1,15 +1,16 @@
-package com.palyrobotics.frc2017.behavior;
+package com.palyrobotics.frc2018.behavior;
 
 import com.palyrobotics.frc2018.behavior.Routine;
 import com.palyrobotics.frc2018.behavior.RoutineManager;
 import com.palyrobotics.frc2018.config.Commands;
+import com.palyrobotics.frc2018.subsystems.Drive;
 import com.palyrobotics.frc2018.subsystems.Subsystem;
 
 /**
  * Created by Nihar on 1/22/17.
- * Used for testing {@link RoutineManager} in {@link RoutineManagerTest}
+ * Used for testing {@link RoutineManager} in {@link com.palyrobotics.frc2018.behavior.RoutineManagerTest}
  */
-public class SampleRoutine extends Routine {
+public class DrivetrainRoutine extends Routine {
 	
 	private boolean isFinished;
 	
@@ -20,13 +21,13 @@ public class SampleRoutine extends Routine {
 
 	@Override
 	public Commands update(Commands commands) {
-		return commands;
+		return null;
 	}
 
 	@Override
 	public Commands cancel(Commands commands) {
 		isFinished = true;
-		return commands;
+		return null;
 	}
 
 	@Override
@@ -36,12 +37,12 @@ public class SampleRoutine extends Routine {
 
 	@Override
 	public Subsystem[] getRequiredSubsystems() {
-		// Intentionally empty so as to not conflict
-		return new Subsystem[3];
+		Subsystem[] required = {Drive.getInstance()};
+		return required;
 	}
 
 	@Override
 	public String getName() {
-		return "SampleRoutine";
+		return null;
 	}
 }

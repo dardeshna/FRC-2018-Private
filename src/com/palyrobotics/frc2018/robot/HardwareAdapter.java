@@ -25,10 +25,10 @@ public class HardwareAdapter {
 	 */
 	public static class DrivetrainHardware {
 		private static DrivetrainHardware instance = new DrivetrainHardware();
-
-		protected static DrivetrainHardware getInstance() {
+		private static DrivetrainHardware getInstance() {
 			return instance;
 		}
+
 		public final WPI_TalonSRX leftSlave1Talon;
 		public final WPI_TalonSRX leftMasterTalon;
 		public final WPI_TalonSRX leftSlave2Talon;
@@ -47,12 +47,12 @@ public class HardwareAdapter {
 		}
 
 		private DrivetrainHardware() {
-				leftMasterTalon = new WPI_TalonSRX(Constants.k2018_UnnamedLeftDriveMasterDeviceID);
-				leftSlave1Talon = new WPI_TalonSRX(Constants.k2018_UnnamedLeftDriveSlaveDeviceID);
-				leftSlave2Talon = new WPI_TalonSRX(Constants.k2018_UnnamedLeftDriveOtherSlaveDeviceID);
-				rightMasterTalon = new WPI_TalonSRX(Constants.k2018_UnnamedRightDriveMasterDeviceID);
-				rightSlave1Talon = new WPI_TalonSRX(Constants.k2018_UnnamedRightDriveSlaveDeviceID);
-				rightSlave2Talon = new WPI_TalonSRX(Constants.k2018_UnnamedRightDriveOtherSlaveDeviceID);
+				leftMasterTalon = new WPI_TalonSRX(Constants.kForsetiLeftDriveMasterDeviceID);
+				leftSlave1Talon = new WPI_TalonSRX(Constants.kForsetiLeftDriveSlaveDeviceID);
+				leftSlave2Talon = new WPI_TalonSRX(Constants.kForsetiLeftDriveOtherSlaveDeviceID);
+				rightMasterTalon = new WPI_TalonSRX(Constants.kForsetiRightDriveMasterDeviceID);
+				rightSlave1Talon = new WPI_TalonSRX(Constants.kForsetiRightDriveSlaveDeviceID);
+				rightSlave2Talon = new WPI_TalonSRX(Constants.kForsetiRightDriveOtherSlaveDeviceID);
 				gyro = new PigeonIMU(leftSlave2Talon);
 		}
 	}
@@ -62,10 +62,10 @@ public class HardwareAdapter {
 	 */
 	public static class ClimberHardware {
 		private static ClimberHardware instance = new ClimberHardware();
-
-		protected static ClimberHardware getInstance() {
+		private static ClimberHardware getInstance() {
 			return instance;
 		}
+
 		public final WPI_VictorSPX leftVictor;
 		public final WPI_VictorSPX rightVictor;
 		
@@ -76,14 +76,14 @@ public class HardwareAdapter {
 		public final Solenoid rightBrake;
 
 		private ClimberHardware() {
-			leftVictor = new WPI_VictorSPX(Constants.k2018_ClimberMotorLeftDeviceID);
-			rightVictor = new WPI_VictorSPX(Constants.k2018_ClimberMotorRightDeviceID);
+			leftVictor = new WPI_VictorSPX(Constants.kForsetiClimberMotorLeftDeviceID);
+			rightVictor = new WPI_VictorSPX(Constants.kForsetiClimberMotorRightDeviceID);
 
-			leftArmLock = new DoubleSolenoid(Constants.k2018_ClimberLeftArmBack, Constants.k2018_ClimberLeftArmForward);
-			rightArmLock = new DoubleSolenoid(Constants.k2018_ClimberRightArmBack, Constants.k2018_ClimberRightArmForward);
+			leftArmLock = new DoubleSolenoid(Constants.kForsetiClimberLeftArmBack, Constants.kForsetiClimberLeftArmForward);
+			rightArmLock = new DoubleSolenoid(Constants.kForsetiClimberRightArmBack, Constants.kForsetiClimberRightArmForward);
 
-			leftBrake = new Solenoid(Constants.k2018_ClimberLeftBrakeSolenoid);
-			rightBrake = new Solenoid(Constants.k2018_ClimberRightBrakeSolenoid);
+			leftBrake = new Solenoid(Constants.kForsetiClimberLeftBrakeSolenoid);
+			rightBrake = new Solenoid(Constants.kForsetiClimberRightBrakeSolenoid);
 		}
 	}
 
@@ -98,7 +98,6 @@ public class HardwareAdapter {
 		public final Joystick driveStick = new Joystick(0);
 		public final Joystick turnStick = new Joystick(1);
 		public final Joystick operatorStick = new Joystick(2);
-
 
 		private Joysticks() {
 		}

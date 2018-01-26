@@ -1,4 +1,4 @@
-package com.palyrobotics.frc2017.suites;
+package com.palyrobotics.frc2018.suites;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;

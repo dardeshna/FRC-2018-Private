@@ -30,16 +30,15 @@ import java.util.logging.Level;
 class HardwareUpdater {
 
 	// Subsystem references
-
 	private Drive mDrive;
-	private Climber mClimb;
+	private Climber mClimber;
 
 	/**
 	 * Hardware Updater for 2018_Unnamed
 	 */
 	HardwareUpdater(Drive drive, Climber climber) throws Exception {
 		this.mDrive = drive;
-		this.mClimb = climber;
+		this.mClimber = climber;
 	}
 
 	/**
@@ -48,19 +47,25 @@ class HardwareUpdater {
 	void initHardware() {
 		Logger.getInstance().logRobotThread(Level.INFO,"Init hardware");
 		configureTalons();
-		PigeonIMU gyro = HardwareAdapter.DrivetrainHardware.getInstance().gyro;
+		PigeonIMU gyro = HardwareAdapter.getInstance().getDrivetrain().gyro;
 		gyro.setYaw(0, 0);
 		gyro.setFusedHeading(0, 0);
 	}
 
 	void disableTalons() {
 		Logger.getInstance().logRobotThread(Level.INFO,"Disabling talons");
+
+		//Drivetrain disables
 		HardwareAdapter.getInstance().getDrivetrain().leftMasterTalon.set(ControlMode.Disabled, 0);
 		HardwareAdapter.getInstance().getDrivetrain().leftSlave1Talon.set(ControlMode.Disabled, 0);
 		HardwareAdapter.getInstance().getDrivetrain().rightMasterTalon.set(ControlMode.Disabled, 0);
 		HardwareAdapter.getInstance().getDrivetrain().rightSlave1Talon.set(ControlMode.Disabled, 0);
 		HardwareAdapter.getInstance().getDrivetrain().leftSlave2Talon.set(ControlMode.Disabled, 0);
 		HardwareAdapter.getInstance().getDrivetrain().rightSlave2Talon.set(ControlMode.Disabled, 0);
+
+		//Climber disables
+		HardwareAdapter.getInstance().getClimber().leftVictor.set(ControlMode.Disabled, 0);
+		HardwareAdapter.getInstance().getClimber().rightVictor.set(ControlMode.Disabled, 0);
 	}
 
 	void configureTalons() {
@@ -75,9 +80,8 @@ class HardwareUpdater {
 		WPI_TalonSRX rightMasterTalon = HardwareAdapter.getInstance().getDrivetrain().rightMasterTalon;
 		WPI_TalonSRX rightSlave1Talon = HardwareAdapter.getInstance().getDrivetrain().rightSlave1Talon;
 		WPI_TalonSRX rightSlave2Talon = HardwareAdapter.getInstance().getDrivetrain().rightSlave2Talon;
-		// Enable all talons' brake mode and disables forward and reverse soft
-		// limits
 
+		// Enable all talons' brake mode and disables forward and reverse soft
 		leftMasterTalon.setNeutralMode(NeutralMode.Brake);
 		leftSlave1Talon.setNeutralMode(NeutralMode.Brake);
 		if (leftSlave2Talon != null) leftSlave2Talon.setNeutralMode(NeutralMode.Brake);
@@ -184,9 +188,8 @@ class HardwareUpdater {
 	 * Updates all the sensor data taken from the hardware
 	 */
 	void updateState(RobotState robotState) {
-
-		WPI_TalonSRX leftMasterTalon = HardwareAdapter.DrivetrainHardware.getInstance().leftMasterTalon;
-		WPI_TalonSRX rightMasterTalon = HardwareAdapter.DrivetrainHardware.getInstance().rightMasterTalon;
+		WPI_TalonSRX leftMasterTalon = HardwareAdapter.getInstance().getDrivetrain().leftMasterTalon;
+		WPI_TalonSRX rightMasterTalon = HardwareAdapter.getInstance().getDrivetrain().rightMasterTalon;
 
 		robotState.leftControlMode = leftMasterTalon.getControlMode();
 		robotState.rightControlMode = rightMasterTalon.getControlMode();
@@ -235,7 +238,7 @@ class HardwareUpdater {
                 break;
         }
 		
-		PigeonIMU gyro = HardwareAdapter.DrivetrainHardware.getInstance().gyro;
+		PigeonIMU gyro = HardwareAdapter.getInstance().getDrivetrain().gyro;
 		if (gyro != null) {
 			robotState.drivePose.heading = gyro.getFusedHeading();
 			robotState.drivePose.headingVelocity = (robotState.drivePose.heading - robotState.drivePose.lastHeading)/Constants.kNormalLoopsDt;
@@ -294,11 +297,7 @@ class HardwareUpdater {
 	 * Updates the hardware to run with output values of subsystems
 	 */
 	void updateHardware() {
-		update2018_UnnamedSubsystems();
 		updateDrivetrain();
-	}
-
-	private void update2018_UnnamedSubsystems() {
 		updateClimber();
 	}
 
@@ -312,7 +311,7 @@ class HardwareUpdater {
 	}
 
 	private void updateClimber() {
-		ClimberSignal signal = Climber.getInstance().getSignal();
+		ClimberSignal signal = mClimber.getSignal();
 		HardwareAdapter.getInstance().getClimber().leftVictor.set(signal.leftVelocity);
 		HardwareAdapter.getInstance().getClimber().rightVictor.set(signal.rightVelocity);
 		HardwareAdapter.getInstance().getClimber().leftBrake.set(signal.leftBrake);

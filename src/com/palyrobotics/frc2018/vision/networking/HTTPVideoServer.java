@@ -45,7 +45,7 @@ public class HTTPVideoServer extends VisionServerBase {
 		byte[] imageInBytes = null;
 
 		try {
-			BufferedImage image = ImageIO.read(new File("C:/Users/qhdwi/Documents/GitHub/FRC-2017-Private/test/com/palyrobotics/frc2017/vision/frame.jpg"));
+			BufferedImage image = ImageIO.read(new File("C:/Users/qhdwi/Documents/GitHub/FRC-2017-Private/test/com/palyrobotics/frc2018/vision/frame.jpg"));
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			ImageIO.write(image, "jpg", baos);
 

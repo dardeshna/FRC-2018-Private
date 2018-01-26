@@ -1,7 +1,7 @@
 Team 8 Paly Robotics - FRC 2018 Robot Software
 ================================================
 ## Robot description 
-Robot code for Team 8's 2018 PowerUp FRC robot
+Robot code for Team 8's 2018 PowerUp FRC robot, Forseti
 
 ### Robot subsystems
 #### Climber

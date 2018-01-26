@@ -33,9 +33,9 @@ public class GyroMotionMagicTurnAngleController implements DriveController {
 		mCachedPose = priorSetpoint;
 		mTargetHeading = priorSetpoint.heading + angle;
 		
-		mGains = Gains.unnamedTurnMotionMagicGains;
-		mCruiseVel = (int) Gains.k2018_UnnamedTurnMotionMagicCruiseVelocity;
-		mMaxAccel = (int) Gains.k2018_UnnamedTurnMotionMagicMaxAcceleration;
+		mGains = Gains.forsetiTurnMotionMagicGains;
+		mCruiseVel = (int) Gains.kForsetiTurnMotionMagicCruiseVelocity;
+		mMaxAccel = (int) Gains.kForsetiTurnMotionMagicMaxAcceleration;
 		kInchesPerDegree = Constants.kDriveInchesPerDegree;
 		kTicksPerInch = Constants.kDriveTicksPerInch;
 		kTolerance = Constants.kAcceptableTurnAngleError;
@@ -43,10 +43,8 @@ public class GyroMotionMagicTurnAngleController implements DriveController {
 		Logger.getInstance().logSubsystemThread(Level.FINE, "Current heading", mCachedPose.heading);
 		Logger.getInstance().logSubsystemThread(Level.FINE, "Target heading", mTargetHeading);
 		mLeftTarget = priorSetpoint.leftEnc - (angle * kInchesPerDegree * kTicksPerInch);
-//		System.out.println("Left target: " + mLeftTarget);
 		mRightTarget = priorSetpoint.rightEnc + (angle * kInchesPerDegree * kTicksPerInch);
-//		System.out.println("Right target: " + mRightTarget);
-		
+
 		mLeftOutput = new TalonSRXOutput();
 		mLeftOutput.setMotionMagic(mLeftTarget, mGains, mCruiseVel, mMaxAccel);
 		mRightOutput = new TalonSRXOutput();
@@ -57,7 +55,6 @@ public class GyroMotionMagicTurnAngleController implements DriveController {
 	public DriveSignal update(RobotState state) {
 		mCachedPose = state.drivePose;
 		double error = mTargetHeading - mCachedPose.heading;
-//		System.out.println(mCachedPose.headingVelocity);
 		// Compensate for current motion
 //		error -= mCachedPose.headingVelocity*Constants.kSubsystemLooperDt;
 		mLeftTarget = mCachedPose.leftEnc - (error * kInchesPerDegree * kTicksPerInch);

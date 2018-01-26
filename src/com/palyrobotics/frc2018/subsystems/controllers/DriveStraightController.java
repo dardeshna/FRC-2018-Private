@@ -32,7 +32,7 @@ public class DriveStraightController implements DriveController {
 		mGains = new Gains(.00035, 0.000004, 0.002, 0, 200, 0);
 		kTolerance = Constants.kAcceptableDrivePositionError;
 		forwardPID = new SynchronousPID(mGains.P, mGains.I, mGains.D, mGains.izone);
-		headingPID = new SynchronousPID(Gains.k2018_UnnamedDriveStraightTurnkP, 0, 0.005);
+		headingPID = new SynchronousPID(Gains.kForsetiDriveStraightTurnkP, 0, 0.005);
 		forwardPID.setOutputRange(-1, 1);
 		headingPID.setOutputRange(-0.2, 0.2);
 		forwardPID.setSetpoint(target);
@@ -52,7 +52,6 @@ public class DriveStraightController implements DriveController {
 				&& Math.abs(Robot.getRobotState().drivePose.leftEncVelocity)<0.05
 				&& Math.abs(Robot.getRobotState().drivePose.rightEncVelocity)<0.05;
 	}
-	
 
 	@Override
 	public DriveSignal update(RobotState state) {
@@ -69,8 +68,6 @@ public class DriveStraightController implements DriveController {
 		
 		Logger.getInstance().logSubsystemThread(Level.FINEST, "Error", forwardPID.getError());		
 		return new DriveSignal(leftOutput, rightOutput);
-		
-		
 	}
 
 	@Override

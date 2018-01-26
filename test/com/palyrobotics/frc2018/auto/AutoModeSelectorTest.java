@@ -1,4 +1,4 @@
-package com.palyrobotics.frc2017.auto;
+package com.palyrobotics.frc2018.auto;
 
 import com.palyrobotics.frc2018.auto.AutoModeBase;
 import com.palyrobotics.frc2018.auto.AutoModeSelector;
