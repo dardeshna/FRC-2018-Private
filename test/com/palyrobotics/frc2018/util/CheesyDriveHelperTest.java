@@ -1,6 +1,7 @@
 package com.palyrobotics.frc2018.util;
 
 import com.palyrobotics.frc2018.config.Commands;
+import com.palyrobotics.frc2018.config.MockRobotState;
 import com.palyrobotics.frc2018.config.RobotState;
 import com.palyrobotics.frc2018.robot.MockRobot;
 import org.junit.Test;
@@ -30,12 +31,12 @@ public class CheesyDriveHelperTest {
 		assertFalse("Match Sign broken", matchSign(1,0));
 
 		// Robot state is not used by CDH
-		RobotState testRobotState = new RobotState();
+		MockRobotState testRobotState = MockRobot.getRobotState();
 		Commands testCommands = MockRobot.getCommands();
 
 		// Test that 0 input leads to 0 output (no negative inertia to start)
-        MockRobot.getRobotState().leftStickInput.setY(0);
-        MockRobot.getRobotState().leftStickInput.setX(0);
+		testRobotState.leftStickInput.setY(0);
+		testRobotState.leftStickInput.setX(0);
 		mTestCDH.cheesyDrive(testCommands, testRobotState);
 		DriveSignal output = mTestCDH.cheesyDrive(testCommands, testRobotState);
 		DriveSignal zeroOutput = DriveSignal.getNeutralSignal();

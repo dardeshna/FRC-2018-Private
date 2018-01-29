@@ -16,14 +16,28 @@ import java.util.logging.Level;
  * @author Alvin
  */
 public class VisionManager extends VisionThreadBase {
+	// Instance and state variables
+	private static VisionManager s_instance;
 
+	/**
+	 * @return The instance of the ACH
+	 */
+	public static VisionManager getInstance(){
+
+		if(s_instance == null){
+			s_instance = new VisionManager();
+		}
+		return s_instance;
+	}
+	
+	protected VisionManager(final String threadName) {
+		super(threadName);
+	}
+	
 	public enum ConnectionState{
 		PRE_INIT, STARTING_ADB, STARTING_SUB_PROCESSES, IDLE, START_VISION_APP, STREAMING, GIVEN_UP
 	}
 
-
-	// Instance and state variables
-	private static VisionManager s_instance;
 	private ConnectionState m_connectionState = ConnectionState.PRE_INIT;
 
 	// Utility variables
@@ -41,17 +55,6 @@ public class VisionManager extends VisionThreadBase {
 	 */
 	private VisionManager(){
 		super("Vision Manager");
-	}
-
-	/**
-	 * @return The instance of the ACH
-	 */
-	public static VisionManager getInstance(){
-
-		if(s_instance == null){
-			s_instance = new VisionManager();
-		}
-		return s_instance;
 	}
 
 	/**

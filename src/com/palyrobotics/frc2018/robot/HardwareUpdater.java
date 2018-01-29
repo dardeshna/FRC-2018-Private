@@ -27,6 +27,17 @@ import java.util.logging.Level;
  * Should only be used in robot package.
  */
 class HardwareUpdater {
+	private static HardwareUpdater instance;
+	{
+		try {
+			instance = new HardwareUpdater(Drive.getInstance(), Climber.getInstance(), Elevator.getInstance(), Intake.getInstance());
+		} catch (Exception e) {
+			Logger.getInstance().logRobotThread(Level.SEVERE, e);
+		}
+		
+	}
+	
+	public static HardwareUpdater getInstance() { return instance; }
 
 	// Subsystem references
 	private Drive mDrive;
@@ -37,7 +48,7 @@ class HardwareUpdater {
 	/**
 	 * Hardware Updater for Forseti
 	 */
-	HardwareUpdater(Drive drive, Climber climber, Elevator elevator, Intake intake) throws Exception {
+	protected HardwareUpdater(Drive drive, Climber climber, Elevator elevator, Intake intake) throws Exception {
 		this.mDrive = drive;
 		this.mClimber = climber;
 		this.mElevator = elevator;

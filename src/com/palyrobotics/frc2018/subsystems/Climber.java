@@ -34,7 +34,7 @@ public class Climber extends Subsystem {
 		return instance;
 	}
 	
-	private Climber() {
+	protected Climber() {
 		super("Climber");
 		mSide = Side.NOT_SET;
 		mMotionStatus = MotionSubstate.LOCKED;

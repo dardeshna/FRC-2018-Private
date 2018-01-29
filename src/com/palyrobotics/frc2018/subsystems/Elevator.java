@@ -42,7 +42,7 @@ public class Elevator extends Subsystem {
 	 *
 	 * @param name the name of the elevator
 	 */
-	private Elevator(String name) {
+	protected Elevator(String name) {
 		super(name);
 		mState = ElevatorState.CALIBRATING;
 	}
@@ -120,7 +120,7 @@ public class Elevator extends Subsystem {
 	 * <ul>
 	 *     <li>
 	 *         {@link ElevatorState#CALIBRATING}:
-	 *         Sets the state to calibrate. If already calibrated, set to hold instead.
+	 *         Sets the state to calibrate. If already calibrated, sets the desired holding position and state to hold.
 	 *     </li>
 	 *     <li>
 	 *         {@link ElevatorState#HOLD}:

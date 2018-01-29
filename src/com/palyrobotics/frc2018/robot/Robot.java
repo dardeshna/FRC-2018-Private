@@ -22,17 +22,15 @@ import java.util.logging.Level;
 
 public class Robot extends TimedRobot {
 	// Instantiate singleton classes
-	private static RobotState robotState = new RobotState();
-	public static RobotState getRobotState() {
-		return robotState;
-	}
+	private static RobotState robotState = RobotState.getInstance();
+	public static RobotState getRobotState() {return robotState;}
 
 	// Single instance to be passed around
 	private static Commands commands = Commands.getInstance();
 	public static Commands getCommands() {return commands;}
 
 	private OperatorInterface operatorInterface = OperatorInterface.getInstance();
-	private RoutineManager mRoutineManager = new RoutineManager();
+	private RoutineManager mRoutineManager = RoutineManager.getInstance();
 
 	// Subsystem controllers
 	private Drive mDrive = Drive.getInstance();

@@ -24,7 +24,7 @@ public class OperatorInterface {
 		return instance;
 	}
 
-	private OperatorInterface() {}
+	protected OperatorInterface() {}
 
 	private JoystickInput mDriveStick = Robot.getRobotState().leftStickInput;
 	private JoystickInput mTurnStick = Robot.getRobotState().rightStickInput;

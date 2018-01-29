@@ -42,7 +42,7 @@ public class AutoModeSelector {
 		mAutoModes.add(auto);
 	}
 
-	private AutoModeSelector() {
+	protected AutoModeSelector() {
   /*1*/registerAutonomous(new TestAutoMode());
   /*2*/registerAutonomous(new TestTrajectoryAutoMode());
 	}

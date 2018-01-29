@@ -2,6 +2,7 @@ package com.palyrobotics.frc2018.subsystems;
 
 import com.palyrobotics.frc2018.config.Commands;
 import com.palyrobotics.frc2018.config.RobotState;
+import com.palyrobotics.frc2018.robot.MockRobot;
 
 public class ElevatorSimulation {
 	  // Stall Torque in N m
@@ -64,7 +65,7 @@ public class ElevatorSimulation {
 	  double current_time = 0;
 
 	  void simulateTime(double time, Commands commands, double voltage) {
-    	RobotState robotState = new RobotState();
+    	RobotState robotState = MockRobot.getRobotState();
 	    while (time > 0) {
 	    	robotState.elevatorBottomHFX = this.bottomHalleffect();
 	    	robotState.elevatorTopHFX = this.topHallEffect();

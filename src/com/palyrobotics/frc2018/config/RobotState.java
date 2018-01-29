@@ -17,6 +17,13 @@ public class RobotState {
 	public enum GamePeriod {
 		AUTO, TELEOP, DISABLED
 	}
+	
+	private static RobotState instance = new RobotState();
+	public static RobotState getInstance() {
+		return instance;
+	}
+
+	protected RobotState() {}
 
 	// Updated by autoInit, teleopInit, disabledInit
 	public GamePeriod gamePeriod = GamePeriod.DISABLED;
@@ -57,7 +64,7 @@ public class RobotState {
 	public JoystickInput rightStickInput = new JoystickInput();
 	public JoystickInput operatorStickInput = new JoystickInput();
 	public JoystickInput elevatorStickInput = new JoystickInput();
-    
+	
     public synchronized void reset(double start_time, RigidTransform2d initial_field_to_vehicle) {
         field_to_vehicle_ = new InterpolatingTreeMap<>(kObservationBufferSize);
         field_to_vehicle_.put(new InterpolatingDouble(start_time), initial_field_to_vehicle);

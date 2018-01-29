@@ -16,6 +16,12 @@ import java.util.logging.Level;
  * @author Nihar, Ailyn
  */
 public class RoutineManager {
+	private static RoutineManager instance = new RoutineManager();
+	public static RoutineManager getInstance() { return instance; }
+	
+	protected RoutineManager() {}
+
+	
 	// Routines that are being run
 	private ArrayList<Routine> runningRoutines = new ArrayList<>();
 	private ArrayList<Routine> routinesToRemove = new ArrayList<>();

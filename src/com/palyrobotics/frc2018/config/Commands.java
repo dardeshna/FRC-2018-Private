@@ -26,7 +26,7 @@ public class Commands {
 		return instance;
 	}
 
-	private Commands() {}
+	protected Commands() {}
 
 	public ArrayList<Routine> wantedRoutines = new ArrayList<Routine>();
 

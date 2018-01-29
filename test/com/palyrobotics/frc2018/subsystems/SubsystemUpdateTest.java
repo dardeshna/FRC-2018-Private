@@ -16,7 +16,7 @@ public class SubsystemUpdateTest {
 	@Test
 	public void test() {
 		Commands c = MockRobot.getCommands();
-		RobotState r = new RobotState();
+		RobotState r = MockRobot.getRobotState();
 		
 		Drive.getInstance().update(c, r);
 	}

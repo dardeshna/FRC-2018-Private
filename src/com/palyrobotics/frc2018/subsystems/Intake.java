@@ -40,7 +40,7 @@ public class Intake extends Subsystem{
 	private UpDownState mUpDownState = UpDownState.UP;
 	private OpenCloseState mOpenCloseState = OpenCloseState.OPEN;
 	
-	public Intake() {
+	protected Intake() {
 		super("Intake");
 	}
 	

@@ -41,7 +41,7 @@ public class HardwareAdapter {
 			instance.rightMasterTalon.setSelectedSensorPosition(0, 0, 0);
 		}
 
-		private DrivetrainHardware() {
+		protected DrivetrainHardware() {
 				leftMasterTalon = new WPI_TalonSRX(Constants.kForsetiLeftDriveMasterDeviceID);
 				leftSlave1Victor = new WPI_VictorSPX(Constants.kForsetiLeftDriveSlaveDeviceID);
 				leftSlave2Victor = new WPI_VictorSPX(Constants.kForsetiLeftDriveOtherSlaveDeviceID);
@@ -70,7 +70,7 @@ public class HardwareAdapter {
 		public final Solenoid leftBrake;
 		public final Solenoid rightBrake;
 
-		private ClimberHardware() {
+		protected ClimberHardware() {
 			leftVictor = new WPI_VictorSPX(Constants.kForsetiClimberMotorLeftDeviceID);
 			rightVictor = new WPI_VictorSPX(Constants.kForsetiClimberMotorRightDeviceID);
 
@@ -97,7 +97,7 @@ public class HardwareAdapter {
 		public final DigitalInput bottomHFX;
 		public final DigitalInput topHFX;
 
-		private ElevatorHardware() {
+		protected ElevatorHardware() {
 			elevatorMasterTalon = new WPI_TalonSRX(Constants.kForsetiElevatorMasterTalonID);
 			elevatorSlaveTalon = new WPI_TalonSRX(Constants.kForsetiElevatorSlaveTalonID);
 
@@ -121,7 +121,7 @@ public class HardwareAdapter {
 	    public final DoubleSolenoid openCloseSolenoid;
 	    public final AnalogInput distanceSensor;
 
-        private IntakeHardware() {
+        protected IntakeHardware() {
 	        masterTalon = new WPI_TalonSRX(Constants.kForsetiIntakeMasterDeviceID);
 	        slaveTalon = new WPI_TalonSRX(Constants.kForsetiIntakeSlaveDeviceID);
 	        upDownSolenoid = new DoubleSolenoid(Constants.kForsetiIntakeUpDownSolenoidForwardID, Constants.kForsetiIntakeUpDownSolenoidReverseID);
@@ -131,7 +131,7 @@ public class HardwareAdapter {
     }
 
 	// Joysticks for operator interface
-	protected static class Joysticks {
+	public static class Joysticks {
 		private static Joysticks instance = new Joysticks();
 		private static Joysticks getInstance() {
 			return instance;
@@ -142,7 +142,7 @@ public class HardwareAdapter {
 		public final Joystick operatorStick = new Joystick(2);
 		public final Joystick elevatorStick = new Joystick(3);
 
-		private Joysticks() {
+		protected Joysticks() {
 		}
 	}
 
