@@ -5,39 +5,39 @@ import com.palyrobotics.frc2018.config.RobotState;
 import com.palyrobotics.frc2018.robot.MockRobot;
 
 public class ElevatorSimulation {
-	  // Stall Torque in N m
+	  //Stall Torque in N m
 	  static final double kStallTorque = 0.71;
-	  // Stall Current in Amps
+	  //Stall Current in Amps
 	  static final double kStallCurrent = 134;
-	  // Free Speed in RPM
+	  //Free Speed in RPM
 	  static final double kFreeSpeed = 18730;
-	  // Free Current in Amps
+	  //Free Current in Amps
 	  static final double kFreeCurrent = 0.7;
-	  // Mass of the Elevator
+	  //Mass of the Elevator
 	  static final double kMass = 30.0;
 
-	  // Number of motors
+	  //Number of motors
 	  static final double kNumMotors = 2.0;
-	  // Resistance of the motor
+	  //Resistance of the motor
 	  static final double kResistance = 12.0 / kStallCurrent;
-	  // Motor velocity constant
+	  //Motor velocity constant
 	  static final double Kv = ((kFreeSpeed / 60.0 * 2.0 * Math.PI) /
 	             (12.0 - kResistance * kFreeCurrent));
-	  // Torque constant
+	  //Torque constant
 	  static final double Kt = (kNumMotors * kStallTorque) / kStallCurrent;
-	  // Gear ratio
+	  //Gear ratio
 	  static final double kG = 42;
-	  // Radius of pulley
+	  //Radius of pulley
 	  static final double kr = 1.5;
 
-	  // Control loop time step
+	  //Control loop time step
 	  static final double kDt = 0.010;
 	  
-	  // Max elevator height in inches
+	  //Max elevator height in inches
 	  static final double kElevatorHeight = 85;
 
-	  // V = I * R + omega / Kv
-	  // torque = Kt * I
+	  //V = I * R + omega / Kv
+	  //torque = Kt * I
 
 	  double GetAcceleration(double voltage) {
 	    return -Kt * kG * kG / (Kv * kResistance * kr * kr * kMass) * velocity_ +

@@ -8,7 +8,7 @@ package com.palyrobotics.frc2018.util.trajectory;
 public class LegacyTrajectoryFollower {
 
     private double kp_;
-    private double ki_;  // Not currently used, but might be in the future.
+    private double ki_;  //Not currently used, but might be in the future.
     private double kd_;
     private double kv_;
     private double ka_;

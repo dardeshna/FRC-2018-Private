@@ -30,22 +30,22 @@ public class SequentialRoutine extends Routine {
 		if(mIsDone) {
 			return output;
 		}
-		// Update the current routine
+		//Update the current routine
 		output = mRoutines.get(mRunningRoutineIndex).update(output);
-		// Keep moving to next routine if the current routine is finished
+		//Keep moving to next routine if the current routine is finished
 		while(mRoutines.get(mRunningRoutineIndex).finished()) {
 			output = mRoutines.get(mRunningRoutineIndex).cancel(output);
 			if(mRunningRoutineIndex <= mRoutines.size()-1) {
 				mRunningRoutineIndex++;
 			}
 			
-			// If final routine is finished, don't update anything
+			//If final routine is finished, don't update anything
 			if(mRunningRoutineIndex > mRoutines.size()-1) {
 				mIsDone = true;
 				break;
 			}
 			
-			// Start the next routine
+			//Start the next routine
 			mRoutines.get(mRunningRoutineIndex).start();
 		}
 		return output;

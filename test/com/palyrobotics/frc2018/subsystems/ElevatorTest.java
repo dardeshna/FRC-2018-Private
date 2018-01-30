@@ -22,7 +22,7 @@ public class ElevatorTest {
 	private Commands commands;
 	private MockRobotState robotState;
 
-	// Test calibration with elevator starting in the middle
+	//Test calibration with elevator starting in the middle
 	@Test
 	public void testInitCalibrationMiddle() {		
 		robotState.elevatorPosition = 500;
@@ -48,7 +48,7 @@ public class ElevatorTest {
 				elevator.getState() == ElevatorState.CALIBRATING);
 	}
 	
-	// Test calibration with elevator starting at the bottom
+	//Test calibration with elevator starting at the bottom
 	@Test
 	public void testInitCalibrationBottom() {
 		robotState.elevatorBottomHFX = true;
@@ -64,7 +64,7 @@ public class ElevatorTest {
 				elevator.getState() == ElevatorState.CALIBRATING);
 	}
 	
-	// Test calibration with elevator starting at the top
+	//Test calibration with elevator starting at the top
 	@Test
 	public void testInitCalibrationTop() {		
 		robotState.elevatorPosition = Constants.kTopBottomEncoderDifference;
@@ -79,11 +79,11 @@ public class ElevatorTest {
 				elevator.getState() == ElevatorState.CALIBRATING);
 	}
 		
-	// If an elevator state is requested during a match and the robot isn't
-	// calibrated, does it recalibrate?
+	//If an elevator state is requested during a match and the robot isn't
+	//calibrated, does it recalibrate?
 	@Test
 	public void testRecalibration() {
-		// Calibrate once, then undo it by resetting the sensors
+		//Calibrate once, then undo it by resetting the sensors
 		robotState.elevatorBottomHFX = true;
 		elevator.update(commands, robotState);
 		robotState.elevatorBottomHFX = false;
@@ -92,7 +92,7 @@ public class ElevatorTest {
 		elevator.setTopPosition(Optional.empty());
 		elevator.update(commands, robotState);
 		
-		// Request custom positioning
+		//Request custom positioning
 		commands.wantedElevatorState = ElevatorState.CUSTOM_POSITIONING;
 		commands.robotSetpoints.elevatorPositionSetpoint = Optional.of(500.0);
 		elevator.update(commands, robotState);
@@ -100,7 +100,7 @@ public class ElevatorTest {
 		assertThat("Elevator doesn't go to calibration upon state request", elevator.getState(),
 				equalTo(ElevatorState.CALIBRATING));
 
-		// Finish recalibration
+		//Finish recalibration
 		robotState.elevatorBottomHFX = true;
 		elevator.update(commands, robotState);
 		
@@ -108,10 +108,10 @@ public class ElevatorTest {
 				equalTo(ElevatorState.CUSTOM_POSITIONING));
 	}
 	
-	// Does the elevator properly transition in and out of hold during manual control
+	//Does the elevator properly transition in and out of hold during manual control
 	@Test
 	public void testHoldDuringManual() {
-		// Obligatory calibration
+		//Obligatory calibration
 		robotState.elevatorBottomHFX = true;
 		elevator.update(commands, robotState);
 		robotState.elevatorBottomHFX = false;
@@ -131,20 +131,20 @@ public class ElevatorTest {
 		}
 	}
 	
-	// Test to make sure that calibration handles other state requests properly
+	//Test to make sure that calibration handles other state requests properly
 	@Test
 	public void testCalibrationInterruption() {
-		// Begin calibration
+		//Begin calibration
 		elevator.update(commands, robotState);
 		
-		// Attempt to interrupt with custom positioning
+		//Attempt to interrupt with custom positioning
 		commands.wantedElevatorState = ElevatorState.CUSTOM_POSITIONING;
 		commands.robotSetpoints.elevatorPositionSetpoint = Optional.of(500.0);
 		elevator.update(commands, robotState);
 		assertThat("Custom positioning interrupts calibration when it shouldn't", elevator.getState(),
 				equalTo(ElevatorState.CALIBRATING));
 		
-		// Attempt to interrupt with manual positioning
+		//Attempt to interrupt with manual positioning
 		robotState.gamePeriod = GamePeriod.TELEOP;
 		robotState.elevatorStickInput.setY(1);
 		commands.wantedElevatorState = ElevatorState.CALIBRATING;
@@ -152,19 +152,19 @@ public class ElevatorTest {
 		assertThat("Manual input doesn't interrupt calibration when it should", elevator.getState(),
 				equalTo(ElevatorState.MANUAL_POSITIONING));
 		
-		// Finish calibration
+		//Finish calibration
 		robotState.elevatorBottomHFX = true;
 		robotState.elevatorStickInput.setY(0);
 		elevator.update(commands, robotState);
 		robotState.elevatorBottomHFX = false;
 		
-		// Request manual positioning
+		//Request manual positioning
 		robotState.elevatorStickInput.setY(1);
 		elevator.update(commands, robotState);
 		assertThat("Manual input ignored after calibration", elevator.getState(),
 				equalTo(ElevatorState.MANUAL_POSITIONING));
 		
-		// Request custom positioning
+		//Request custom positioning
 		robotState.elevatorStickInput.setY(0);
 		commands.wantedElevatorState = ElevatorState.CUSTOM_POSITIONING;
 		commands.robotSetpoints.elevatorPositionSetpoint = Optional.of(500.0);
@@ -173,16 +173,16 @@ public class ElevatorTest {
 				equalTo(ElevatorState.CALIBRATING));
 	}
 	
-	// Ensure that the robot updates the top/bottom encoder values when it
-	// hits the HFX again
+	//Ensure that the robot updates the top/bottom encoder values when it
+	//hits the HFX again
 	@Test
 	public void testUpdateCalibration() {
-		// Obligatory calibration
+		//Obligatory calibration
 		robotState.elevatorBottomHFX = true;
 		elevator.update(commands, robotState);
 		robotState.elevatorBottomHFX = false;
 		
-		// Trigger top HFX
+		//Trigger top HFX
 		robotState.elevatorPosition = 500;
 		robotState.elevatorTopHFX = true;
 		elevator.update(commands, robotState);
@@ -190,7 +190,7 @@ public class ElevatorTest {
 				equalTo(Optional.of(500.0)));
 		robotState.elevatorTopHFX = false;
 		
-		// Trigger bottom HFX
+		//Trigger bottom HFX
 		robotState.elevatorPosition = -500;
 		robotState.elevatorBottomHFX = true;
 		elevator.update(commands, robotState);

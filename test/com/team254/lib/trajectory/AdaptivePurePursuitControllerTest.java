@@ -21,17 +21,17 @@ public class AdaptivePurePursuitControllerTest {
 
     @Test
     public void testJoinPath() {
-        // Robot is at the origin
+        //Robot is at the origin
         RigidTransform2d robot_pose = new RigidTransform2d();
 
-        // Lookahead point is at the same point
+        //Lookahead point is at the same point
         Translation2d lookahead_point = new Translation2d(0, 0);
 
-        // Should be null
+        //Should be null
         Optional<Circle> circle = AdaptivePurePursuitController.joinPath(robot_pose, lookahead_point);
         assertFalse(circle.isPresent());
 
-        // Lookahead point is forward
+        //Lookahead point is forward
         lookahead_point = new Translation2d(1, 0);
         circle = AdaptivePurePursuitController.joinPath(robot_pose, lookahead_point);
         assertFalse(circle.isPresent());
@@ -41,7 +41,7 @@ public class AdaptivePurePursuitControllerTest {
         circle = AdaptivePurePursuitController.joinPath(robot_pose, lookahead_point);
         assertFalse(circle.isPresent());
 
-        // Lookahead point is 1m to the left
+        //Lookahead point is 1m to the left
         robot_pose = new RigidTransform2d();
         lookahead_point = new Translation2d(0, 1);
         circle = AdaptivePurePursuitController.joinPath(robot_pose, lookahead_point);
@@ -51,7 +51,7 @@ public class AdaptivePurePursuitControllerTest {
         assertEquals(.5, circle.get().center.getY(), kEpsilon);
         assertFalse(circle.get().turn_right);
 
-        // 1m to the right
+        //1m to the right
         lookahead_point = new Translation2d(0, -1);
         circle = AdaptivePurePursuitController.joinPath(robot_pose, lookahead_point);
         assertTrue(circle.isPresent());
@@ -60,7 +60,7 @@ public class AdaptivePurePursuitControllerTest {
         assertEquals(-.5, circle.get().center.getY(), kEpsilon);
         assertTrue(circle.get().turn_right);
 
-        // Lookahead point is forward, robot pose is rotated
+        //Lookahead point is forward, robot pose is rotated
         robot_pose = new RigidTransform2d(new Translation2d(1, 1), Rotation2d.fromDegrees(45));
         lookahead_point = new Translation2d(2, 2);
         circle = AdaptivePurePursuitController.joinPath(robot_pose, lookahead_point);
@@ -110,7 +110,7 @@ public class AdaptivePurePursuitControllerTest {
         RigidTransform2d robot_pose = new RigidTransform2d(new Translation2d(0.0, 0.0), Rotation2d.fromDegrees(0));
         double t = 0;
         while (!controller.onTarget() && t < 10) {
-            // Follow the path
+            //Follow the path
             RigidTransform2d.Delta command = controller.update(robot_pose, t);
             robot_pose = robot_pose.transformBy(new RigidTransform2d(new Translation2d(command.dx * dt, 0),
                     Rotation2d.fromRadians(command.dtheta * dt)));
@@ -144,7 +144,7 @@ public class AdaptivePurePursuitControllerTest {
         RigidTransform2d robot_pose = RigidTransform2d.fromRotation(Rotation2d.fromRadians(Math.PI));
         double t = 0;
         while (!controller.onTarget() && t < 10) {
-            // Follow the path
+            //Follow the path
             RigidTransform2d.Delta command = controller.update(robot_pose, t);
             robot_pose = robot_pose.transformBy(new RigidTransform2d(new Translation2d(command.dx * dt, 0),
                     Rotation2d.fromRadians(command.dtheta * dt)));

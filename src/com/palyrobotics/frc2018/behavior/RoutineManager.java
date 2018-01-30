@@ -22,7 +22,7 @@ public class RoutineManager {
 	protected RoutineManager() {}
 
 	
-	// Routines that are being run
+	//Routines that are being run
 	private ArrayList<Routine> runningRoutines = new ArrayList<>();
 	private ArrayList<Routine> routinesToRemove = new ArrayList<>();
 	private ArrayList<Routine> routinesToAdd = new ArrayList<>();
@@ -52,14 +52,14 @@ public class RoutineManager {
 	public Commands reset(Commands commands) {
 		Logger.getInstance().logRobotThread(Level.FINE, "Routine manager reset");
 		Commands output = commands.copy();
-		// Cancel all running routines
+		//Cancel all running routines
 		if(runningRoutines.size() != 0) {
 			for(Routine routine : runningRoutines) {
 				Logger.getInstance().logRobotThread(Level.FINE, "Canceling", routine.getName());
 				output = routine.cancel(output);
 			}
 		}
-		// Empty the routine buffers
+		//Empty the routine buffers
 		runningRoutines.clear();
 		routinesToAdd.clear();
 		routinesToRemove.clear();
@@ -74,7 +74,7 @@ public class RoutineManager {
 	public Commands update(Commands commands) {
 		routinesToRemove = new ArrayList<>();
 		Commands output = commands.copy();
-		// Update all running routines
+		//Update all running routines
 		for(Routine routine : runningRoutines) {
 			if(routine.finished()) {
 				Logger.getInstance().logRobotThread(Level.INFO, "Routine", routine.getName()+" finished, canceled");
@@ -85,14 +85,14 @@ public class RoutineManager {
 			}
 		}
 		
-		// Remove routines that finished
+		//Remove routines that finished
 		for(Routine routine : routinesToRemove) {
 			runningRoutines.remove(routine);
 		}
 
-		// Add newest routines after current routines may have finished, start them, and update them
+		//Add newest routines after current routines may have finished, start them, and update them
 		for (Routine newRoutine : routinesToAdd) {
-			// combine running routines w/ new routine to check for shared subsystems
+			//combine running routines w/ new routine to check for shared subsystems
 			ArrayList<Routine> conflicts = conflictingRoutines(runningRoutines, newRoutine);
 			for(Routine routine : conflicts) {
 				Logger.getInstance().logRobotThread(Level.WARNING, "Canceling routine "+routine.getName() +
@@ -111,7 +111,7 @@ public class RoutineManager {
 			Logger.getInstance().logRobotThread(Level.FINE, "Cancel routine button");
 			output = this.reset(output);
 		} else if(!output.wantedRoutines.isEmpty()) {
-			// Routines requested by newly added routines
+			//Routines requested by newly added routines
 			for(Routine routine : output.wantedRoutines) {
 				addNewRoutine(routine);
 			}
@@ -129,7 +129,7 @@ public class RoutineManager {
 	 * @return Array of routines that require subsystems the newRoutine needs
 	 */
 	public ArrayList<Routine> conflictingRoutines(ArrayList<Routine> routinesList, Routine newRoutine) {
-		// Get hash sets of required subsystems for existing routines
+		//Get hash sets of required subsystems for existing routines
 		ArrayList<HashSet<Subsystem>> routineSubsystemSets = new ArrayList<HashSet<Subsystem>>();
 		HashSet<Subsystem> subsystemsRequired = new HashSet(Arrays.asList(newRoutine.getRequiredSubsystems()));
 
@@ -138,13 +138,13 @@ public class RoutineManager {
 		}
 
 		ArrayList<Routine> conflicts = new ArrayList<Routine>();
-		// Any existing routines that require the same subsystem are added to routine
+		//Any existing routines that require the same subsystem are added to routine
 		for (int j = 0; j < routinesList.size(); j++) {
-			// Find intersection
+			//Find intersection
 			routineSubsystemSets.get(j).retainAll(subsystemsRequired);
 			if(routineSubsystemSets.get(j).size()!=0) {
 				conflicts.add(routinesList.get(j));
-				// Move to next routine in the list
+				//Move to next routine in the list
 				continue;
 			}
 		}
@@ -169,15 +169,15 @@ public class RoutineManager {
 	 */
 	public static Subsystem[] sharedSubsystems(ArrayList<Routine> routines) {
 		HashMap<Subsystem, Integer> counter = new HashMap<Subsystem, Integer>();
-		counter.put(null, 0);	// for SampleRoutine
+		counter.put(null, 0);	//for SampleRoutine
 		counter.put(Drive.getInstance(), 0);
-		// Count the number of times each subsystem appears
+		//Count the number of times each subsystem appears
 		for (Routine routine : routines) {
 			for (Subsystem subsystem : routine.getRequiredSubsystems()) {
 				counter.put(subsystem, counter.get(subsystem) + 1);
 			}
 		}
-		// Add all subsystems that appear multiple times to return list
+		//Add all subsystems that appear multiple times to return list
 		HashSet<Subsystem> conflicts = new HashSet<Subsystem>();
 		for (Subsystem subsystem : counter.keySet()) {
 			if (counter.get(subsystem) > 1 && subsystem != null) {

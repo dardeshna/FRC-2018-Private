@@ -19,17 +19,17 @@ public abstract class Routine {
      */
     protected final Drive drive = Drive.getInstance();
 
-    // Called to start a routine
+    //Called to start a routine
     public abstract void start();
-    // Update method, returns modified commands
+    //Update method, returns modified commands
     public abstract Commands update(Commands commands);
-    // Called to stop a routine, should return modified commands if needed
+    //Called to stop a routine, should return modified commands if needed
     public abstract Commands cancel(Commands commands);
-    // Notifies routine manager when routine is complete
+    //Notifies routine manager when routine is complete
     public abstract boolean finished();
-    // Store subsystems which are required by this routine, preventing routines from overlapping
+    //Store subsystems which are required by this routine, preventing routines from overlapping
     public abstract Subsystem[] getRequiredSubsystems();
-    // Force override of getName()
+    //Force override of getName()
     public abstract String getName();
     @Override
     public String toString() { return getName(); }

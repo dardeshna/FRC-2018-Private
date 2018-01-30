@@ -39,7 +39,7 @@ class HardwareUpdater {
 	
 	public static HardwareUpdater getInstance() { return instance; }
 
-	// Subsystem references
+	//Subsystem references
 	private Drive mDrive;
 	private Climber mClimber;
 	private Elevator mElevator;
@@ -105,7 +105,7 @@ class HardwareUpdater {
 		WPI_VictorSPX rightSlave1Victor = HardwareAdapter.getInstance().getDrivetrain().rightSlave1Victor;
 		WPI_VictorSPX rightSlave2Victor = HardwareAdapter.getInstance().getDrivetrain().rightSlave2Victor;
 		
-		// Enable all talons' brake mode and disables forward and reverse soft
+		//Enable all talons' brake mode and disables forward and reverse soft
 		leftMasterTalon.setNeutralMode(NeutralMode.Brake);
 		leftSlave1Victor.setNeutralMode(NeutralMode.Brake);
 		leftSlave2Victor.setNeutralMode(NeutralMode.Brake);
@@ -141,7 +141,7 @@ class HardwareUpdater {
 		rightSlave2Victor.configForwardSoftLimitEnable(false, 0); 
 		rightSlave2Victor.configReverseSoftLimitEnable(false, 0);
 
-		// Allow max voltage for closed loop control
+		//Allow max voltage for closed loop control
 		leftMasterTalon.configPeakOutputForward(Constants.kDriveMaxClosedLoopOutput, 0);
 		leftMasterTalon.configPeakOutputReverse(-Constants.kDriveMaxClosedLoopOutput, 0);
 		leftSlave1Victor.configPeakOutputForward(Constants.kDriveMaxClosedLoopOutput, 0);
@@ -156,7 +156,7 @@ class HardwareUpdater {
 		rightSlave2Victor.configPeakOutputForward(Constants.kDriveMaxClosedLoopOutput, 0);
 		rightSlave2Victor.configPeakOutputReverse(-Constants.kDriveMaxClosedLoopOutput, 0);
 
-		// Configure master talon feedback devices
+		//Configure master talon feedback devices
 		leftMasterTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
 		rightMasterTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
 
@@ -172,16 +172,16 @@ class HardwareUpdater {
 		leftMasterTalon.configVelocityMeasurementWindow(16, 0);
 		rightMasterTalon.configVelocityMeasurementWindow(16, 0);
 
-		// Zero encoders
+		//Zero encoders
 		leftMasterTalon.setSelectedSensorPosition(0, 0, 0);
 		rightMasterTalon.setSelectedSensorPosition(0, 0, 0);
 
-		// Reverse right side
+		//Reverse right side
 		rightMasterTalon.setInverted(true);
 		rightSlave1Victor.setInverted(true);
 		rightSlave2Victor.setInverted(true);
 
-		// Set slave victors to follower mode
+		//Set slave victors to follower mode
 		leftSlave1Victor.set(ControlMode.Follower, leftMasterTalon.getDeviceID());
 		leftSlave2Victor.set(ControlMode.Follower, leftMasterTalon.getDeviceID());
 		rightSlave1Victor.set(ControlMode.Follower, rightMasterTalon.getDeviceID());
@@ -217,10 +217,10 @@ class HardwareUpdater {
 		//TODO: in phase or not?
 		masterTalon.setSensorPhase(true);
 
-		// Zero encoders
+		//Zero encoders
 		masterTalon.setSelectedSensorPosition(0, 0, 0);
 
-		// Reverse right side
+		//Reverse right side
 		slaveTalon.setInverted(true);
 	}
 
@@ -375,7 +375,7 @@ class HardwareUpdater {
         double left_distance = robotState.drivePose.leftEnc / Constants.kDriveTicksPerInch;
         double right_distance = robotState.drivePose.rightEnc / Constants.kDriveTicksPerInch;
 
-//        Rotation2d gyro_angle = Rotation2d.fromRadians((right_distance - left_distance) * Constants.kTrackScrubFactor / Constants.kTrackEffectiveDiameter);
+//     Rotation2d gyro_angle = Rotation2d.fromRadians((right_distance - left_distance) * Constants.kTrackScrubFactor / Constants.kTrackEffectiveDiameter);
         Rotation2d gyro_angle = Rotation2d.fromDegrees(robotState.drivePose.heading);
 		RigidTransform2d odometry = robotState.generateOdometryFromSensors(
                 left_distance - robotState.drivePose.lastLeftEnc / Constants.kDriveTicksPerInch,
@@ -387,7 +387,7 @@ class HardwareUpdater {
 
         robotState.addObservations(time, odometry, velocity);
         
-        // Update elevator sensors
+        //Update elevator sensors
 		robotState.elevatorPosition = HardwareAdapter.getInstance().getElevator().elevatorMasterTalon.getSelectedSensorPosition(0);
 		robotState.elevatorVelocity = HardwareAdapter.getInstance().getElevator().elevatorMasterTalon.getSelectedSensorVelocity(0);
         robotState.elevatorBottomHFX = HardwareAdapter.getInstance().getElevator().bottomHFX.get();

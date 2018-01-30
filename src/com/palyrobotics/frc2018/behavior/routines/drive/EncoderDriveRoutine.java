@@ -30,7 +30,7 @@ public class EncoderDriveRoutine extends Routine {
 	private double mVelocitySetpoint;
 	private final double kDefaultVelocitySetpoint = 0.5;
 	
-	// Timeout after x seconds
+	//Timeout after x seconds
 	private double mTimeout;
 	private final double kDefaultTimeout = 5;
 	private long mStartTime;
@@ -91,7 +91,7 @@ public class EncoderDriveRoutine extends Routine {
 		switch (state) {
 		case START:
 			mStartTime = System.currentTimeMillis();
-			// Only set the setpoint the first time the state is START
+			//Only set the setpoint the first time the state is START
 			if(mIsNewState) {
 //				drive.setDistanceSetpoint(mDistance, mVelocitySetpoint);
 			}

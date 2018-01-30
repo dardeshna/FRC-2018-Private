@@ -29,6 +29,6 @@ import org.junit.runners.Suite;
  * Should not include integration tests, place in other suite
  */
 public class UnitTestSuite {
-  // the class remains empty,
-  // used only as a holder for the above annotations
+  //the class remains empty,
+  //used only as a holder for the above annotations
 }

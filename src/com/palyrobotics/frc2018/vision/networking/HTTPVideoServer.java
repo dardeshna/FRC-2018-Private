@@ -75,10 +75,10 @@ public class HTTPVideoServer extends VisionServerBase {
 		PrintStream output;
 		try {
 
-			// Output stream that we send the response to
+			//Output stream that we send the response to
 			output = new PrintStream(m_client.getOutputStream());
 
-			// Send out the content to the javascript client
+			//Send out the content to the javascript client
 			output.println("HTTP/1.1 200 OK");
 			output.println("Cache-Control: no-cache, no-store, must-revalidate");
 			output.println("Content-Type: image/jpeg"   );
@@ -120,9 +120,9 @@ public class HTTPVideoServer extends VisionServerBase {
 					Logger.getInstance().logRobotThread(Level.FINEST, e);
 				}
 
-//				// Make sure queue has something in it
+//				//Make sure queue has something in it
 //				if (VisionData.getVideoQueue().size() > 0) {
-//					// Get next frame
+//					//Get next frame
 //					byte[] frame = VisionData.getVideoQueue().remove();
 //					try {
 //						writeImageToServer(frame);

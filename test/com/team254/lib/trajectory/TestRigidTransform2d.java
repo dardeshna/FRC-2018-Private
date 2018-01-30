@@ -14,7 +14,7 @@ public class TestRigidTransform2d {
 
     @Test
     public void testRotation2d() {
-        // Test constructors
+        //Test constructors
         Rotation2d rot1 = new Rotation2d();
         assertEquals(1, rot1.cos(), kTestEpsilon);
         assertEquals(0, rot1.sin(), kTestEpsilon);
@@ -44,7 +44,7 @@ public class TestRigidTransform2d {
         assertEquals(-90, rot1.getDegrees(), kTestEpsilon);
         assertEquals(-Math.PI / 2, rot1.getRadians(), kTestEpsilon);
 
-        // Test inversion
+        //Test inversion
         rot1 = Rotation2d.fromDegrees(270);
         Rotation2d rot2 = rot1.inverse();
         assertEquals(0, rot2.cos(), kTestEpsilon);
@@ -59,7 +59,7 @@ public class TestRigidTransform2d {
         assertEquals(-rot1.sin(), rot2.sin(), kTestEpsilon);
         assertEquals(-1, rot2.getDegrees(), kTestEpsilon);
 
-        // Test rotateBy
+        //Test rotateBy
         rot1 = Rotation2d.fromDegrees(45);
         rot2 = Rotation2d.fromDegrees(45);
         Rotation2d rot3 = rot1.rotateBy(rot2);
@@ -78,7 +78,7 @@ public class TestRigidTransform2d {
         assertEquals(0, rot3.getDegrees(), kTestEpsilon);
         assertEquals(0, rot3.getRadians(), kTestEpsilon);
 
-        // A rotation times its inverse should be the identity
+        //A rotation times its inverse should be the identity
         Rotation2d identity = new Rotation2d();
         rot1 = Rotation2d.fromDegrees(21.45);
         rot2 = rot1.rotateBy(rot1.inverse());
@@ -86,7 +86,7 @@ public class TestRigidTransform2d {
         assertEquals(identity.sin(), rot2.sin(), kTestEpsilon);
         assertEquals(identity.getDegrees(), rot2.getDegrees(), kTestEpsilon);
 
-        // Test interpolation
+        //Test interpolation
         rot1 = Rotation2d.fromDegrees(45);
         rot2 = Rotation2d.fromDegrees(135);
         rot3 = rot1.interpolate(rot2, .5);
@@ -115,7 +115,7 @@ public class TestRigidTransform2d {
 
     @Test
     public void testTranslation2d() {
-        // Test constructors
+        //Test constructors
         Translation2d pos1 = new Translation2d();
         assertEquals(0, pos1.getX(), kTestEpsilon);
         assertEquals(0, pos1.getY(), kTestEpsilon);
@@ -132,14 +132,14 @@ public class TestRigidTransform2d {
         assertEquals(4, pos1.getY(), kTestEpsilon);
         assertEquals(5, pos1.norm(), kTestEpsilon);
 
-        // Test inversion
+        //Test inversion
         pos1 = new Translation2d(3.152, 4.1666);
         Translation2d pos2 = pos1.inverse();
         assertEquals(-pos1.getX(), pos2.getX(), kTestEpsilon);
         assertEquals(-pos1.getY(), pos2.getY(), kTestEpsilon);
         assertEquals(pos1.norm(), pos2.norm(), kTestEpsilon);
 
-        // Test rotateBy
+        //Test rotateBy
         pos1 = new Translation2d(2, 0);
         Rotation2d rot1 = Rotation2d.fromDegrees(90);
         pos2 = pos1.rotateBy(rot1);
@@ -154,7 +154,7 @@ public class TestRigidTransform2d {
         assertEquals(-Math.sqrt(2), pos2.getY(), kTestEpsilon);
         assertEquals(pos1.norm(), pos2.norm(), kTestEpsilon);
 
-        // Test translateBy
+        //Test translateBy
         pos1 = new Translation2d(2, 0);
         pos2 = new Translation2d(-2, 1);
         Translation2d pos3 = pos1.translateBy(pos2);
@@ -162,7 +162,7 @@ public class TestRigidTransform2d {
         assertEquals(1, pos3.getY(), kTestEpsilon);
         assertEquals(1, pos3.norm(), kTestEpsilon);
 
-        // A translation times its inverse should be the identity
+        //A translation times its inverse should be the identity
         Translation2d identity = new Translation2d();
         pos1 = new Translation2d(2.16612, -23.55);
         pos2 = pos1.translateBy(pos1.inverse());
@@ -170,7 +170,7 @@ public class TestRigidTransform2d {
         assertEquals(identity.getY(), pos2.getY(), kTestEpsilon);
         assertEquals(identity.norm(), pos2.norm(), kTestEpsilon);
 
-        // Test interpolation
+        //Test interpolation
         pos1 = new Translation2d(0, 1);
         pos2 = new Translation2d(10, -1);
         pos3 = pos1.interpolate(pos2, .5);
@@ -186,7 +186,7 @@ public class TestRigidTransform2d {
 
     @Test
     public void testRigidTransform2d() {
-        // Test constructors
+        //Test constructors
         RigidTransform2d pose1 = new RigidTransform2d();
         assertEquals(0, pose1.getTranslation().getX(), kTestEpsilon);
         assertEquals(0, pose1.getTranslation().getY(), kTestEpsilon);
@@ -197,7 +197,7 @@ public class TestRigidTransform2d {
         assertEquals(4, pose1.getTranslation().getY(), kTestEpsilon);
         assertEquals(45, pose1.getRotation().getDegrees(), kTestEpsilon);
 
-        // Test transformation
+        //Test transformation
         pose1 = new RigidTransform2d(new Translation2d(3, 4), Rotation2d.fromDegrees(90));
         RigidTransform2d pose2 = new RigidTransform2d(new Translation2d(1, 0), Rotation2d.fromDegrees(0));
         RigidTransform2d pose3 = pose1.transformBy(pose2);
@@ -212,7 +212,7 @@ public class TestRigidTransform2d {
         assertEquals(5, pose3.getTranslation().getY(), kTestEpsilon);
         assertEquals(0, pose3.getRotation().getDegrees(), kTestEpsilon);
 
-        // A pose times its inverse should be the identity
+        //A pose times its inverse should be the identity
         RigidTransform2d identity = new RigidTransform2d();
         pose1 = new RigidTransform2d(new Translation2d(3.51512152, 4.23), Rotation2d.fromDegrees(91.6));
         pose2 = pose1.transformBy(pose1.inverse());
@@ -220,7 +220,7 @@ public class TestRigidTransform2d {
         assertEquals(identity.getTranslation().getY(), pose2.getTranslation().getY(), kTestEpsilon);
         assertEquals(identity.getRotation().getDegrees(), pose2.getRotation().getDegrees(), kTestEpsilon);
 
-        // Test interpolation
+        //Test interpolation
         pose1 = new RigidTransform2d(new Translation2d(3, 4), Rotation2d.fromDegrees(90));
         pose2 = new RigidTransform2d(new Translation2d(13, -6), Rotation2d.fromDegrees(-90));
         pose3 = pose1.interpolate(pose2, .5);

@@ -14,7 +14,7 @@ import java.util.logging.Level;
 
 public class GyroMotionMagicTurnAngleController implements DriveController {
 	private Pose mCachedPose;
-	private final double mTargetHeading;	// Absolute setpoint in degrees
+	private final double mTargetHeading;	//Absolute setpoint in degrees
 	private double mLeftTarget, mRightTarget;
 	private TalonSRXOutput mLeftOutput, mRightOutput;
 	
@@ -55,7 +55,7 @@ public class GyroMotionMagicTurnAngleController implements DriveController {
 	public DriveSignal update(RobotState state) {
 		mCachedPose = state.drivePose;
 		double error = mTargetHeading - mCachedPose.heading;
-		// Compensate for current motion
+		//Compensate for current motion
 //		error -= mCachedPose.headingVelocity*Constants.kSubsystemLooperDt;
 		mLeftTarget = mCachedPose.leftEnc - (error * kInchesPerDegree * kTicksPerInch);
 		mRightTarget = mCachedPose.rightEnc + (error * kInchesPerDegree * kTicksPerInch);
@@ -71,7 +71,7 @@ public class GyroMotionMagicTurnAngleController implements DriveController {
 
 	@Override
 	public boolean onTarget() {
-		// Wait for controller to be added before finishing routine
+		//Wait for controller to be added before finishing routine
 //		if (mLeftOutput.getSetpoint() != Robot.getRobotState().leftSetpoint) {
 //			System.out.println("Mismatched desired talon and actual talon setpoints! desired, actual");
 //			System.out.println("Left: " + mLeftOutput.getSetpoint()+", "+Robot.getRobotState().leftSetpoint);

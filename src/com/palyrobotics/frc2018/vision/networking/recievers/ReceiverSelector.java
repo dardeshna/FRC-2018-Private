@@ -27,7 +27,7 @@ public class ReceiverSelector {
 
     public VisionReceiverBase getReceiver() {
 
-        if(receiver == null){
+        if(receiver == null) {
             this.setReceiver(VisionReceiverType.JSON);
         }
         return receiver_map.get(this.receiver);

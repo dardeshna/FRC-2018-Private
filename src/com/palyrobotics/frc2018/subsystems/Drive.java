@@ -37,24 +37,24 @@ public class Drive extends Subsystem {
 	public enum DriveState {CHEZY, OFF_BOARD_CONTROLLER, ON_BOARD_CONTROLLER, OPEN_LOOP, NEUTRAL}
 	private DriveState mState = DriveState.NEUTRAL;
 
-	// Helper class to calculate teleop output
+	//Helper class to calculate teleop output
 	private CheesyDriveHelper mCDH = new CheesyDriveHelper();
 
 	private Drive.DriveController mController = null;
-	// Used for off board controllers to be called only once
+	//Used for off board controllers to be called only once
 	private boolean newController = false;
 
-	// Encoder DPP
+	//Encoder DPP
 	private final double kInchesPerTick;
-	private final double kWheelbaseWidth; // Get from CAD
-	private final double kTurnSlipFactor; // Measure empirically
+	private final double kWheelbaseWidth; //Get from CAD
+	private final double kTurnSlipFactor; //Measure empirically
 	public final double kInchesToTicks;
 
-	// Cache poses to not be allocating at 200Hz
+	//Cache poses to not be allocating at 200Hz
 	private Pose mCachedPose = new Pose(0, 0, 0, 0, 0, 0, 0, 0);
-	// Cached robot state, updated by looper
+	//Cached robot state, updated by looper
 	private RobotState mCachedRobotState;
-	// Stores output
+	//Stores output
 	private DriveSignal mSignal = DriveSignal.getNeutralSignal();
 
 	private DashboardValue motors;
@@ -211,7 +211,7 @@ public class Drive extends Subsystem {
 		newController = true;
 	}
 	
-	// Wipes current controller
+	//Wipes current controller
 	public void resetController() {
 		mController = null;
 	}
@@ -220,7 +220,7 @@ public class Drive extends Subsystem {
 	 * @return The pose according to the current sensor state
 	 */
 	public Pose getPose() {
-		// If drivetrain has not had first update yet, return initial robot pose of 0,0,0,0,0,0
+		//If drivetrain has not had first update yet, return initial robot pose of 0,0,0,0,0,0
 		if(mCachedRobotState == null) {
 			return new Pose(0,0,0,0,0,0,0,0);
 		}

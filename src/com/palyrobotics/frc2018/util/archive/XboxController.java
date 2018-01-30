@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.Joystick;
  *
  */
 public class XboxController extends Joystick {
-	// 1 or -1 to invert y values
+	//1 or -1 to invert y values
 	private int invertLeftY = 1;
 	private int invertRightY = 1;
 	

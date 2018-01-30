@@ -67,7 +67,7 @@ public class VisionVideoServer extends VisionServerBase {
 			Logger.getInstance().logRobotThread(Level.FINEST, e);
 
 			closeClient();
-		} catch (NullPointerException e){
+		} catch (NullPointerException e) {
 			Logger.getInstance().logRobotThread(Level.FINEST, e);
 		}
 	}
@@ -81,7 +81,7 @@ public class VisionVideoServer extends VisionServerBase {
 
 				final ConcurrentLinkedQueue<byte[]> videoFrames = VisionData.getVideoQueue();
 
-				// Send frame from nexus if they exist, else show default image
+				//Send frame from nexus if they exist, else show default image
 				final byte[] imageToSend = videoFrames.size() > 0 ? videoFrames.remove() : k_defaultImage;
 
 				writeImageToServer(imageToSend);

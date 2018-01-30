@@ -34,12 +34,12 @@ public class VisionDataReceiver extends ReceiverBase {
 
 			if (json != null) {
 				String state = (String)json.get("state");
-				if (!(state == null) && !state.equals("")) {	// Handle based on state
+				if (!(state == null) && !state.equals("")) {	//Handle based on state
 					switch (state) {
 
 						case "STREAMING": {
 
-							// Get image data
+							//Get image data
 							final double
 									data_x = Double.parseDouble((String)json.get("x_displacement")),
 									data_z = Double.parseDouble((String)json.get("z_displacement"));
@@ -62,7 +62,7 @@ public class VisionDataReceiver extends ReceiverBase {
 				}
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			//TODO Auto-generated catch block
 			Logger.getInstance().logRobotThread(Level.FINEST, e);
 		}
 		

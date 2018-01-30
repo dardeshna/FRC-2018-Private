@@ -36,20 +36,20 @@ import java.util.logging.Level;
  */
 public class RuntimeExecutor {
 
-	// Instance and state variables
+	//Instance and state variables
 	private static RuntimeExecutor s_instance;
 
 	/**
 	 * Creates an RuntimeExecutor instance
 	 * Cannot be called outside as a Singleton
 	 */
-	private RuntimeExecutor(){}
+	private RuntimeExecutor() {}
 
 	/**
 	 * @return The instance of the ACB
 	 */
-	public static RuntimeExecutor getInstance(){
-		if(s_instance == null){
+	public static RuntimeExecutor getInstance() {
+		if(s_instance == null) {
 			s_instance = new RuntimeExecutor();
 		}
 		return s_instance;
@@ -61,18 +61,18 @@ public class RuntimeExecutor {
 	 * @param command Command to execute
 	 * @return Console output of executing the command
 	 */
-	public String exec(String command){
+	public String exec(String command) {
 
-		// Builds the output of the console
+		//Builds the output of the console
 		StringBuilder out = new StringBuilder();
 
 		try {
 			String line;
 
-			// Execute the command as a process
+			//Execute the command as a process
 			Process p = Runtime.getRuntime().exec(command);
 
-			// Read in console output from the process object
+			//Read in console output from the process object
 			BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
 			while ((line = input.readLine()) != null) {
 				out.append(line);
@@ -89,7 +89,7 @@ public class RuntimeExecutor {
 	/**
 	 * Initializes this computer as an adb server
 	 */
-	public void init(){
+	public void init() {
 		exec("adb start-server");
 	}
 }

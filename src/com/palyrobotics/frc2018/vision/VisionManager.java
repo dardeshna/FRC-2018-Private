@@ -16,15 +16,15 @@ import java.util.logging.Level;
  * @author Alvin
  */
 public class VisionManager extends VisionThreadBase {
-	// Instance and state variables
+	//Instance and state variables
 	private static VisionManager s_instance;
 
 	/**
 	 * @return The instance of the ACH
 	 */
-	public static VisionManager getInstance(){
+	public static VisionManager getInstance() {
 
-		if(s_instance == null){
+		if(s_instance == null) {
 			s_instance = new VisionManager();
 		}
 		return s_instance;
@@ -40,7 +40,7 @@ public class VisionManager extends VisionThreadBase {
 
 	private ConnectionState m_connectionState = ConnectionState.PRE_INIT;
 
-	// Utility variables
+	//Utility variables
 	private ReceiverBase mReceiverBaseVideo = new VisionVideoReceiver();
 	private ReceiverBase mReceiverBaseData = new VisionDataReceiver();
 	private boolean m_adbServerCreated = false;
@@ -53,7 +53,7 @@ public class VisionManager extends VisionThreadBase {
 	 * Creates an VisionManager instance
 	 * Cannot be called outside as a Singleton
 	 */
-	private VisionManager(){
+	private VisionManager() {
 		super("Vision Manager");
 	}
 
@@ -61,7 +61,7 @@ public class VisionManager extends VisionThreadBase {
 	 * Sets the state of connection
 	 * @param state State to switch to
 	 */
-	private void SetState(ConnectionState state){
+	private void SetState(ConnectionState state) {
 		m_connectionState = state;
 	}
 
@@ -83,12 +83,12 @@ public class VisionManager extends VisionThreadBase {
 	@Override
 	public void init() {
 		
-		if(m_connectionState != ConnectionState.PRE_INIT) {    // This should never happen
+		if(m_connectionState != ConnectionState.PRE_INIT) {    //This should never happen
 //			System.out.println("Error: in VisionManager.start(), "
 //					+ "connection is already initialized");
 		}
 
-		// Initialize Thread Variables
+		//Initialize Thread Variables
 		this.SetState(ConnectionState.STARTING_ADB);
 	}
 
@@ -107,7 +107,7 @@ public class VisionManager extends VisionThreadBase {
 	 */
 	private ConnectionState StartADB() {
 
-		if (!CommandExecutor.isNexusConnected()){
+		if (!CommandExecutor.isNexusConnected()) {
 
 			initAdbRetryCount++;
 
@@ -124,8 +124,8 @@ public class VisionManager extends VisionThreadBase {
 			return this.m_connectionState;
 		}
 
-		if(m_adbServerCreated){
-			if(!this.isAppStarted()){
+		if(m_adbServerCreated) {
+			if(!this.isAppStarted()) {
 				this.VisionInit();
 			} else {
 				this.m_visionRunning = true;
@@ -160,11 +160,11 @@ public class VisionManager extends VisionThreadBase {
 			Logger.getInstance().logRobotThread(Level.FINEST, e);
 		}
 
-		if(connected){      // Adb server started successfully
+		if(connected) {      //Adb server started successfully
 			m_adbServerCreated = true;
 //			System.out.println("[Info] Adb server started");
 //			Logger.getInstance().logRobotThread("[Info] Adb server started");
-		} else {            // Adb server failed to start
+		} else {            //Adb server failed to start
 //			System.out.println("[Error] Failed to start adb server");
 //			Logger.getInstance().logRobotThread("[Error] Failed to start adb server");
 		}
@@ -174,7 +174,7 @@ public class VisionManager extends VisionThreadBase {
 	 * Sends command to boot up the vision app
 	 * @return The state after execution
 	 */
-	private ConnectionState VisionInit(){
+	private ConnectionState VisionInit() {
 		boolean connected = false;
 		try {
 			String outp = CommandExecutor.visionInit();
@@ -185,22 +185,22 @@ public class VisionManager extends VisionThreadBase {
 			Logger.getInstance().logRobotThread(Level.FINEST, e);
 		}
 
-		if(connected) {     // App started successfully
+		if(connected) {     //App started successfully
 			m_visionRunning = true;
 //			System.out.println("[Info] Starting Vision Stream");
 			return ConnectionState.STREAMING;
-		} else {            // Failed to start app
+		} else {            //Failed to start app
 			return m_connectionState;
 		}
 	}
 
-	public boolean isAppStarted(){
+	public boolean isAppStarted() {
 
 		String pidret = CommandExecutor.appPID();
 		return pidret != null && !pidret.isEmpty() && pidret != "";
 	}
 
-	public boolean isServerStarted(){
+	public boolean isServerStarted() {
 		return m_adbServerCreated;
 	}
 
@@ -210,14 +210,14 @@ public class VisionManager extends VisionThreadBase {
 	@Override
 	public void update() {
 
-		switch(m_connectionState){
+		switch(m_connectionState) {
 
-		case PRE_INIT:	// Shouldn't happen, but can due to error
+		case PRE_INIT:	//Shouldn't happen, but can due to error
 //			System.out.println("Error: in VisionManager.run(), "
 //					+ "thread running on preinit state");
 			break;
 
-		case STARTING_ADB:	// Triggered by start(), should be called externally
+		case STARTING_ADB:	//Triggered by start(), should be called externally
 			SetState(StartADB());
 			break;
 
@@ -225,7 +225,7 @@ public class VisionManager extends VisionThreadBase {
 			SetState(StartSubprocesses());
 			break;
 
-		case START_VISION_APP:	// Triggered by StartVisionApp(), should be called externally
+		case START_VISION_APP:	//Triggered by StartVisionApp(), should be called externally
 			SetState(VisionInit());
 			break;
 
@@ -239,7 +239,7 @@ public class VisionManager extends VisionThreadBase {
 	
 	@Override
 	protected void tearDown() {
-		// TODO Auto-generated method stub
+		//TODO Auto-generated method stub
 
 	}
 

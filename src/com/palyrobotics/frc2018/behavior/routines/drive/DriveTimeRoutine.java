@@ -20,7 +20,7 @@ public class DriveTimeRoutine extends Routine {
 	 * @param drivePower LegacyDrive signal to output (left/right speeds -1 to 1)
 	 */
 	public DriveTimeRoutine(double time, DriveSignal drivePower) {
-		// Keeps the offset prepared, when routine starts, will add System.currentTime
+		//Keeps the offset prepared, when routine starts, will add System.currentTime
 		mEndTime = (long) (1000*time);
 		this.mDrivePower = drivePower;
 	}
@@ -28,7 +28,7 @@ public class DriveTimeRoutine extends Routine {
 	@Override
 	public void start() {
 		drive.resetController();
-		// mEndTime already has the desired drive time
+		//mEndTime already has the desired drive time
 		mEndTime += System.currentTimeMillis();
 	}
 
@@ -51,7 +51,7 @@ public class DriveTimeRoutine extends Routine {
 
 	@Override
 	public boolean finished() {
-		// Finish after the time is up
+		//Finish after the time is up
 		return (System.currentTimeMillis() >= mEndTime);
 	}
 

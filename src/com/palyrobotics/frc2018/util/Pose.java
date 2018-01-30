@@ -66,7 +66,7 @@ public class Pose {
 		this.rightError = Optional.empty();
 	}
 
-	// TODO: Copy and equals methods
+	//TODO: Copy and equals methods
 	public Pose copy() {
 		Pose copy = new Pose();
 		copy.leftEnc = this.leftEnc;

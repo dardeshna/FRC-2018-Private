@@ -93,7 +93,7 @@ public class TrajectoryFollower {
             setpoint_.vel = 0;
             setpoint_.acc = 0;
         } else {
-            // Compute the new commanded position, velocity, and acceleration.
+            //Compute the new commanded position, velocity, and acceleration.
             double distance_to_go = goal_position_ - setpoint_.pos;
             double cur_vel = setpoint_.vel;
             double cur_vel2 = cur_vel * cur_vel;
@@ -103,8 +103,8 @@ public class TrajectoryFollower {
                 distance_to_go *= -1;
                 cur_vel *= -1;
             }
-            // Compute discriminants of the minimum and maximum reachable
-            // velocities over the remaining distance.
+            //Compute discriminants of the minimum and maximum reachable
+            //velocities over the remaining distance.
             double max_reachable_velocity_disc = cur_vel2 / 2.0
                     + config_.max_acc * distance_to_go;
             double min_reachable_velocity_disc = cur_vel2 / 2.0
@@ -114,19 +114,19 @@ public class TrajectoryFollower {
                 cruise_vel = Math.min(config_.max_vel,
                         Math.sqrt(max_reachable_velocity_disc));
             }
-            double t_start = (cruise_vel - cur_vel) / config_.max_acc; // Accelerate
-            // to
-            // cruise_vel
+            double t_start = (cruise_vel - cur_vel) / config_.max_acc; //Accelerate
+            //to
+            //cruise_vel
             double x_start = cur_vel * t_start + .5 * config_.max_acc * t_start
                     * t_start;
-            double t_end = Math.abs(cruise_vel / config_.max_acc); // Decelerate
-            // to zero
-            // vel.
+            double t_end = Math.abs(cruise_vel / config_.max_acc); //Decelerate
+            //to zero
+            //vel.
             double x_end = cruise_vel * t_end - .5 * config_.max_acc * t_end
                     * t_end;
             double x_cruise = Math.max(0, distance_to_go - x_start - x_end);
             double t_cruise = Math.abs(x_cruise / cruise_vel);
-            // Figure out where we should be one dt along this trajectory.
+            //Figure out where we should be one dt along this trajectory.
             if (t_start >= dt) {
                 next_state_.pos = cur_vel * dt + .5 * config_.max_acc
                         * dt * dt;
@@ -143,7 +143,7 @@ public class TrajectoryFollower {
                 next_state_.vel = cruise_vel - config_.max_acc * delta_t;
                 next_state_.acc = -config_.max_acc;
             } else {
-                // Trajectory ends this cycle.
+                //Trajectory ends this cycle.
                 next_state_.pos = distance_to_go;
                 next_state_.vel = 0;
                 next_state_.acc = 0;
@@ -160,7 +160,7 @@ public class TrajectoryFollower {
         }
         double error = setpoint_.pos - position;
         if (reset_) {
-            // Prevent jump in derivative term when we have been reset.
+            //Prevent jump in derivative term when we have been reset.
             reset_ = false;
             last_error_ = error;
             error_sum_ = 0;
@@ -169,7 +169,7 @@ public class TrajectoryFollower {
                 * ((error - last_error_) / dt - setpoint_.vel)
                 + (kv_ * setpoint_.vel + ka_ * setpoint_.acc);
         if (output < 1.0 && output > -1.0) {
-            // Only integrate error if the output isn't already saturated.
+            //Only integrate error if the output isn't already saturated.
             error_sum_ += error * dt;
         }
         output += ki_ * error_sum_;

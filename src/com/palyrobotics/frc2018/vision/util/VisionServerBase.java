@@ -69,8 +69,8 @@ public abstract class VisionServerBase extends VisionThreadBase {
 
         final boolean notConnected = !m_client.isConnected(), closed = m_client.isClosed(), shouldRetry = notConnected || closed;
 
-//        if (notConnected) log("[Warning] Lost connection to port: " + Integer.toString(m_port));
-//        if (closed) log("[Warning] Connection was closed on port: " + Integer.toString(m_port));
+//     if (notConnected) log("[Warning] Lost connection to port: " + Integer.toString(m_port));
+//     if (closed) log("[Warning] Connection was closed on port: " + Integer.toString(m_port));
 
     	return shouldRetry ? ServerState.ATTEMPTING_CONNECTION : ServerState.OPEN;
     }
@@ -89,7 +89,7 @@ public abstract class VisionServerBase extends VisionThreadBase {
      *
      * @return The state after execution
      */
-    private ServerState acceptConnection(){
+    private ServerState acceptConnection() {
 
         try {
 
@@ -99,7 +99,7 @@ public abstract class VisionServerBase extends VisionThreadBase {
             m_server = new ServerSocket(m_port);
             m_server.setReuseAddress(true);
 
-            // Pause thread until we accept from the client
+            //Pause thread until we accept from the client
             m_client = m_server.accept();
 
             //if (!m_isRestartingSocket) log("Connected to client on port: " + m_client.getPort() + "!");
@@ -125,9 +125,9 @@ public abstract class VisionServerBase extends VisionThreadBase {
     @Override
     protected void update()
     {
-        switch (m_serverState){
+        switch (m_serverState) {
             case PRE_INIT:
-//                log("Thread is not initialized while in update.");
+//             log("Thread is not initialized while in update.");
                 break;
             case ATTEMPTING_CONNECTION:
                 setServerState(acceptConnection());

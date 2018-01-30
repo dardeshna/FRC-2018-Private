@@ -39,7 +39,7 @@ public class RoutineManagerTest {
 		mRoutineManager.update(commands);
 		assertThat("New routine was not added correctly", mRoutineManager.getCurrentRoutines(), equalTo(correct));
 
-		// Sets sample routine to isFinished
+		//Sets sample routine to isFinished
 		mRoutine.cancel(commands);
 		mRoutine.update(commands);
 		assertThat("Finished routines not removed correctly", mRoutineManager.getCurrentRoutines().isEmpty(), equalTo(true));
@@ -66,10 +66,10 @@ public class RoutineManagerTest {
 		mRoutineManager.addNewRoutine(mRoutine);
 		mRoutineManager.addNewRoutine(mDriveRoutine);
 
-		// TODO: This throws a null pointer exception!
+		//TODO: This throws a null pointer exception!
 		mRoutineManager.update(commands);
 		
-		// TODO: Test actual functionality of the reset method
+		//TODO: Test actual functionality of the reset method
 		mRoutineManager.reset(commands);
 		assertThat("Routines were not emptied", mRoutineManager.getCurrentRoutines().isEmpty(), equalTo(true));
 		assertThat("First routine was not canceled", mRoutine.finished(), equalTo(true));
@@ -112,7 +112,7 @@ public class RoutineManagerTest {
 		mRoutineManager.conflictingRoutines(null, null);
 	}
 	
-// 	ERROR: using MockRoutine gives NullPointerException
+//	ERROR: using MockRoutine gives NullPointerException
 	@Test
 	public void testSubsystemSuperset() {
 		ArrayList<Routine> routinesList = new ArrayList<Routine>();

@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.*;
  * @author Nihar
  */
 public class HardwareAdapter {
-	// Hardware components at the top for maintenance purposes, variables and getters at bottom
+	//Hardware components at the top for maintenance purposes, variables and getters at bottom
 	/* 
 	 * DRIVETRAIN - 2 WPI_TalonSRX's and 4 WPI_VictorSPX's
 	 */
@@ -130,7 +130,7 @@ public class HardwareAdapter {
         }
     }
 
-	// Joysticks for operator interface
+	//Joysticks for operator interface
 	public static class Joysticks {
 		private static Joysticks instance = new Joysticks();
 		private static Joysticks getInstance() {
@@ -146,7 +146,7 @@ public class HardwareAdapter {
 		}
 	}
 
-	// Wrappers to access hardware groups
+	//Wrappers to access hardware groups
 	public DrivetrainHardware getDrivetrain() {
 		return DrivetrainHardware.getInstance();
 	}
@@ -169,7 +169,7 @@ public class HardwareAdapter {
 	
 	public final PowerDistributionPanel kPDP = new PowerDistributionPanel();
 
-	// Singleton set up
+	//Singleton set up
 	private static final HardwareAdapter instance = new HardwareAdapter();
 
 	public static HardwareAdapter getInstance() {

@@ -34,7 +34,7 @@ public class MockRoutine extends Routine {
 
 	@Override
 	public Subsystem[] getRequiredSubsystems() {
-		// Intentionally empty so as to not conflict
+		//Intentionally empty so as to not conflict
 		return new Subsystem[3];
 	}
 

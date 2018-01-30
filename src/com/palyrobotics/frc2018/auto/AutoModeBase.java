@@ -7,7 +7,7 @@ public abstract class AutoModeBase {
 
 	public abstract String toString();
 
-	// Will be run before the routine is taken
+	//Will be run before the routine is taken
 	public abstract void prestart();
 
 	public abstract Routine getRoutine();

@@ -48,7 +48,7 @@ public class Path {
             mSegments.add(
                     new PathSegment(waypoints.get(i).position, waypoints.get(i + 1).position, waypoints.get(i).speed));
         }
-        // The first waypoint is already complete
+        //The first waypoint is already complete
         if (mWaypoints.size() > 0) {
             Waypoint first_waypoint = mWaypoints.get(0);
             if (first_waypoint.marker.isPresent()) {
@@ -80,12 +80,12 @@ public class Path {
                 }
             } else {
                 if (closest_point_report.index > 0.0) {
-                    // Can shorten this segment
+                    //Can shorten this segment
                     segment.updateStart(closest_point_report.closest_point);
                 }
-                // We are done
+                //We are done
                 rv = closest_point_report.distance;
-                // ...unless the next segment is closer now
+                //...unless the next segment is closer now
                 if (it.hasNext()) {
                     PathSegment next = it.next();
                     PathSegment.ClosestPointReport next_closest_point_report = next.getClosestPoint(position);
@@ -135,20 +135,20 @@ public class Path {
             return new PathSegment.Sample(new Translation2d(), 0);
         }
 
-        // Check the distances to the start and end of each segment. As soon as
-        // we find a point > lookahead_distance away, we know the right point
-        // lies somewhere on that segment.
+        //Check the distances to the start and end of each segment. As soon as
+        //we find a point > lookahead_distance away, we know the right point
+        //lies somewhere on that segment.
         Translation2d position_inverse = position.inverse();
         if (position_inverse.translateBy(mSegments.get(0).getStart()).norm() >= lookahead_distance) {
-            // Special case: Before the first point, so just return the first
-            // point.
+            //Special case: Before the first point, so just return the first
+            //point.
             return new PathSegment.Sample(mSegments.get(0).getStart(), mSegments.get(0).getSpeed());
         }
         for (int i = 0; i < mSegments.size(); ++i) {
             PathSegment segment = mSegments.get(i);
             double distance = position_inverse.translateBy(segment.getEnd()).norm();
             if (distance >= lookahead_distance) {
-                // This segment contains the lookahead point
+                //This segment contains the lookahead point
                 Optional<Translation2d> intersection_point = getFirstCircleSegmentIntersection(segment, position,
                         lookahead_distance);
                 if (intersection_point.isPresent()) {
@@ -158,7 +158,7 @@ public class Path {
                 }
             }
         }
-        // Special case: After the last point, so extrapolate forward.
+        //Special case: After the last point, so extrapolate forward.
         PathSegment last_segment = mSegments.get(mSegments.size() - 1);
         PathSegment new_last_segment = new PathSegment(last_segment.getStart(), last_segment.interpolate(10000),
                 last_segment.getSpeed());
@@ -185,7 +185,7 @@ public class Path {
 
         double discriminant = dr_squared * radius * radius - det * det;
         if (discriminant < 0) {
-            // No intersection
+            //No intersection
             return Optional.empty();
         }
 
@@ -197,7 +197,7 @@ public class Path {
                 (det * dy - (dy < 0 ? -1 : 1) * dx * sqrt_discriminant) / dr_squared + center.getX(),
                 (-det * dx - Math.abs(dy) * sqrt_discriminant) / dr_squared + center.getY());
 
-        // Choose the one between start and end that is closest to start
+        //Choose the one between start and end that is closest to start
         double pos_dot_product = segment.dotProduct(pos_solution);
         double neg_dot_product = segment.dotProduct(neg_solution);
         if (pos_dot_product < 0 && neg_dot_product >= 0) {

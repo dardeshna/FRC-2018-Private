@@ -21,17 +21,17 @@ public class PathSegment {
     protected double mSpeed;
     protected Translation2d mStart;
     protected Translation2d mEnd;
-    protected Translation2d mStartToEnd; // pre-computed for efficiency
-    protected double mLength; // pre-computed for efficiency
+    protected Translation2d mStartToEnd; //pre-computed for efficiency
+    protected double mLength; //pre-computed for efficiency
 
     public static class ClosestPointReport {
-        public double index; // Index of the point on the path segment (not
-                             // clamped to [0, 1])
-        public double clamped_index; // As above, but clamped to [0, 1]
-        public Translation2d closest_point; // The result of
-                                            // interpolate(clamped_index)
-        public double distance; // The distance from closest_point to the query
-                                // point
+        public double index; //Index of the point on the path segment (not
+                             //clamped to [0, 1])
+        public double clamped_index; //As above, but clamped to [0, 1]
+        public Translation2d closest_point; //The result of
+                                            //interpolate(clamped_index)
+        public double distance; //The distance from closest_point to the query
+                                //point
     }
 
     public PathSegment(Translation2d start, Translation2d end, double speed) {
@@ -62,7 +62,7 @@ public class PathSegment {
         return mLength;
     }
 
-    // Index is on [0, 1]
+    //Index is on [0, 1]
     public Translation2d interpolate(double index) {
         return mStart.interpolate(mEnd, index);
     }

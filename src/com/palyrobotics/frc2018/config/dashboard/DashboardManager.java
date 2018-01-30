@@ -8,10 +8,10 @@ import java.util.logging.Level;
 
 public class DashboardManager {
 
-	// Usage of cantable or not
+	//Usage of cantable or not
 	private boolean enableCANTable = true;
 
-	// Allow motion profile gains to be modified over NT
+	//Allow motion profile gains to be modified over NT
 	public final boolean pidTuning = false;
 
 	private static DashboardManager instance = new DashboardManager();
@@ -37,7 +37,7 @@ public class DashboardManager {
 			Logger.getInstance().logRobotThread(Level.FINE, "Succesfully initialized cantables");
 		}
 		catch (UnsatisfiedLinkError e) {
-			// Catch the error that occurs during unit tests.
+			//Catch the error that occurs during unit tests.
 		}
 		catch (NoClassDefFoundError e) {
 		}
@@ -66,12 +66,12 @@ public class DashboardManager {
 				initializeRobotTable();
 			}
 			catch (UnsatisfiedLinkError e) {
-				// Block the error in a unit test and don't publish the value.
+				//Block the error in a unit test and don't publish the value.
 			}
 			catch (NoClassDefFoundError e) {}
 		}
 		
-		// If we are now connected
+		//If we are now connected
 		if (robotTable != null) {
 			this.robotTable.getEntry(d.getKey()).setString(d.getValue());
 		}
@@ -84,7 +84,7 @@ public class DashboardManager {
 		if (canTable != null) {
 			this.canTable.getEntry(key).setString(value + "\n");
 		} else {
-			// try to reach it again
+			//try to reach it again
 			try {
 				initializeCANTable();
 			}

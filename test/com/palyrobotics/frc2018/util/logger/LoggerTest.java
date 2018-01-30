@@ -25,7 +25,7 @@ public class LoggerTest {
 		logger.cleanup();
 		logger.start();
 		logger.logRobotThread(Level.INFO,"New message");
-		// messages should be flushed
+		//messages should be flushed
 		logger.cleanup();
 		try {
 			Thread.sleep(100);
@@ -72,7 +72,7 @@ public class LoggerTest {
 
 	@Test
 	public void testCrashTracker() {
-		// Crash tracker crashes on non roboRIO
+		//Crash tracker crashes on non roboRIO
 		//CrashTracker.logRobotInit();
 	}
 }

@@ -25,7 +25,7 @@ public class VisionVideoReceiver extends ReceiverBase {
 			image = mReceiverSelector.getReceiver().extractDataBytes();
 			if (image != null && image.length != 0) {
 
-				// Make sure queue does not get too big
+				//Make sure queue does not get too big
 				while (frameQueue.size() > 10)
 					frameQueue.remove();
 

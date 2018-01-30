@@ -28,17 +28,17 @@ public class AutoModeSelectorTest {
 	public void testGetAutoMode() throws IndexOutOfBoundsException {
 		AutoModeSelector auto = AutoModeSelector.getInstance();
 
-		// Using automodes registered in constructor
+		//Using automodes registered in constructor
 		assertThat("Incorrect auto mode retrieved", auto.getAutoMode().getClass(), equalTo(new TestAutoMode().getClass()));
 		
-		// Check index out of bounds
+		//Check index out of bounds
 	}
 	
 	@Test
 	public void testGetAutoModeList() {
 		AutoModeSelector auto = AutoModeSelector.getInstance();
 
-		// TODO: Hard coded is sketchy
+		//TODO: Hard coded is sketchy
 		ArrayList<String> expectedAutoModeList = new ArrayList<String>();
 		expectedAutoModeList.add("Test");
 		expectedAutoModeList.add("DoNothing");
@@ -48,7 +48,7 @@ public class AutoModeSelectorTest {
 		expectedAutoModeList.add("CenterPeg_CrossRight");
 		expectedAutoModeList.add("LeftPeg");
 		expectedAutoModeList.add("RightPeg");
-		expectedAutoModeList.add("DoNothing");	// TODO: sometimes test is run individually, "this one is registered during testRegisterAutonomous()"
+		expectedAutoModeList.add("DoNothing");	//TODO: sometimes test is run individually, "this one is registered during testRegisterAutonomous()"
 		ArrayList<String> test = auto.getAutoModeList();
 		
 		assertThat("Not all auto modes were retrieved", test.size(), equalTo(expectedAutoModeList.size()));
@@ -58,13 +58,13 @@ public class AutoModeSelectorTest {
 	@Test
 	public void testSetAutoModeByName() {
 		AutoModeSelector auto = AutoModeSelector.getInstance();
-		// Intentionally register two copies of the same auto mode class
+		//Intentionally register two copies of the same auto mode class
 		auto.registerAutonomous(new TestTrajectoryAutoMode());
 		auto.registerAutonomous(new TestTrajectoryAutoMode());
 		assertThat("Should not set auto mode when duplicates exist", auto.setAutoModeByName("TestTrajectoryAutoMode"), equalTo(false));
 		assertThat("Found auto mode when none exists", auto.setAutoModeByName("1234"), equalTo(false));
 
-		// TODO: Use a sample auto mode to guarantee it has exactly 1 copy
+		//TODO: Use a sample auto mode to guarantee it has exactly 1 copy
 		assertThat("Auto mode has been registered", auto.setAutoModeByName("SideAutoMode"), equalTo(true));
 	}
 
@@ -80,7 +80,7 @@ public class AutoModeSelectorTest {
 		autoNames.add(newAuto.toString());
 		auto.registerAutonomous(newAuto);
 
-		// Index of the newest auto mode should be the original list length
+		//Index of the newest auto mode should be the original list length
 		assertThat("AutoMode was registered incorrectly", auto.getAutoMode(initSize), equalTo(newAuto));
 		assertThat("AutoMode was registered incorrectly", auto.getAutoModeList(), equalTo(autoNames));
 	}

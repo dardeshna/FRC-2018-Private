@@ -25,10 +25,10 @@ public class RobotState {
 
 	protected RobotState() {}
 
-	// Updated by autoInit, teleopInit, disabledInit
+	//Updated by autoInit, teleopInit, disabledInit
 	public GamePeriod gamePeriod = GamePeriod.DISABLED;
 
-	// Drivetrain
+	//Drivetrain
 	public ControlMode leftControlMode = ControlMode.Disabled;
 	public ControlMode rightControlMode = ControlMode.Disabled;
 	
@@ -38,10 +38,10 @@ public class RobotState {
 	//Intake
     public double cubeDistance = 0;
 	
-	// Tracks total voltage from kPDP
+	//Tracks total voltage from kPDP
 	public double totalVoltageDraw = 0;
 
-	// Pose stores drivetrain sensor data
+	//Pose stores drivetrain sensor data
 	public Pose drivePose = new Pose(0,0,0, 0, 0,0,0,0);
 	
 	//Elevator sensor data
@@ -54,7 +54,7 @@ public class RobotState {
     public final int kObservationBufferSize = 100;
     public final double kMaxTargetAge = 0.4;
     
-    // FPGATimestamp -> RigidTransform2d or Rotation2d
+    //FPGATimestamp -> RigidTransform2d or Rotation2d
     protected RigidTransform2d.Delta vehicle_velocity_;
     protected double differential_height_;
     protected InterpolatingTreeMap<InterpolatingDouble, RigidTransform2d> field_to_vehicle_;

@@ -94,7 +94,7 @@ public class TalonSRXRoutine extends Routine {
 
 	@Override
 	public boolean finished() {
-		// Wait for controller to be added before finishing routine
+		//Wait for controller to be added before finishing routine
 		if (mSignal.leftMotor.getSetpoint() != Robot.getRobotState().leftSetpoint) {
 			Logger.getInstance().logRobotThread(Level.WARNING, "Mismatched desired talon and actual talon setpoints! desired, actual");
 			Logger.getInstance().logRobotThread(Level.WARNING, "Left", mSignal.leftMotor.getSetpoint()+", "+Robot.getRobotState().leftSetpoint);

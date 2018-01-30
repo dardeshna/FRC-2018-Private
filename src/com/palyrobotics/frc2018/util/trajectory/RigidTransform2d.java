@@ -9,9 +9,9 @@ package com.palyrobotics.frc2018.util.trajectory;
 public class RigidTransform2d implements Interpolable<RigidTransform2d> {
     private final static double kEps = 1E-9;
 
-    // Movement along an arc at constant curvature and velocity. We can use
-    // ideas from "differential calculus" to create new RigidTransform2d's from
-    // a Delta.
+    //Movement along an arc at constant curvature and velocity. We can use
+    //ideas from "differential calculus" to create new RigidTransform2d's from
+    //a Delta.
     public static class Delta {
         public final double dx;
         public final double dy;

@@ -23,7 +23,7 @@ public class CommandsTest {
 	 */
 	@Test
 	public void testNullPointers() {
-		// Check for variable construction in Commands if a line throws an Exception
+		//Check for variable construction in Commands if a line throws an Exception
 		mCommands.wantedDriveState.toString();
 		mCommands.robotSetpoints.toString();
 		System.out.println("No null pointer exceptions!");
@@ -37,7 +37,7 @@ public class CommandsTest {
 		mCommands = MockRobot.getCommands();
 		Commands copy = mCommands.copy();
 
-		// Test the
+		//Test the
 		mCommands.wantedDriveState = Drive.DriveState.NEUTRAL;
 		copy.wantedDriveState = Drive.DriveState.CHEZY;
 		assertThat("Copy modified original drivestate", mCommands.wantedDriveState, equalTo(Drive.DriveState.NEUTRAL));

@@ -9,7 +9,7 @@ public abstract class Subsystem {
 	public Subsystem(String name) {
 		this.mName = name;
 	}
-	// Updates the subsystem with current commands and state
+	//Updates the subsystem with current commands and state
 	public abstract void update(Commands commands, RobotState robotState);
 
 	public String getName() {

@@ -10,7 +10,7 @@ public class CommandExecutor{
 	 private static boolean isTesting = false;
 	 private static boolean isFlashOn = false;
 
-	 public static String visionInit(){
+	 public static String visionInit() {
 	 	return exec("adb shell am start -n " + Constants.kPackageName + "/" +
 				Constants.kPackageName + "." + Constants.kActivityName);
 	 }
@@ -77,12 +77,12 @@ public class CommandExecutor{
 		 while(!restartOut.contains("daemon started successfully"));
 	 }
 	 
-	 public static String toggleFlash(){
+	 public static String toggleFlash() {
 		return exec("adb shell am broadcast -a "+Constants.kPackageName
 				+".GET_DATA --es type flash --ez isFlash "+isFlashOn);
 	 }
 	 
-	 public static String catFile(String fileName){
+	 public static String catFile(String fileName) {
 	 	return exec("adb shell run-as "+Constants.kPackageName+
 				" cat /data/data/"+ Constants.kPackageName + "/files/" + fileName);
 	 }
@@ -90,13 +90,13 @@ public class CommandExecutor{
 	/**
 	 * @returns the PID of the vision app
 	 */
-	public static String appPID(){
+	public static String appPID() {
 	 	return exec("adb shell pidof " + Constants.kPackageName);
 
 	}
 	 
-	 public static String exec(String string){
-		 if(!isTesting){
+	 public static String exec(String string) {
+		 if(!isTesting) {
 			 return RIOdroid.executeCommand(string);
 		 }
 		 else{

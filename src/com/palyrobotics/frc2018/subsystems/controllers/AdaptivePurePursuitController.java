@@ -79,7 +79,7 @@ public class AdaptivePurePursuitController implements Drive.DriveController {
         if (mReversed) {
             speed *= -1;
         }
-        // Ensure we don't accelerate too fast from the previous command
+        //Ensure we don't accelerate too fast from the previous command
         double dt = now - mLastTime;
         if (mLastCommand == null) {
             mLastCommand = new RigidTransform2d.Delta(0, 0, 0);
@@ -92,9 +92,9 @@ public class AdaptivePurePursuitController implements Drive.DriveController {
             speed = mLastCommand.dx + mMaxAccel * dt;
         }
 
-        // Ensure we slow down in time to stop
-        // vf^2 = v^2 + 2*a*d
-        // 0 = v^2 + 2*a*d
+        //Ensure we slow down in time to stop
+        //vf^2 = v^2 + 2*a*d
+        //0 = v^2 + 2*a*d
         double remaining_distance = mPath.getRemainingLength();
         double max_allowed_speed = Math.sqrt(2 * mMaxAccel * remaining_distance);
         if (Math.abs(speed) > max_allowed_speed) {
@@ -102,8 +102,8 @@ public class AdaptivePurePursuitController implements Drive.DriveController {
         }
         final double kMinSpeed = 4.0;
         if (Math.abs(speed) < kMinSpeed) {
-            // Hack for dealing with problems tracking very low speeds with
-            // Talons
+            //Hack for dealing with problems tracking very low speeds with
+            //Talons
             speed = kMinSpeed * Math.signum(speed);
         }
 
@@ -127,7 +127,7 @@ public class AdaptivePurePursuitController implements Drive.DriveController {
         return mPath.getMarkersCrossed();
     }
 
-	// An abstraction of a circular arc used for turning motion
+	//An abstraction of a circular arc used for turning motion
     public static class Circle {
         public final Translation2d center;
         public final double radius;
@@ -167,7 +167,7 @@ public class AdaptivePurePursuitController implements Drive.DriveController {
         double cross_term = mx * dx + my * dy;
 
         if (Math.abs(cross_term) < kEpsilon) {
-            // Points are collinear
+            //Points are collinear
             return Optional.empty();
         }
 
@@ -190,7 +190,7 @@ public class AdaptivePurePursuitController implements Drive.DriveController {
         RigidTransform2d.Delta command = this.update(robot_pose, Timer.getFPGATimestamp());
         Kinematics.DriveVelocity setpoint = Kinematics.inverseKinematics(command);
         setpoint = new Kinematics.DriveVelocity(setpoint.left * Constants.kDriveTicksPerInch, setpoint.right * Constants.kDriveTicksPerInch);
-        // Scale the command to respect the max velocity limits
+        //Scale the command to respect the max velocity limits
         double max_vel = 0.0;
         max_vel = Math.max(max_vel, Math.abs(setpoint.left));
         max_vel = Math.max(max_vel, Math.abs(setpoint.right));
@@ -205,7 +205,7 @@ public class AdaptivePurePursuitController implements Drive.DriveController {
         return new DriveSignal(left, right);
     }
 
-    // HOPING THIS METHOD NEVER GETS CALLED
+    //HOPING THIS METHOD NEVER GETS CALLED
     @Override
     public Pose getSetpoint() {
     		Pose setpoint = new Pose(0,0,0,0,0,0,0,0);

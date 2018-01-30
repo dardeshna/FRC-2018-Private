@@ -32,20 +32,20 @@ public class Logger {
 		return instance;
 	}
 	
-	// Default filename
+	//Default filename
 	private String fileName = "DEFAULT";
 
 	private boolean isEnabled = false;
 	
 	private ArrayList<TimestampedString> mData;
-	// Separates to prevent concurrent modification exception
+	//Separates to prevent concurrent modification exception
 	private ArrayList<TimestampedString> mSubsystemThreadLogs = new ArrayList<>();
 	private ArrayList<TimestampedString> mRobotThreadLogs = new ArrayList<>();
 
-	// synchronized lock for writing out the latest data
+	//synchronized lock for writing out the latest data
 	private final Object writingLock = new Object();
 	private Thread mWritingThread = null;
-	// Stores the runnable for the thread to be restarted
+	//Stores the runnable for the thread to be restarted
 	private Runnable mRunnable;
 
 	StringWriter sw = new StringWriter();
@@ -55,7 +55,7 @@ public class Logger {
 	private File mainLog;
 	private boolean fmsConnected;
 
-	// Finds the driver station console output
+	//Finds the driver station console output
 
 	public boolean setFileName(String fileName) {
 		if (mainLog != null) {
@@ -78,7 +78,7 @@ public class Logger {
 //		this.fileName = fileName.replaceAll(File.separator, ":");
 		this.fileName = fileName.replaceAll(" ", "_");
 		this.fileName = fileName.replaceAll("/n", "_");
-		// If initialized before, then recreate the buffered writer and re-enable
+		//If initialized before, then recreate the buffered writer and re-enable
 		if (mWritingThread != null) {
 			isEnabled = true;
 			mWritingThread = new Thread(mRunnable);
@@ -107,8 +107,8 @@ public class Logger {
 		}
 		else if (os.startsWith("Windows")) {
 			filePath = "." + File.separatorChar + "logs" + File.separatorChar + filePath;
-		} else  if (os.startsWith("Linux")){
-			// Pray that this is a roborio
+		} else  if (os.startsWith("Linux")) {
+			//Pray that this is a roborio
 			filePath = "/home/lvuser/logs/" + filePath;		}
 		else {
 			System.err.println("Error in determining OS name, reverting to RIO base");
@@ -120,7 +120,7 @@ public class Logger {
 			mainLog = new File(filePath + duplicatePrevent + ".log");
 		}
 		try {
-			// File header
+			//File header
 			Files.createParentDirs(mainLog);
 			Files.append("Robot log:"+ "\n", mainLog, Charsets.UTF_8);
 			Files.append(filePath + "\n", mainLog, Charsets.UTF_8);
@@ -130,7 +130,7 @@ public class Logger {
 			e.printStackTrace();
 		}
 
-		// Create thread to write out logger
+		//Create thread to write out logger
 		mWritingThread = new Thread(mRunnable);
 		isEnabled = true;
 		mWritingThread.start();
@@ -228,11 +228,11 @@ public class Logger {
 				writeLogs();
 				try {
 					Thread.sleep(500);
-				} catch (InterruptedException e){
+				} catch (InterruptedException e) {
 					shutdown();
 					return;
 				}
-				// If thread is interrupted, cleanup
+				//If thread is interrupted, cleanup
 				if (Thread.currentThread().isInterrupted()) {
 					shutdown();
 					return;
@@ -278,7 +278,7 @@ public class Logger {
 		}
 	}
 
-	// Used to cleanup internally, write out last words, etc
+	//Used to cleanup internally, write out last words, etc
 	private synchronized void shutdown() {
 		System.out.println("Shutting down");
 		synchronized (writingLock) {

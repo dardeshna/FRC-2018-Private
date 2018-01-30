@@ -61,7 +61,7 @@ public class AutoModeSelector {
 	 * @return AutoMode at specified index
 	 */
 	public AutoModeBase getAutoMode(int index) {
-		// Assumes future selections will be the same auto mode
+		//Assumes future selections will be the same auto mode
 		selectedIndex = index;
 		return mAutoModes.get(index);
 	}

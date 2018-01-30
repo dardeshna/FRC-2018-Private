@@ -39,7 +39,7 @@ public class InterpolatingTreeMap<K extends InverseInterpolable<K> & Comparable<
     @Override
     public V put(K key, V value) {
         if (max_ > 0 && max_ <= size()) {
-            // "Prune" the tree if it is oversize
+            //"Prune" the tree if it is oversize
             K first = firstKey();
             remove(first);
         }

@@ -11,17 +11,17 @@ public class Constants {
 		JACOB
 	}
 	
-	// Initialization constants
+	//Initialization constants
 	public static final RobotName kRobotName = RobotName.FORSETI;
 	public static final DriverName kDriverName = DriverName.ERIC;
 	public static final OperatorName kOperatorName = OperatorName.JACOB; 
 	
-	// Android app information
+	//Android app information
 	public static final String kPackageName = "com.frc8.team8vision";
 	public static final String kActivityName = "MainActivity";
 	public static final String kVisionDataFileName = "data.json";
 	public static final String kVisionVideoFileName = "video.json";
-	public static final int kAndroidConnectionUpdateRate = 5;	// Update rate in milliseconds
+	public static final int kAndroidConnectionUpdateRate = 5;	//Update rate in milliseconds
 	public static final int kAndroidDataSocketUpdateRate = 100;
 	public static final int kAndroidVisionSocketUpdateRate = 10;
 	public static final int kMJPEGVisionSocketUpdateRate = 20;
@@ -62,7 +62,7 @@ public class Constants {
 	/*
 	 * Control loop constants for both robots
 	 */
-	public static final double kTurnInPlacePower = 0.17; // for bang bang
+	public static final double kTurnInPlacePower = 0.17; //for bang bang
 	public static final double kCalibratePower = -0.4;
 	public static final double kDriveMaxClosedLoopOutput = 8.0;
 	public static final double kElevatorMaxClosedLoopOutput = 0.666;
@@ -109,11 +109,11 @@ public class Constants {
 	 *  Forseti ELECTRONIC CONSTANTS
 	 * ************************************
 	 */
-	// PDP
+	//PDP
 	public static final int kForsetiPDPDeviceID = 0;
 	
-	// DRIVETRAIN
-	// PDP slots for drivetrain 0, 1, 2, 3, 12, 13
+	//DRIVETRAIN
+	//PDP slots for drivetrain 0, 1, 2, 3, 12, 13
 	public static final int kForsetiLeftDriveMasterDeviceID  = 1;
 	public static final int kForsetiLeftDriveSlaveDeviceID = 2;
 	public static final int kForsetiLeftDriveOtherSlaveDeviceID = 3;
@@ -127,7 +127,7 @@ public class Constants {
 	public static final int kForsetiRightDriveBackMotorPDP = 0;
 	public static final int kForsetiRightDriveThirdMotorPDP = 0;
 
-	// CLIMBER
+	//CLIMBER
 	public static final int kForsetiClimberMotorLeftDeviceID = 1;
 	public static final int kForsetiClimberMotorRightDeviceID = 2;
 	
@@ -140,14 +140,14 @@ public class Constants {
 	public static final int kForsetiClimberLeftBrakeSolenoid = 4;
 	public static final int kForsetiClimberRightBrakeSolenoid = 5;
 
-	// ELEVATOR
-	// PDP slots for elevator TBD (currently 7, 8, 9, 10)
+	//ELEVATOR
+	//PDP slots for elevator TBD (currently 7, 8, 9, 10)
 	public static final int kForsetiElevatorMasterTalonID = 7;
 	public static final int kForsetiElevatorSlaveTalonID = 9;
 	public static final int kForsetiBottomElevatorHFXID = 8;
 	public static final int kForsetiTopElevatorHFXID = 10;
 
-	// INTAKE
+	//INTAKE
     public static final int kForsetiIntakeMasterDeviceID = 7;
     public static final int kForsetiIntakeSlaveDeviceID = 8;
     public static final int kForsetiIntakeDistanceSensorID = 0;
@@ -156,12 +156,12 @@ public class Constants {
     public static final int kForsetiIntakeOpenCloseSolenoidForwardID = 3;
     public static final int kForsetiIntakeOpenCloseSolenoidReverseID = 4;
 
-	// !!! Physical constants
+	//!!! Physical constants
 
-	// !!! Loop rate of normal Looper
+	//!!! Loop rate of normal Looper
 	public static final double kNormalLoopsDt = 0.02;
 
-	// Adaptive Pure Pursuit Controller
+	//Adaptive Pure Pursuit Controller
 	public static final double kDriveWheelDiameterInches = 7.3;
 	public static final double kTrackLengthInches = 8.265;
 	public static final double kTrackWidthInches = 23.8;

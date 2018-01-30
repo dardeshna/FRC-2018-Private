@@ -41,7 +41,7 @@ public class ChezyMath {
     }
 
     public static double boundAngle0to360Degrees(double angle) {
-        // Naive algorithm
+        //Naive algorithm
         while (angle >= 360.0) {
             angle -= 360.0;
         }
@@ -52,7 +52,7 @@ public class ChezyMath {
     }
 
     public static double boundAngleNeg180to180Degrees(double angle) {
-        // Naive algorithm
+        //Naive algorithm
         while (angle >= 180.0) {
             angle -= 360.0;
         }
@@ -63,7 +63,7 @@ public class ChezyMath {
     }
 
     public static double boundAngle0to2PiRadians(double angle) {
-        // Naive algorithm
+        //Naive algorithm
         while (angle >= 2.0 * Math.PI) {
             angle -= 2.0 * Math.PI;
         }
@@ -74,7 +74,7 @@ public class ChezyMath {
     }
 
     public static double boundAngleNegPiToPiRadians(double angle) {
-        // Naive algorithm
+        //Naive algorithm
         while (angle >= Math.PI) {
             angle -= 2.0 * Math.PI;
         }

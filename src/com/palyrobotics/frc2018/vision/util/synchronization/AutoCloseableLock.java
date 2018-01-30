@@ -8,7 +8,7 @@ public class AutoCloseableLock implements AutoCloseable{
     public AutoCloseableLock(ReadWriteLock lock, int lockState) throws Exception{
         this.closableState = lockState;
         this.mLock = lock;
-        switch (this.closableState){
+        switch (this.closableState) {
             case ReadWriteLock.WRITING:
                 mLock.lockWrite();
                 break;
@@ -22,7 +22,7 @@ public class AutoCloseableLock implements AutoCloseable{
 
     @Override
     public void close() throws Exception {
-        switch (closableState){
+        switch (closableState) {
             case ReadWriteLock.WRITING:
                 mLock.unlockWrite();
                 break;

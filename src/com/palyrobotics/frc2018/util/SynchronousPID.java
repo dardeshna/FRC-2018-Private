@@ -9,16 +9,16 @@ import edu.wpi.first.wpilibj.util.BoundaryException;
  * called by the user from his own thread)
  */
 public class SynchronousPID {
-    private double m_P;            // factor for "proportional" control
-    private double m_I;            // factor for "integral" control
-    private double m_izone;        // error needs to be within izone to kick in "integral" control
-    private double m_D;            // factor for "derivative" control
-    private double m_maximumOutput = 1.0;    // |maximum output|
-    private double m_minimumOutput = -1.0;    // |minimum output|
-    private double m_maximumInput = 0.0;        // maximum input - limit setpoint to this
-    private double m_minimumInput = 0.0;        // minimum input - limit setpoint to this
-    private boolean m_continuous = false;    // do the endpoints wrap around? eg. Absolute encoder
-    private double m_prevError = 0.0;    // the prior sensor input (used to compute velocity)
+    private double m_P;            //factor for "proportional" control
+    private double m_I;            //factor for "integral" control
+    private double m_izone;        //error needs to be within izone to kick in "integral" control
+    private double m_D;            //factor for "derivative" control
+    private double m_maximumOutput = 1.0;    //|maximum output|
+    private double m_minimumOutput = -1.0;    //|minimum output|
+    private double m_maximumInput = 0.0;        //maximum input - limit setpoint to this
+    private double m_minimumInput = 0.0;        //minimum input - limit setpoint to this
+    private boolean m_continuous = false;    //do the endpoints wrap around? eg. Absolute encoder
+    private double m_prevError = 0.0;    //the prior sensor input (used to compute velocity)
     private double m_totalError = 0.0; //the sum of the errors for use in the integral calc
     private double m_setpoint = 0.0;
     private double m_error = 0.0;

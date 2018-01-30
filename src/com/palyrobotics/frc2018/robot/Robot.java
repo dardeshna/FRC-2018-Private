@@ -21,24 +21,24 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import java.util.logging.Level;
 
 public class Robot extends TimedRobot {
-	// Instantiate singleton classes
+	//Instantiate singleton classes
 	private static RobotState robotState = RobotState.getInstance();
 	public static RobotState getRobotState() {return robotState;}
 
-	// Single instance to be passed around
+	//Single instance to be passed around
 	private static Commands commands = Commands.getInstance();
 	public static Commands getCommands() {return commands;}
 
 	private OperatorInterface operatorInterface = OperatorInterface.getInstance();
 	private RoutineManager mRoutineManager = RoutineManager.getInstance();
 
-	// Subsystem controllers
+	//Subsystem controllers
 	private Drive mDrive = Drive.getInstance();
 	private Climber mClimber = Climber.getInstance();
 	private Elevator mElevator = Elevator.getInstance();
 	private Intake mIntake = Intake.getInstance();
 
-	// Hardware Updater
+	//Hardware Updater
 	private HardwareUpdater mHardwareUpdater;
 
 	@Override
@@ -88,7 +88,7 @@ public class Robot extends TimedRobot {
 		robotState.gamePeriod = RobotState.GamePeriod.AUTO;
 		mHardwareUpdater.configureTalons();
 
-		// Wait for talons to update
+		//Wait for talons to update
 		try {
 			Logger.getInstance().logRobotThread(Level.FINEST, "Sleeping thread for 200 ms");
 			Thread.sleep(200);
@@ -102,10 +102,10 @@ public class Robot extends TimedRobot {
 
 		startSubsystems();
 
-		// Get the selected auto mode
+		//Get the selected auto mode
 		AutoModeBase mode = AutoModeSelector.getInstance().getAutoMode();
 
-		// Prestart and run the auto mode
+		//Prestart and run the auto mode
 		mode.prestart();
 		mRoutineManager.addNewRoutine(mode.getRoutine());
 
@@ -160,13 +160,13 @@ public class Robot extends TimedRobot {
 
 		robotState.reset(0, new RigidTransform2d());
 
-		// Stops updating routines
+		//Stops updating routines
 		mRoutineManager.reset(commands);
 
 		//Creates a new Commands instance in place of the old one
 		Commands.reset();
 		
-		// Stop controllers
+		//Stop controllers
 		mDrive.setNeutral();
 		mHardwareUpdater.configureTalons();
 		mHardwareUpdater.disableTalons();
@@ -174,7 +174,7 @@ public class Robot extends TimedRobot {
 
 		stopSubsystems();
 
-		// Manually run garbage collector
+		//Manually run garbage collector
 		System.gc();
 
 		Logger.getInstance().logRobotThread(Level.INFO, "End disabledInit()");
@@ -184,7 +184,7 @@ public class Robot extends TimedRobot {
 	public void disabledPeriodic() {
 	}
 
-	// Call during teleop and auto periodic
+	//Call during teleop and auto periodic
 	private void logPeriodic() {
 		Logger.getInstance().logRobotThread(Level.FINEST, "Match time", DriverStation.getInstance().getMatchTime());
 		Logger.getInstance().logRobotThread(Level.FINEST, "DS Connected", DriverStation.getInstance().isDSAttached());

@@ -29,7 +29,7 @@ public class TalonSRXDriveController implements Drive.DriveController {
 	 * @param signal
 	 */
 	public TalonSRXDriveController(DriveSignal signal) {
-		// Use copy constructors and prevent the signal passed in from being modified externally
+		//Use copy constructors and prevent the signal passed in from being modified externally
 		this.mSignal = new DriveSignal(new TalonSRXOutput(signal.leftMotor), new TalonSRXOutput(signal.rightMotor));
 	}
 
@@ -141,7 +141,7 @@ public class TalonSRXDriveController implements Drive.DriveController {
 		double velocityTolerance = (mSignal.leftMotor.gains.equals(Gains.forsetiShortDriveMotionMagicGains)) ?
 				Constants.kAcceptableShortDriveVelocityError : Constants.kAcceptableDriveVelocityError;
 
-		// Motion magic is not PID so ignore whether talon closed loop error is around
+		//Motion magic is not PID so ignore whether talon closed loop error is around
 		if (mSignal.leftMotor.getControlMode().equals(ControlMode.MotionMagic)) {
 			return (Math.abs(mCachedState.drivePose.leftEnc - mSignal.leftMotor.getSetpoint()) < positionTolerance) &&
 					(Math.abs(mCachedState.drivePose.leftEncVelocity) < velocityTolerance) &&

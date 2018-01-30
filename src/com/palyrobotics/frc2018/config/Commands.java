@@ -30,7 +30,7 @@ public class Commands {
 
 	public ArrayList<Routine> wantedRoutines = new ArrayList<Routine>();
 
-	// Store WantedStates for each subsystem state machine
+	//Store WantedStates for each subsystem state machine
 	public Drive.DriveState wantedDriveState = Drive.DriveState.NEUTRAL;
 	public Climber.MotionSubstate wantedClimbMovement = Climber.MotionSubstate.LOCKED;
 	public Climber.Side wantedClimbSide = Climber.Side.NOT_SET;
@@ -70,10 +70,10 @@ public class Commands {
 			elevatorPositionSetpoint = Optional.empty();
 		}
 	}
-	// All robot setpoints
+	//All robot setpoints
 	public Setpoints robotSetpoints = new Setpoints();
 
-	// Allows you to cancel all running routines
+	//Allows you to cancel all running routines
 	public boolean cancelCurrentRoutines = false;
 
 	/**
@@ -97,9 +97,9 @@ public class Commands {
 			copy.wantedRoutines.add(r);
 		}
 		
-		// Copy robot setpoints
+		//Copy robot setpoints
 		copy.robotSetpoints = new Setpoints();
-		// Copy optionals that are present
+		//Copy optionals that are present
 		robotSetpoints.drivePowerSetpoint.ifPresent((DriveSignal signal) -> copy.robotSetpoints.drivePowerSetpoint = Optional.of(signal));
 		robotSetpoints.elevatorPositionSetpoint.ifPresent((Double elevatorPositionSetpoint) -> copy.robotSetpoints.elevatorPositionSetpoint = Optional.of(elevatorPositionSetpoint));
 		return copy;

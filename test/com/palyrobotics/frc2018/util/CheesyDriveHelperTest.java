@@ -14,7 +14,7 @@ import static org.junit.Assert.assertTrue;
  * @author Nihar
  */
 public class CheesyDriveHelperTest {
-	// Instance to test with
+	//Instance to test with
 	private CheesyDriveHelper mTestCDH = new CheesyDriveHelper();
 
 	/**
@@ -22,18 +22,18 @@ public class CheesyDriveHelperTest {
 	 */
 	@Test
 	public void testSign() {
-		// Test matchSign helper method
+		//Test matchSign helper method
 		assertTrue("Match Sign broken", matchSign(1,2));
 		assertFalse("Match Sign broken", matchSign(1,-2));
 		assertTrue("Match Sign broken", matchSign(-1,-2));
 		assertTrue("Match Sign broken", matchSign(0,0));
 		assertFalse("Match Sign broken", matchSign(1,0));
 
-		// Robot state is not used by CDH
+		//Robot state is not used by CDH
 		MockRobotState testRobotState = MockRobot.getRobotState();
 		Commands testCommands = MockRobot.getCommands();
 
-		// Test that 0 input leads to 0 output (no negative inertia to start)
+		//Test that 0 input leads to 0 output (no negative inertia to start)
 		testRobotState.leftStickInput.setY(0);
 		testRobotState.leftStickInput.setX(0);
 		mTestCDH.cheesyDrive(testCommands, testRobotState);
@@ -41,7 +41,7 @@ public class CheesyDriveHelperTest {
 		DriveSignal zeroOutput = DriveSignal.getNeutralSignal();
 		assertTrue("Zero input should have zero output", output.equals(zeroOutput));
 
-		// Test turning
+		//Test turning
         MockRobot.getRobotState().leftStickInput.setY(0.5);
         MockRobot.getRobotState().leftStickInput.setX(-0.5);
 	}
@@ -51,7 +51,7 @@ public class CheesyDriveHelperTest {
 		System.out.println(mTestCDH.remapThrottle(0));
 	}
 
-	// Helper method to check if two numbers have the same sign
+	//Helper method to check if two numbers have the same sign
 	private boolean matchSign(double n1, double n2) {
 		return (n1 <= 0) == (n2 <= 0);
 	}

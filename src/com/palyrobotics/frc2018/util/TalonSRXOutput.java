@@ -16,12 +16,12 @@ public class TalonSRXOutput {
 	 * Prevent null pointer exceptions
 	 */
 	private ControlMode controlMode;
-	// PercentVBus, Speed, Current, Voltage, not Follower, MotionProfile, MotionMagic
-	private double setpoint;	// Encoder ticks
+	//PercentVBus, Speed, Current, Voltage, not Follower, MotionProfile, MotionMagic
+	private double setpoint;	//Encoder ticks
 	public int profile;
 	public Gains gains;
 
-	// Used for motion magic
+	//Used for motion magic
 	public int accel;
 	public int cruiseVel;
 

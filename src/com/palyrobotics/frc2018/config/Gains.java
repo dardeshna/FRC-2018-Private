@@ -6,7 +6,7 @@ import com.palyrobotics.frc2018.util.logger.Logger;
 import java.util.logging.Level;
 
 public class Gains {
-	// Onboard motion profile aka trajectory follower
+	//Onboard motion profile aka trajectory follower
 	public static double kForsetiTrajectorykV = 0.077;
 	public static double kForsetiLeftTrajectorykV = 0.0489;
 	public static double kForsetiRightTrajectorykV = 0.0499;
@@ -23,7 +23,7 @@ public class Gains {
 	public static final Gains forsetiVelocity = new Gains(kForsetiDriveVelocitykP, kForsetiDriveVelocitykI, kForsetiDriveVelocitykD,
 			kForsetiDriveVelocitykF, kForsetiDriveVelocitykIzone, kForsetiDriveVelocitykRampRate);
 
-	// Drive Distance PID control loop
+	//Drive Distance PID control loop
 	public static final double kForsetiDriveStraightTurnkP = -0.06;
 	public static final double kForsetiDriveDistancekP = 0.5;
 	public static final double kForsetiDriveDistancekI = 0.0025;
@@ -33,8 +33,8 @@ public class Gains {
 	public static final Gains forsetiDriveDistance = new Gains(kForsetiDriveDistancekP, kForsetiDriveDistancekI, kForsetiDriveDistancekD,
 			0, kForsetiDriveDistancekIzone, kForsetiDriveDistancekRampRate);
 
-	// Drive Motion Magic offboard control loop
-	// Short distance max speed 45 in/s Max accel 95 in/s^2
+	//Drive Motion Magic offboard control loop
+	//Short distance max speed 45 in/s Max accel 95 in/s^2
 	public static final double kForsetiShortDriveMotionMagicCruiseVelocity = 60 * Constants.kDriveSpeedUnitConversion;
 	public static final double kForsetiShortDriveMotionMagicMaxAcceleration = 100 * Constants.kDriveSpeedUnitConversion;
 	public static final double kForsetiShortDriveMotionMagickP = 2.40;
@@ -46,7 +46,7 @@ public class Gains {
 	public static final Gains forsetiShortDriveMotionMagicGains = new Gains(kForsetiShortDriveMotionMagickP, kForsetiShortDriveMotionMagickI, kForsetiShortDriveMotionMagickD,
 			kForsetiShortDriveMotionMagickF, kForsetiShortDriveMotionMagickIzone, kForsetiShortDriveMotionMagickRampRate);
 	
-	// Long distance more aggressive, 180 in/s, 120 in/s^2 accel
+	//Long distance more aggressive, 180 in/s, 120 in/s^2 accel
 	public static final double kForsetiLongDriveMotionMagicCruiseVelocity = 180 * Constants.kDriveSpeedUnitConversion;
 	public static final double kForsetiLongDriveMotionMagicMaxAcceleration = 120 * Constants.kDriveSpeedUnitConversion;
 	public static final double kForsetiLongDriveMotionMagickP = 4.0;
@@ -58,7 +58,7 @@ public class Gains {
 	public static final Gains forsetiLongDriveMotionMagicGains = new Gains(kForsetiLongDriveMotionMagickP, kForsetiLongDriveMotionMagickI, kForsetiLongDriveMotionMagickD,
 			kForsetiLongDriveMotionMagickF, kForsetiLongDriveMotionMagickIzone, kForsetiLongDriveMotionMagickRampRate);
 
-	// Drive Motion Magic turn angle gains
+	//Drive Motion Magic turn angle gains
 	public static final double kForsetiTurnMotionMagicCruiseVelocity = 72 * Constants.kDriveSpeedUnitConversion;
 	public static final double kForsetiTurnMotionMagicMaxAcceleration = 36 * Constants.kDriveSpeedUnitConversion;
 	public static final double kForsetiTurnMotionMagickP = 6.0;
