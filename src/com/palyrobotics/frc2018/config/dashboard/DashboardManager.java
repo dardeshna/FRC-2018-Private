@@ -27,6 +27,8 @@ public class DashboardManager {
 	public static DashboardManager getInstance() {
 		return instance;
 	}
+
+	private boolean isUnitTest;
 	
 	private DashboardManager() {}
 	
@@ -35,11 +37,8 @@ public class DashboardManager {
 			initializeRobotTable();
 			initializeCANTable();
 			Logger.getInstance().logRobotThread(Level.FINE, "Succesfully initialized cantables");
-		}
-		catch (UnsatisfiedLinkError e) {
-			//Catch the error that occurs during unit tests.
-		}
-		catch (NoClassDefFoundError e) {
+		} catch (Exception e) {
+			isUnitTest = true;
 		}
 	}
 	
@@ -50,7 +49,7 @@ public class DashboardManager {
 	
 	public void initializeCANTable() {
 //		Gains.initNetworkTableGains();
-		if (enableCANTable) {
+		if(enableCANTable) {
 			this.canTable = net_instance.getTable(CAN_TABLE_NAME);
 			net_instance.setUpdateRate(.015);
 		}
@@ -61,27 +60,29 @@ public class DashboardManager {
 	 * @param d	The dashboard value.
 	 */
 	public void publishKVPair(DashboardValue d) {
-		if (robotTable == null) {
+		if(robotTable == null) {
 			try {
 				initializeRobotTable();
 			}
 			catch (UnsatisfiedLinkError e) {
-				//Block the error in a unit test and don't publish the value.
+				isUnitTest = true;
 			}
-			catch (NoClassDefFoundError e) {}
+			catch (NoClassDefFoundError e) {
+				isUnitTest = true;
+			}
 		}
 		
-		//If we are now connected
-		if (robotTable != null) {
+		// If we are now connected
+		if(robotTable != null && !isUnitTest) {
 			this.robotTable.getEntry(d.getKey()).setString(d.getValue());
 		}
 	}
 	
 	public void updateCANTable(String key, String value) {
-		if (!enableCANTable) {
+		if(!enableCANTable || isUnitTest) {
 			return;
 		}
-		if (canTable != null) {
+		if(canTable != null) {
 			this.canTable.getEntry(key).setString(value + "\n");
 		} else {
 			//try to reach it again
@@ -90,9 +91,11 @@ public class DashboardManager {
 			}
 			catch (UnsatisfiedLinkError e) {
 				Logger.getInstance().logRobotThread(Level.WARNING, e);
+				isUnitTest = true;
 			}
 			catch (NoClassDefFoundError e) {
 				Logger.getInstance().logRobotThread(Level.WARNING, e);
+				isUnitTest = true;
 			}
 		}
 	}	
@@ -102,17 +105,16 @@ public class DashboardManager {
 	 * @param start true if you want to start sending data
 	 */
 	public void toggleCANTable(boolean start) {
-		if (start) {
-			if (canTable != null) {
+		if(start) {
+			if (canTable != null && !isUnitTest) {
 				Logger.getInstance().logRobotThread(Level.FINER, "Started CANTables");
 				this.canTable.getEntry("start").setString("true");
 				this.canTable.getEntry("end").setString("false");
-			}
-			else {
+			} else {
 				Logger.getInstance().logRobotThread(Level.WARNING, "Error in CANTables");
 			}
 		} else {
-			if (canTable != null) {
+			if (canTable != null && !isUnitTest) {
 				this.canTable.getEntry("start").setString("false");
 				this.canTable.getEntry("end").setString("true");
 			}

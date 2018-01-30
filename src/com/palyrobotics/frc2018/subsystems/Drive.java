@@ -3,6 +3,7 @@ package com.palyrobotics.frc2018.subsystems;
 import com.palyrobotics.frc2018.config.Commands;
 import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.config.RobotState;
+import com.palyrobotics.frc2018.config.dashboard.DashboardManager;
 import com.palyrobotics.frc2018.config.dashboard.DashboardValue;
 import com.palyrobotics.frc2018.subsystems.controllers.*;
 import com.palyrobotics.frc2018.util.CheesyDriveHelper;
@@ -175,10 +176,10 @@ public class Drive extends Subsystem {
 		Logger.getInstance().logSubsystemThread(Level.FINEST, "Left drive encoder", leftEncoder);
 		Logger.getInstance().logSubsystemThread(Level.FINEST, "Right drive encoder", rightEncoder);
 
-//		DashboardManager.getInstance().publishKVPair(leftEncoder);
-//		DashboardManager.getInstance().publishKVPair(rightEncoder);
-//
-//		DashboardManager.getInstance().publishKVPair(motors);
+		DashboardManager.getInstance().publishKVPair(leftEncoder);
+		DashboardManager.getInstance().publishKVPair(rightEncoder);
+
+		DashboardManager.getInstance().publishKVPair(motors);
 	}
 
 	@Override

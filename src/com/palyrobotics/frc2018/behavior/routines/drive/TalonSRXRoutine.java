@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.palyrobotics.frc2018.behavior.Routine;
 import com.palyrobotics.frc2018.config.Commands;
 import com.palyrobotics.frc2018.config.RobotState;
+import com.palyrobotics.frc2018.config.dashboard.DashboardManager;
 import com.palyrobotics.frc2018.robot.Robot;
 import com.palyrobotics.frc2018.subsystems.Drive;
 import com.palyrobotics.frc2018.subsystems.Subsystem;
@@ -79,11 +80,10 @@ public class TalonSRXRoutine extends Routine {
 	public Commands update(Commands commands) {
 		Commands output = commands.copy();
 		output.wantedDriveState = Drive.DriveState.OFF_BOARD_CONTROLLER;
+		//TODO: why commented out?
 //		DashboardManager.getInstance().updateCANTable(((TalonSRXDriveController)drive.getController()).getCanTableString());
 		return output;
 	}
-
-
 
 	@Override
 	public Commands cancel(Commands commands) {

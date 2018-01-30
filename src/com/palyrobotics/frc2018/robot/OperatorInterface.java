@@ -87,14 +87,12 @@ public class OperatorInterface {
 
 		if(mClimberStick.getTriggerPressed()) {
 			newCommands.wantedLockState = Climber.LockState.LOCKED;
-		}
-		if(mClimberStick.getButtonPressed(2)) {
+		} else if(mClimberStick.getButtonPressed(2)) {
 			newCommands.wantedLockState = Climber.LockState.UNLOCKED;
 		}
 		if(mClimberStick.getButtonPressed(4)) {
 			newCommands.wantedClimbSide = Climber.Side.LEFT;
-		}
-		if(mClimberStick.getButtonPressed(5)) {
+		} else if(mClimberStick.getButtonPressed(5)) {
 			newCommands.wantedClimbSide = Climber.Side.RIGHT;
 		}
 
