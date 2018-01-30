@@ -3,8 +3,11 @@ package com.palyrobotics.frc2018.suites;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
+import com.palyrobotics.frc2018.subsystems.SubsystemUpdateTest;
+
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
+	SubsystemUpdateTest.class
 })
 /**
  * Test suite for integration tests

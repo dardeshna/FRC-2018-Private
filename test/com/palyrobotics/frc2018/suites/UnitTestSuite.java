@@ -3,7 +3,10 @@ package com.palyrobotics.frc2018.suites;
 import com.palyrobotics.frc2018.auto.AutoModeSelectorTest;
 import com.palyrobotics.frc2018.behavior.RoutineManagerTest;
 import com.palyrobotics.frc2018.config.CommandsTest;
+import com.palyrobotics.frc2018.config.RobotStateTest;
+import com.palyrobotics.frc2018.subsystems.ClimberTest;
 import com.palyrobotics.frc2018.subsystems.DriveTest;
+import com.palyrobotics.frc2018.subsystems.IntakeTest;
 import com.palyrobotics.frc2018.util.CheesyDriveHelperTest;
 import com.palyrobotics.frc2018.util.logger.LoggerTest;
 import com.palyrobotics.frc2018.vision.AndroidComputerTest;
@@ -18,7 +21,12 @@ import org.junit.runners.Suite;
 	LoggerTest.class,
 	RoutineManagerTest.class,
 	AutoModeSelectorTest.class,
-	AndroidComputerTest.class
+	AndroidComputerTest.class,
+	ClimberTest.class,
+	IntakeTest.class,
+	CommandsTest.class,
+	RobotStateTest.class,
+	RoutineManagerTest.class
 })
 /**
  * Test suite for unit tests
