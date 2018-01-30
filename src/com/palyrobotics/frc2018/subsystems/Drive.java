@@ -28,10 +28,10 @@ public class Drive extends Subsystem {
 	 * 
 	 * <p>
 	 * 
-	 * {@code CHEZY} creates a {@link CheesyDriveHelper} drive with joystick values.
+	 * {@code CHEZY} creates a {@link CheesyDriveHelper} drive with joystick values. 
 	 * {@code OFF_BOARD_CONTROLLER} creates a CANTalon offboard loop.
 	 * {@code ON_BOARD_CONTROLLER} makes a control loop calculated in code with an open loop. 
-	 * It uses drive outputs passed in through commands
+	 * It uses drive outputs passed in through commands.
 	 * {@code NEUTRAL} does nothing.
 	 */
 	public enum DriveState {CHEZY, OFF_BOARD_CONTROLLER, ON_BOARD_CONTROLLER, OPEN_LOOP, NEUTRAL}
@@ -88,7 +88,40 @@ public class Drive extends Subsystem {
 	}
 
 	/**
-	 * Updates the drivetrain and its {@link DriveSignal}
+	 * <h1>Updates the drivetrain and its {@link DriveSignal}</h1>
+	 * 
+	 * <br>
+	 * Contains a state machine that switches. based on {@link DriveState} and updates the
+	 * {@link DriveController} with the current {@link RobotState}. The controllers then output 
+	 * a {@link DriveSignal}, which is then used to {@link Drive#setDriveOutputs}.
+	 * <br><br>
+	 * 
+	 * States and behavior:
+	 *	<ul>
+	 * 		<li>
+	 * 			{@link DriveState#CHEZY}: 
+	 * 			Sets drive outputs using a {@link DriveSignal} from a {@link CheesyDriveHelper}.
+	 * 		</li>	
+	 * 		<li>
+	 * 			{@link DriveState#OFF_BOARD_CONTROLLER}:
+	 * 			Updates the {@link DriveController}, but if no controller exists prints a warning and sets the 
+	 * 			{@link Commands#wantedDriveState} to {@link DriveState#NEUTRAL}.
+	 * 		</li>	
+	 * 		<li>
+	 * 			{@link DriveState#ON_BOARD_CONTROLLER}:
+	 * 			See {@link DriveState#OFF_BOARD_CONTROLLER}.
+	 * 		</li>	
+	 * 		<li>
+	 * 			{@link DriveState#OPEN_LOOP}:
+	 * 			Directly accesses {@link Commands#robotSetpoints} for the {@code DrivePowerSetpoint}.
+	 * 		</li>
+	 * 		<li>
+	 * 			{@link DriveState#NEUTRAL}:
+	 * 			Sets drive outputs to {@link DriveSignal#getNeutralSignal()}. Will also 
+	 * 			{@link Drive#resetController} if in a new state and set {@link DriveState#CHEZY} if in
+	 * 			{@code TELEOP}.
+	 * 		</li>
+	 * 	</ul>
 	 * 
 	 * @param state {@link RobotState}
 	 * @param commands {@link Commands}
@@ -105,13 +138,7 @@ public class Drive extends Subsystem {
 				setDriveOutputs(mCDH.cheesyDrive(commands, mCachedRobotState));
 				break;
 			case OFF_BOARD_CONTROLLER:
-				if (mController == null) {
-					setDriveOutputs(DriveSignal.getNeutralSignal());
-					Logger.getInstance().logSubsystemThread(Level.WARNING, "No offboard controller to use!");
-					break;
-				}
-				setDriveOutputs(mController.update(mCachedRobotState));
-				break;
+				//Falls
 			case ON_BOARD_CONTROLLER:
 				if (mController == null) {
 					Logger.getInstance().logSubsystemThread(Level.WARNING, "No onboard controller to use!");
@@ -194,7 +221,9 @@ public class Drive extends Subsystem {
 
 	/**
 	 * Motion profile hype
-	 * @param path Path to follow
+	 * 
+	 * @param path {@link Path} to follow
+	 * @param inverted Boolean to invert path
 	 */
 	public void setTrajectoryController(Path path, boolean inverted) {
 		mController = new AdaptivePurePursuitController(Constants.kPathFollowingLookahead, Constants.kPathFollowingMaxAccel, Constants.kNormalLoopsDt, path, inverted, Constants.kPathFollowingTolerance);
@@ -238,7 +267,13 @@ public class Drive extends Subsystem {
 	public boolean hasController() {
 		return mController != null;
 	}
-
+	
+	/**
+	 * <h1>Interface for drive controllers</h1>
+	 *
+	 * Contains an {@code update} method that takes a {@link RobotState} and 
+	 * generates a {@link DriveSignal}.
+	 */
 	public interface DriveController {
 		DriveSignal update(RobotState state);
 
