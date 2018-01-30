@@ -52,7 +52,7 @@ public class Climber extends Subsystem {
 		boolean lock;
 
 		if(this.mMotionStatus == MotionSubstate.MOVING) {
-			motorOutput = Robot.getRobotState().operatorStickInput.getY();
+			motorOutput = Robot.getRobotState().climberStickInput.getY();
 			brake = false;
 		} else {
 			motorOutput = 0;

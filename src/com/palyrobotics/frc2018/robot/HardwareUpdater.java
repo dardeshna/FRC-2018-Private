@@ -283,8 +283,8 @@ class HardwareUpdater {
 
 		robotState.leftStickInput.update(HardwareAdapter.getInstance().getJoysticks().driveStick);
 		robotState.rightStickInput.update(HardwareAdapter.getInstance().getJoysticks().turnStick);
+		robotState.climberStickInput.update(HardwareAdapter.getInstance().getJoysticks().climberStick);
 		robotState.operatorStickInput.update(HardwareAdapter.getInstance().getJoysticks().operatorStick);
-		robotState.elevatorStickInput.update(HardwareAdapter.getInstance().getJoysticks().elevatorStick);
 		
 		//Currently represents the voltage returned from the distance sensor, but the actual sensor is undetermined so we do not know the conversion.
 		robotState.cubeDistance = intakeDistanceSensor.getValue();

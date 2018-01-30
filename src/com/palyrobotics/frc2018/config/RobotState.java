@@ -62,8 +62,8 @@ public class RobotState {
 	//Joystick input
 	public JoystickInput leftStickInput = new JoystickInput();
 	public JoystickInput rightStickInput = new JoystickInput();
+	public JoystickInput climberStickInput = new JoystickInput();
 	public JoystickInput operatorStickInput = new JoystickInput();
-	public JoystickInput elevatorStickInput = new JoystickInput();
 	
     public synchronized void reset(double start_time, RigidTransform2d initial_field_to_vehicle) {
         field_to_vehicle_ = new InterpolatingTreeMap<>(kObservationBufferSize);

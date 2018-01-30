@@ -27,8 +27,8 @@ public class OperatorInterface {
 
 	private JoystickInput mDriveStick = Robot.getRobotState().leftStickInput;
 	private JoystickInput mTurnStick = Robot.getRobotState().rightStickInput;
+	private JoystickInput mClimberStick = Robot.getRobotState().climberStickInput;
 	private JoystickInput mOperatorStick = Robot.getRobotState().operatorStickInput;
-	private JoystickInput mElevatorStick = Robot.getRobotState().elevatorStickInput;
 
 	/**
 	 * Helper method to only add routines that aren't already in wantedRoutines
@@ -53,15 +53,24 @@ public class OperatorInterface {
 	public Commands updateCommands(Commands prevCommands) {
 		Commands newCommands = prevCommands.copy();
 
+		/**
+		 * Drivetrain controls
+		 */
 		if(prevCommands.wantedDriveState != Drive.DriveState.OFF_BOARD_CONTROLLER
 				&& prevCommands.wantedDriveState != Drive.DriveState.ON_BOARD_CONTROLLER) {
+			newCommands.wantedDriveState = Drive.DriveState.CHEZY;
+		}
+
+		//More safety
+		if(Math.abs(ChezyMath.handleDeadband(mDriveStick.getY(), Constants.kDeadband)) > 0.0
+				|| Math.abs(ChezyMath.handleDeadband(mTurnStick.getX(), Constants.kDeadband)) > 0.0) {
 			newCommands.wantedDriveState = Drive.DriveState.CHEZY;
 		}
 
 		/**
 		 * Elevator controls
 		 */
-		if(Math.abs(ChezyMath.handleDeadband(mElevatorStick.getY(), Constants.kDeadband)) > 0.0) {
+		if(Math.abs(ChezyMath.handleDeadband(mOperatorStick.getY(), Constants.kDeadband)) > 0.0) {
 			newCommands.wantedElevatorState = Elevator.ElevatorState.MANUAL_POSITIONING;
 		} else {
 			newCommands.wantedElevatorState = Elevator.ElevatorState.HOLD;
@@ -70,37 +79,53 @@ public class OperatorInterface {
 		/**
 		 * Climber controls
 		 */
-		if(Math.abs(ChezyMath.handleDeadband(mOperatorStick.getY(), Constants.kDeadband)) > 0.0) {
+		if(Math.abs(ChezyMath.handleDeadband(mClimberStick.getY(), Constants.kDeadband)) > 0.0) {
 			newCommands.wantedClimbMovement = Climber.MotionSubstate.MOVING;
 		} else {
 			newCommands.wantedClimbMovement = Climber.MotionSubstate.LOCKED;
 		}
 
-		if(mOperatorStick.getTriggerPressed()) {
+		if(mClimberStick.getTriggerPressed()) {
 			newCommands.wantedLockState = Climber.LockState.LOCKED;
 		}
-		if(mOperatorStick.getButtonPressed(2)) {
+		if(mClimberStick.getButtonPressed(2)) {
 			newCommands.wantedLockState = Climber.LockState.UNLOCKED;
 		}
-		if(mOperatorStick.getButtonPressed(4)) {
+		if(mClimberStick.getButtonPressed(4)) {
 			newCommands.wantedClimbSide = Climber.Side.LEFT;
 		}
-		if(mOperatorStick.getButtonPressed(5)) {
+		if(mClimberStick.getButtonPressed(5)) {
 			newCommands.wantedClimbSide = Climber.Side.RIGHT;
 		}
 
-		if(prevCommands.wantedUpDownState == Intake.UpDownState.DOWN && mOperatorStick.getTriggerPressed()) {
-			newCommands.wantedIntakeState = Intake.IntakeState.INTAKING;
-		} else if(prevCommands.wantedUpDownState == Intake.UpDownState.DOWN && mOperatorStick.getButtonPressed(3)) {
-			newCommands.wantedIntakeState = Intake.IntakeState.EXPELLING;
+		/**
+		 * Intake controls
+		 */
+
+		//Operator intake control
+		if(prevCommands.wantedIntakeOpenCloseState == Intake.OpenCloseState.CLOSED && mOperatorStick.getButtonPressed(2)) {
+			newCommands.wantedIntakeUpDownState = Intake.UpDownState.UP;
+		} else if(mOperatorStick.getButtonPressed(3)) {
+			newCommands.wantedIntakeUpDownState = Intake.UpDownState.DOWN;
+		}
+		
+		if(prevCommands.wantedIntakeUpDownState == Intake.UpDownState.DOWN && mOperatorStick.getTriggerPressed()) {
+			newCommands.wantedIntakingState = Intake.IntakeState.EXPELLING;
 		} else {
-			newCommands.wantedIntakeState = Intake.IntakeState.IDLE;
+			newCommands.wantedIntakingState = Intake.IntakeState.IDLE;
 		}
 
-		if(prevCommands.wantedOpenCloseState == Intake.OpenCloseState.CLOSED && mOperatorStick.getButtonPressed(8)) {
-			newCommands.wantedUpDownState = Intake.UpDownState.UP;
-		} else if(prevCommands.wantedOpenCloseState == Intake.OpenCloseState.CLOSED && mOperatorStick.getButtonPressed(9)) {
-			newCommands.wantedUpDownState = Intake.UpDownState.DOWN;
+		if(mOperatorStick.getButtonPressed(4)) {
+			newCommands.wantedIntakeOpenCloseState = Intake.OpenCloseState.CLOSED;
+		} else if(prevCommands.wantedIntakeUpDownState == Intake.UpDownState.DOWN && mOperatorStick.getButtonPressed(5)) {
+			newCommands.wantedIntakeOpenCloseState = Intake.OpenCloseState.OPEN;
+		}
+
+		//Driver intake control
+		if(mTurnStick.getButtonPressed(3)) {
+			newCommands.wantedIntakingState = Intake.IntakeState.INTAKING;
+		} else if(mTurnStick.getButtonPressed(4)) {
+			newCommands.wantedIntakingState = Intake.IntakeState.EXPELLING;
 		}
 
 		return newCommands;

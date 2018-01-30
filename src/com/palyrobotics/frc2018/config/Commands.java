@@ -36,9 +36,9 @@ public class Commands {
 	public Climber.Side wantedClimbSide = Climber.Side.NOT_SET;
 	public Climber.LockState wantedLockState = Climber.LockState.UNLOCKED;
 	public Elevator.ElevatorState wantedElevatorState = Elevator.ElevatorState.CALIBRATING;
-	public Intake.IntakeState wantedIntakeState = Intake.IntakeState.IDLE;
-	public Intake.UpDownState wantedUpDownState = Intake.UpDownState.UP;
-	public Intake.OpenCloseState wantedOpenCloseState = Intake.OpenCloseState.OPEN;
+	public Intake.IntakeState wantedIntakingState = Intake.IntakeState.IDLE;
+	public Intake.UpDownState wantedIntakeUpDownState = Intake.UpDownState.UP;
+	public Intake.OpenCloseState wantedIntakeOpenCloseState = Intake.OpenCloseState.CLOSED;
 
 	public void addWantedRoutine(Routine wantedRoutine) {
 		for(Routine routine : wantedRoutines) {
@@ -87,9 +87,9 @@ public class Commands {
 		copy.wantedLockState = this.wantedLockState;
 		copy.wantedElevatorState = this.wantedElevatorState;
 		copy.cancelCurrentRoutines = this.cancelCurrentRoutines;
-		copy.wantedIntakeState = this.wantedIntakeState;
-		copy.wantedUpDownState = this.wantedUpDownState;
-		copy.wantedOpenCloseState = this.wantedOpenCloseState;
+		copy.wantedIntakingState = this.wantedIntakingState;
+		copy.wantedIntakeUpDownState = this.wantedIntakeUpDownState;
+		copy.wantedIntakeOpenCloseState = this.wantedIntakeOpenCloseState;
 
 		copy.cancelCurrentRoutines = this.cancelCurrentRoutines;
 

@@ -88,7 +88,7 @@ public class Elevator extends Subsystem {
 				}
 
 				//Move with joystick input
-				mOutput.setPercentOutput(mRobotState.elevatorStickInput.getY());
+				mOutput.setPercentOutput(mRobotState.operatorStickInput.getY());
 				break;
 			case CUSTOM_POSITIONING:
 				//Control loop

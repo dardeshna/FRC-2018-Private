@@ -38,7 +38,7 @@ public class Intake extends Subsystem{
 	
 	private IntakeState mIntakeState = IntakeState.IDLE;
 	private UpDownState mUpDownState = UpDownState.UP;
-	private OpenCloseState mOpenCloseState = OpenCloseState.OPEN;
+	private OpenCloseState mOpenCloseState = OpenCloseState.CLOSED;
 	
 	protected Intake() {
 		super("Intake");
@@ -60,9 +60,9 @@ public class Intake extends Subsystem{
 	
 	@Override
 	public void update(Commands commands, RobotState robotState) {
-		mIntakeState = commands.wantedIntakeState;
-		mUpDownState = commands.wantedUpDownState;
-		mOpenCloseState = commands.wantedOpenCloseState;
+		mIntakeState = commands.wantedIntakingState;
+		mUpDownState = commands.wantedIntakeUpDownState;
+		mOpenCloseState = commands.wantedIntakeOpenCloseState;
 		
 		switch(mIntakeState) {
 			case INTAKING:
@@ -79,22 +79,18 @@ public class Intake extends Subsystem{
 		switch(mUpDownState) {
 			case UP:
 				mUpDownOutput = DoubleSolenoid.Value.kReverse;
-				mUpDownState = UpDownState.UP;
 				break;
 			case DOWN:
 				mUpDownOutput = DoubleSolenoid.Value.kForward;
-				mUpDownState = UpDownState.DOWN;
 				break;
 		}
 		
 		switch(mOpenCloseState) {
 			case OPEN:
 				mOpenCloseOutput = DoubleSolenoid.Value.kReverse;
-				mOpenCloseState = OpenCloseState.OPEN;
 				break;
 			case CLOSED:
 				mOpenCloseOutput = DoubleSolenoid.Value.kForward;
-				mOpenCloseState = OpenCloseState.CLOSED;
 				break;
 		}
 	}

@@ -35,21 +35,21 @@ public class IntakeTest {
 	
 	@Test
 	public void testClose() {
-		mCommands.wantedOpenCloseState = OpenCloseState.CLOSED;
+		mCommands.wantedIntakeOpenCloseState = OpenCloseState.CLOSED;
 		mIntake.update(mCommands, mRobotState);
 		assertThat("Did not close properly", mIntake.getOpenCloseOutput(), is(DoubleSolenoid.Value.kForward));	
 	}
 	
 	@Test
 	public void testIntake() {
-		mCommands.wantedIntakeState = IntakeState.INTAKING;
+		mCommands.wantedIntakingState = IntakeState.INTAKING;
 		mIntake.update(mCommands, mRobotState);
 		assertThat("Did not intake properly", mIntake.getTalonOutput().getSetpoint(), is(Constants.kIntakingMotorVelocity));
 	}
 	
 	@Test
 	public void testExpel() {
-		mCommands.wantedIntakeState = IntakeState.EXPELLING;
+		mCommands.wantedIntakingState = IntakeState.EXPELLING;
 		mIntake.update(mCommands, mRobotState);
 		assertThat("Did not expel properly",mIntake.getTalonOutput().getSetpoint(), is(Constants.kExpellingMotorVelocity));
 	}
