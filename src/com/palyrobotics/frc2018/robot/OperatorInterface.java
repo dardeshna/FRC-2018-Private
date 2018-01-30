@@ -6,7 +6,6 @@ import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.subsystems.Climber;
 import com.palyrobotics.frc2018.subsystems.Drive;
 import com.palyrobotics.frc2018.subsystems.Elevator;
-import com.palyrobotics.frc2018.subsystems.Elevator.ElevatorState;
 import com.palyrobotics.frc2018.subsystems.Intake;
 import com.palyrobotics.frc2018.util.ChezyMath;
 import com.palyrobotics.frc2018.util.JoystickInput;
@@ -58,23 +57,36 @@ public class OperatorInterface {
 				&& prevCommands.wantedDriveState != Drive.DriveState.ON_BOARD_CONTROLLER) {
 			newCommands.wantedDriveState = Drive.DriveState.CHEZY;
 		}
-		
-		// Handle elevator states
-		if (Math.abs(ChezyMath.handleDeadband(mElevatorStick.getY(), Constants.kDeadband)) > 0.0) {
+
+		/**
+		 * Elevator controls
+		 */
+		if(Math.abs(ChezyMath.handleDeadband(mElevatorStick.getY(), Constants.kDeadband)) > 0.0) {
 			newCommands.wantedElevatorState = Elevator.ElevatorState.MANUAL_POSITIONING;
 		} else {
 			newCommands.wantedElevatorState = Elevator.ElevatorState.HOLD;
 		}
 
-		if (Math.abs(ChezyMath.handleDeadband(mOperatorStick.getY(), Constants.kDeadband)) > 0.0) {
+		/**
+		 * Climber controls
+		 */
+		if(Math.abs(ChezyMath.handleDeadband(mOperatorStick.getY(), Constants.kDeadband)) > 0.0) {
 			newCommands.wantedClimbMovement = Climber.MotionSubstate.MOVING;
 		} else {
 			newCommands.wantedClimbMovement = Climber.MotionSubstate.LOCKED;
 		}
 
-		if (mOperatorStick.getButtonPressed(10)) {
-			newCommands.wantedLockState = (Climber.LockState.LOCKED == prevCommands.wantedLockState) ?
-											Climber.LockState.UNLOCKED : Climber.LockState.LOCKED;
+		if(mOperatorStick.getTriggerPressed()) {
+			newCommands.wantedLockState = Climber.LockState.LOCKED;
+		}
+		if(mOperatorStick.getButtonPressed(2)) {
+			newCommands.wantedLockState = Climber.LockState.UNLOCKED;
+		}
+		if(mOperatorStick.getButtonPressed(4)) {
+			newCommands.wantedClimbSide = Climber.Side.LEFT;
+		}
+		if(mOperatorStick.getButtonPressed(5)) {
+			newCommands.wantedClimbSide = Climber.Side.RIGHT;
 		}
 
 		if(prevCommands.wantedUpDownState == Intake.UpDownState.DOWN && mOperatorStick.getTriggerPressed()) {

@@ -22,7 +22,7 @@ public class Climber extends Subsystem {
 		UNLOCKED,
 		LOCKED
 	}
-
+	
 	private Side mSide;
 	private MotionSubstate mMotionStatus;
 	private LockState mLock;
@@ -51,7 +51,7 @@ public class Climber extends Subsystem {
 		boolean brake;
 		boolean lock;
 
-		if (this.mMotionStatus == MotionSubstate.MOVING) {
+		if(this.mMotionStatus == MotionSubstate.MOVING) {
 			motorOutput = Robot.getRobotState().operatorStickInput.getY();
 			brake = false;
 		} else {
@@ -59,26 +59,26 @@ public class Climber extends Subsystem {
 			brake = true;
 		}
 
-		if (this.mLock == LockState.UNLOCKED) {
+		if(this.mLock == LockState.UNLOCKED) {
 			lock = false;
 		} else {
 			lock = true;
 		}
 
-		double mLeftMotor = 0.0, mRightMotor = 0.0;
+		double leftMotor = 0.0, rightMotor = 0.0;
 		boolean leftBrake = true, rightBrake = true, leftLock = false, rightLock = false;
 
-		if (this.getSide() == Climber.Side.LEFT) {
-			mLeftMotor = motorOutput;
+		if(this.getSide() == Side.LEFT) {
+			leftMotor = motorOutput;
 			leftBrake = brake;
 			leftLock = lock;
-		}
-		else if (this.getSide() == Side.RIGHT) {
-			mRightMotor = motorOutput;
+		} else if(this.getSide() == Side.RIGHT) {
+			rightMotor = motorOutput;
 			rightBrake = brake;
 			rightLock = lock;
 		}
-		mSignal = new ClimberSignal(mLeftMotor, mRightMotor, leftBrake, rightBrake, leftLock, rightLock);
+
+		mSignal = new ClimberSignal(leftMotor, rightMotor, leftBrake, rightBrake, leftLock, rightLock);
 	}
 
 	public ClimberSignal getSignal() {

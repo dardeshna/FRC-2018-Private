@@ -60,7 +60,6 @@ public class Commands {
 	 */
 	public static class Setpoints {
 		public Optional<DriveSignal> drivePowerSetpoint = Optional.empty();
-		public Optional<Double> climbPowerSetpoint = Optional.empty();
 		public Optional<Double> elevatorPositionSetpoint = Optional.empty();
 
 		/**
@@ -68,7 +67,6 @@ public class Commands {
 		 */
 		public void reset() {
 			drivePowerSetpoint = Optional.empty();
-			climbPowerSetpoint = Optional.empty();
 			elevatorPositionSetpoint = Optional.empty();
 		}
 	}

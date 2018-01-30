@@ -28,7 +28,7 @@ public class Drive extends Subsystem {
 	 * 
 	 * <p>
 	 * 
-	 * {@code CHEZY} creates a {@link ChezyDriveHelper} drive with joystick values. 
+	 * {@code CHEZY} creates a {@link CheesyDriveHelper} drive with joystick values.
 	 * {@code OFF_BOARD_CONTROLLER} creates a CANTalon offboard loop.
 	 * {@code ON_BOARD_CONTROLLER} makes a control loop calculated in code with an open loop. 
 	 * It uses drive outputs passed in through commands

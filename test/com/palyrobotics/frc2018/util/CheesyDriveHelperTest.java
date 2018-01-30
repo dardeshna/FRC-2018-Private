@@ -2,7 +2,6 @@ package com.palyrobotics.frc2018.util;
 
 import com.palyrobotics.frc2018.config.Commands;
 import com.palyrobotics.frc2018.config.MockRobotState;
-import com.palyrobotics.frc2018.config.RobotState;
 import com.palyrobotics.frc2018.robot.MockRobot;
 import org.junit.Test;
 
