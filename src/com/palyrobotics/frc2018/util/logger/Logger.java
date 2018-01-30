@@ -53,6 +53,7 @@ public class Logger {
 	
 	private int duplicatePrevent = 0;
 	private File mainLog;
+	private boolean fmsConnected;
 
 	// Finds the driver station console output
 
@@ -74,7 +75,7 @@ public class Logger {
 			System.err.println("WARNING: Using default filename!");
 		}
 		//Verifying file names
-		this.fileName = fileName.replaceAll(File.separator, ":");
+//		this.fileName = fileName.replaceAll(File.separator, ":");
 		this.fileName = fileName.replaceAll(" ", "_");
 		this.fileName = fileName.replaceAll("/n", "_");
 		// If initialized before, then recreate the buffered writer and re-enable
@@ -85,11 +86,17 @@ public class Logger {
 			return;
 		}
 		String cDate = ZonedDateTime.now(LoggerConstants.tZone).format(DateTimeFormatter.ofPattern("MM-dd-yy"));
-		String cTime = ZonedDateTime.now(LoggerConstants.tZone).format(DateTimeFormatter.ofPattern("HH:mm"));
+		String cTime = ZonedDateTime.now(LoggerConstants.tZone).format(DateTimeFormatter.ofPattern("HH-mm"));
 		String os = System.getProperty("os.name");
-		String filePath = fileName + File.separatorChar + cDate + File.separatorChar + fileName + " " + cTime;
+		String filePath = fileName + File.separatorChar + cDate + File.separatorChar + fileName + "-" + cTime;
 		//Changes directory based on competition status
-		if(LoggerConstants.compStatus || DriverStation.getInstance().isFMSAttached()) {
+		try {
+			fmsConnected = DriverStation.getInstance().isFMSAttached();
+		}
+		catch(UnsatisfiedLinkError e) {
+			System.out.println("FMS is not attached");
+		}
+		if(LoggerConstants.compStatus || fmsConnected) {
 			filePath = "COMPETITIONS" + File.separatorChar + filePath;
 		}
 		else {
@@ -99,7 +106,7 @@ public class Logger {
 			filePath = "logs" + File.separatorChar + filePath;
 		}
 		else if (os.startsWith("Windows")) {
-			filePath = "C:" + File.separatorChar + "logs" + File.separatorChar + filePath;
+			filePath = "." + File.separatorChar + "logs" + File.separatorChar + filePath;
 		} else  if (os.startsWith("Linux")){
 			// Pray that this is a roborio
 			filePath = "/home/lvuser/logs/" + filePath;		}
