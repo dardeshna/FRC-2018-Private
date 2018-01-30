@@ -96,7 +96,7 @@ public class Commands {
 		copy.wantedIntakeUpDownState = this.wantedIntakeUpDownState;
 		copy.wantedIntakeOpenCloseState = this.wantedIntakeOpenCloseState;
 
-		copy.cancelCurrentRoutines = this.cancelCurrentRoutines;
+//		copy.cancelCurrentRoutines = this.cancelCurrentRoutines;
 
 		for(Routine r : this.wantedRoutines) {
 			copy.wantedRoutines.add(r);

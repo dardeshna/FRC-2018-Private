@@ -22,7 +22,7 @@ public class IntakeTest {
 
 	@Before
 	public void setUp() {
-		mCommands = Robot.getCommands();
+		mCommands = MockRobot.getCommands();
 		mRobotState = MockRobot.getRobotState();
 	}
 

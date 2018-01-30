@@ -9,13 +9,12 @@ import com.palyrobotics.frc2018.subsystems.DriveTest;
 import com.palyrobotics.frc2018.subsystems.IntakeTest;
 import com.palyrobotics.frc2018.util.CheesyDriveHelperTest;
 import com.palyrobotics.frc2018.util.logger.LoggerTest;
-import com.palyrobotics.frc2018.vision.AndroidComputerTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ DriveTest.class, CommandsTest.class, CheesyDriveHelperTest.class, LoggerTest.class, RoutineManagerTest.class, AutoModeSelectorTest.class,
-		AndroidComputerTest.class, ClimberTest.class, IntakeTest.class, CommandsTest.class, RobotStateTest.class, RoutineManagerTest.class
+	 ClimberTest.class, IntakeTest.class, CommandsTest.class, RobotStateTest.class, RoutineManagerTest.class
 })
 /**
  * Test suite for unit tests

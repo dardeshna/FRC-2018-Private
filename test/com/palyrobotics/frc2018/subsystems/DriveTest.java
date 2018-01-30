@@ -1,7 +1,6 @@
 package com.palyrobotics.frc2018.subsystems;
 
-import com.palyrobotics.frc2018.config.Commands;
-import com.palyrobotics.frc2018.config.RobotState;
+import com.palyrobotics.frc2018.config.*;
 import com.palyrobotics.frc2018.robot.MockRobot;
 import com.palyrobotics.frc2018.robot.Robot;
 import com.palyrobotics.frc2018.util.CheesyDriveHelper;
@@ -11,33 +10,31 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 
+import org.junit.After;
+
 /**
- * Created by Nihar on 1/22/17. Tests {@link LegacyDrive}
+ * 
+ * 
+ * Created by Nihar on 1/22/17. Tests {@link Drive}
  */
 public class DriveTest {
-	static Commands commands;
-	static RobotState state;
-	static Drive drive;
-
-	@BeforeClass
-	public static void setUpClass() {
-		commands = MockRobot.getCommands();
-		state = Robot.getRobotState();
-		drive = Drive.getInstance();
-	}
+	private static MockCommands commands;
+	private static RobotState state;
+	private static Drive drive;
 
 	@Before
 	public void setUp() {
-		drive.resetController();
-		Commands.reset();
+		commands = MockRobot.getCommands();
+		state = MockRobot.getRobotState();
+		drive = Drive.getInstance();
 	}
 
-	@AfterClass
-	public static void tearDown() {
+	@After
+	public void tearDown() {
 		commands = null;
 		state = null;
 		drive = null;
@@ -91,6 +88,7 @@ public class DriveTest {
 	@Test
 	public void testOpenLoop() {
 		commands.wantedDriveState = Drive.DriveState.OPEN_LOOP;
+		commands.robotSetpoints.setDrivePowerSetpoint(DriveSignal.getNeutralSignal());
 		drive.update(commands, state);
 		assertThat("Drive output not corresponding to driveSetpoint", commands.robotSetpoints.drivePowerSetpoint.orElse(null), equalTo(drive.getDriveSignal()));
 	}
