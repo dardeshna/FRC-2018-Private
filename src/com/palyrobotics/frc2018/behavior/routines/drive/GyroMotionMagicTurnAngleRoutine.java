@@ -7,10 +7,13 @@ import com.palyrobotics.frc2018.subsystems.Subsystem;
 
 public class GyroMotionMagicTurnAngleRoutine extends Routine {
 	private double mAngle;
-	
-	private enum State { START, TURNING, DONE };
+
+	private enum State {
+		START, TURNING, DONE
+	};
+
 	private State mState = State.START;
-	
+
 	public GyroMotionMagicTurnAngleRoutine(double angle) {
 		mAngle = angle;
 	}
@@ -25,22 +28,22 @@ public class GyroMotionMagicTurnAngleRoutine extends Routine {
 	public Commands update(Commands commands) {
 		Commands output = commands.copy();
 		switch(mState) {
-		case START:
-			drive.setGyroMotionMagicTurnAngleSetpoint(mAngle);
-			output.wantedDriveState = Drive.DriveState.OFF_BOARD_CONTROLLER;
-			mState = State.TURNING;
-			break;
-		case TURNING:
-			output.wantedDriveState = Drive.DriveState.OFF_BOARD_CONTROLLER;
-			if (drive.controllerOnTarget() && drive.hasController()) {
-				mState = State.DONE;
-			}
-			break;
-		case DONE:
-			drive.resetController();
-			break;
-		default:
-			break;
+			case START:
+				drive.setGyroMotionMagicTurnAngleSetpoint(mAngle);
+				output.wantedDriveState = Drive.DriveState.OFF_BOARD_CONTROLLER;
+				mState = State.TURNING;
+				break;
+			case TURNING:
+				output.wantedDriveState = Drive.DriveState.OFF_BOARD_CONTROLLER;
+				if(drive.controllerOnTarget() && drive.hasController()) {
+					mState = State.DONE;
+				}
+				break;
+			case DONE:
+				drive.resetController();
+				break;
+			default:
+				break;
 		}
 		return output;
 	}
@@ -60,7 +63,7 @@ public class GyroMotionMagicTurnAngleRoutine extends Routine {
 
 	@Override
 	public Subsystem[] getRequiredSubsystems() {
-		return new Subsystem[]{drive};
+		return new Subsystem[] { drive };
 	}
 
 	@Override

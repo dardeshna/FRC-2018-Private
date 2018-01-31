@@ -20,16 +20,16 @@ public class LoggerTest {
 		Logger logger = Logger.getInstance();
 		logger.start();
 		logger.logRobotThread(Level.INFO, "Testing");
-		logger.logRobotThread(Level.INFO,"asdf");
-		logger.logRobotThread(Level.INFO,"number", 1);
+		logger.logRobotThread(Level.INFO, "asdf");
+		logger.logRobotThread(Level.INFO, "number", 1);
 		logger.cleanup();
 		logger.start();
-		logger.logRobotThread(Level.INFO,"New message");
+		logger.logRobotThread(Level.INFO, "New message");
 		//messages should be flushed
 		logger.cleanup();
 		try {
 			Thread.sleep(100);
-		} catch (Exception e) {
+		} catch(Exception e) {
 
 		}
 	}
@@ -41,27 +41,27 @@ public class LoggerTest {
 		Drive.getInstance().start();
 		Robot.getRobotState().gamePeriod = RobotState.GamePeriod.TELEOP;
 		Drive.getInstance().update(Robot.getCommands(), Robot.getRobotState());
-//		logger.logSubsystemThread(Drive.getInstance().getStatus());
-//		logger.logSubsystemThread(Slider.getInstance().getStatus());
-		logger.logRobotThread(Level.INFO,"Robot start");
+		//logger.logSubsystemThread(Drive.getInstance().getStatus());
+		//logger.logSubsystemThread(Slider.getInstance().getStatus());
+		logger.logRobotThread(Level.INFO, "Robot start");
 		try {
 			Thread.sleep(1000);
-		} catch (InterruptedException e) {
+		} catch(InterruptedException e) {
 			e.printStackTrace();
 		}
-		logger.logRobotThread(Level.INFO,"Pre cleanup 1");
+		logger.logRobotThread(Level.INFO, "Pre cleanup 1");
 		logger.cleanup();
 		logger.start();
 		try {
 			Thread.sleep(1000);
-		} catch (InterruptedException e) {
+		} catch(InterruptedException e) {
 			e.printStackTrace();
 		}
-		logger.logRobotThread(Level.INFO,"Post cleanup 1");
+		logger.logRobotThread(Level.INFO, "Post cleanup 1");
 		logger.cleanup();
 		try {
 			Thread.sleep(1000);
-		} catch (InterruptedException e) {
+		} catch(InterruptedException e) {
 			e.printStackTrace();
 		}
 	}

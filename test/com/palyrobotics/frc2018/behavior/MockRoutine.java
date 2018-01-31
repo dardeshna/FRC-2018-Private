@@ -4,13 +4,12 @@ import com.palyrobotics.frc2018.config.Commands;
 import com.palyrobotics.frc2018.subsystems.Subsystem;
 
 /**
- * Created by Nihar on 1/22/17.
- * Used for testing {@link RoutineManager} in {@link RoutineManagerTest}
+ * Created by Nihar on 1/22/17. Used for testing {@link RoutineManager} in {@link RoutineManagerTest}
  */
 public class MockRoutine extends Routine {
-	
+
 	private boolean isFinished;
-	
+
 	@Override
 	public void start() {
 		isFinished = false;

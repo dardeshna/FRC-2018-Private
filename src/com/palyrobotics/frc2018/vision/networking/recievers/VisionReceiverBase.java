@@ -10,32 +10,32 @@ import java.util.logging.Level;
 
 public interface VisionReceiverBase {
 
-    public class JSONExistsCallback extends DataExistsCallback<JSONObject> {
+	public class JSONExistsCallback extends DataExistsCallback<JSONObject> {
 
-        public boolean doesExist(JSONObject data) {
-            return data.isEmpty();
-        }
-    }
+		public boolean doesExist(JSONObject data) {
+			return data.isEmpty();
+		}
+	}
 
-    public class SocketExistsCallback extends DataExistsCallback<Socket> {
+	public class SocketExistsCallback extends DataExistsCallback<Socket> {
 
-        public boolean doesExist(Socket data) {
-            boolean exists = true;
+		public boolean doesExist(Socket data) {
+			boolean exists = true;
 
-            try {
-                if(data.getOutputStream().equals(null)) {
-                    exists = false;
-                }
-            } catch (IOException e) {
-                Logger.getInstance().logRobotThread(Level.FINEST, e);
-            }
+			try {
+				if(data.getOutputStream().equals(null)) {
+					exists = false;
+				}
+			} catch(IOException e) {
+				Logger.getInstance().logRobotThread(Level.FINEST, e);
+			}
 
-            return exists;
-        }
-    }
+			return exists;
+		}
+	}
 
-    public abstract String extractData() throws IOException;
-    
-    public abstract byte[] extractDataBytes() throws IOException;
-    
+	public abstract String extractData() throws IOException;
+
+	public abstract byte[] extractDataBytes() throws IOException;
+
 }

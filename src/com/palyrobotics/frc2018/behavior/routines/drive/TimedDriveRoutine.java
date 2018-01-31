@@ -12,28 +12,26 @@ public class TimedDriveRoutine extends Routine {
 
 	private double voltage;
 	private double time;
-	
+
 	public TimedDriveRoutine(double voltage, double time) {
 		this.voltage = voltage;
 		this.time = time;
 	}
 
-	
 	@Override
 	public Subsystem[] getRequiredSubsystems() {
-		return new Subsystem[]{drive};
+		return new Subsystem[] { drive };
 	}
+
 	/*
-	 * START = Set new drive setpoint
-	 * DRIVING = Waiting to reach drive setpoint
-	 * DONE = reached target or not operating
+	 * START = Set new drive setpoint DRIVING = Waiting to reach drive setpoint DONE = reached target or not operating
 	 */
 	private enum DriveStraightRoutineState {
 		START, DRIVING, DONE
 	}
 
 	DriveStraightRoutineState state = DriveStraightRoutineState.START;
-	
+
 	@Override
 	public void start() {
 		drive.setNeutral();
@@ -44,26 +42,26 @@ public class TimedDriveRoutine extends Routine {
 	public Commands update(Commands commands) {
 		Commands output = commands.copy();
 		switch(state) {
-		case START:
-			drive.setTimedDrive(voltage, time);
-			output.wantedDriveState = Drive.DriveState.ON_BOARD_CONTROLLER;
-			state = DriveStraightRoutineState.DRIVING;
-			break;
-		case DRIVING:
-			output.wantedDriveState = Drive.DriveState.ON_BOARD_CONTROLLER;
-			if (drive.controllerOnTarget() && drive.hasController()) {
-				state = DriveStraightRoutineState.DONE;
-			}
-			break;
-		case DONE:
-			drive.resetController();
-			break;
-		default:
-			break;
+			case START:
+				drive.setTimedDrive(voltage, time);
+				output.wantedDriveState = Drive.DriveState.ON_BOARD_CONTROLLER;
+				state = DriveStraightRoutineState.DRIVING;
+				break;
+			case DRIVING:
+				output.wantedDriveState = Drive.DriveState.ON_BOARD_CONTROLLER;
+				if(drive.controllerOnTarget() && drive.hasController()) {
+					state = DriveStraightRoutineState.DONE;
+				}
+				break;
+			case DONE:
+				drive.resetController();
+				break;
+			default:
+				break;
 		}
 		return output;
 	}
-	
+
 	@Override
 	public Commands cancel(Commands commands) {
 		Logger.getInstance().logRobotThread(Level.FINE, "Cancelling TimedDriveRoutine");
@@ -73,12 +71,11 @@ public class TimedDriveRoutine extends Routine {
 		return commands;
 	}
 
-
 	@Override
 	public boolean finished() {
 		return state == DriveStraightRoutineState.DONE;
 	}
-	
+
 	@Override
 	public String getName() {
 		return "DriveStraightRoutine";

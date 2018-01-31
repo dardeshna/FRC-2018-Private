@@ -23,11 +23,17 @@ import java.util.logging.Level;
 public class Robot extends TimedRobot {
 	//Instantiate singleton classes
 	private static RobotState robotState = RobotState.getInstance();
-	public static RobotState getRobotState() {return robotState;}
+
+	public static RobotState getRobotState() {
+		return robotState;
+	}
 
 	//Single instance to be passed around
 	private static Commands commands = Commands.getInstance();
-	public static Commands getCommands() {return commands;}
+
+	public static Commands getCommands() {
+		return commands;
+	}
 
 	private OperatorInterface operatorInterface = OperatorInterface.getInstance();
 	private RoutineManager mRoutineManager = RoutineManager.getInstance();
@@ -46,35 +52,35 @@ public class Robot extends TimedRobot {
 		Logger.getInstance().setFileName("2018 season");
 		Logger.getInstance().start();
 
-		Logger.getInstance().logRobotThread(Level.INFO, "Start robotInit() for "+Constants.kRobotName.toString());
+		Logger.getInstance().logRobotThread(Level.INFO, "Start robotInit() for " + Constants.kRobotName.toString());
 
 		DashboardManager.getInstance().robotInit();
-//		VisionManager.getInstance().start(Constants.kAndroidConnectionUpdateRate, false);
+		//VisionManager.getInstance().start(Constants.kAndroidConnectionUpdateRate, false);
 
 		Logger.getInstance().logRobotThread(Level.CONFIG, "Startup sucessful");
-		Logger.getInstance().logRobotThread(Level.CONFIG, "Robot name: "+Constants.kRobotName);
+		Logger.getInstance().logRobotThread(Level.CONFIG, "Robot name: " + Constants.kRobotName);
 		Logger.getInstance().logRobotThread(Level.CONFIG, "Alliance: " + DriverStation.getInstance().getAlliance());
-		Logger.getInstance().logRobotThread(Level.CONFIG, "FMS connected: "+DriverStation.getInstance().isFMSAttached());
-		Logger.getInstance().logRobotThread(Level.CONFIG, "Alliance station: "+DriverStation.getInstance().getLocation());
+		Logger.getInstance().logRobotThread(Level.CONFIG, "FMS connected: " + DriverStation.getInstance().isFMSAttached());
+		Logger.getInstance().logRobotThread(Level.CONFIG, "Alliance station: " + DriverStation.getInstance().getLocation());
 		try {
 			Logger.getInstance().logRobotThread((VisionManager.getInstance().isServerStarted()) ? Level.CONFIG : Level.WARNING,
-					(VisionManager.getInstance().isServerStarted()) ? "Nexus streaming": "Nexus not streaming");
+					(VisionManager.getInstance().isServerStarted()) ? "Nexus streaming" : "Nexus not streaming");
 			Logger.getInstance().logRobotThread(Level.INFO, "Auto", AutoModeSelector.getInstance().getAutoMode().toString());
-		} catch (NullPointerException e) {
+		} catch(NullPointerException e) {
 			Logger.getInstance().logRobotThread(Level.SEVERE, "Auto", e);
 		}
 
 		try {
 			mHardwareUpdater = new HardwareUpdater(mDrive, mClimber, mElevator, mIntake);
-		} catch (Exception e) {
+		} catch(Exception e) {
 			Logger.getInstance().logRobotThread(Level.SEVERE, e);
 			System.exit(1);
 		}
 
 		mHardwareUpdater.initHardware();
-		
+
 		DriveTeam.configConstants();
-		
+
 		Logger.getInstance().logRobotThread(Level.INFO, "Auto" + AutoModeSelector.getInstance().getAutoMode().toString());
 		Logger.getInstance().logRobotThread(Level.INFO, "End robotInit()");
 	}
@@ -92,7 +98,7 @@ public class Robot extends TimedRobot {
 		try {
 			Logger.getInstance().logRobotThread(Level.FINEST, "Sleeping thread for 200 ms");
 			Thread.sleep(200);
-		} catch (InterruptedException e) {
+		} catch(InterruptedException e) {
 
 		}
 
@@ -133,7 +139,7 @@ public class Robot extends TimedRobot {
 		mHardwareUpdater.updateHardware();
 		mRoutineManager.reset(commands);
 		DashboardManager.getInstance().toggleCANTable(true);
-		commands.wantedDriveState = Drive.DriveState.CHEZY;	//switch to chezy after auto ends
+		commands.wantedDriveState = Drive.DriveState.CHEZY; //switch to chezy after auto ends
 		commands = operatorInterface.updateCommands(commands);
 		startSubsystems();
 
@@ -165,7 +171,7 @@ public class Robot extends TimedRobot {
 
 		//Creates a new Commands instance in place of the old one
 		Commands.reset();
-		
+
 		//Stop controllers
 		mDrive.setNeutral();
 		mHardwareUpdater.configureTalons();
@@ -191,20 +197,21 @@ public class Robot extends TimedRobot {
 		Logger.getInstance().logRobotThread(Level.FINEST, "DS Voltage", DriverStation.getInstance().getBatteryVoltage());
 		Logger.getInstance().logRobotThread(Level.FINEST, "Outputs disabled", DriverStation.getInstance().isSysActive());
 		Logger.getInstance().logRobotThread(Level.FINEST, "FMS connected", DriverStation.getInstance().isFMSAttached());
-		if (DriverStation.getInstance().isAutonomous()) {
+		if(DriverStation.getInstance().isAutonomous()) {
 			Logger.getInstance().logRobotThread(Level.FINEST, "Game period: Auto");
-		} else if (DriverStation.getInstance().isDisabled()) {
+		} else if(DriverStation.getInstance().isDisabled()) {
 			Logger.getInstance().logRobotThread(Level.FINEST, "Game period: Disabled");
-		} else if (DriverStation.getInstance().isOperatorControl()) {
+		} else if(DriverStation.getInstance().isOperatorControl()) {
 			Logger.getInstance().logRobotThread(Level.FINEST, "Game period: Teleop");
-		} else if (DriverStation.getInstance().isTest()) {
+		} else if(DriverStation.getInstance().isTest()) {
 			Logger.getInstance().logRobotThread(Level.FINEST, "Game period: Test");
 		}
-		if (DriverStation.getInstance().isBrownedOut())
+		if(DriverStation.getInstance().isBrownedOut())
 			Logger.getInstance().logRobotThread(Level.WARNING, "Browned out");
-		if (!DriverStation.getInstance().isNewControlData())
+		if(!DriverStation.getInstance().isNewControlData())
 			Logger.getInstance().logRobotThread(Level.FINE, "Didn't receive new control packet!");
 	}
+
 	private void startSubsystems() {
 		mDrive.start();
 		mClimber.start();

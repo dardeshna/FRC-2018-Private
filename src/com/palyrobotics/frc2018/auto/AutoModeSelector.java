@@ -14,13 +14,20 @@ import java.util.logging.Level;
 public class AutoModeSelector {
 	private static AutoModeSelector instance = null;
 	private ArrayList<AutoModeBase> mAutoModes = new ArrayList<>();
+
 	private enum AutoIndices {
 		TEST(0), TEST_TRAJECTORY(1);
 		private final int id;
-		AutoIndices(int id) {this.id = id;}
-		public int get() {return id;}
+
+		AutoIndices(int id) {
+			this.id = id;
+		}
+
+		public int get() {
+			return id;
+		}
 	}
-	
+
 	/**
 	 * comment for which auto mode the selectedIndex refers to
 	 */
@@ -28,7 +35,7 @@ public class AutoModeSelector {
 	int selectedIndex = AutoIndices.TEST_TRAJECTORY.get();
 
 	public static AutoModeSelector getInstance() {
-		if (instance == null) {
+		if(instance == null) {
 			instance = new AutoModeSelector();
 		}
 		return instance;
@@ -36,19 +43,22 @@ public class AutoModeSelector {
 
 	/**
 	 * Add an AutoMode to list to choose from
-	 * @param auto AutoMode to add
+	 * 
+	 * @param auto
+	 *            AutoMode to add
 	 */
 	public void registerAutonomous(AutoModeBase auto) {
 		mAutoModes.add(auto);
 	}
 
 	protected AutoModeSelector() {
-  /*1*/registerAutonomous(new TestAutoMode());
-  /*2*/registerAutonomous(new TestTrajectoryAutoMode());
+		/* 1 */registerAutonomous(new TestAutoMode());
+		/* 2 */registerAutonomous(new TestTrajectoryAutoMode());
 	}
 
 	/**
 	 * Get the currently selected AutoMode
+	 * 
 	 * @return AutoMode currently selected
 	 */
 	public AutoModeBase getAutoMode() {
@@ -57,7 +67,9 @@ public class AutoModeSelector {
 
 	/**
 	 * Get the AutoMode at specified index
-	 * @param index index of desired AutoMode
+	 * 
+	 * @param index
+	 *            index of desired AutoMode
 	 * @return AutoMode at specified index
 	 */
 	public AutoModeBase getAutoMode(int index) {
@@ -68,12 +80,13 @@ public class AutoModeSelector {
 
 	/**
 	 * Gets the names of all registered AutoModes
+	 * 
 	 * @return ArrayList of AutoModes string name
 	 * @see AutoModeBase#toString()
 	 */
 	public ArrayList<String> getAutoModeList() {
 		ArrayList<String> list = new ArrayList<String>();
-		for (AutoModeBase autoMode : mAutoModes) {
+		for(AutoModeBase autoMode : mAutoModes) {
 			list.add(autoMode.toString());
 		}
 		return list;
@@ -87,13 +100,14 @@ public class AutoModeSelector {
 
 	/**
 	 * Attempt to set
+	 * 
 	 * @return false if unable to find appropriate AutoMode
 	 * @see AutoModeBase#toString()
 	 */
 	public boolean setAutoModeByName(String name) {
 		int numOccurrences = 0;
 		int index = -1;
-		for(int i = 0; i<mAutoModes.size(); i++) {
+		for(int i = 0; i < mAutoModes.size(); i++) {
 			if(mAutoModes.get(i).toString() == name) {
 				numOccurrences++;
 				index = i;
@@ -110,6 +124,7 @@ public class AutoModeSelector {
 
 	/**
 	 * Called during disabled in order to access dashbord and set auto mode
+	 * 
 	 * @return false if unable to set automode
 	 */
 	public boolean setFromDashboard(String selection) {
@@ -121,7 +136,7 @@ public class AutoModeSelector {
 	}
 
 	private void setAutoModeByIndex(int which) {
-		if (which < 0 || which >= mAutoModes.size()) {
+		if(which < 0 || which >= mAutoModes.size()) {
 			which = 0;
 		}
 		selectedIndex = which;

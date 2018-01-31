@@ -11,25 +11,25 @@ import java.util.logging.Level;
  * Supplies wrapper methods for using adb to control the Android
  *
  * <h1><b>Fields</b></h1>
- * 	<ul>
- * 		<li>Instance and State variables:
- * 			<ul>
- * 				<li>{@link RuntimeExecutor#s_instance}: Private static instance of this class (Singleton)</li>
- * 			</ul>
- * 		</li>
- * 	</ul>
+ * <ul>
+ * <li>Instance and State variables:
+ * <ul>
+ * <li>{@link RuntimeExecutor#s_instance}: Private static instance of this class (Singleton)</li>
+ * </ul>
+ * </li>
+ * </ul>
  *
  * <h1><b>Accessors and Mutators</b></h1>
- * 	<ul>
- * 		<li>{@link RuntimeExecutor#getInstance()}</li>
- * 	</ul>
+ * <ul>
+ * <li>{@link RuntimeExecutor#getInstance()}</li>
+ * </ul>
  *
- * <h1><b>External Access Functions</b>
- * 	<br><BLOCKQUOTE>For using as a wrapper for RIOdroid</BLOCKQUOTE></h1>
- * 	<ul>
- * 		<li>{@link RuntimeExecutor#exec(String)}</li>
- * 		<li>{@link RuntimeExecutor#init()}</li>
- * 	</ul>
+ * <h1><b>External Access Functions</b> <br>
+ * <BLOCKQUOTE>For using as a wrapper for RIOdroid</BLOCKQUOTE></h1>
+ * <ul>
+ * <li>{@link RuntimeExecutor#exec(String)}</li>
+ * <li>{@link RuntimeExecutor#init()}</li>
+ * </ul>
  *
  * @author Alvin
  *
@@ -40,10 +40,10 @@ public class RuntimeExecutor {
 	private static RuntimeExecutor s_instance;
 
 	/**
-	 * Creates an RuntimeExecutor instance
-	 * Cannot be called outside as a Singleton
+	 * Creates an RuntimeExecutor instance Cannot be called outside as a Singleton
 	 */
-	private RuntimeExecutor() {}
+	private RuntimeExecutor() {
+	}
 
 	/**
 	 * @return The instance of the ACB
@@ -56,9 +56,10 @@ public class RuntimeExecutor {
 	}
 
 	/**
-	 * Executes a command in the command line during
-	 * runtime
-	 * @param command Command to execute
+	 * Executes a command in the command line during runtime
+	 * 
+	 * @param command
+	 *            Command to execute
 	 * @return Console output of executing the command
 	 */
 	public String exec(String command) {
@@ -74,12 +75,12 @@ public class RuntimeExecutor {
 
 			//Read in console output from the process object
 			BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
-			while ((line = input.readLine()) != null) {
+			while((line = input.readLine()) != null) {
 				out.append(line);
 				out.append("\n");
 			}
 			input.close();
-		} catch (IOException e) {
+		} catch(IOException e) {
 			Logger.getInstance().logRobotThread(Level.FINEST, e);
 		}
 

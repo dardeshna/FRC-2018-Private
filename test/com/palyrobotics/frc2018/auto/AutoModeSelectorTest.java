@@ -11,29 +11,26 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 /**
- * Created by Nihar on 1/22/17.
- * Tests {@link AutoModeSelector}
+ * Created by Nihar on 1/22/17. Tests {@link AutoModeSelector}
  */
 public class AutoModeSelectorTest {
-	/* TODO: possible tests
-	 * Test that you can get an auto mode
-	 * Test that the setAutoMode by name works
-	 * Test that registerAutonomous works
-	 * Test that you can get the list of auto modes
+	/*
+	 * TODO: possible tests Test that you can get an auto mode Test that the setAutoMode by name works Test that registerAutonomous works Test that you can get
+	 * the list of auto modes
 	 */
-	
+
 	//TODO add new automodes and test those
-		
+
 	@Test
 	public void testGetAutoMode() throws IndexOutOfBoundsException {
 		AutoModeSelector auto = AutoModeSelector.getInstance();
 
 		//Using automodes registered in constructor
 		assertThat("Incorrect auto mode retrieved", auto.getAutoMode().getClass(), equalTo(new TestAutoMode().getClass()));
-		
+
 		//Check index out of bounds
 	}
-	
+
 	@Test
 	public void testGetAutoModeList() {
 		AutoModeSelector auto = AutoModeSelector.getInstance();
@@ -48,9 +45,10 @@ public class AutoModeSelectorTest {
 		expectedAutoModeList.add("CenterPeg_CrossRight");
 		expectedAutoModeList.add("LeftPeg");
 		expectedAutoModeList.add("RightPeg");
-		expectedAutoModeList.add("DoNothing");	//TODO: sometimes test is run individually, "this one is registered during testRegisterAutonomous()"
+		expectedAutoModeList.add("DoNothing"); //TODO: sometimes test is run individually, "this one is registered
+												//during testRegisterAutonomous()"
 		ArrayList<String> test = auto.getAutoModeList();
-		
+
 		assertThat("Not all auto modes were retrieved", test.size(), equalTo(expectedAutoModeList.size()));
 		assertThat("Auto modes are incorrect", test, equalTo(expectedAutoModeList));
 	}
@@ -84,7 +82,7 @@ public class AutoModeSelectorTest {
 		assertThat("AutoMode was registered incorrectly", auto.getAutoMode(initSize), equalTo(newAuto));
 		assertThat("AutoMode was registered incorrectly", auto.getAutoModeList(), equalTo(autoNames));
 	}
-	
+
 	@Test
 	public void ticksPerDegreeCalculation() {
 		System.out.println(Constants.kDriveInchesPerDegree * Constants.kDriveTicksPerInch);

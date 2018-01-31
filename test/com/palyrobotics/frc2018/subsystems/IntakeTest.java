@@ -15,42 +15,41 @@ import org.junit.Test;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-
 public class IntakeTest {
 	Intake mIntake = new Intake();
 	RobotState mRobotState;
 	Commands mCommands;
-	
+
 	@Before
 	public void setUp() {
 		mCommands = Robot.getCommands();
 		mRobotState = MockRobot.getRobotState();
 	}
-	
+
 	@After
 	public void tearDown() {
 		mCommands = null;
 		mRobotState = null;
 	}
-	
+
 	@Test
 	public void testClose() {
 		mCommands.wantedIntakeOpenCloseState = OpenCloseState.CLOSED;
 		mIntake.update(mCommands, mRobotState);
-		assertThat("Did not close properly", mIntake.getOpenCloseOutput(), is(DoubleSolenoid.Value.kForward));	
+		assertThat("Did not close properly", mIntake.getOpenCloseOutput(), is(DoubleSolenoid.Value.kForward));
 	}
-	
+
 	@Test
 	public void testIntake() {
 		mCommands.wantedIntakingState = IntakeState.INTAKING;
 		mIntake.update(mCommands, mRobotState);
 		assertThat("Did not intake properly", mIntake.getTalonOutput().getSetpoint(), is(Constants.kIntakingMotorVelocity));
 	}
-	
+
 	@Test
 	public void testExpel() {
 		mCommands.wantedIntakingState = IntakeState.EXPELLING;
 		mIntake.update(mCommands, mRobotState);
-		assertThat("Did not expel properly",mIntake.getTalonOutput().getSetpoint(), is(Constants.kExpellingMotorVelocity));
+		assertThat("Did not expel properly", mIntake.getTalonOutput().getSetpoint(), is(Constants.kExpellingMotorVelocity));
 	}
 }

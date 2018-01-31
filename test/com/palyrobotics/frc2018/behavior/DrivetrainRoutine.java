@@ -5,13 +5,12 @@ import com.palyrobotics.frc2018.subsystems.Drive;
 import com.palyrobotics.frc2018.subsystems.Subsystem;
 
 /**
- * Created by Nihar on 1/22/17.
- * Used for testing {@link RoutineManager} in {@link com.palyrobotics.frc2018.behavior.RoutineManagerTest}
+ * Created by Nihar on 1/22/17. Used for testing {@link RoutineManager} in {@link com.palyrobotics.frc2018.behavior.RoutineManagerTest}
  */
 public class DrivetrainRoutine extends MockRoutine {
-	
+
 	private boolean isFinished;
-	
+
 	@Override
 	public void start() {
 		isFinished = false;
@@ -35,7 +34,7 @@ public class DrivetrainRoutine extends MockRoutine {
 
 	@Override
 	public Subsystem[] getRequiredSubsystems() {
-		Subsystem[] required = {Drive.getInstance()};
+		Subsystem[] required = { Drive.getInstance() };
 		return required;
 	}
 

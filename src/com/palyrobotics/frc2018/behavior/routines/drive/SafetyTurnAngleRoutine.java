@@ -25,10 +25,10 @@ public class SafetyTurnAngleRoutine extends Routine {
 		if(robotState.drivePose.heading == -0.0) {
 			Logger.getInstance().logRobotThread(Level.WARNING, "Gyro broken");
 			mRoutine = new EncoderTurnAngleRoutine(targetAngle);
-        } else {
+		} else {
 			Logger.getInstance().logRobotThread(Level.INFO, "Gyro working!");
-            mRoutine = new BBTurnAngleRoutine(targetAngle);
-        }
+			mRoutine = new BBTurnAngleRoutine(targetAngle);
+		}
 		mRoutine.start();
 	}
 
@@ -50,13 +50,13 @@ public class SafetyTurnAngleRoutine extends Routine {
 
 	@Override
 	public Subsystem[] getRequiredSubsystems() {
-		return new Subsystem[]{drive};
+		return new Subsystem[] { drive };
 	}
 
 	@Override
 	public String getName() {
 		String name = "Safety Turn Angle with ";
-		if (mRoutine instanceof BBTurnAngleRoutine) {
+		if(mRoutine instanceof BBTurnAngleRoutine) {
 			name += "Gyro Turn Angle";
 		} else {
 			name += "Encoder Turn Angle";

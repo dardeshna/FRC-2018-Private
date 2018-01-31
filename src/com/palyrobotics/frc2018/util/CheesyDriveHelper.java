@@ -5,8 +5,7 @@ import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.config.RobotState;
 
 /**
- * CheesyDriveHelper implements the calculations used in CheesyDrive for teleop control.
- * Returns a DriveSignal for the motor output
+ * CheesyDriveHelper implements the calculations used in CheesyDrive for teleop control. Returns a DriveSignal for the motor output
  */
 public class CheesyDriveHelper {
 	private double mOldWheel, mQuickStopAccumulator;
@@ -32,48 +31,46 @@ public class CheesyDriveHelper {
 		mOldWheel = wheel;
 
 		wheelNonLinearity = 0.5;
-		
-		//Applies a sin function that is scaled 
-		wheel = Math.sin(Math.PI / 2.0 * wheelNonLinearity * wheel)
-				/ Math.sin(Math.PI / 2.0 * wheelNonLinearity);
-		wheel = Math.sin(Math.PI / 2.0 * wheelNonLinearity * wheel)
-				/ Math.sin(Math.PI / 2.0 * wheelNonLinearity);
-		wheel = Math.sin(Math.PI / 2.0 * wheelNonLinearity * wheel)
-				/ Math.sin(Math.PI / 2.0 * wheelNonLinearity);
+
+		//Applies a sin function that is scaled
+		wheel = Math.sin(Math.PI / 2.0 * wheelNonLinearity * wheel) / Math.sin(Math.PI / 2.0 * wheelNonLinearity);
+		wheel = Math.sin(Math.PI / 2.0 * wheelNonLinearity * wheel) / Math.sin(Math.PI / 2.0 * wheelNonLinearity);
+		wheel = Math.sin(Math.PI / 2.0 * wheelNonLinearity * wheel) / Math.sin(Math.PI / 2.0 * wheelNonLinearity);
 
 		double leftPwm, rightPwm, overPower;
 		double sensitivity;
-		
+
 		double angularPower;
-		double linearPower = remapThrottle(throttle);;
+		double linearPower = remapThrottle(throttle);
+		;
 
 		//Negative inertia
 		double negInertiaAccumulator = 0.0;
 		double negInertiaScalar;
-		
-		if (wheel * negInertia > 0) {
+
+		if(wheel * negInertia > 0) {
 			negInertiaScalar = 2.5;
 		} else {
-			if (Math.abs(wheel) > 0.65) {
+			if(Math.abs(wheel) > 0.65) {
 				negInertiaScalar = 5.0;
 			} else {
 				negInertiaScalar = 3.0;
 			}
 		}
-		
+
 		sensitivity = Constants.kDriveSensitivity;
-		
+
 		//neginertia is difference in wheel
 		double negInertiaPower = negInertia * negInertiaScalar;
 		negInertiaAccumulator += negInertiaPower;
-		
+
 		//possible source of occasional overturn
 		wheel = wheel + negInertiaAccumulator;
-		
+
 		//limit between [-1, 1]
-		if (negInertiaAccumulator > 1) {
+		if(negInertiaAccumulator > 1) {
 			negInertiaAccumulator -= 1;
-		} else if (negInertiaAccumulator < -1) {
+		} else if(negInertiaAccumulator < -1) {
 			negInertiaAccumulator += 1;
 		} else {
 			negInertiaAccumulator = 0;
@@ -87,13 +84,13 @@ public class CheesyDriveHelper {
 				//Old throttle initially set to throttle
 				mOldThrottle = linearPower;
 				//Braking rate set
-				mBrakeRate = mOldThrottle/Constants.kCyclesUntilStop;
+				mBrakeRate = mOldThrottle / Constants.kCyclesUntilStop;
 			}
 
 			//If braking is not complete, decrease by the brake rate
 			if(Math.abs(mOldThrottle) >= Math.abs(mBrakeRate)) {
 				//reduce throttle
-				mOldThrottle -= mBrakeRate;				
+				mOldThrottle -= mBrakeRate;
 				linearPower = mOldThrottle;
 			} else {
 				linearPower = 0;
@@ -103,55 +100,54 @@ public class CheesyDriveHelper {
 		}
 
 		//Quickturn
-		if (isQuickTurn) {
+		if(isQuickTurn) {
 			//Can be tuned
 			double alpha = Constants.kAlpha;
-			mQuickStopAccumulator = (1 - alpha) * mQuickStopAccumulator
-					+ alpha * limit(wheel, 1.0) * 5;
-			
+			mQuickStopAccumulator = (1 - alpha) * mQuickStopAccumulator + alpha * limit(wheel, 1.0) * 5;
+
 			overPower = 1.0;
-			
+
 			if(Math.abs(robotState.rightStickInput.getX()) < Constants.kQuickTurnSensitivityThreshold) {
 				sensitivity = Constants.kPreciseQuickTurnSensitivity;
 			} else {
 				sensitivity = Constants.kQuickTurnSensitivity;
 			}
-			
+
 			angularPower = wheel * sensitivity;
-			
+
 		} else {
 			overPower = 0.0;
 
 			//Sets turn amount
 			angularPower = Math.abs(throttle) * wheel * sensitivity - mQuickStopAccumulator;
 
-			if (mQuickStopAccumulator > Constants.kQuickStopAccumulatorDecreaseThreshold) {
+			if(mQuickStopAccumulator > Constants.kQuickStopAccumulatorDecreaseThreshold) {
 				mQuickStopAccumulator -= Constants.kQuickStopAccumulatorDecreaseRate;
-			} else if (mQuickStopAccumulator < -Constants.kQuickStopAccumulatorDecreaseThreshold) {
+			} else if(mQuickStopAccumulator < -Constants.kQuickStopAccumulatorDecreaseThreshold) {
 				mQuickStopAccumulator += Constants.kQuickStopAccumulatorDecreaseRate;
 			} else {
 				mQuickStopAccumulator = 0.0;
 			}
 		}
-		
+
 		rightPwm = leftPwm = linearPower;
 		leftPwm += angularPower;
 		rightPwm -= angularPower;
 
-		if (leftPwm > 1.0) {
+		if(leftPwm > 1.0) {
 			rightPwm -= overPower * (leftPwm - 1.0);
 			leftPwm = 1.0;
-		} else if (rightPwm > 1.0) {
+		} else if(rightPwm > 1.0) {
 			leftPwm -= overPower * (rightPwm - 1.0);
 			rightPwm = 1.0;
-		} else if (leftPwm < -1.0) {
+		} else if(leftPwm < -1.0) {
 			rightPwm += overPower * (-1.0 - leftPwm);
 			leftPwm = -1.0;
-		} else if (rightPwm < -1.0) {
+		} else if(rightPwm < -1.0) {
 			leftPwm += overPower * (-1.0 - rightPwm);
 			rightPwm = -1.0;
 		}
-		
+
 		DriveSignal mSignal = DriveSignal.getNeutralSignal();
 		mSignal.leftMotor.setPercentOutput(leftPwm);
 		mSignal.rightMotor.setPercentOutput(rightPwm);
@@ -167,7 +163,7 @@ public class CheesyDriveHelper {
 			case ERIC:
 				x = Math.signum(initialThrottle) * x;
 				break;
-			}
+		}
 		return x;
 	}
 

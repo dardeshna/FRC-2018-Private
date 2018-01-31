@@ -6,20 +6,18 @@ import com.palyrobotics.frc2018.subsystems.Drive;
 import com.palyrobotics.frc2018.subsystems.Subsystem;
 
 /**
- * Drives forward a specified distance
- * Uses right encoder to determine if distance is reached
- * Times out after specified seconds, default m_default_timeout
+ * Drives forward a specified distance Uses right encoder to determine if distance is reached Times out after specified seconds, default m_default_timeout
+ * 
  * @author Nihar
  */
 public class EncoderDriveRoutine extends Routine {
 	@Override
 	public Subsystem[] getRequiredSubsystems() {
-		return new Subsystem[]{drive};
+		return new Subsystem[] { drive };
 	}
+
 	/*
-	 * START = Set new drive setpoint
-	 * DRIVING = Waiting to reach drive setpoint
-	 * DONE = reached target or not operating
+	 * START = Set new drive setpoint DRIVING = Waiting to reach drive setpoint DONE = reached target or not operating
 	 */
 	private enum EncoderDriveRoutineStates {
 		START, DRIVING, DONE
@@ -29,7 +27,7 @@ public class EncoderDriveRoutine extends Routine {
 	private double mDistance;
 	private double mVelocitySetpoint;
 	private final double kDefaultVelocitySetpoint = 0.5;
-	
+
 	//Timeout after x seconds
 	private double mTimeout;
 	private final double kDefaultTimeout = 5;
@@ -38,42 +36,51 @@ public class EncoderDriveRoutine extends Routine {
 	private boolean mIsNewState = true;
 
 	/**
-	 * Constructs with target distance
-	 * Uses default timeout and default velocity setpoint
-	 * @param distance Target distance to travel
+	 * Constructs with target distance Uses default timeout and default velocity setpoint
+	 * 
+	 * @param distance
+	 *            Target distance to travel
 	 */
 	public EncoderDriveRoutine(double distance) {
 		this.mDistance = distance;
 		this.mTimeout = kDefaultTimeout;
 		setVelocity(kDefaultVelocitySetpoint);
 	}
-	
+
 	/**
 	 * Constructs with specified timeout
-	 * @param distance Target distance to travel
-	 * @param timeout Time (seconds) before timeout
+	 * 
+	 * @param distance
+	 *            Target distance to travel
+	 * @param timeout
+	 *            Time (seconds) before timeout
 	 */
 	public EncoderDriveRoutine(double distance, int timeout) {
 		this.mDistance = distance;
 		this.mTimeout = timeout;
 		setVelocity(kDefaultVelocitySetpoint);
 	}
-	
+
 	/**
 	 * 
-	 * @param distance Target distance to travel
-	 * @param timeout Time (seconds) before timeout
-	 * @param velocity Target velocity
+	 * @param distance
+	 *            Target distance to travel
+	 * @param timeout
+	 *            Time (seconds) before timeout
+	 * @param velocity
+	 *            Target velocity
 	 */
 	public EncoderDriveRoutine(double distance, double timeout, double velocity) {
 		this.mDistance = distance;
 		this.mTimeout = timeout;
 		setVelocity(velocity);
 	}
-	
+
 	/**
 	 * Sets the velocity setpoint
-	 * @param velocity target velocity to drive at (0 to 1)
+	 * 
+	 * @param velocity
+	 *            target velocity to drive at (0 to 1)
 	 * @return true if valid setspeed
 	 */
 	public boolean setVelocity(double velocity) {
@@ -84,39 +91,40 @@ public class EncoderDriveRoutine extends Routine {
 		return false;
 	}
 
-	//Routines just change the states of the robotsetpoints, which the behavior manager then moves the physical subsystems based on.
+	//Routines just change the states of the robotsetpoints, which the behavior manager then moves the physical
+	//subsystems based on.
 	@Override
 	public Commands update(Commands commands) {
 		EncoderDriveRoutineStates newState = state;
-		switch (state) {
-		case START:
-			mStartTime = System.currentTimeMillis();
-			//Only set the setpoint the first time the state is START
-			if(mIsNewState) {
-//				drive.setDistanceSetpoint(mDistance, mVelocitySetpoint);
-			}
-			commands.wantedDriveState = Drive.DriveState.OFF_BOARD_CONTROLLER;
-			newState = EncoderDriveRoutineStates.DRIVING;
-			break;
-		case DRIVING:
-			if(drive.controllerOnTarget()) {
-				newState = EncoderDriveRoutineStates.DONE;
-			}
-			if((System.currentTimeMillis()-mStartTime) > mTimeout*1000) {
-				newState = EncoderDriveRoutineStates.DONE;
-			}
-			break;
-		case DONE:
-			drive.resetController();
-			break;
+		switch(state) {
+			case START:
+				mStartTime = System.currentTimeMillis();
+				//Only set the setpoint the first time the state is START
+				if(mIsNewState) {
+					//drive.setDistanceSetpoint(mDistance, mVelocitySetpoint);
+				}
+				commands.wantedDriveState = Drive.DriveState.OFF_BOARD_CONTROLLER;
+				newState = EncoderDriveRoutineStates.DRIVING;
+				break;
+			case DRIVING:
+				if(drive.controllerOnTarget()) {
+					newState = EncoderDriveRoutineStates.DONE;
+				}
+				if((System.currentTimeMillis() - mStartTime) > mTimeout * 1000) {
+					newState = EncoderDriveRoutineStates.DONE;
+				}
+				break;
+			case DONE:
+				drive.resetController();
+				break;
 		}
-		
+
 		mIsNewState = false;
 		if(newState != state) {
 			state = newState;
 			mIsNewState = true;
 		}
-		
+
 		return commands;
 	}
 

@@ -4,19 +4,19 @@ import edu.wpi.first.wpilibj.Timer;
 
 /**
  * Wait Timer
- * @author Ailyn Tong
- * Checks if a certain amount of time has elapsed.
- * Uses FPGA Timer
- * Everything is handled by timeout() for ease of use.
+ * 
+ * @author Ailyn Tong Checks if a certain amount of time has elapsed. Uses FPGA Timer Everything is handled by timeout() for ease of use.
  */
 public class WaitTimer {
 	//Milliseconds
 	private double kWaitTime;
 	private double t_0, t_f;
-	
+
 	/**
 	 * Constructor
-	 * @param waitTime Desired amount of time elapsed in seconds
+	 * 
+	 * @param waitTime
+	 *            Desired amount of time elapsed in seconds
 	 */
 	public WaitTimer(double waitTime) {
 		kWaitTime = waitTime;
@@ -32,12 +32,13 @@ public class WaitTimer {
 	}
 
 	/**
-	 * Starts the timer if not already started
-	 * Otherwise record the current time
+	 * Starts the timer if not already started Otherwise record the current time
 	 */
 	public void register() {
-		if (t_0 == -1) t_0 = Timer.getFPGATimestamp();
-		else t_f = Timer.getFPGATimestamp();
+		if(t_0 == -1)
+			t_0 = Timer.getFPGATimestamp();
+		else
+			t_f = Timer.getFPGATimestamp();
 	}
 
 	/**
@@ -47,12 +48,13 @@ public class WaitTimer {
 		register();
 
 		//Pass if nothing has been registered
-		if (t_0 == -1 || t_f == -1) return false;
+		if(t_0 == -1 || t_f == -1)
+			return false;
 		//Reset timer if done
-		if (t_f - t_0 >= kWaitTime) {
+		if(t_f - t_0 >= kWaitTime) {
 			reset();
 			return true;
-		} 
-		else return false;
+		} else
+			return false;
 	}
 }

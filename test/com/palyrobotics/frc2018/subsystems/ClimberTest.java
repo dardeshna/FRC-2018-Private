@@ -11,19 +11,19 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 public class ClimberTest {
-    Climber climber = Climber.getInstance();
-    RobotState robotState = Robot.getRobotState();
-    Commands commands = Robot.getCommands();
+	Climber climber = Climber.getInstance();
+	RobotState robotState = Robot.getRobotState();
+	Commands commands = Robot.getCommands();
 
-    @Test
-    public void testClimber() {
-        commands.wantedClimbMovement = MotionSubstate.MOVING;
-        climber.update(commands, robotState);
-        assertThat("Climber State Set Correctly", climber.getMotionSubstate(), equalTo(MotionSubstate.MOVING));
+	@Test
+	public void testClimber() {
+		commands.wantedClimbMovement = MotionSubstate.MOVING;
+		climber.update(commands, robotState);
+		assertThat("Climber State Set Correctly", climber.getMotionSubstate(), equalTo(MotionSubstate.MOVING));
 
-        commands.wantedLockState = LockState.LOCKED;
-        climber.update(commands, robotState);
-        assertThat("Climber State Set Correctly", climber.getLock(), equalTo(LockState.LOCKED));
+		commands.wantedLockState = LockState.LOCKED;
+		climber.update(commands, robotState);
+		assertThat("Climber State Set Correctly", climber.getLock(), equalTo(LockState.LOCKED));
 
-    }
+	}
 }

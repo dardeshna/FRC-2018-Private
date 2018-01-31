@@ -11,18 +11,21 @@ import java.util.logging.Level;
 
 /**
  * Turns drivetrain using the gyroscope and bang-bang control loop
+ * 
  * @author Robbie, Nihar
  *
  */
 public class BangBangTurnAngleController implements Drive.DriveController {
-	
+
 	private double mPower;
 	private double mTargetHeading;
 	private Pose mCachedPose;
 
 	/**
-	 * @param currentPose Pass in the latest robot state
-	 * @param heading Degrees relative to current state to turn
+	 * @param currentPose
+	 *            Pass in the latest robot state
+	 * @param heading
+	 *            Degrees relative to current state to turn
 	 */
 	public BangBangTurnAngleController(Pose currentPose, double heading) {
 		this.mPower = Constants.kTurnInPlacePower;
@@ -32,16 +35,16 @@ public class BangBangTurnAngleController implements Drive.DriveController {
 		Logger.getInstance().logSubsystemThread(Level.INFO, "Target Heading", this.mTargetHeading);
 
 	}
-	
+
 	@Override
 	public DriveSignal update(RobotState state) {
-		if (this.onTarget()) {
+		if(this.onTarget()) {
 			return DriveSignal.getNeutralSignal();
 		}
 		mCachedPose = state.drivePose;
-//		System.out.println("Current Pose: " + mCachedPose.heading);
+		//System.out.println("Current Pose: " + mCachedPose.heading);
 		DriveSignal output = DriveSignal.getNeutralSignal();
-		if (mCachedPose.heading < mTargetHeading) {
+		if(mCachedPose.heading < mTargetHeading) {
 			output.leftMotor.setPercentOutput(this.mPower);
 			output.rightMotor.setPercentOutput(-(this.mPower));
 		} else {
@@ -54,7 +57,7 @@ public class BangBangTurnAngleController implements Drive.DriveController {
 	@Override
 	public Pose getSetpoint() {
 		mCachedPose.heading = mTargetHeading;
-		Pose setpoint = new Pose(0,0,0,0,0,0,0,0);
+		Pose setpoint = new Pose(0, 0, 0, 0, 0, 0, 0, 0);
 		return mCachedPose;
 	}
 

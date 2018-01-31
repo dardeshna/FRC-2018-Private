@@ -16,17 +16,20 @@ import java.util.logging.Level;
  * Commands represent the desired setpoints and subsystem states for the robot. <br />
  * Store Requests (enum) for each subsystem and setpoints {@link Setpoints} <br />
  * Variables are public and have default values to prevent NullPointerExceptions
+ * 
  * @author Nihar
  *
  */
 public class Commands {
 
 	private static Commands instance = new Commands();
+
 	public static Commands getInstance() {
 		return instance;
 	}
 
-	protected Commands() {}
+	protected Commands() {
+	}
 
 	public ArrayList<Routine> wantedRoutines = new ArrayList<Routine>();
 
@@ -56,6 +59,7 @@ public class Commands {
 
 	/**
 	 * Stores numeric setpoints
+	 * 
 	 * @author Nihar
 	 */
 	public static class Setpoints {
@@ -70,6 +74,7 @@ public class Commands {
 			elevatorPositionSetpoint = Optional.empty();
 		}
 	}
+
 	//All robot setpoints
 	public Setpoints robotSetpoints = new Setpoints();
 
@@ -93,15 +98,16 @@ public class Commands {
 
 		copy.cancelCurrentRoutines = this.cancelCurrentRoutines;
 
-		for (Routine r : this.wantedRoutines) {
+		for(Routine r : this.wantedRoutines) {
 			copy.wantedRoutines.add(r);
 		}
-		
+
 		//Copy robot setpoints
 		copy.robotSetpoints = new Setpoints();
 		//Copy optionals that are present
 		robotSetpoints.drivePowerSetpoint.ifPresent((DriveSignal signal) -> copy.robotSetpoints.drivePowerSetpoint = Optional.of(signal));
-		robotSetpoints.elevatorPositionSetpoint.ifPresent((Double elevatorPositionSetpoint) -> copy.robotSetpoints.elevatorPositionSetpoint = Optional.of(elevatorPositionSetpoint));
+		robotSetpoints.elevatorPositionSetpoint
+				.ifPresent((Double elevatorPositionSetpoint) -> copy.robotSetpoints.elevatorPositionSetpoint = Optional.of(elevatorPositionSetpoint));
 		return copy;
 	}
 
@@ -112,7 +118,7 @@ public class Commands {
 		for(Routine r : this.wantedRoutines) {
 			wantedRoutineName += r.getName() + " ";
 		}
-		log+="Wanted Routines: "+wantedRoutineName+"\n";
+		log += "Wanted Routines: " + wantedRoutineName + "\n";
 
 		return log;
 	}

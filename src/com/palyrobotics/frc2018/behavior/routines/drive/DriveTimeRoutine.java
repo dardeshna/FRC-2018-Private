@@ -16,12 +16,15 @@ public class DriveTimeRoutine extends Routine {
 
 	/**
 	 * Constructs with a specified time setpoint and velocity
-	 * @param time How long to drive (seconds)
-	 * @param drivePower LegacyDrive signal to output (left/right speeds -1 to 1)
+	 * 
+	 * @param time
+	 *            How long to drive (seconds)
+	 * @param drivePower
+	 *            LegacyDrive signal to output (left/right speeds -1 to 1)
 	 */
 	public DriveTimeRoutine(double time, DriveSignal drivePower) {
 		//Keeps the offset prepared, when routine starts, will add System.currentTime
-		mEndTime = (long) (1000*time);
+		mEndTime = (long) (1000 * time);
 		this.mDrivePower = drivePower;
 	}
 
@@ -32,7 +35,8 @@ public class DriveTimeRoutine extends Routine {
 		mEndTime += System.currentTimeMillis();
 	}
 
-	//Routines just change the states of the robotsetpoints, which the behavior manager then moves the physical subsystems based on.
+	//Routines just change the states of the robotsetpoints, which the behavior manager then moves the physical
+	//subsystems based on.
 	@Override
 	public Commands update(Commands commands) {
 		commands.wantedDriveState = Drive.DriveState.OPEN_LOOP;
@@ -62,6 +66,6 @@ public class DriveTimeRoutine extends Routine {
 
 	@Override
 	public Subsystem[] getRequiredSubsystems() {
-		return new Subsystem[]{drive};
+		return new Subsystem[] { drive };
 	}
 }

@@ -15,59 +15,60 @@ public class DashboardManager {
 	public final boolean pidTuning = false;
 
 	private static DashboardManager instance = new DashboardManager();
-	
+
 	public static final String TABLE_NAME = "RobotTable";
 	public static final String CAN_TABLE_NAME = "data_table";
-	
+
 	public NetworkTableInstance net_instance;
-	
+
 	private NetworkTable robotTable;
 	private NetworkTable canTable;
-	
+
 	public static DashboardManager getInstance() {
 		return instance;
 	}
 
 	private boolean isUnitTest;
-	
-	private DashboardManager() {}
-	
+
+	private DashboardManager() {
+	}
+
 	public void robotInit() {
 		try {
 			initializeRobotTable();
 			initializeCANTable();
-			Logger.getInstance().logRobotThread(Level.FINE, "Succesfully initialized cantables");
+			Logger.getInstance().logRobotThread(Level.FINE, "Successfully initialized cantables");
 		} catch (Exception e) {
 			isUnitTest = true;
 		}
 	}
-	
+
 	public void initializeRobotTable() {
 		this.net_instance = NetworkTableInstance.getDefault();
 		this.robotTable = net_instance.getTable(TABLE_NAME);
 	}
-	
+
 	public void initializeCANTable() {
-//		Gains.initNetworkTableGains();
+		//Gains.initNetworkTableGains();
 		if(enableCANTable) {
 			this.canTable = net_instance.getTable(CAN_TABLE_NAME);
 			net_instance.setUpdateRate(.015);
 		}
 	}
-	
+
 	/**
 	 * Publishes a KV pair to the Network Table.
-	 * @param d	The dashboard value.
+	 * 
+	 * @param d
+	 *            The dashboard value.
 	 */
 	public void publishKVPair(DashboardValue d) {
 		if(robotTable == null) {
 			try {
 				initializeRobotTable();
-			}
-			catch (UnsatisfiedLinkError e) {
+			} catch (UnsatisfiedLinkError e) {
 				isUnitTest = true;
-			}
-			catch (NoClassDefFoundError e) {
+			} catch (NoClassDefFoundError e) {
 				isUnitTest = true;
 			}
 		}
@@ -77,7 +78,7 @@ public class DashboardManager {
 			this.robotTable.getEntry(d.getKey()).setString(d.getValue());
 		}
 	}
-	
+
 	public void updateCANTable(String key, String value) {
 		if(!enableCANTable || isUnitTest) {
 			return;
@@ -88,21 +89,21 @@ public class DashboardManager {
 			//try to reach it again
 			try {
 				initializeCANTable();
-			}
-			catch (UnsatisfiedLinkError e) {
+			} catch(UnsatisfiedLinkError e) {
 				Logger.getInstance().logRobotThread(Level.WARNING, e);
 				isUnitTest = true;
-			}
-			catch (NoClassDefFoundError e) {
+			} catch (NoClassDefFoundError e) {
 				Logger.getInstance().logRobotThread(Level.WARNING, e);
 				isUnitTest = true;
 			}
 		}
-	}	
+	}
 
 	/**
 	 * Start or stop sending cantable data
-	 * @param start true if you want to start sending data
+	 * 
+	 * @param start
+	 *            true if you want to start sending data
 	 */
 	public void toggleCANTable(boolean start) {
 		if(start) {

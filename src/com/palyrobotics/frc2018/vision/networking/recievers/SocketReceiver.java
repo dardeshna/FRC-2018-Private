@@ -19,7 +19,7 @@ public class SocketReceiver extends VisionServerBase implements VisionReceiverBa
 	@Override
 	public String extractData() {
 
-		if (m_client.isConnected() && !m_client.isClosed()) {
+		if(m_client.isConnected() && !m_client.isClosed()) {
 
 			String data = "";
 			try {
@@ -29,7 +29,7 @@ public class SocketReceiver extends VisionServerBase implements VisionReceiverBa
 					data += line + "\n";
 				}
 				return data;
-			} catch (IOException e) {
+			} catch(IOException e) {
 				Logger.getInstance().logRobotThread(Level.FINEST, e);
 				return null;
 			}
@@ -37,7 +37,6 @@ public class SocketReceiver extends VisionServerBase implements VisionReceiverBa
 
 		return null;
 	}
-
 
 	@Override
 	protected void tearDown() {
@@ -47,7 +46,7 @@ public class SocketReceiver extends VisionServerBase implements VisionReceiverBa
 	@Override
 	public byte[] extractDataBytes() {
 
-		if (m_client.isConnected() && !m_client.isClosed()) {
+		if(m_client.isConnected() && !m_client.isClosed()) {
 
 			try {
 				DataInputStream dis = new DataInputStream(m_client.getInputStream());
@@ -57,7 +56,7 @@ public class SocketReceiver extends VisionServerBase implements VisionReceiverBa
 					dis.readFully(data);
 				}
 				return data;
-			} catch (IOException e) {
+			} catch(IOException e) {
 
 				Logger.getInstance().logRobotThread(Level.FINEST, e);
 				closeClient();
@@ -68,5 +67,6 @@ public class SocketReceiver extends VisionServerBase implements VisionReceiverBa
 	}
 
 	@Override
-	protected void afterUpdate() {}
+	protected void afterUpdate() {
+	}
 }

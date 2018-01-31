@@ -11,8 +11,8 @@ import com.palyrobotics.frc2018.util.ChezyMath;
 import com.palyrobotics.frc2018.util.JoystickInput;
 
 /**
- * Used to produce Commands {@link Commands} from human input
- * Singleton class. Should only be used in robot package.
+ * Used to produce Commands {@link Commands} from human input Singleton class. Should only be used in robot package.
+ * 
  * @author Nihar
  *
  */
@@ -23,7 +23,8 @@ public class OperatorInterface {
 		return instance;
 	}
 
-	protected OperatorInterface() {}
+	protected OperatorInterface() {
+	}
 
 	private JoystickInput mDriveStick = Robot.getRobotState().leftStickInput;
 	private JoystickInput mTurnStick = Robot.getRobotState().rightStickInput;
@@ -32,13 +33,16 @@ public class OperatorInterface {
 
 	/**
 	 * Helper method to only add routines that aren't already in wantedRoutines
-	 * @param commands Current set of commands being modified
-	 * @param wantedRoutine Routine to add to the commands
+	 * 
+	 * @param commands
+	 *            Current set of commands being modified
+	 * @param wantedRoutine
+	 *            Routine to add to the commands
 	 * @return whether or not wantedRoutine was successfully added
 	 */
 	private boolean addWantedRoutine(Commands commands, Routine wantedRoutine) {
-		for (Routine routine : commands.wantedRoutines) {
-			if (routine.getClass().equals(wantedRoutine.getClass())) {
+		for(Routine routine : commands.wantedRoutines) {
+			if(routine.getClass().equals(wantedRoutine.getClass())) {
 				return false;
 			}
 		}
@@ -48,6 +52,7 @@ public class OperatorInterface {
 
 	/**
 	 * Returns modified commands
+	 * 
 	 * @param prevCommands
 	 */
 	public Commands updateCommands(Commands prevCommands) {
@@ -56,8 +61,7 @@ public class OperatorInterface {
 		/**
 		 * Drivetrain controls
 		 */
-		if(prevCommands.wantedDriveState != Drive.DriveState.OFF_BOARD_CONTROLLER
-				&& prevCommands.wantedDriveState != Drive.DriveState.ON_BOARD_CONTROLLER) {
+		if(prevCommands.wantedDriveState != Drive.DriveState.OFF_BOARD_CONTROLLER && prevCommands.wantedDriveState != Drive.DriveState.ON_BOARD_CONTROLLER) {
 			newCommands.wantedDriveState = Drive.DriveState.CHEZY;
 		}
 
@@ -106,7 +110,7 @@ public class OperatorInterface {
 		} else if(mOperatorStick.getButtonPressed(3)) {
 			newCommands.wantedIntakeUpDownState = Intake.UpDownState.DOWN;
 		}
-		
+
 		if(prevCommands.wantedIntakeUpDownState == Intake.UpDownState.DOWN && mOperatorStick.getTriggerPressed()) {
 			newCommands.wantedIntakingState = Intake.IntakeState.EXPELLING;
 		} else {

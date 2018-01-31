@@ -12,8 +12,8 @@ public class ParallelRoutine extends Routine {
 	private ArrayList<Routine> mRoutines;
 
 	/**
-	 * Runs all routines at the same time
-	 * Finishes when all routines finish
+	 * Runs all routines at the same time Finishes when all routines finish
+	 * 
 	 * @param routines
 	 */
 	public ParallelRoutine(ArrayList<Routine> routines) {
@@ -22,14 +22,14 @@ public class ParallelRoutine extends Routine {
 
 	@Override
 	public void start() {
-		for(Routine routine: mRoutines) {
+		for(Routine routine : mRoutines) {
 			routine.start();
 		}
 	}
 
 	@Override
 	public Commands update(Commands commands) {
-		for(Routine routine: mRoutines) {
+		for(Routine routine : mRoutines) {
 			if(!routine.finished()) {
 				commands = routine.update(commands);
 			}
@@ -63,7 +63,7 @@ public class ParallelRoutine extends Routine {
 	@Override
 	public String getName() {
 		String name = "ParallelRoutine of (";
-		for(Routine routine: mRoutines) {
+		for(Routine routine : mRoutines) {
 			name += (routine.getName() + " ");
 		}
 		return name + ")";

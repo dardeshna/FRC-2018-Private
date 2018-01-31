@@ -4,53 +4,53 @@ import com.palyrobotics.frc2018.vision.util.synchronization.DataExistsCallback;
 
 public class VisionDataUnit<T> {
 
-    protected T value, defaultValue;
+	protected T value, defaultValue;
 
-    protected DataExistsCallback<T> existsCallback;
+	protected DataExistsCallback<T> existsCallback;
 
-    public VisionDataUnit(T value, T defaultValue, DataExistsCallback<T> existsCallback) {
+	public VisionDataUnit(T value, T defaultValue, DataExistsCallback<T> existsCallback) {
 
-        this.value = value;
-        this.defaultValue = defaultValue;
-        this.existsCallback = existsCallback;
-    }
+		this.value = value;
+		this.defaultValue = defaultValue;
+		this.existsCallback = existsCallback;
+	}
 
-    public void set(T value) {
+	public void set(T value) {
 
-        this.value = value;
-    }
+		this.value = value;
+	}
 
-    public void set(VisionDataUnit<T> value) {
+	public void set(VisionDataUnit<T> value) {
 
-        this.value = value.get();
-    }
+		this.value = value.get();
+	}
 
-    public void setDefaultValue(T value) {
+	public void setDefaultValue(T value) {
 
-        defaultValue = value;
-    }
+		defaultValue = value;
+	}
 
-    public T getDefaultValue() {
-        return defaultValue;
-    }
+	public T getDefaultValue() {
+		return defaultValue;
+	}
 
-    public void setToDefault() {
+	public void setToDefault() {
 
-        value = defaultValue;
-    }
+		value = defaultValue;
+	}
 
-    public T get() {
+	public T get() {
 
-        return exists() ? value : defaultValue;
-    }
+		return exists() ? value : defaultValue;
+	}
 
-    public boolean isNull() {
+	public boolean isNull() {
 
-        return value == null;
-    }
+		return value == null;
+	}
 
-    public boolean exists() {
+	public boolean exists() {
 
-        return existsCallback.exists(value);
-    }
+		return existsCallback.exists(value);
+	}
 }

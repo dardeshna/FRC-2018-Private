@@ -12,9 +12,11 @@ import com.palyrobotics.frc2018.util.trajectory.Path;
 public class DrivePathRoutine extends Routine {
 	private Path mPath;
 	private boolean mInverted;
+
 	/**
 	 *
-	 * @param path Path to follow
+	 * @param path
+	 *            Path to follow
 	 */
 	public DrivePathRoutine(Path path, boolean inverted) {
 		this.mPath = path;
@@ -46,7 +48,7 @@ public class DrivePathRoutine extends Routine {
 
 	@Override
 	public Subsystem[] getRequiredSubsystems() {
-		return new Subsystem[]{drive};
+		return new Subsystem[] { drive };
 	}
 
 	@Override

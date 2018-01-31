@@ -12,21 +12,22 @@ public class BBTurnAngleRoutine extends Routine {
 
 	@Override
 	public Subsystem[] getRequiredSubsystems() {
-		return new Subsystem[]{drive};
+		return new Subsystem[] { drive };
 	}
-	
+
 	private double mAngle;
-	
+
 	private GyroBBState mState = GyroBBState.START;
 	private double startTime;
+
 	private enum GyroBBState {
 		START, TURNING, TIMED_OUT, DONE
 	}
-	
+
 	public BBTurnAngleRoutine(double angle) {
 		this.mAngle = angle;
 	}
-	
+
 	@Override
 	public void start() {
 		drive.setNeutral();
@@ -35,34 +36,33 @@ public class BBTurnAngleRoutine extends Routine {
 	}
 
 	@Override
-	public Commands update(Commands commands) {	
-		if (mState != GyroBBState.TIMED_OUT && (System.currentTimeMillis() - startTime > 5000)) {
+	public Commands update(Commands commands) {
+		if(mState != GyroBBState.TIMED_OUT && (System.currentTimeMillis() - startTime > 5000)) {
 			Logger.getInstance().logRobotThread(Level.WARNING, "Timed Out!");
 			mState = GyroBBState.TIMED_OUT;
 		}
 		switch(mState) {
-		case START:
-			Logger.getInstance().logRobotThread(Level.FINE, "Set setpoint", mAngle);
-			drive.setTurnAngleSetpoint(mAngle);
-			commands.wantedDriveState = Drive.DriveState.ON_BOARD_CONTROLLER;
-			mState = GyroBBState.TURNING;
-			break;
-		case TURNING:
-			if(drive.controllerOnTarget()) {
-				mState = GyroBBState.DONE;
-			}
-			break;
-		case TIMED_OUT:
-			drive.setNeutral();
-			break;
-		case DONE:
-			drive.resetController();
-			break;
+			case START:
+				Logger.getInstance().logRobotThread(Level.FINE, "Set setpoint", mAngle);
+				drive.setTurnAngleSetpoint(mAngle);
+				commands.wantedDriveState = Drive.DriveState.ON_BOARD_CONTROLLER;
+				mState = GyroBBState.TURNING;
+				break;
+			case TURNING:
+				if(drive.controllerOnTarget()) {
+					mState = GyroBBState.DONE;
+				}
+				break;
+			case TIMED_OUT:
+				drive.setNeutral();
+				break;
+			case DONE:
+				drive.resetController();
+				break;
 		}
-		
+
 		return commands;
 	}
-	
 
 	@Override
 	public Commands cancel(Commands commands) {

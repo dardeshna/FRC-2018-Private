@@ -11,15 +11,15 @@ import java.util.logging.Level;
 
 public class VisionDataReceiver extends ReceiverBase {
 
-	public  VisionDataReceiver() {
-		super("Data Thread", Constants.kVisionDataFileName,Constants.kVisionDataPort, Constants.kAndroidDataSocketUpdateRate, false);
+	public VisionDataReceiver() {
+		super("Data Thread", Constants.kVisionDataFileName, Constants.kVisionDataPort, Constants.kAndroidDataSocketUpdateRate, false);
 	}
 
 	private static VisionDataReceiver s_instance;
 
 	public static VisionDataReceiver getInstance() {
 
-		if (s_instance == null)
+		if(s_instance == null)
 			s_instance = new VisionDataReceiver();
 
 		return s_instance;
@@ -27,22 +27,21 @@ public class VisionDataReceiver extends ReceiverBase {
 
 	@Override
 	protected void update() {
-		
+
 		try {
 			String raw_data = mReceiverSelector.getReceiver().extractData();
 			JSONObject json = VisionUtil.parseJSON(raw_data);
 
-			if (json != null) {
-				String state = (String)json.get("state");
-				if (!(state == null) && !state.equals("")) {	//Handle based on state
-					switch (state) {
+			if(json != null) {
+				String state = (String) json.get("state");
+				if(!(state == null) && !state.equals("")) { //Handle based on state
+					switch(state) {
 
 						case "STREAMING": {
 
 							//Get image data
-							final double
-									data_x = Double.parseDouble((String)json.get("x_displacement")),
-									data_z = Double.parseDouble((String)json.get("z_displacement"));
+							final double data_x = Double.parseDouble((String) json.get("x_displacement")),
+									data_z = Double.parseDouble((String) json.get("z_displacement"));
 
 							VisionData.setXDataValue(data_x);
 							VisionData.setZDataValue(data_z);
@@ -61,13 +60,12 @@ public class VisionDataReceiver extends ReceiverBase {
 					}
 				}
 			}
-		} catch (IOException e) {
+		} catch(IOException e) {
 			//TODO Auto-generated catch block
 			Logger.getInstance().logRobotThread(Level.FINEST, e);
 		}
-		
-	}
 
+	}
 
 	@Override
 	protected void tearDown() {

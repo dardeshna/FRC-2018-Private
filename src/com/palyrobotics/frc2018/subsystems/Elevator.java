@@ -1,12 +1,12 @@
 package com.palyrobotics.frc2018.subsystems;
 
-import java.util.Optional;
-
 import com.palyrobotics.frc2018.config.Commands;
 import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.config.Gains;
 import com.palyrobotics.frc2018.config.RobotState;
 import com.palyrobotics.frc2018.util.TalonSRXOutput;
+
+import java.util.Optional;
 
 public class Elevator extends Subsystem {
 	private static Elevator instance = new Elevator("Elevator");
@@ -55,8 +55,8 @@ public class Elevator extends Subsystem {
 	}
 
 	/**
-	 * Calibration is checked and the variable for the state machine is set after processing the wanted elevator state.
-	 * State machine used for movement and clearing {@link Elevator#mElevatorWantedPosition} only.
+	 * Calibration is checked and the variable for the state machine is set after processing the wanted elevator state. State machine used for movement and
+	 * clearing {@link Elevator#mElevatorWantedPosition} only.
 	 *
 	 * @param commands
 	 *            used to obtain wanted elevator state
@@ -75,7 +75,7 @@ public class Elevator extends Subsystem {
 
 		//Execute update loop based on the current state
 		//Does not switch between states, only performs actions
-		switch (mState) {
+		switch(mState) {
 			//Actual calibration logic is not done in the state machine
 			case CALIBRATING:
 				mOutput.setPercentOutput(Constants.kCalibratePower);
@@ -100,8 +100,7 @@ public class Elevator extends Subsystem {
 				break;
 			case CUSTOM_POSITIONING:
 				//Control loop
-				mOutput.setPosition(kElevatorBottomPosition.get() + mElevatorWantedPosition.get(),
-						Gains.elevatorPosition);
+				mOutput.setPosition(kElevatorBottomPosition.get() + mElevatorWantedPosition.get(), Gains.elevatorPosition);
 				break;
 			case IDLE:
 				//Clear any existing wanted positions
@@ -117,10 +116,8 @@ public class Elevator extends Subsystem {
 	}
 
 	/**
-	 * Process wanted elevator state and joystick inputs into mState for the state
-	 * machine. Sets {@link Elevator#mElevatorWantedPosition} for use in the state
-	 * machine. Does not clear it. At the end, always check if any custom
-	 * positioning has finished, and if so, set the state to hold. <br>
+	 * Process wanted elevator state and joystick inputs into mState for the state machine. Sets {@link Elevator#mElevatorWantedPosition} for use in the state
+	 * machine. Does not clear it. At the end, always check if any custom positioning has finished, and if so, set the state to hold. <br>
 	 * <br>
 	 *
 	 * <b>Teleop joystick movement overrides everything else!</b> <br>
@@ -128,23 +125,11 @@ public class Elevator extends Subsystem {
 	 *
 	 * Behavior for desired states:
 	 * <ul>
-	 * 		<li>
-	 * 			{@link ElevatorState#CALIBRATING}: Sets the state to calibrate. If already calibrated, ignores the request and proceeds as usual.
-	 * 		</li>
-	 * 		<li>
-	 * 			{@link ElevatorState#HOLD}: Sets the desired holding position and state to hold.
-	 * 		</li>
-	 * 		<li>
-	 * 			{@link ElevatorState#MANUAL_POSITIONING}: Sets the state to manual.
-	 * 		</li>
-	 * 		<li>
-	 * 			{@link ElevatorState#CUSTOM_POSITIONING}: Sets the desired custom
-	 * 			position and state to custom positioning. If not calibrated, set to calibrate
-	 * 			instead.
-	 * 		</li>
-	 * 		<li>
-	 * 			{@link ElevatorState#IDLE}: Sets to idle.
-	 * 		</li>
+	 * <li>{@link ElevatorState#CALIBRATING}: Sets the state to calibrate. If already calibrated, ignores the request and proceeds as usual.</li>
+	 * <li>{@link ElevatorState#HOLD}: Sets the desired holding position and state to hold.</li>
+	 * <li>{@link ElevatorState#MANUAL_POSITIONING}: Sets the state to manual.</li>
+	 * <li>{@link ElevatorState#CUSTOM_POSITIONING}: Sets the desired custom position and state to custom positioning. If not calibrated, set to calibrate instead.</li>
+	 * <li>{@link ElevatorState#IDLE}: Sets to idle.</li>
 	 * </ul>
 	 *
 	 *
@@ -171,10 +156,8 @@ public class Elevator extends Subsystem {
 				//Set the setpoint
 				//If the desired custom positioning setpoint is different than what currently
 				//exists, replace it
-				if(!mElevatorWantedPosition.equals(Optional
-						.of(kElevatorBottomPosition.get() + commands.robotSetpoints.elevatorPositionSetpoint.get()))) {
-					mElevatorWantedPosition = Optional
-							.of(kElevatorBottomPosition.get() + commands.robotSetpoints.elevatorPositionSetpoint.get());
+				if(!mElevatorWantedPosition.equals(Optional.of(kElevatorBottomPosition.get() + commands.robotSetpoints.elevatorPositionSetpoint.get()))) {
+					mElevatorWantedPosition = Optional.of(kElevatorBottomPosition.get() + commands.robotSetpoints.elevatorPositionSetpoint.get());
 				}
 
 				mState = ElevatorState.CUSTOM_POSITIONING;
@@ -195,21 +178,18 @@ public class Elevator extends Subsystem {
 	}
 
 	/**
-	 * Calibrates the bottom or top position values depending on which HFX is triggered. If the other position is not
-	 * already set, set that as well.
+	 * Calibrates the bottom or top position values depending on which HFX is triggered. If the other position is not already set, set that as well.
 	 */
 	public void checkCalibration() {
 		if(mRobotState.elevatorBottomHFX) {
 			kElevatorBottomPosition = Optional.of(mRobotState.elevatorPosition);
 			if(!kElevatorTopPosition.isPresent()) {
-				kElevatorTopPosition = Optional
-						.of(mRobotState.elevatorPosition + Constants.kTopBottomEncoderDifference);
+				kElevatorTopPosition = Optional.of(mRobotState.elevatorPosition + Constants.kTopBottomEncoderDifference);
 			}
 		} else if(mRobotState.elevatorTopHFX) {
 			kElevatorTopPosition = Optional.of(mRobotState.elevatorPosition);
 			if(!kElevatorBottomPosition.isPresent()) {
-				kElevatorBottomPosition = Optional
-						.of(mRobotState.elevatorPosition - Constants.kTopBottomEncoderDifference);
+				kElevatorBottomPosition = Optional.of(mRobotState.elevatorPosition - Constants.kTopBottomEncoderDifference);
 			}
 		}
 	}
@@ -243,8 +223,8 @@ public class Elevator extends Subsystem {
 	 *
 	 * @return
 	 *         <p>
-	 *         false if {@link Elevator#mState} is not {@link ElevatorState#CUSTOM_POSITIONING}, or whether it's within
-	 *         position and velocity tolerances otherwise
+	 *         false if {@link Elevator#mState} is not {@link ElevatorState#CUSTOM_POSITIONING}, or whether it's within position and velocity tolerances
+	 *         otherwise
 	 *         </p>
 	 */
 	public boolean onTarget() {
@@ -252,8 +232,7 @@ public class Elevator extends Subsystem {
 			return false;
 		}
 
-		return (Math.abs(mElevatorWantedPosition.get()
-				- mRobotState.elevatorPosition) < Constants.kElevatorAcceptablePositionError)
+		return (Math.abs(mElevatorWantedPosition.get() - mRobotState.elevatorPosition) < Constants.kElevatorAcceptablePositionError)
 				&& (Math.abs(mRobotState.elevatorVelocity) < Constants.kElevatorAcceptableVelocityError);
 	}
 

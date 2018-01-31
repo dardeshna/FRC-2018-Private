@@ -7,23 +7,23 @@ import com.palyrobotics.frc2018.config.Constants;
 import edu.wpi.first.wpilibj.*;
 
 /**
- * Represents all hardware components of the robot.
- * Singleton class. Should only be used in robot package, and 254lib.
- * Subdivides hardware into subsystems.
+ * Represents all hardware components of the robot. Singleton class. Should only be used in robot package, and 254lib. Subdivides hardware into subsystems.
  * Example call: HardwareAdapter.getInstance().getDrivetrain().getLeftMotor()
  *
  * @author Nihar
  */
 public class HardwareAdapter {
 	//Hardware components at the top for maintenance purposes, variables and getters at bottom
-	/* 
+	/*
 	 * DRIVETRAIN - 2 WPI_TalonSRX's and 4 WPI_VictorSPX's
 	 */
 	public static class DrivetrainHardware {
 		private static DrivetrainHardware instance = new DrivetrainHardware();
+
 		private static DrivetrainHardware getInstance() {
 			return instance;
 		}
+
 		public final WPI_TalonSRX leftMasterTalon;
 		public final WPI_VictorSPX leftSlave1Victor;
 		public final WPI_VictorSPX leftSlave2Victor;
@@ -42,28 +42,29 @@ public class HardwareAdapter {
 		}
 
 		protected DrivetrainHardware() {
-				leftMasterTalon = new WPI_TalonSRX(Constants.kForsetiLeftDriveMasterDeviceID);
-				leftSlave1Victor = new WPI_VictorSPX(Constants.kForsetiLeftDriveSlaveDeviceID);
-				leftSlave2Victor = new WPI_VictorSPX(Constants.kForsetiLeftDriveOtherSlaveDeviceID);
-				rightMasterTalon = new WPI_TalonSRX(Constants.kForsetiRightDriveMasterDeviceID);
-				rightSlave1Victor = new WPI_VictorSPX(Constants.kForsetiRightDriveSlaveDeviceID);
-				rightSlave2Victor = new WPI_VictorSPX(Constants.kForsetiRightDriveOtherSlaveDeviceID);
-				gyro = new PigeonIMU(leftMasterTalon);
+			leftMasterTalon = new WPI_TalonSRX(Constants.kForsetiLeftDriveMasterDeviceID);
+			leftSlave1Victor = new WPI_VictorSPX(Constants.kForsetiLeftDriveSlaveDeviceID);
+			leftSlave2Victor = new WPI_VictorSPX(Constants.kForsetiLeftDriveOtherSlaveDeviceID);
+			rightMasterTalon = new WPI_TalonSRX(Constants.kForsetiRightDriveMasterDeviceID);
+			rightSlave1Victor = new WPI_VictorSPX(Constants.kForsetiRightDriveSlaveDeviceID);
+			rightSlave2Victor = new WPI_VictorSPX(Constants.kForsetiRightDriveOtherSlaveDeviceID);
+			gyro = new PigeonIMU(leftMasterTalon);
 		}
 	}
-	
+
 	/*
 	 * Climber - 2 WPI_TalonSRX's, 2 DoubleSolenoids, 2 Solenoids
 	 */
 	public static class ClimberHardware {
 		private static ClimberHardware instance = new ClimberHardware();
+
 		private static ClimberHardware getInstance() {
 			return instance;
 		}
 
 		public final WPI_VictorSPX leftVictor;
 		public final WPI_VictorSPX rightVictor;
-		
+
 		public final DoubleSolenoid leftArmLock;
 		public final DoubleSolenoid rightArmLock;
 
@@ -87,6 +88,7 @@ public class HardwareAdapter {
 	 */
 	public static class ElevatorHardware {
 		private static ElevatorHardware instance = new ElevatorHardware();
+
 		private static ElevatorHardware getInstance() {
 			return instance;
 		}
@@ -110,29 +112,31 @@ public class HardwareAdapter {
 	 * Intake - 2 WPI_TalonSRX's, 2 DoubleSolenoids, 1 Distance Sensor (AnalogInput)
 	 */
 	public static class IntakeHardware {
-	    private static IntakeHardware instance = new IntakeHardware();
-	    private static IntakeHardware getInstance() {
-	        return instance;
-        }
-	    
-        public final WPI_TalonSRX masterTalon;
-	    public final WPI_TalonSRX slaveTalon;
-	    public final DoubleSolenoid upDownSolenoid;
-	    public final DoubleSolenoid openCloseSolenoid;
-	    public final AnalogInput distanceSensor;
+		private static IntakeHardware instance = new IntakeHardware();
 
-        protected IntakeHardware() {
-	        masterTalon = new WPI_TalonSRX(Constants.kForsetiIntakeMasterDeviceID);
-	        slaveTalon = new WPI_TalonSRX(Constants.kForsetiIntakeSlaveDeviceID);
-	        upDownSolenoid = new DoubleSolenoid(Constants.kForsetiIntakeUpDownSolenoidForwardID, Constants.kForsetiIntakeUpDownSolenoidReverseID);
-	        openCloseSolenoid = new DoubleSolenoid(Constants.kForsetiIntakeOpenCloseSolenoidForwardID, Constants.kForsetiIntakeOpenCloseSolenoidReverseID);
-	        distanceSensor = new AnalogInput(Constants.kForsetiIntakeDistanceSensorID);
-        }
-    }
+		private static IntakeHardware getInstance() {
+			return instance;
+		}
+
+		public final WPI_TalonSRX masterTalon;
+		public final WPI_TalonSRX slaveTalon;
+		public final DoubleSolenoid upDownSolenoid;
+		public final DoubleSolenoid openCloseSolenoid;
+		public final AnalogInput distanceSensor;
+
+		protected IntakeHardware() {
+			masterTalon = new WPI_TalonSRX(Constants.kForsetiIntakeMasterDeviceID);
+			slaveTalon = new WPI_TalonSRX(Constants.kForsetiIntakeSlaveDeviceID);
+			upDownSolenoid = new DoubleSolenoid(Constants.kForsetiIntakeUpDownSolenoidForwardID, Constants.kForsetiIntakeUpDownSolenoidReverseID);
+			openCloseSolenoid = new DoubleSolenoid(Constants.kForsetiIntakeOpenCloseSolenoidForwardID, Constants.kForsetiIntakeOpenCloseSolenoidReverseID);
+			distanceSensor = new AnalogInput(Constants.kForsetiIntakeDistanceSensorID);
+		}
+	}
 
 	//Joysticks for operator interface
 	public static class Joysticks {
 		private static Joysticks instance = new Joysticks();
+
 		private static Joysticks getInstance() {
 			return instance;
 		}
@@ -156,17 +160,17 @@ public class HardwareAdapter {
 	}
 
 	public IntakeHardware getIntake() {
-	    return IntakeHardware.getInstance();
-    }
+		return IntakeHardware.getInstance();
+	}
 
 	public ClimberHardware getClimber() {
 		return ClimberHardware.getInstance();
 	}
-	
+
 	public Joysticks getJoysticks() {
 		return Joysticks.getInstance();
 	}
-	
+
 	public final PowerDistributionPanel kPDP = new PowerDistributionPanel();
 
 	//Singleton set up

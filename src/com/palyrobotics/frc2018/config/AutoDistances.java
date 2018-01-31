@@ -5,6 +5,6 @@ package com.palyrobotics.frc2018.config;
  */
 public class AutoDistances {
 	//Base line
-		public static double kRedBaseLineDistanceInches = 110;
-		public static double kBlueBaseLineDistanceInches = 110;
+	public static double kRedBaseLineDistanceInches = 110;
+	public static double kBlueBaseLineDistanceInches = 110;
 }

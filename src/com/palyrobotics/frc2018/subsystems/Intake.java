@@ -9,61 +9,57 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 /**
  * @author Justin and Jason
  */
-public class Intake extends Subsystem{
+public class Intake extends Subsystem {
 	public static Intake instance = new Intake();
-	
+
 	public static Intake getInstance() {
 		return instance;
 	}
-	
+
 	private TalonSRXOutput mTalonOutput = new TalonSRXOutput();
 	private DoubleSolenoid.Value mOpenCloseOutput = DoubleSolenoid.Value.kReverse;
 	private DoubleSolenoid.Value mUpDownOutput = DoubleSolenoid.Value.kForward;
-	
-	public enum IntakeState { 
-		INTAKING,
-		IDLE,
-		EXPELLING
+
+	public enum IntakeState {
+		INTAKING, IDLE, EXPELLING
 	}
-	
+
 	public enum UpDownState {
-		UP,
-		DOWN
+		UP, DOWN
 	}
-	
+
 	public enum OpenCloseState {
-		OPEN,
-		CLOSED
+		OPEN, CLOSED
 	}
-	
+
 	private IntakeState mIntakeState = IntakeState.IDLE;
 	private UpDownState mUpDownState = UpDownState.UP;
 	private OpenCloseState mOpenCloseState = OpenCloseState.CLOSED;
-	
+
 	protected Intake() {
 		super("Intake");
 	}
-	
+
 	@Override
 	public void start() {
 		mIntakeState = IntakeState.IDLE;
 		mUpDownState = UpDownState.UP;
 		mOpenCloseState = OpenCloseState.OPEN;
 	}
-	
+
 	@Override
 	public void stop() {
 		mIntakeState = IntakeState.IDLE;
 		mUpDownState = UpDownState.UP;
 		mOpenCloseState = OpenCloseState.OPEN;
 	}
-	
+
 	@Override
 	public void update(Commands commands, RobotState robotState) {
 		mIntakeState = commands.wantedIntakingState;
 		mUpDownState = commands.wantedIntakeUpDownState;
 		mOpenCloseState = commands.wantedIntakeOpenCloseState;
-		
+
 		switch(mIntakeState) {
 			case INTAKING:
 				mTalonOutput.setPercentOutput(Constants.kIntakingMotorVelocity);
@@ -75,7 +71,7 @@ public class Intake extends Subsystem{
 				mTalonOutput.setPercentOutput(Constants.kExpellingMotorVelocity);
 				break;
 		}
-		
+
 		switch(mUpDownState) {
 			case UP:
 				mUpDownOutput = DoubleSolenoid.Value.kReverse;
@@ -84,7 +80,7 @@ public class Intake extends Subsystem{
 				mUpDownOutput = DoubleSolenoid.Value.kForward;
 				break;
 		}
-		
+
 		switch(mOpenCloseState) {
 			case OPEN:
 				mOpenCloseOutput = DoubleSolenoid.Value.kReverse;
@@ -94,36 +90,34 @@ public class Intake extends Subsystem{
 				break;
 		}
 	}
-	
+
 	public IntakeState getIntakeState() {
 		return mIntakeState;
 	}
-	
+
 	public UpDownState getUpDownState() {
 		return mUpDownState;
 	}
-	
+
 	public OpenCloseState getOpenCloseState() {
 		return mOpenCloseState;
 	}
-	
+
 	public TalonSRXOutput getTalonOutput() {
 		return mTalonOutput;
 	}
-	
+
 	public DoubleSolenoid.Value getOpenCloseOutput() {
 		return mOpenCloseOutput;
 	}
-	
+
 	public DoubleSolenoid.Value getUpDownOutput() {
 		return mUpDownOutput;
 	}
-	
+
 	@Override
 	public String getStatus() {
-		return "Intake State: " + mIntakeState + "\nOutput Control Mode: " + mTalonOutput.getControlMode() + 
-				"\nTalon Output: " + mTalonOutput.getSetpoint()+"\n" +
-				"\nOpen Close Output: " + mOpenCloseOutput +"\n" +
-				"\nUp Down Output: " + mUpDownOutput +"\n";
+		return "Intake State: " + mIntakeState + "\nOutput Control Mode: " + mTalonOutput.getControlMode() + "\nTalon Output: " + mTalonOutput.getSetpoint()
+				+ "\n" + "\nOpen Close Output: " + mOpenCloseOutput + "\n" + "\nUp Down Output: " + mUpDownOutput + "\n";
 	}
 }

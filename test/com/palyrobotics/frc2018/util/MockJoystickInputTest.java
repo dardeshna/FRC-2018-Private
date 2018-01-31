@@ -11,7 +11,7 @@ import static org.junit.Assert.assertThat;
 public class MockJoystickInputTest {
 
 	private MockRobotState robotState;
-	
+
 	@Test
 	public void test() {
 		robotState.elevatorStickInput.setY(1);
@@ -22,5 +22,5 @@ public class MockJoystickInputTest {
 	public void initMockRobot() {
 		robotState = MockRobot.getRobotState();
 	}
-	
+
 }

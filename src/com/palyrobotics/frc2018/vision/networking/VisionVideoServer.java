@@ -11,8 +11,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 
 /**
- * Sends video from the robot to the dashboard.
- * Video data is obtained from queue in {@link VisionData}
+ * Sends video from the robot to the dashboard. Video data is obtained from queue in {@link VisionData}
  *
  * @author Quintin Dwight
  */
@@ -33,7 +32,7 @@ public class VisionVideoServer extends VisionServerBase {
 
 			imageInBytes = baos.toByteArray();
 
-		} catch (IOException e) {
+		} catch(IOException e) {
 
 			Logger.getInstance().logRobotThread(Level.FINEST, e);
 		}
@@ -50,7 +49,8 @@ public class VisionVideoServer extends VisionServerBase {
 	/**
 	 * Writes the image given in a byte array to the output stream for the javascript client to read and display on the dashboard.
 	 *
-	 * @throws IOException Thrown by socket
+	 * @throws IOException
+	 *             Thrown by socket
 	 */
 	private void writeImageToServer(byte[] data) {
 
@@ -62,12 +62,12 @@ public class VisionVideoServer extends VisionServerBase {
 			writer.writeInt(data.length);
 			writer.write(data);
 
-		} catch (IOException e) {
+		} catch(IOException e) {
 
 			Logger.getInstance().logRobotThread(Level.FINEST, e);
 
 			closeClient();
-		} catch (NullPointerException e) {
+		} catch(NullPointerException e) {
 			Logger.getInstance().logRobotThread(Level.FINEST, e);
 		}
 	}
@@ -75,7 +75,7 @@ public class VisionVideoServer extends VisionServerBase {
 	@Override
 	protected void afterUpdate() {
 
-		switch (m_serverState) {
+		switch(m_serverState) {
 
 			case OPEN: {
 

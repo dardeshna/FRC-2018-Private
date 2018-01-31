@@ -8,21 +8,17 @@ import com.palyrobotics.frc2018.util.ClimberSignal;
 public class Climber extends Subsystem {
 
 	public enum Side {
-		NOT_SET,
-		LEFT,
-		RIGHT
+		NOT_SET, LEFT, RIGHT
 	}
-	
+
 	public enum MotionSubstate {
-		MOVING,
-		LOCKED
+		MOVING, LOCKED
 	}
 
 	public enum LockState {
-		UNLOCKED,
-		LOCKED
+		UNLOCKED, LOCKED
 	}
-	
+
 	private Side mSide;
 	private MotionSubstate mMotionStatus;
 	private LockState mLock;
@@ -33,7 +29,7 @@ public class Climber extends Subsystem {
 	public static Climber getInstance() {
 		return instance;
 	}
-	
+
 	protected Climber() {
 		super("Climber");
 		mSide = Side.NOT_SET;

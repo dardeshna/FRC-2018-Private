@@ -4,24 +4,26 @@ public class Constants {
 	public enum RobotName {
 		FORSETI
 	}
+
 	public enum DriverName {
 		ERIC
 	}
-	public enum OperatorName{
+
+	public enum OperatorName {
 		JACOB
 	}
-	
+
 	//Initialization constants
 	public static final RobotName kRobotName = RobotName.FORSETI;
 	public static final DriverName kDriverName = DriverName.ERIC;
-	public static final OperatorName kOperatorName = OperatorName.JACOB; 
-	
+	public static final OperatorName kOperatorName = OperatorName.JACOB;
+
 	//Android app information
 	public static final String kPackageName = "com.frc8.team8vision";
 	public static final String kActivityName = "MainActivity";
 	public static final String kVisionDataFileName = "data.json";
 	public static final String kVisionVideoFileName = "video.json";
-	public static final int kAndroidConnectionUpdateRate = 5;	//Update rate in milliseconds
+	public static final int kAndroidConnectionUpdateRate = 5; //Update rate in milliseconds
 	public static final int kAndroidDataSocketUpdateRate = 100;
 	public static final int kAndroidVisionSocketUpdateRate = 10;
 	public static final int kMJPEGVisionSocketUpdateRate = 20;
@@ -30,8 +32,7 @@ public class Constants {
 	public static final int kMJPEGServerSocketPort = 1180;
 
 	/**
-	 * Cheesy Drive Constants
-	 * Set by DriverProfiles
+	 * Cheesy Drive Constants Set by DriverProfiles
 	 */
 	//Deadband for joysticks
 	public static double kDeadband;
@@ -71,7 +72,7 @@ public class Constants {
 	 * Unit conversions for Talons
 	 */
 	public static final double kDriveTicksPerInch = 360 / (3.95 * Math.PI);
-	public static final double kDriveInchesPerDegree = 0.99*21.5/90;
+	public static final double kDriveInchesPerDegree = 0.99 * 21.5 / 90;
 	public static final double kDriveSpeedUnitConversion = 360 / (3.95 * Math.PI * 10);
 
 	/**
@@ -98,23 +99,21 @@ public class Constants {
 	public static final double kIntakingMotorVelocity = 1.0;
 	public static final double kExpellingMotorVelocity = -1.0;
 
-
-	/* !!! End of editable Constants! !!!
+	/*
+	 * !!! End of editable Constants! !!!
 	 **********************************************************************************
 	 */
 	public static final int kEndEditableArea = 0;
 
 	/*
-	 * ************************************
-	 *  Forseti ELECTRONIC CONSTANTS
-	 * ************************************
+	 * ************************************ Forseti ELECTRONIC CONSTANTS ************************************
 	 */
 	//PDP
 	public static final int kForsetiPDPDeviceID = 0;
-	
+
 	//DRIVETRAIN
 	//PDP slots for drivetrain 0, 1, 2, 3, 12, 13
-	public static final int kForsetiLeftDriveMasterDeviceID  = 1;
+	public static final int kForsetiLeftDriveMasterDeviceID = 1;
 	public static final int kForsetiLeftDriveSlaveDeviceID = 2;
 	public static final int kForsetiLeftDriveOtherSlaveDeviceID = 3;
 	public static final int kForsetiLeftDriveFrontMotorPDP = 0;
@@ -130,7 +129,7 @@ public class Constants {
 	//CLIMBER
 	public static final int kForsetiClimberMotorLeftDeviceID = 1;
 	public static final int kForsetiClimberMotorRightDeviceID = 2;
-	
+
 	public static final int kForsetiClimberLeftArmForward = 3;
 	public static final int kForsetiClimberLeftArmBack = 3;
 
@@ -148,13 +147,13 @@ public class Constants {
 	public static final int kForsetiTopElevatorHFXID = 10;
 
 	//INTAKE
-    public static final int kForsetiIntakeMasterDeviceID = 7;
-    public static final int kForsetiIntakeSlaveDeviceID = 8;
-    public static final int kForsetiIntakeDistanceSensorID = 0;
-    public static final int kForsetiIntakeUpDownSolenoidForwardID = 1;
-    public static final int kForsetiIntakeUpDownSolenoidReverseID = 2;
-    public static final int kForsetiIntakeOpenCloseSolenoidForwardID = 3;
-    public static final int kForsetiIntakeOpenCloseSolenoidReverseID = 4;
+	public static final int kForsetiIntakeMasterDeviceID = 7;
+	public static final int kForsetiIntakeSlaveDeviceID = 8;
+	public static final int kForsetiIntakeDistanceSensorID = 0;
+	public static final int kForsetiIntakeUpDownSolenoidForwardID = 1;
+	public static final int kForsetiIntakeUpDownSolenoidReverseID = 2;
+	public static final int kForsetiIntakeOpenCloseSolenoidForwardID = 3;
+	public static final int kForsetiIntakeOpenCloseSolenoidReverseID = 4;
 
 	//!!! Physical constants
 
@@ -165,8 +164,7 @@ public class Constants {
 	public static final double kDriveWheelDiameterInches = 7.3;
 	public static final double kTrackLengthInches = 8.265;
 	public static final double kTrackWidthInches = 23.8;
-	public static final double kTrackEffectiveDiameter = (kTrackWidthInches * kTrackWidthInches
-			+ kTrackLengthInches * kTrackLengthInches) / kTrackWidthInches;
+	public static final double kTrackEffectiveDiameter = (kTrackWidthInches * kTrackWidthInches + kTrackLengthInches * kTrackLengthInches) / kTrackWidthInches;
 	public static final double kTrackScrubFactor = 0.9;
 	public static final double kPathFollowingLookahead = 20.0;
 	public static final double kPathFollowingMaxAccel = 5.0 * kDriveTicksPerInch;
@@ -175,13 +173,8 @@ public class Constants {
 
 	@Override
 	public String toString() {
-	return "kQuickStopAccumulatorDecreaseRate "+kQuickStopAccumulatorDecreaseRate+
-	"kQuickStopAccumulatorDecreaseThreshold "+kQuickStopAccumulatorDecreaseThreshold+
-	"kNegativeInertiaScalar "+kNegativeInertiaScalar+
-	"kAlpha "+ kAlpha +
-	"kDriveTicksPerInch "+kDriveTicksPerInch +
-	"kDriveInchesPerDegree" + kDriveInchesPerDegree +
-	"kDriveSpeedUnitConversion "+kDriveSpeedUnitConversion
-	;
+		return "kQuickStopAccumulatorDecreaseRate " + kQuickStopAccumulatorDecreaseRate + "kQuickStopAccumulatorDecreaseThreshold "
+				+ kQuickStopAccumulatorDecreaseThreshold + "kNegativeInertiaScalar " + kNegativeInertiaScalar + "kAlpha " + kAlpha + "kDriveTicksPerInch "
+				+ kDriveTicksPerInch + "kDriveInchesPerDegree" + kDriveInchesPerDegree + "kDriveSpeedUnitConversion " + kDriveSpeedUnitConversion;
 	}
 }

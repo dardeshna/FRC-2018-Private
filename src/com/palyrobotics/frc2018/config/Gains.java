@@ -13,15 +13,15 @@ public class Gains {
 	public static double kForsetiLeftTrajectorykV_0 = 0.0969;
 	public static double kForsetiRightTrajectorykV_0 = 0.0946;
 	public static double kForsetiTrajectorykA = 0.025;
-	
-	public static final double kForsetiDriveVelocitykP = 6.0/2;
-	public static final double kForsetiDriveVelocitykI = 0.002/2;
-	public static final double kForsetiDriveVelocitykD = 85/2;
-	public static final double kForsetiDriveVelocitykF = 2.624/2;
-	public static final int kForsetiDriveVelocitykIzone = 800/2;
+
+	public static final double kForsetiDriveVelocitykP = 6.0 / 2;
+	public static final double kForsetiDriveVelocitykI = 0.002 / 2;
+	public static final double kForsetiDriveVelocitykD = 85 / 2;
+	public static final double kForsetiDriveVelocitykF = 2.624 / 2;
+	public static final int kForsetiDriveVelocitykIzone = 800 / 2;
 	public static final double kForsetiDriveVelocitykRampRate = 0.0;
-	public static final Gains forsetiVelocity = new Gains(kForsetiDriveVelocitykP, kForsetiDriveVelocitykI, kForsetiDriveVelocitykD,
-			kForsetiDriveVelocitykF, kForsetiDriveVelocitykIzone, kForsetiDriveVelocitykRampRate);
+	public static final Gains forsetiVelocity = new Gains(kForsetiDriveVelocitykP, kForsetiDriveVelocitykI, kForsetiDriveVelocitykD, kForsetiDriveVelocitykF,
+			kForsetiDriveVelocitykIzone, kForsetiDriveVelocitykRampRate);
 
 	//Drive Distance PID control loop
 	public static final double kForsetiDriveStraightTurnkP = -0.06;
@@ -30,8 +30,8 @@ public class Gains {
 	public static final double kForsetiDriveDistancekD = 12.0;
 	public static final int kForsetiDriveDistancekIzone = 125;
 	public static final double kForsetiDriveDistancekRampRate = 0.0;
-	public static final Gains forsetiDriveDistance = new Gains(kForsetiDriveDistancekP, kForsetiDriveDistancekI, kForsetiDriveDistancekD,
-			0, kForsetiDriveDistancekIzone, kForsetiDriveDistancekRampRate);
+	public static final Gains forsetiDriveDistance = new Gains(kForsetiDriveDistancekP, kForsetiDriveDistancekI, kForsetiDriveDistancekD, 0,
+			kForsetiDriveDistancekIzone, kForsetiDriveDistancekRampRate);
 
 	//Drive Motion Magic offboard control loop
 	//Short distance max speed 45 in/s Max accel 95 in/s^2
@@ -43,9 +43,9 @@ public class Gains {
 	public static final double kForsetiShortDriveMotionMagickF = 2.075;
 	public static final int kForsetiShortDriveMotionMagickIzone = 150;
 	public static final double kForsetiShortDriveMotionMagickRampRate = 0.0;
-	public static final Gains forsetiShortDriveMotionMagicGains = new Gains(kForsetiShortDriveMotionMagickP, kForsetiShortDriveMotionMagickI, kForsetiShortDriveMotionMagickD,
-			kForsetiShortDriveMotionMagickF, kForsetiShortDriveMotionMagickIzone, kForsetiShortDriveMotionMagickRampRate);
-	
+	public static final Gains forsetiShortDriveMotionMagicGains = new Gains(kForsetiShortDriveMotionMagickP, kForsetiShortDriveMotionMagickI,
+			kForsetiShortDriveMotionMagickD, kForsetiShortDriveMotionMagickF, kForsetiShortDriveMotionMagickIzone, kForsetiShortDriveMotionMagickRampRate);
+
 	//Long distance more aggressive, 180 in/s, 120 in/s^2 accel
 	public static final double kForsetiLongDriveMotionMagicCruiseVelocity = 180 * Constants.kDriveSpeedUnitConversion;
 	public static final double kForsetiLongDriveMotionMagicMaxAcceleration = 120 * Constants.kDriveSpeedUnitConversion;
@@ -55,8 +55,8 @@ public class Gains {
 	public static final double kForsetiLongDriveMotionMagickF = 2.0;
 	public static final int kForsetiLongDriveMotionMagickIzone = 50;
 	public static final double kForsetiLongDriveMotionMagickRampRate = 0.0;
-	public static final Gains forsetiLongDriveMotionMagicGains = new Gains(kForsetiLongDriveMotionMagickP, kForsetiLongDriveMotionMagickI, kForsetiLongDriveMotionMagickD,
-			kForsetiLongDriveMotionMagickF, kForsetiLongDriveMotionMagickIzone, kForsetiLongDriveMotionMagickRampRate);
+	public static final Gains forsetiLongDriveMotionMagicGains = new Gains(kForsetiLongDriveMotionMagickP, kForsetiLongDriveMotionMagickI,
+			kForsetiLongDriveMotionMagickD, kForsetiLongDriveMotionMagickF, kForsetiLongDriveMotionMagickIzone, kForsetiLongDriveMotionMagickRampRate);
 
 	//Drive Motion Magic turn angle gains
 	public static final double kForsetiTurnMotionMagicCruiseVelocity = 72 * Constants.kDriveSpeedUnitConversion;
@@ -70,27 +70,27 @@ public class Gains {
 	public static final Gains forsetiTurnMotionMagicGains = new Gains(kForsetiTurnMotionMagickP, kForsetiTurnMotionMagickI, kForsetiTurnMotionMagickD,
 			kForsetiTurnMotionMagickF, kForsetiTurnMotionMagickIzone, kForsetiTurnMotionMagickRampRate);
 
-	public static final double kForsetiElevatorPositionkP = 6.0/2;
-	public static final double kForsetiElevatorPositionkI = 0.002/2;
-	public static final double kForsetiElevatorPositionkD = 85/2;
-	public static final double kForsetiElevatorPositionkF = 2.624/2;
-	public static final int kForsetiElevatorPositionkIzone = 800/2;
+	public static final double kForsetiElevatorPositionkP = 6.0 / 2;
+	public static final double kForsetiElevatorPositionkI = 0.002 / 2;
+	public static final double kForsetiElevatorPositionkD = 85 / 2;
+	public static final double kForsetiElevatorPositionkF = 2.624 / 2;
+	public static final int kForsetiElevatorPositionkIzone = 800 / 2;
 	public static final double kForsetiElevatorPositionkRampRate = 0.0;
 	public static final Gains elevatorPosition = new Gains(kForsetiElevatorPositionkP, kForsetiElevatorPositionkI, kForsetiElevatorPositionkD,
 			kForsetiElevatorPositionkF, kForsetiElevatorPositionkIzone, kForsetiElevatorPositionkRampRate);
-	
-	public static final double kForsetiElevatorHoldkP = 6.0/2;
-	public static final double kForsetiElevatorHoldkI = 0.002/2;
-	public static final double kForsetiElevatorHoldkD = 85/2;
-	public static final double kForsetiElevatorHoldkF = 2.624/2;
-	public static final int kForsetiElevatorHoldkIzone = 800/2;
-	public static final double kForsetiElevatorHoldkRampRate = 0.0;
-	public static final Gains elevatorHold = new Gains(kForsetiElevatorHoldkP, kForsetiElevatorHoldkI, kForsetiElevatorHoldkD,
-			kForsetiElevatorHoldkF, kForsetiElevatorHoldkIzone, kForsetiElevatorHoldkRampRate);
 
-	
+	public static final double kForsetiElevatorHoldkP = 6.0 / 2;
+	public static final double kForsetiElevatorHoldkI = 0.002 / 2;
+	public static final double kForsetiElevatorHoldkD = 85 / 2;
+	public static final double kForsetiElevatorHoldkF = 2.624 / 2;
+	public static final int kForsetiElevatorHoldkIzone = 800 / 2;
+	public static final double kForsetiElevatorHoldkRampRate = 0.0;
+	public static final Gains elevatorHold = new Gains(kForsetiElevatorHoldkP, kForsetiElevatorHoldkI, kForsetiElevatorHoldkD, kForsetiElevatorHoldkF,
+			kForsetiElevatorHoldkIzone, kForsetiElevatorHoldkRampRate);
+
 	public static class TrajectoryGains {
-		public final double P,D,V,A, turnP, turnD;
+		public final double P, D, V, A, turnP, turnD;
+
 		public TrajectoryGains(double p, double d, double v, double a, double turnP, double turnD) {
 			this.P = p;
 			this.D = d;
@@ -101,7 +101,7 @@ public class Gains {
 		}
 	}
 
-	public final double P,I,D, F, rampRate;
+	public final double P, I, D, F, rampRate;
 	public final int izone;
 
 	public Gains(double p, double i, double d, double f, int izone, double rampRate) {
@@ -115,22 +115,18 @@ public class Gains {
 
 	@Override
 	public boolean equals(Object other) {
-		return ((Gains)other).P == this.P &&
-				((Gains) other).I == this.I &&
-				((Gains) other).D == this.D &&
-				((Gains) other).F == this.F &&
-				((Gains) other).izone == this.izone &&
-				((Gains) other).rampRate == this.rampRate;
+		return ((Gains) other).P == this.P && ((Gains) other).I == this.I && ((Gains) other).D == this.D && ((Gains) other).F == this.F
+				&& ((Gains) other).izone == this.izone && ((Gains) other).rampRate == this.rampRate;
 	}
-	
+
 	public static void initNetworkTableGains() {
-		if (DashboardManager.getInstance().pidTuning) {
+		if(DashboardManager.getInstance().pidTuning) {
 			Logger.getInstance().logRobotThread(Level.INFO, "Dashboard tuning currently removed");
 		}
 	}
-	
+
 	public static void updateNetworkTableGains() {
-		if (DashboardManager.getInstance().pidTuning) {
+		if(DashboardManager.getInstance().pidTuning) {
 			Logger.getInstance().logRobotThread(Level.INFO, "Dashboard tuning currently removed");
 		}
 	}

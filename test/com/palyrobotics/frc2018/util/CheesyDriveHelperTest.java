@@ -9,8 +9,8 @@ import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Tests CheesyDriveHelper
- * Created by Nihar on 12/23/16.
+ * Tests CheesyDriveHelper Created by Nihar on 12/23/16.
+ * 
  * @author Nihar
  */
 public class CheesyDriveHelperTest {
@@ -23,11 +23,11 @@ public class CheesyDriveHelperTest {
 	@Test
 	public void testSign() {
 		//Test matchSign helper method
-		assertTrue("Match Sign broken", matchSign(1,2));
-		assertFalse("Match Sign broken", matchSign(1,-2));
-		assertTrue("Match Sign broken", matchSign(-1,-2));
-		assertTrue("Match Sign broken", matchSign(0,0));
-		assertFalse("Match Sign broken", matchSign(1,0));
+		assertTrue("Match Sign broken", matchSign(1, 2));
+		assertFalse("Match Sign broken", matchSign(1, -2));
+		assertTrue("Match Sign broken", matchSign(-1, -2));
+		assertTrue("Match Sign broken", matchSign(0, 0));
+		assertFalse("Match Sign broken", matchSign(1, 0));
 
 		//Robot state is not used by CDH
 		MockRobotState testRobotState = MockRobot.getRobotState();
@@ -42,8 +42,8 @@ public class CheesyDriveHelperTest {
 		assertTrue("Zero input should have zero output", output.equals(zeroOutput));
 
 		//Test turning
-        MockRobot.getRobotState().leftStickInput.setY(0.5);
-        MockRobot.getRobotState().leftStickInput.setX(-0.5);
+		MockRobot.getRobotState().leftStickInput.setY(0.5);
+		MockRobot.getRobotState().leftStickInput.setX(-0.5);
 	}
 
 	@Test

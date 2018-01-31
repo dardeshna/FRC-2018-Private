@@ -20,12 +20,11 @@ public class DriveSignal {
 
 	@Override
 	public boolean equals(Object obj) {
-		return ((DriveSignal) obj).leftMotor.equals(this.leftMotor) &&
-				((DriveSignal) obj).rightMotor.equals(this.rightMotor);
+		return ((DriveSignal) obj).leftMotor.equals(this.leftMotor) && ((DriveSignal) obj).rightMotor.equals(this.rightMotor);
 	}
 
 	@Override
 	public String toString() {
-		return "left:"+leftMotor.toString()+" right:"+rightMotor.toString();
+		return "left:" + leftMotor.toString() + " right:" + rightMotor.toString();
 	}
 }

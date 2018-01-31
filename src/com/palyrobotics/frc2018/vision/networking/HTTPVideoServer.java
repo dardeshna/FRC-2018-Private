@@ -13,8 +13,7 @@ import java.io.PrintStream;
 import java.util.logging.Level;
 
 /**
- * Sends video from the robot to the dashboard.
- * Video data is obtained from queue in {@link VisionData}
+ * Sends video from the robot to the dashboard. Video data is obtained from queue in {@link VisionData}
  *
  * @author Quintin Dwight
  */
@@ -23,14 +22,12 @@ public class HTTPVideoServer extends VisionServerBase {
 	public static HTTPVideoServer s_instance;
 
 	/**
-	 * Gets the singleton for this class from a static context.
-	 * If the instance is null, create a new one
+	 * Gets the singleton for this class from a static context. If the instance is null, create a new one
 	 *
 	 * @return The singleton
 	 */
-	public static HTTPVideoServer getInstance()
-	{
-		if (s_instance == null)
+	public static HTTPVideoServer getInstance() {
+		if(s_instance == null)
 			s_instance = new HTTPVideoServer();
 
 		return s_instance;
@@ -51,7 +48,7 @@ public class HTTPVideoServer extends VisionServerBase {
 
 			imageInBytes = baos.toByteArray();
 
-		} catch (IOException e) {
+		} catch(IOException e) {
 
 			Logger.getInstance().logRobotThread(Level.FINEST, e);
 		}
@@ -68,7 +65,8 @@ public class HTTPVideoServer extends VisionServerBase {
 	/**
 	 * Writes the image given in a byte array to the output stream for the javascript client to read and display on the dashboard.
 	 *
-	 * @throws IOException Thrown by socket
+	 * @throws IOException
+	 *             Thrown by socket
 	 */
 	private void writeImageToServer(byte[] data) throws IOException {
 
@@ -81,13 +79,13 @@ public class HTTPVideoServer extends VisionServerBase {
 			//Send out the content to the javascript client
 			output.println("HTTP/1.1 200 OK");
 			output.println("Cache-Control: no-cache, no-store, must-revalidate");
-			output.println("Content-Type: image/jpeg"   );
+			output.println("Content-Type: image/jpeg");
 			output.println("Content-Length: " + data.length);
 			output.println();
 			output.write(data);
 			output.flush();
 
-		} catch (IOException e) {
+		} catch(IOException e) {
 
 			Logger.getInstance().logRobotThread(Level.FINEST, e);
 
@@ -100,7 +98,8 @@ public class HTTPVideoServer extends VisionServerBase {
 	/**
 	 * Writes a server error response (HTTP/1.0 500) to the given output stream.
 	 *
-	 * @param output The output stream.
+	 * @param output
+	 *            The output stream.
 	 */
 	private void writeServerError(PrintStream output) {
 		output.println("HTTP/1.0 500 Internal Server Error");
@@ -110,26 +109,26 @@ public class HTTPVideoServer extends VisionServerBase {
 	@Override
 	protected void afterUpdate() {
 
-		switch (m_serverState) {
+		switch(m_serverState) {
 
 			case OPEN: {
 
 				try {
 					writeImageToServer(k_defaultImage);
-				} catch (IOException e) {
+				} catch(IOException e) {
 					Logger.getInstance().logRobotThread(Level.FINEST, e);
 				}
 
-//				//Make sure queue has something in it
-//				if (VisionData.getVideoQueue().size() > 0) {
-//					//Get next frame
-//					byte[] frame = VisionData.getVideoQueue().remove();
-//					try {
-//						writeImageToServer(frame);
-//					} catch (IOException e) {
-//						Logger.getInstance().logRobotThread(Level.FINEST, e);
-//					}
-//				}
+				////Make sure queue has something in it
+				//if (VisionData.getVideoQueue().size() > 0) {
+				////Get next frame
+				//byte[] frame = VisionData.getVideoQueue().remove();
+				//try {
+				//writeImageToServer(frame);
+				//} catch (IOException e) {
+				//Logger.getInstance().logRobotThread(Level.FINEST, e);
+				//}
+				//}
 				break;
 			}
 		}

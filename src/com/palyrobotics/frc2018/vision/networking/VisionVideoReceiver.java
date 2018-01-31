@@ -9,38 +9,38 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 
 public class VisionVideoReceiver extends ReceiverBase {
-	
+
 	byte[] image;
 
 	public VisionVideoReceiver() {
 
 		super("Video Receiver", Constants.kVisionVideoFileName, Constants.kVideoPort, Constants.kAndroidVisionSocketUpdateRate, false);
 	}
-	
+
 	@Override
 	protected void update() {
 
 		ConcurrentLinkedQueue<byte[]> frameQueue = VisionData.getVideoQueue();
 		try {
 			image = mReceiverSelector.getReceiver().extractDataBytes();
-			if (image != null && image.length != 0) {
+			if(image != null && image.length != 0) {
 
 				//Make sure queue does not get too big
-				while (frameQueue.size() > 10)
+				while(frameQueue.size() > 10)
 					frameQueue.remove();
 
 				frameQueue.add(image);
 			}
-		} catch (IOException e) {
+		} catch(IOException e) {
 			Logger.getInstance().logRobotThread(Level.FINEST, e);
 		}
 	}
-	
+
 	@Override
 	protected void tearDown() {
 
 	}
-	
+
 	public byte[] getImage() {
 		return image;
 	}

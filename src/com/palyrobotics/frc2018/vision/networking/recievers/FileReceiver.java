@@ -3,9 +3,9 @@ package com.palyrobotics.frc2018.vision.networking.recievers;
 import com.palyrobotics.frc2018.vision.util.commandline.CommandExecutor;
 
 public class FileReceiver implements VisionReceiverBase {
-	
+
 	String fileName;
-	
+
 	public FileReceiver(String fileName) {
 		this.fileName = fileName;
 	}
@@ -21,4 +21,3 @@ public class FileReceiver implements VisionReceiverBase {
 		return this.extractData().getBytes();
 	}
 }
-

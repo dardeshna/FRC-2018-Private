@@ -16,17 +16,17 @@ import java.util.logging.Level;
 
 /**
  * Created by Nihar on 2/12/17.
- * @author Nihar
- * Should be used to set the drivetrain to an offboard closed loop cantalon
+ * 
+ * @author Nihar Should be used to set the drivetrain to an offboard closed loop cantalon
  */
 public class TalonSRXRoutine extends Routine {
 	private boolean relativeSetpoint = false;
 	private final DriveSignal mSignal;
-	
+
 	private double timeout;
 	private double startTime;
 	private static RobotState robotState;
-	
+
 	public TalonSRXRoutine(DriveSignal controller, boolean relativeSetpoint) {
 		this.mSignal = controller;
 		this.timeout = 1 << 30;
@@ -35,11 +35,10 @@ public class TalonSRXRoutine extends Routine {
 	}
 
 	/*
-	  * Setpoint is relative when you want it to be updated on start
-	  * For position and motion magic only
-	  * 
-	  * Timeout is in seconds
-	  */
+	 * Setpoint is relative when you want it to be updated on start For position and motion magic only
+	 * 
+	 * Timeout is in seconds
+	 */
 	public TalonSRXRoutine(DriveSignal controller, boolean relativeSetpoint, double timeout) {
 		this.mSignal = controller;
 		this.relativeSetpoint = relativeSetpoint;
@@ -49,26 +48,18 @@ public class TalonSRXRoutine extends Routine {
 
 	@Override
 	public void start() {
-		
+
 		startTime = System.currentTimeMillis();
-		
-		if (relativeSetpoint) {
-			if (mSignal.leftMotor.getControlMode().equals(ControlMode.MotionMagic)) {
-				mSignal.leftMotor.setMotionMagic(mSignal.leftMotor.getSetpoint()+
-								robotState.drivePose.leftEnc,
-						mSignal.leftMotor.gains,
+
+		if(relativeSetpoint) {
+			if(mSignal.leftMotor.getControlMode().equals(ControlMode.MotionMagic)) {
+				mSignal.leftMotor.setMotionMagic(mSignal.leftMotor.getSetpoint() + robotState.drivePose.leftEnc, mSignal.leftMotor.gains,
 						mSignal.leftMotor.cruiseVel, mSignal.leftMotor.accel);
-				mSignal.rightMotor.setMotionMagic(mSignal.rightMotor.getSetpoint()+
-								robotState.drivePose.rightEnc,
-						mSignal.rightMotor.gains,
+				mSignal.rightMotor.setMotionMagic(mSignal.rightMotor.getSetpoint() + robotState.drivePose.rightEnc, mSignal.rightMotor.gains,
 						mSignal.rightMotor.cruiseVel, mSignal.rightMotor.accel);
-			}
-			else if (mSignal.leftMotor.getControlMode().equals(ControlMode.Position)) {
-				mSignal.leftMotor.setPosition(mSignal.leftMotor.getSetpoint()+
-						robotState.drivePose.leftEnc, mSignal.leftMotor.gains);
-				mSignal.rightMotor.setPosition(mSignal.rightMotor.getSetpoint()+
-						robotState.drivePose.rightEnc, mSignal.rightMotor.gains);
-				
+			} else if(mSignal.leftMotor.getControlMode().equals(ControlMode.Position)) {
+				mSignal.leftMotor.setPosition(mSignal.leftMotor.getSetpoint() + robotState.drivePose.leftEnc, mSignal.leftMotor.gains);
+				mSignal.rightMotor.setPosition(mSignal.rightMotor.getSetpoint() + robotState.drivePose.rightEnc, mSignal.rightMotor.gains);
 
 			}
 		}
@@ -94,34 +85,32 @@ public class TalonSRXRoutine extends Routine {
 	@Override
 	public boolean finished() {
 		//Wait for controller to be added before finishing routine
-		if (mSignal.leftMotor.getSetpoint() != Robot.getRobotState().leftSetpoint) {
+		if(mSignal.leftMotor.getSetpoint() != Robot.getRobotState().leftSetpoint) {
 			Logger.getInstance().logRobotThread(Level.WARNING, "Mismatched desired talon and actual talon setpoints! desired, actual");
-			Logger.getInstance().logRobotThread(Level.WARNING, "Left", mSignal.leftMotor.getSetpoint()+", "+Robot.getRobotState().leftSetpoint);
+			Logger.getInstance().logRobotThread(Level.WARNING, "Left", mSignal.leftMotor.getSetpoint() + ", " + Robot.getRobotState().leftSetpoint);
 			return false;
-		}
-		else if (mSignal.rightMotor.getSetpoint() != Robot.getRobotState().rightSetpoint) {
+		} else if(mSignal.rightMotor.getSetpoint() != Robot.getRobotState().rightSetpoint) {
 			Logger.getInstance().logRobotThread(Level.WARNING, "Mismatched desired talon and actual talon setpoints! desired, actual");
-			Logger.getInstance().logRobotThread(Level.WARNING, "Right", mSignal.rightMotor.getSetpoint()+", "+Robot.getRobotState().rightSetpoint);
+			Logger.getInstance().logRobotThread(Level.WARNING, "Right", mSignal.rightMotor.getSetpoint() + ", " + Robot.getRobotState().rightSetpoint);
 			return false;
-		}
-		else if (mSignal.leftMotor.getControlMode() != Robot.getRobotState().leftControlMode) {
+		} else if(mSignal.leftMotor.getControlMode() != Robot.getRobotState().leftControlMode) {
 			Logger.getInstance().logRobotThread(Level.WARNING, "Mismatched desired talon and actual talon states!");
-			Logger.getInstance().logRobotThread(Level.WARNING, mSignal.leftMotor.getControlMode()+", "+Robot.getRobotState().leftControlMode);
+			Logger.getInstance().logRobotThread(Level.WARNING, mSignal.leftMotor.getControlMode() + ", " + Robot.getRobotState().leftControlMode);
 			return false;
-		}
-		else if (mSignal.rightMotor.getControlMode() != Robot.getRobotState().rightControlMode) {
+		} else if(mSignal.rightMotor.getControlMode() != Robot.getRobotState().rightControlMode) {
 			Logger.getInstance().logRobotThread(Level.WARNING, "Mismatched desired talon and actual talon states!");
-			Logger.getInstance().logRobotThread(Level.WARNING, mSignal.rightMotor.getControlMode()+", "+Robot.getRobotState().rightControlMode);
+			Logger.getInstance().logRobotThread(Level.WARNING, mSignal.rightMotor.getControlMode() + ", " + Robot.getRobotState().rightControlMode);
 			return false;
 		}
-		if (!drive.hasController() || (drive.getController().getClass() == TalonSRXDriveController.class && drive.controllerOnTarget())) {
+		if(!drive.hasController() || (drive.getController().getClass() == TalonSRXDriveController.class && drive.controllerOnTarget())) {
 		}
-		return !drive.hasController() || System.currentTimeMillis() > this.timeout+startTime || (drive.getController().getClass() == TalonSRXDriveController.class && drive.controllerOnTarget());
+		return !drive.hasController() || System.currentTimeMillis() > this.timeout + startTime
+				|| (drive.getController().getClass() == TalonSRXDriveController.class && drive.controllerOnTarget());
 	}
 
 	@Override
 	public Subsystem[] getRequiredSubsystems() {
-		return new Subsystem[]{Drive.getInstance()};
+		return new Subsystem[] { Drive.getInstance() };
 	}
 
 	@Override

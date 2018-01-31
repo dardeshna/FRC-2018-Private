@@ -11,8 +11,8 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 /**
- * Created by Nihar on 1/22/17.
- * Tests the {@link Commands}
+ * Created by Nihar on 1/22/17. Tests the {@link Commands}
+ * 
  * @author Nihar
  */
 public class CommandsTest {
@@ -45,9 +45,8 @@ public class CommandsTest {
 		mCommands.robotSetpoints.drivePowerSetpoint = Optional.of(DriveSignal.getNeutralSignal());
 		copy.robotSetpoints.drivePowerSetpoint = null;
 
-		assertThat("Copy modified original setpoints",
-				mCommands.robotSetpoints.drivePowerSetpoint.get(), equalTo(DriveSignal.getNeutralSignal()));
-		
+		assertThat("Copy modified original setpoints", mCommands.robotSetpoints.drivePowerSetpoint.get(), equalTo(DriveSignal.getNeutralSignal()));
+
 		System.out.println(copy.cancelCurrentRoutines);
 		System.out.println(copy.wantedRoutines);
 	}

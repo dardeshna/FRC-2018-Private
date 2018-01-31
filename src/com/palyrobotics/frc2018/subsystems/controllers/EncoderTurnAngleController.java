@@ -22,28 +22,29 @@ public class EncoderTurnAngleController implements DriveController {
 	private Gains mGains;
 	private TalonSRXOutput leftOutput;
 	private TalonSRXOutput rightOutput;
-	
+
 	public EncoderTurnAngleController(Pose priorSetpoint, double angle) {
 		leftTarget = priorSetpoint.leftEnc + (angle * Constants.kDriveInchesPerDegree * Constants.kDriveTicksPerInch);
 		rightTarget = priorSetpoint.rightEnc - (angle * Constants.kDriveInchesPerDegree * Constants.kDriveTicksPerInch);
 		cachedPose = priorSetpoint;
-		this.maxAccel = 72 * Constants.kDriveSpeedUnitConversion; 
+		this.maxAccel = 72 * Constants.kDriveSpeedUnitConversion;
 		this.maxVel = 36 * Constants.kDriveSpeedUnitConversion;
 
 		if(Constants.kRobotName.equals(Constants.RobotName.FORSETI)) {
 			mGains = new Gains(6.0, 0.01, 210, 2.0, 50, 0.0);
-		} 
+		}
 
 		leftOutput = new TalonSRXOutput();
-		leftOutput.setMotionMagic(leftTarget, mGains, (int )maxVel, (int ) maxAccel);
+		leftOutput.setMotionMagic(leftTarget, mGains, (int) maxVel, (int) maxAccel);
 		rightOutput = new TalonSRXOutput();
-		rightOutput.setMotionMagic(rightTarget, mGains, (int )maxVel, (int) maxAccel);
+		rightOutput.setMotionMagic(rightTarget, mGains, (int) maxVel, (int) maxAccel);
 	}
 
 	@Override
 	public boolean onTarget() {
-		if(Robot.getRobotState().leftSetpoint != leftOutput.getSetpoint() || Robot.getRobotState().rightSetpoint != rightOutput.getSetpoint() ||
-				Robot.getRobotState().leftControlMode != leftOutput.getControlMode() || Robot.getRobotState().rightControlMode != rightOutput.getControlMode()) {
+		if(Robot.getRobotState().leftSetpoint != leftOutput.getSetpoint() || Robot.getRobotState().rightSetpoint != rightOutput.getSetpoint()
+				|| Robot.getRobotState().leftControlMode != leftOutput.getControlMode()
+				|| Robot.getRobotState().rightControlMode != rightOutput.getControlMode()) {
 			Logger.getInstance().logSubsystemThread(Level.FINER, "Mismatched desired talon and actual talon states!");
 			return false;
 		}
@@ -55,14 +56,14 @@ public class EncoderTurnAngleController implements DriveController {
 			Logger.getInstance().logSubsystemThread(Level.FINER, "Cached pose is null");
 			return false;
 		}
-//		System.out.println("Left: " + Math.abs(leftTarget - cachedPose.leftEnc) + 
-//				"Right: " + Math.abs(rightTarget - cachedPose.rightEnc));
-		if(Math.abs(cachedPose.leftEncVelocity) < velocityTolerance && Math.abs(cachedPose.rightEncVelocity) < velocityTolerance &&
-				Math.abs(leftTarget - cachedPose.leftEnc) < positionTolerance && Math.abs(rightTarget - cachedPose.rightEnc) < positionTolerance) {
+		//System.out.println("Left: " + Math.abs(leftTarget - cachedPose.leftEnc) +
+		//"Right: " + Math.abs(rightTarget - cachedPose.rightEnc));
+		if(Math.abs(cachedPose.leftEncVelocity) < velocityTolerance && Math.abs(cachedPose.rightEncVelocity) < velocityTolerance
+				&& Math.abs(leftTarget - cachedPose.leftEnc) < positionTolerance && Math.abs(rightTarget - cachedPose.rightEnc) < positionTolerance) {
 			Logger.getInstance().logSubsystemThread(Level.FINER, "turn angle done");
 			return true;
-		}
-		else return false;
+		} else
+			return false;
 	}
 
 	@Override

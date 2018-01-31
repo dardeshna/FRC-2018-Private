@@ -14,13 +14,15 @@ import java.util.logging.Level;
 public class TimedRoutine extends Routine {
 	private Routine[] mRoutines;
 	private double time, startTime;
+
 	/**
 	 *
-	 * @param time Time in seconds before routine automatically finishes
+	 * @param time
+	 *            Time in seconds before routine automatically finishes
 	 */
 	public TimedRoutine(double time, Routine... routines) {
 		mRoutines = routines;
-		this.time = time*1000;
+		this.time = time * 1000;
 	}
 
 	@Override
@@ -30,7 +32,7 @@ public class TimedRoutine extends Routine {
 
 	@Override
 	public Commands update(Commands commands) {
-		for (Routine r : mRoutines) {
+		for(Routine r : mRoutines) {
 			commands = r.update(commands);
 		}
 		return commands;
@@ -38,7 +40,7 @@ public class TimedRoutine extends Routine {
 
 	@Override
 	public Commands cancel(Commands commands) {
-		for (Routine r : mRoutines) {
+		for(Routine r : mRoutines) {
 			commands = r.cancel(commands);
 		}
 		return commands;
@@ -46,12 +48,12 @@ public class TimedRoutine extends Routine {
 
 	@Override
 	public boolean finished() {
-		if (System.currentTimeMillis() > startTime + time) {
+		if(System.currentTimeMillis() > startTime + time) {
 			Logger.getInstance().logRobotThread(Level.FINE, "Timed out routine");
 			return true;
 		}
-		for (Routine r : mRoutines) {
-			if (!r.finished()) {
+		for(Routine r : mRoutines) {
+			if(!r.finished()) {
 				return false;
 			}
 		}
@@ -65,11 +67,11 @@ public class TimedRoutine extends Routine {
 
 	@Override
 	public String getName() {
-		String name = "(Timed"+time+"Routine of ";
-		for (Routine r : mRoutines) {
+		String name = "(Timed" + time + "Routine of ";
+		for(Routine r : mRoutines) {
 			name += r.getName();
 		}
-		name+=")";
+		name += ")";
 		return name;
 	}
 }

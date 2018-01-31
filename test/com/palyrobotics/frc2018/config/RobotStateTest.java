@@ -12,6 +12,6 @@ public class RobotStateTest {
 	@Test
 	public void simpleTest() {
 		Robot.getRobotState().drivePose.heading = -100;
-		assertTrue("Heading", Robot.getRobotState().drivePose.heading==-100);
+		assertTrue("Heading", Robot.getRobotState().drivePose.heading == -100);
 	}
 }

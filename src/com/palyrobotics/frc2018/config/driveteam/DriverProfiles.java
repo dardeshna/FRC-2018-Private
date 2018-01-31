@@ -4,32 +4,32 @@ import com.palyrobotics.frc2018.config.Constants;
 
 public class DriverProfiles {
 	/**
-	 * Class for configuring the control constants for the robot
-	 * Has one static method which configures the constants based off the driver
+	 * Class for configuring the control constants for the robot Has one static method which configures the constants based off the driver
+	 * 
 	 * @author Justin
 	 */
 	public static void configConstants() {
 		switch(Constants.kDriverName) {
-		case ERIC:
-			Constants.kDeadband = 0.02;
+			case ERIC:
+				Constants.kDeadband = 0.02;
 
-			Constants.kDriveSensitivity = .70;
-			
-			Constants.kQuickTurnSensitivity = 0.8;
-			Constants.kPreciseQuickTurnSensitivity = 0.35;
-			
-			Constants.kQuickTurnSensitivityThreshold = 0.90;
+				Constants.kDriveSensitivity = .70;
 
-			Constants.kQuickStopAccumulatorDecreaseRate = 0.8;
+				Constants.kQuickTurnSensitivity = 0.8;
+				Constants.kPreciseQuickTurnSensitivity = 0.35;
 
-			Constants.kQuickStopAccumulatorDecreaseThreshold = 1.2;
-			Constants.kNegativeInertiaScalar = 5.0;
-			
-			Constants.kAlpha = 0.45;
+				Constants.kQuickTurnSensitivityThreshold = 0.90;
 
-			Constants.kCyclesUntilStop = 50;
+				Constants.kQuickStopAccumulatorDecreaseRate = 0.8;
 
-			break;
+				Constants.kQuickStopAccumulatorDecreaseThreshold = 1.2;
+				Constants.kNegativeInertiaScalar = 5.0;
+
+				Constants.kAlpha = 0.45;
+
+				Constants.kCyclesUntilStop = 50;
+
+				break;
 		}
 	}
 }

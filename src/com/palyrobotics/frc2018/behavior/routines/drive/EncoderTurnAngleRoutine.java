@@ -6,19 +6,19 @@ import com.palyrobotics.frc2018.subsystems.Drive;
 import com.palyrobotics.frc2018.subsystems.Subsystem;
 
 public class EncoderTurnAngleRoutine extends Routine {
-	
+
 	private double angle;
-	
+
 	private enum State {
 		START, TURNING, DONE
 	}
-	
+
 	private State mState = State.START;
-	
+
 	public EncoderTurnAngleRoutine(double angle) {
 		this.angle = angle;
 	}
-	
+
 	@Override
 	public void start() {
 		drive.setNeutral();
@@ -29,22 +29,22 @@ public class EncoderTurnAngleRoutine extends Routine {
 	public Commands update(Commands commands) {
 		Commands output = commands.copy();
 		switch(mState) {
-		case START:
-			drive.setTurnAngleEncoderSetpoint(angle);
-			output.wantedDriveState = Drive.DriveState.OFF_BOARD_CONTROLLER;
-			mState = State.TURNING;
-			break;
-		case TURNING:
-			output.wantedDriveState = Drive.DriveState.OFF_BOARD_CONTROLLER;
-			if(drive.controllerOnTarget() && drive.hasController()) {
-				mState = State.DONE;
-			}
-			break;
-		case DONE:
-			drive.resetController();
-			break;
-		default:
-			break;
+			case START:
+				drive.setTurnAngleEncoderSetpoint(angle);
+				output.wantedDriveState = Drive.DriveState.OFF_BOARD_CONTROLLER;
+				mState = State.TURNING;
+				break;
+			case TURNING:
+				output.wantedDriveState = Drive.DriveState.OFF_BOARD_CONTROLLER;
+				if(drive.controllerOnTarget() && drive.hasController()) {
+					mState = State.DONE;
+				}
+				break;
+			case DONE:
+				drive.resetController();
+				break;
+			default:
+				break;
 		}
 		return output;
 	}
@@ -64,7 +64,7 @@ public class EncoderTurnAngleRoutine extends Routine {
 
 	@Override
 	public Subsystem[] getRequiredSubsystems() {
-		return new Subsystem[]{drive};
+		return new Subsystem[] { drive };
 	}
 
 	@Override

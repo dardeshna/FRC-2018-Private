@@ -31,13 +31,15 @@ class HardwareUpdater {
 	{
 		try {
 			instance = new HardwareUpdater(Drive.getInstance(), Climber.getInstance(), Elevator.getInstance(), Intake.getInstance());
-		} catch (Exception e) {
+		} catch(Exception e) {
 			Logger.getInstance().logRobotThread(Level.SEVERE, e);
 		}
-		
+
 	}
-	
-	public static HardwareUpdater getInstance() { return instance; }
+
+	public static HardwareUpdater getInstance() {
+		return instance;
+	}
 
 	//Subsystem references
 	private Drive mDrive;
@@ -59,7 +61,7 @@ class HardwareUpdater {
 	 * Initialize all hardware
 	 */
 	void initHardware() {
-		Logger.getInstance().logRobotThread(Level.INFO,"Init hardware");
+		Logger.getInstance().logRobotThread(Level.INFO, "Init hardware");
 		configureTalons();
 		PigeonIMU gyro = HardwareAdapter.getInstance().getDrivetrain().gyro;
 		gyro.setYaw(0, 0);
@@ -67,7 +69,7 @@ class HardwareUpdater {
 	}
 
 	void disableTalons() {
-		Logger.getInstance().logRobotThread(Level.INFO,"Disabling talons");
+		Logger.getInstance().logRobotThread(Level.INFO, "Disabling talons");
 
 		//Disable drivetrain talons
 		HardwareAdapter.getInstance().getDrivetrain().leftMasterTalon.set(ControlMode.Disabled, 0);
@@ -104,7 +106,7 @@ class HardwareUpdater {
 		WPI_TalonSRX rightMasterTalon = HardwareAdapter.getInstance().getDrivetrain().rightMasterTalon;
 		WPI_VictorSPX rightSlave1Victor = HardwareAdapter.getInstance().getDrivetrain().rightSlave1Victor;
 		WPI_VictorSPX rightSlave2Victor = HardwareAdapter.getInstance().getDrivetrain().rightSlave2Victor;
-		
+
 		//Enable all talons' brake mode and disables forward and reverse soft
 		leftMasterTalon.setNeutralMode(NeutralMode.Brake);
 		leftSlave1Victor.setNeutralMode(NeutralMode.Brake);
@@ -119,7 +121,7 @@ class HardwareUpdater {
 		rightMasterTalon.enableVoltageCompensation(true);
 		rightSlave1Victor.enableVoltageCompensation(true);
 		rightSlave2Victor.enableVoltageCompensation(true);
-		
+
 		leftMasterTalon.configVoltageCompSaturation(14, 0);
 		leftSlave1Victor.configVoltageCompSaturation(14, 0);
 		leftSlave2Victor.configVoltageCompSaturation(14, 0);
@@ -131,14 +133,14 @@ class HardwareUpdater {
 		leftMasterTalon.configReverseSoftLimitEnable(false, 0);
 		leftSlave1Victor.configForwardSoftLimitEnable(false, 0);
 		leftSlave1Victor.configReverseSoftLimitEnable(false, 0);
-		rightSlave2Victor.configForwardSoftLimitEnable(false, 0); 
+		rightSlave2Victor.configForwardSoftLimitEnable(false, 0);
 		rightSlave2Victor.configReverseSoftLimitEnable(false, 0);
 
 		rightMasterTalon.configForwardSoftLimitEnable(false, 0);
 		rightMasterTalon.configReverseSoftLimitEnable(false, 0);
 		rightSlave1Victor.configForwardSoftLimitEnable(false, 0);
 		rightSlave1Victor.configReverseSoftLimitEnable(false, 0);
-		rightSlave2Victor.configForwardSoftLimitEnable(false, 0); 
+		rightSlave2Victor.configForwardSoftLimitEnable(false, 0);
 		rightSlave2Victor.configReverseSoftLimitEnable(false, 0);
 
 		//Allow max voltage for closed loop control
@@ -187,14 +189,15 @@ class HardwareUpdater {
 		rightSlave1Victor.set(ControlMode.Follower, rightMasterTalon.getDeviceID());
 		rightSlave2Victor.set(ControlMode.Follower, rightMasterTalon.getDeviceID());
 	}
-	
+
 	void configureElevatorTalons() {
 		WPI_TalonSRX masterTalon = HardwareAdapter.getInstance().getElevator().elevatorMasterTalon;
 		WPI_TalonSRX slaveTalon = HardwareAdapter.getInstance().getElevator().elevatorSlaveTalon;
 		slaveTalon.set(ControlMode.Follower, masterTalon.getDeviceID());
 
 		masterTalon.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 100);
-		masterTalon.configReverseLimitSwitchSource(RemoteLimitSwitchSource.RemoteTalonSRX, LimitSwitchNormal.NormallyOpen, Constants.kForsetiElevatorSlaveTalonID, 100);
+		masterTalon.configReverseLimitSwitchSource(RemoteLimitSwitchSource.RemoteTalonSRX, LimitSwitchNormal.NormallyOpen,
+				Constants.kForsetiElevatorSlaveTalonID, 100);
 
 		masterTalon.enableVoltageCompensation(true);
 		slaveTalon.enableVoltageCompensation(true);
@@ -244,32 +247,32 @@ class HardwareUpdater {
 	}
 
 	void configureIntakeTalons() {
-	    WPI_TalonSRX masterTalon = HardwareAdapter.getInstance().getIntake().masterTalon;
-	    WPI_TalonSRX slaveTalon = HardwareAdapter.getInstance().getIntake().slaveTalon;
+		WPI_TalonSRX masterTalon = HardwareAdapter.getInstance().getIntake().masterTalon;
+		WPI_TalonSRX slaveTalon = HardwareAdapter.getInstance().getIntake().slaveTalon;
 
-	    masterTalon.setNeutralMode(NeutralMode.Brake);
-	    slaveTalon.setNeutralMode(NeutralMode.Brake);
+		masterTalon.setNeutralMode(NeutralMode.Brake);
+		slaveTalon.setNeutralMode(NeutralMode.Brake);
 
-	    masterTalon.enableVoltageCompensation(true);
-	    slaveTalon.enableVoltageCompensation(true);
+		masterTalon.enableVoltageCompensation(true);
+		slaveTalon.enableVoltageCompensation(true);
 
-	    masterTalon.configVoltageCompSaturation(14, 0);
-	    slaveTalon.configVoltageCompSaturation(14, 0);
+		masterTalon.configVoltageCompSaturation(14, 0);
+		slaveTalon.configVoltageCompSaturation(14, 0);
 
-	    //Disables forwards and reverse soft limits
-	    masterTalon.configForwardSoftLimitEnable(false, 0);
-	    masterTalon.configReverseSoftLimitEnable(false, 0);
-	    slaveTalon.configForwardSoftLimitEnable(false, 0);
-	    slaveTalon.configReverseSoftLimitEnable(false, 0);
+		//Disables forwards and reverse soft limits
+		masterTalon.configForwardSoftLimitEnable(false, 0);
+		masterTalon.configReverseSoftLimitEnable(false, 0);
+		slaveTalon.configForwardSoftLimitEnable(false, 0);
+		slaveTalon.configReverseSoftLimitEnable(false, 0);
 
-	    //Reverse right side
-	    slaveTalon.setInverted(true);
+		//Reverse right side
+		slaveTalon.setInverted(true);
 
-	    //Set slave talons to follower mode
-        slaveTalon.set(ControlMode.Follower, masterTalon.getDeviceID());
-    }
+		//Set slave talons to follower mode
+		slaveTalon.set(ControlMode.Follower, masterTalon.getDeviceID());
+	}
 
-    /**
+	/**
 	 * Updates all the sensor data taken from the hardware
 	 */
 	void updateState(RobotState robotState) {
@@ -285,58 +288,59 @@ class HardwareUpdater {
 		robotState.rightStickInput.update(HardwareAdapter.getInstance().getJoysticks().turnStick);
 		robotState.climberStickInput.update(HardwareAdapter.getInstance().getJoysticks().climberStick);
 		robotState.operatorStickInput.update(HardwareAdapter.getInstance().getJoysticks().operatorStick);
-		
-		//Currently represents the voltage returned from the distance sensor, but the actual sensor is undetermined so we do not know the conversion.
+
+		//Currently represents the voltage returned from the distance sensor, but the actual sensor is undetermined so
+		//we do not know the conversion.
 		robotState.cubeDistance = intakeDistanceSensor.getValue();
 
-        switch(robotState.leftControlMode) {
-            //Fall through
-            case Position:
-            case Velocity:
-            case MotionProfileArc:
-            case MotionProfile:
-            case MotionMagicArc:
-            case MotionMagic:
-                robotState.leftSetpoint = leftMasterTalon.getClosedLoopTarget(0);
-                break;
-            case Current:
-                robotState.leftSetpoint = leftMasterTalon.getOutputCurrent();
-                break;
-            //Fall through
-            case Follower:
-            case PercentOutput:
-                robotState.leftSetpoint = leftMasterTalon.getMotorOutputPercent();
-                break;
-		default:
-			break;
-        }
+		switch(robotState.leftControlMode) {
+			//Fall through
+			case Position:
+			case Velocity:
+			case MotionProfileArc:
+			case MotionProfile:
+			case MotionMagicArc:
+			case MotionMagic:
+				robotState.leftSetpoint = leftMasterTalon.getClosedLoopTarget(0);
+				break;
+			case Current:
+				robotState.leftSetpoint = leftMasterTalon.getOutputCurrent();
+				break;
+			//Fall through
+			case Follower:
+			case PercentOutput:
+				robotState.leftSetpoint = leftMasterTalon.getMotorOutputPercent();
+				break;
+			default:
+				break;
+		}
 
-        switch(robotState.rightControlMode) {
-            //Fall through
-            case Position:
-            case Velocity:
-            case MotionProfileArc:
-            case MotionProfile:
-            case MotionMagicArc:
-            case MotionMagic:
-                robotState.rightSetpoint = rightMasterTalon.getClosedLoopTarget(0);
-                break;
-            case Current:
-                robotState.rightSetpoint = rightMasterTalon.getOutputCurrent();
-                break;
-            //Fall through
-            case Follower:
-            case PercentOutput:
-                robotState.rightSetpoint = rightMasterTalon.getMotorOutputPercent();
-                break;
-		default:
-			break;
-        }
-		
+		switch(robotState.rightControlMode) {
+			//Fall through
+			case Position:
+			case Velocity:
+			case MotionProfileArc:
+			case MotionProfile:
+			case MotionMagicArc:
+			case MotionMagic:
+				robotState.rightSetpoint = rightMasterTalon.getClosedLoopTarget(0);
+				break;
+			case Current:
+				robotState.rightSetpoint = rightMasterTalon.getOutputCurrent();
+				break;
+			//Fall through
+			case Follower:
+			case PercentOutput:
+				robotState.rightSetpoint = rightMasterTalon.getMotorOutputPercent();
+				break;
+			default:
+				break;
+		}
+
 		PigeonIMU gyro = HardwareAdapter.getInstance().getDrivetrain().gyro;
-		if (gyro != null) {
+		if(gyro != null) {
 			robotState.drivePose.heading = gyro.getFusedHeading();
-			robotState.drivePose.headingVelocity = (robotState.drivePose.heading - robotState.drivePose.lastHeading)/Constants.kNormalLoopsDt;
+			robotState.drivePose.headingVelocity = (robotState.drivePose.heading - robotState.drivePose.lastHeading) / Constants.kNormalLoopsDt;
 			robotState.drivePose.lastHeading = gyro.getFusedHeading();
 		} else {
 			robotState.drivePose.heading = -0;
@@ -350,48 +354,43 @@ class HardwareUpdater {
 		robotState.drivePose.rightEnc = rightMasterTalon.getSelectedSensorPosition(0);
 		robotState.drivePose.rightEncVelocity = rightMasterTalon.getSelectedSensorVelocity(0);
 
-		if (leftMasterTalon.getControlMode().equals(ControlMode.MotionMagic)) {
+		if(leftMasterTalon.getControlMode().equals(ControlMode.MotionMagic)) {
 			robotState.drivePose.leftMotionMagicPos = Optional.of(leftMasterTalon.getActiveTrajectoryPosition());
 			robotState.drivePose.leftMotionMagicVel = Optional.of(leftMasterTalon.getActiveTrajectoryVelocity());
-		}
-		else {
+		} else {
 			robotState.drivePose.leftMotionMagicPos = Optional.empty();
 			robotState.drivePose.leftMotionMagicVel = Optional.empty();
 		}
 
-		if (rightMasterTalon.getControlMode().equals(ControlMode.MotionMagic)) {
+		if(rightMasterTalon.getControlMode().equals(ControlMode.MotionMagic)) {
 			robotState.drivePose.rightMotionMagicPos = Optional.of(rightMasterTalon.getActiveTrajectoryPosition());
 			robotState.drivePose.rightMotionMagicVel = Optional.of(rightMasterTalon.getActiveTrajectoryVelocity());
-		}
-		else {
+		} else {
 			robotState.drivePose.rightMotionMagicPos = Optional.empty();
 			robotState.drivePose.rightMotionMagicVel = Optional.empty();
 		}
 
 		robotState.drivePose.leftError = Optional.of(leftMasterTalon.getClosedLoopError(0));
-        robotState.drivePose.rightError = Optional.of(rightMasterTalon.getClosedLoopError(0));
+		robotState.drivePose.rightError = Optional.of(rightMasterTalon.getClosedLoopError(0));
 
-        double time = Timer.getFPGATimestamp();
-        double left_distance = robotState.drivePose.leftEnc / Constants.kDriveTicksPerInch;
-        double right_distance = robotState.drivePose.rightEnc / Constants.kDriveTicksPerInch;
+		double time = Timer.getFPGATimestamp();
+		double left_distance = robotState.drivePose.leftEnc / Constants.kDriveTicksPerInch;
+		double right_distance = robotState.drivePose.rightEnc / Constants.kDriveTicksPerInch;
 
-//     Rotation2d gyro_angle = Rotation2d.fromRadians((right_distance - left_distance) * Constants.kTrackScrubFactor / Constants.kTrackEffectiveDiameter);
-        Rotation2d gyro_angle = Rotation2d.fromDegrees(robotState.drivePose.heading);
-		RigidTransform2d odometry = robotState.generateOdometryFromSensors(
-                left_distance - robotState.drivePose.lastLeftEnc / Constants.kDriveTicksPerInch,
+		//Rotation2d gyro_angle = Rotation2d.fromRadians((right_distance - left_distance) * Constants.kTrackScrubFactor
+		///Constants.kTrackEffectiveDiameter);
+		Rotation2d gyro_angle = Rotation2d.fromDegrees(robotState.drivePose.heading);
+		RigidTransform2d odometry = robotState.generateOdometryFromSensors(left_distance - robotState.drivePose.lastLeftEnc / Constants.kDriveTicksPerInch,
 				right_distance - robotState.drivePose.lastRightEnc / Constants.kDriveTicksPerInch, gyro_angle);
-        RigidTransform2d.Delta velocity = Kinematics.forwardKinematics(
-        		robotState.drivePose.leftEncVelocity,
-        		robotState.drivePose.rightEncVelocity
-        );
+		RigidTransform2d.Delta velocity = Kinematics.forwardKinematics(robotState.drivePose.leftEncVelocity, robotState.drivePose.rightEncVelocity);
 
-        robotState.addObservations(time, odometry, velocity);
-        
-        //Update elevator sensors
+		robotState.addObservations(time, odometry, velocity);
+
+		//Update elevator sensors
 		robotState.elevatorPosition = HardwareAdapter.getInstance().getElevator().elevatorMasterTalon.getSelectedSensorPosition(0);
 		robotState.elevatorVelocity = HardwareAdapter.getInstance().getElevator().elevatorMasterTalon.getSelectedSensorVelocity(0);
-        robotState.elevatorBottomHFX = HardwareAdapter.getInstance().getElevator().bottomHFX.get();
-        robotState.elevatorTopHFX = HardwareAdapter.getInstance().getElevator().topHFX.get();
+		robotState.elevatorBottomHFX = HardwareAdapter.getInstance().getElevator().bottomHFX.get();
+		robotState.elevatorTopHFX = HardwareAdapter.getInstance().getElevator().topHFX.get();
 	}
 
 	/**
@@ -405,14 +404,13 @@ class HardwareUpdater {
 	}
 
 	/**
-	 * Updates the drivetrain
-	 * Uses TalonSRXOutput and can run off-board control loops through SRX
+	 * Updates the drivetrain Uses TalonSRXOutput and can run off-board control loops through SRX
 	 */
 	private void updateDrivetrain() {
 		updateTalonSRX(HardwareAdapter.getInstance().getDrivetrain().leftMasterTalon, mDrive.getDriveSignal().leftMotor);
 		updateTalonSRX(HardwareAdapter.getInstance().getDrivetrain().rightMasterTalon, mDrive.getDriveSignal().rightMotor);
 	}
-	
+
 	/**
 	 * Updates the elevator
 	 */
@@ -429,7 +427,7 @@ class HardwareUpdater {
 		HardwareAdapter.getInstance().getClimber().leftArmLock.set(signal.leftLatchLock ? Value.kForward : Value.kReverse);
 		HardwareAdapter.getInstance().getClimber().rightArmLock.set(signal.rightLatchLock ? Value.kForward : Value.kReverse);
 	}
-	
+
 	/**
 	 * Updates the intake
 	 */
@@ -438,11 +436,13 @@ class HardwareUpdater {
 		HardwareAdapter.getInstance().getIntake().openCloseSolenoid.set(mIntake.getOpenCloseOutput());
 		HardwareAdapter.getInstance().getIntake().upDownSolenoid.set(mIntake.getUpDownOutput());
 	}
+
 	/**
 	 * Helper method for processing a TalonSRXOutput for an SRX
 	 */
 	private void updateTalonSRX(WPI_TalonSRX talon, TalonSRXOutput output) {
-		if(output.getControlMode().equals(ControlMode.Position) || output.getControlMode().equals(ControlMode.Velocity) || output.getControlMode().equals(ControlMode.MotionMagic)) {
+		if(output.getControlMode().equals(ControlMode.Position) || output.getControlMode().equals(ControlMode.Velocity)
+				|| output.getControlMode().equals(ControlMode.MotionMagic)) {
 			talon.config_kP(output.profile, output.gains.P, 0);
 			talon.config_kI(output.profile, output.gains.I, 0);
 			talon.config_kD(output.profile, output.gains.D, 0);
@@ -450,12 +450,12 @@ class HardwareUpdater {
 			talon.config_IntegralZone(output.profile, output.gains.izone, 0);
 			talon.configClosedloopRamp(output.gains.rampRate, 0);
 		}
-		if (output.getControlMode().equals(ControlMode.MotionMagic)) {
-		    talon.configMotionAcceleration(output.accel, 0);
-		    talon.configMotionCruiseVelocity(output.cruiseVel, 0);
+		if(output.getControlMode().equals(ControlMode.MotionMagic)) {
+			talon.configMotionAcceleration(output.accel, 0);
+			talon.configMotionCruiseVelocity(output.cruiseVel, 0);
 		}
-		if (output.getControlMode().equals(ControlMode.Velocity)) {
-		    talon.configAllowableClosedloopError(output.profile, 0, 0);
+		if(output.getControlMode().equals(ControlMode.Velocity)) {
+			talon.configAllowableClosedloopError(output.profile, 0, 0);
 		}
 		talon.set(output.getControlMode(), output.getSetpoint());
 	}

@@ -16,14 +16,13 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 
 /**
- * Created by Nihar on 1/11/17.
- * An AutoMode for running test autonomous
+ * Created by Nihar on 1/11/17. An AutoMode for running test autonomous
  */
 public class TestAutoMode extends AutoModeBase {
 
 	@Override
 	public Routine getRoutine() {
-//		ArrayList<Routine> parallel = new ArrayList<Routine>();
+		//ArrayList<Routine> parallel = new ArrayList<Routine>();
 		ArrayList<Routine> sequence = new ArrayList<Routine>();
 
 		sequence.add(new TimedDriveRoutine(6, 3.5));
@@ -45,10 +44,10 @@ public class TestAutoMode extends AutoModeBase {
 
 		DriveSignal driveBackup = DriveSignal.getNeutralSignal();
 		double driveBackupSetpoint = -30 * Constants.kDriveTicksPerInch;
-		driveBackup.leftMotor.setMotionMagic(driveBackupSetpoint, mShortGains,
-				(int )Gains.kForsetiShortDriveMotionMagicCruiseVelocity, (int) Gains.kForsetiShortDriveMotionMagicMaxAcceleration);
-		driveBackup.rightMotor.setMotionMagic(driveBackupSetpoint, mShortGains,
-				(int) Gains.kForsetiShortDriveMotionMagicCruiseVelocity, (int) Gains.kForsetiShortDriveMotionMagicMaxAcceleration);
+		driveBackup.leftMotor.setMotionMagic(driveBackupSetpoint, mShortGains, (int) Gains.kForsetiShortDriveMotionMagicCruiseVelocity,
+				(int) Gains.kForsetiShortDriveMotionMagicMaxAcceleration);
+		driveBackup.rightMotor.setMotionMagic(driveBackupSetpoint, mShortGains, (int) Gains.kForsetiShortDriveMotionMagicCruiseVelocity,
+				(int) Gains.kForsetiShortDriveMotionMagicMaxAcceleration);
 
 		ArrayList<Routine> sequence = new ArrayList<>();
 		ArrayList<Routine> parallelDrop = new ArrayList<>();
