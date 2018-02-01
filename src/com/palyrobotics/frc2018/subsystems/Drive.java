@@ -31,17 +31,11 @@ public class Drive extends Subsystem {
 	 * 
 	 * <p>
 	 * 
-<<<<<<< HEAD
-	 * {@code CHEZY} creates a {@link CheesyDriveHelper} drive with joystick values. 
+	 * {@code CHEZY} creates a {@link CheesyDriveHelper} drive with joystick values.
 	 * {@code OFF_BOARD_CONTROLLER} creates a CANTalon offboard loop.
 	 * {@code ON_BOARD_CONTROLLER} makes a control loop calculated in code with an open loop. 
 	 * It uses drive outputs passed in through commands.
 	 * {@code NEUTRAL} does nothing.
-=======
-	 * {@code CHEZY} creates a {@link CheesyDriveHelper} drive with joystick values. {@code OFF_BOARD_CONTROLLER} creates a CANTalon offboard loop.
-	 * {@code ON_BOARD_CONTROLLER} makes a control loop calculated in code with an open loop. It uses drive outputs passed in through commands {@code NEUTRAL}
-	 * does nothing.
->>>>>>> 93e00b5... Reformatted entire project
 	 */
 	public enum DriveState {
 		CHEZY, OFF_BOARD_CONTROLLER, ON_BOARD_CONTROLLER, OPEN_LOOP, NEUTRAL
@@ -236,13 +230,8 @@ public class Drive extends Subsystem {
 	/**
 	 * Motion profile hype
 	 * 
-<<<<<<< HEAD
 	 * @param path {@link Path} to follow
 	 * @param inverted Boolean to invert path
-=======
-	 * @param path
-	 *            Path to follow
->>>>>>> 93e00b5... Reformatted entire project
 	 */
 	public void setTrajectoryController(Path path, boolean inverted) {
 		mController = new AdaptivePurePursuitController(Constants.kPathFollowingLookahead, Constants.kPathFollowingMaxAccel, Constants.kNormalLoopsDt, path,
