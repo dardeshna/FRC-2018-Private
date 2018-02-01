@@ -1,10 +1,15 @@
 package com.palyrobotics.frc2018.auto;
 
+import com.palyrobotics.frc2018.auto.modes.BaselineAutoMode;
+import com.palyrobotics.frc2018.auto.modes.RightCenterSwitchAutoMode;
+import com.palyrobotics.frc2018.auto.modes.LeftScaleAutoMode;
+import com.palyrobotics.frc2018.auto.modes.LeftSwitchAutoMode;
+import com.palyrobotics.frc2018.auto.modes.RightScaleAutoMode;
+import com.palyrobotics.frc2018.auto.modes.RightSwitchAutoMode;
 import com.palyrobotics.frc2018.auto.modes.TestAutoMode;
 import com.palyrobotics.frc2018.auto.modes.TestTrajectoryAutoMode;
 import com.palyrobotics.frc2018.util.logger.Logger;
 import org.json.simple.JSONArray;
-
 import java.util.ArrayList;
 import java.util.logging.Level;
 
@@ -14,7 +19,29 @@ import java.util.logging.Level;
 public class AutoModeSelector {
 	private static AutoModeSelector instance = null;
 	private ArrayList<AutoModeBase> mAutoModes = new ArrayList<>();
+	public enum Color {
+		RED,
+		BLUE
+	}
+	private enum Sides {
+		LEFT,
+		CENTER,
+		RIGHT
+	}
+	private enum Decision {
+		NEVER,
+		LEFT,
+		RIGHT,
+		BOTH
 
+	}
+	private enum Priority {
+		SCALE,
+		SWITCH
+	}
+	
+	public static Color mColor = null;
+	
 	private enum AutoIndices {
 		TEST(0), TEST_TRAJECTORY(1);
 		private final int id;
@@ -28,6 +55,12 @@ public class AutoModeSelector {
 		}
 	}
 
+	
+	private Sides mSides = null;
+	private Decision scaleDecision = null;
+	private Decision switchDecision = null;
+	
+	
 	/**
 	 * comment for which auto mode the selectedIndex refers to
 	 */
@@ -54,6 +87,12 @@ public class AutoModeSelector {
 	protected AutoModeSelector() {
 		/* 1 */registerAutonomous(new TestAutoMode());
 		/* 2 */registerAutonomous(new TestTrajectoryAutoMode());
+		/* 3 */registerAutonomous(new RightSwitchAutoMode());
+		/* 4 */registerAutonomous(new RightScaleAutoMode());
+		/* 5 */registerAutonomous(new LeftSwitchAutoMode());
+		/* 6 */registerAutonomous(new LeftScaleAutoMode());
+		/* 7 */registerAutonomous(new BaselineAutoMode());
+		/* 7 */registerAutonomous(new RightCenterSwitchAutoMode());
 	}
 
 	/**
@@ -72,8 +111,21 @@ public class AutoModeSelector {
 	 *            index of desired AutoMode
 	 * @return AutoMode at specified index
 	 */
-	public AutoModeBase getAutoMode(int index) {
+	public AutoModeBase getAutoMode(int index, Color color, Sides sides, Decision scaleDecision, Decision switchDecision, Priority whichPriority) {
 		//Assumes future selections will be the same auto mode
+        if(scaleDecision.equals(Decision.NEVER) && switchDecision.equals(Decision.NEVER)) {
+            selectedIndex = 0;
+        } else if(sides.equals(Decision.LEFT)) {
+            if(whichPriority.equals(Priority.SCALE) && scaleDecision.equals(Decision.LEFT)) {
+                selectedIndex = 2;
+            } else if(whichPriority.equals(Priority.SWITCH) && scaleDecision.equals(Decision.LEFT)) {
+                selectedIndex = 3;
+            }
+        } else if(sides.equals(Decision.RIGHT)) {
+            if(whichPriority.equals(Priority.SCALE) && scaleDecision.equals(Decision.RIGHT)) {
+                selectedIndex =
+            }
+        }
 		selectedIndex = index;
 		return mAutoModes.get(index);
 	}
