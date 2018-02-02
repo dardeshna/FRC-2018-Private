@@ -66,14 +66,14 @@ public class DashboardManager {
 		if(robotTable == null) {
 			try {
 				initializeRobotTable();
-			} catch (UnsatisfiedLinkError e) {
+			} catch(UnsatisfiedLinkError e) {
 				isUnitTest = true;
-			} catch (NoClassDefFoundError e) {
+			} catch(NoClassDefFoundError e) {
 				isUnitTest = true;
 			}
 		}
-		
-		// If we are now connected
+
+		//If we are now connected
 		if(robotTable != null && !isUnitTest) {
 			this.robotTable.getEntry(d.getKey()).setString(d.getValue());
 		}
@@ -92,7 +92,7 @@ public class DashboardManager {
 			} catch(UnsatisfiedLinkError e) {
 				Logger.getInstance().logRobotThread(Level.WARNING, e);
 				isUnitTest = true;
-			} catch (NoClassDefFoundError e) {
+			} catch(NoClassDefFoundError e) {
 				Logger.getInstance().logRobotThread(Level.WARNING, e);
 				isUnitTest = true;
 			}
@@ -107,7 +107,7 @@ public class DashboardManager {
 	 */
 	public void toggleCANTable(boolean start) {
 		if(start) {
-			if (canTable != null && !isUnitTest) {
+			if(canTable != null && !isUnitTest) {
 				Logger.getInstance().logRobotThread(Level.FINER, "Started CANTables");
 				this.canTable.getEntry("start").setString("true");
 				this.canTable.getEntry("end").setString("false");
@@ -115,7 +115,7 @@ public class DashboardManager {
 				Logger.getInstance().logRobotThread(Level.WARNING, "Error in CANTables");
 			}
 		} else {
-			if (canTable != null && !isUnitTest) {
+			if(canTable != null && !isUnitTest) {
 				this.canTable.getEntry("start").setString("false");
 				this.canTable.getEntry("end").setString("true");
 			}

@@ -248,4 +248,8 @@ public class Elevator extends Subsystem {
 	public void setTopPosition(Optional<Double> value) {
 		kElevatorTopPosition = value;
 	}
+	
+	public void setWantedPosition(double value) {
+		mElevatorWantedPosition = Optional.of(value);
+	}
 }

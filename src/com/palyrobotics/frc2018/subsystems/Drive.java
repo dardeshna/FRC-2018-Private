@@ -277,12 +277,11 @@ public class Drive extends Subsystem {
 	public boolean hasController() {
 		return mController != null;
 	}
-	
+
 	/**
 	 * <h1>Interface for drive controllers</h1>
 	 *
-	 * Contains an {@code update} method that takes a {@link RobotState} and 
-	 * generates a {@link DriveSignal}.
+	 * Contains an {@code update} method that takes a {@link RobotState} and generates a {@link DriveSignal}.
 	 */
 	public interface DriveController {
 		DriveSignal update(RobotState state);

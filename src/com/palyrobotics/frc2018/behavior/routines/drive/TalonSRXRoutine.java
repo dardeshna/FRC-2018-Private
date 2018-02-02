@@ -71,7 +71,7 @@ public class TalonSRXRoutine extends Routine {
 	public Commands update(Commands commands) {
 		Commands output = commands.copy();
 		output.wantedDriveState = Drive.DriveState.OFF_BOARD_CONTROLLER;
-		DashboardManager.getInstance().updateCANTable(((TalonSRXDriveController)drive.getController()).getCanTableString(), null);
+		DashboardManager.getInstance().updateCANTable(((TalonSRXDriveController) drive.getController()).getCanTableString(), null);
 		return output;
 	}
 

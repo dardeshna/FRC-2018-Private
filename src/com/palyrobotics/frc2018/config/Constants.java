@@ -59,6 +59,7 @@ public class Constants {
 	 */
 	public static final double kTopBottomEncoderDifference = 1000;
 	public static final double kNominalUpwardsOutput = 0.1;
+	public static final double kSwitchPositionPercentage = 0.4;
 
 	/*
 	 * Control loop constants for both robots

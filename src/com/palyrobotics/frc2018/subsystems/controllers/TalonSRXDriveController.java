@@ -41,11 +41,15 @@ public class TalonSRXDriveController implements Drive.DriveController {
 
 		Pose drivePose = Robot.getRobotState().drivePose;
 
-		DashboardManager.getInstance().updateCANTable("dt_left_dist", Integer.toString((drivePose.leftMotionMagicPos.isPresent()) ? drivePose.leftMotionMagicPos.get() : 0));
-		DashboardManager.getInstance().updateCANTable("dt_velocity_left", Integer.toString((drivePose.leftMotionMagicVel.isPresent()) ? drivePose.leftMotionMagicVel.get() : 0));
+		DashboardManager.getInstance().updateCANTable("dt_left_dist",
+				Integer.toString((drivePose.leftMotionMagicPos.isPresent()) ? drivePose.leftMotionMagicPos.get() : 0));
+		DashboardManager.getInstance().updateCANTable("dt_velocity_left",
+				Integer.toString((drivePose.leftMotionMagicVel.isPresent()) ? drivePose.leftMotionMagicVel.get() : 0));
 
-		DashboardManager.getInstance().updateCANTable("dt_right_dist", Integer.toString((drivePose.rightMotionMagicPos.isPresent()) ? drivePose.rightMotionMagicPos.get() : 0));
-		DashboardManager.getInstance().updateCANTable("dt_velocity_right", Integer.toString((drivePose.rightMotionMagicVel.isPresent()) ? drivePose.rightMotionMagicVel.get() : 0));
+		DashboardManager.getInstance().updateCANTable("dt_right_dist",
+				Integer.toString((drivePose.rightMotionMagicPos.isPresent()) ? drivePose.rightMotionMagicPos.get() : 0));
+		DashboardManager.getInstance().updateCANTable("dt_velocity_right",
+				Integer.toString((drivePose.rightMotionMagicVel.isPresent()) ? drivePose.rightMotionMagicVel.get() : 0));
 
 		DashboardManager.getInstance().updateCANTable("dt_error_left", Double.toString(mSignal.leftMotor.getSetpoint() - drivePose.leftEnc));
 		DashboardManager.getInstance().updateCANTable("dt_error_right", Double.toString(mSignal.rightMotor.getSetpoint() - drivePose.rightEnc));
