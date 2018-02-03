@@ -4,8 +4,8 @@ import com.palyrobotics.frc2018.config.Commands;
 import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.config.RobotState;
 import com.palyrobotics.frc2018.robot.MockRobot;
-import com.palyrobotics.frc2018.subsystems.Intake.IntakeState;
 import com.palyrobotics.frc2018.subsystems.Intake.OpenCloseState;
+import com.palyrobotics.frc2018.subsystems.Intake.WheelState;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import org.junit.After;
 import org.junit.Before;
@@ -40,14 +40,14 @@ public class IntakeTest {
 
 	@Test
 	public void testIntake() {
-		mCommands.wantedIntakingState = IntakeState.INTAKING;
+		mCommands.wantedIntakingState = WheelState.INTAKING;
 		mIntake.update(mCommands, mRobotState);
 		assertThat("Did not intake properly", mIntake.getTalonOutput().getSetpoint(), is(Constants.kIntakingMotorVelocity));
 	}
 
 	@Test
 	public void testExpel() {
-		mCommands.wantedIntakingState = IntakeState.EXPELLING;
+		mCommands.wantedIntakingState = WheelState.EXPELLING;
 		mIntake.update(mCommands, mRobotState);
 		assertThat("Did not expel properly", mIntake.getTalonOutput().getSetpoint(), is(Constants.kExpellingMotorVelocity));
 	}

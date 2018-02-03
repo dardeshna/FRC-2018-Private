@@ -1,6 +1,10 @@
 package com.palyrobotics.frc2018.robot;
 
 import com.palyrobotics.frc2018.behavior.Routine;
+import com.palyrobotics.frc2018.behavior.routines.intake.IntakeCloseRoutine;
+import com.palyrobotics.frc2018.behavior.routines.intake.IntakeDownRoutine;
+import com.palyrobotics.frc2018.behavior.routines.intake.IntakeOpenRoutine;
+import com.palyrobotics.frc2018.behavior.routines.intake.IntakeUpRoutine;
 import com.palyrobotics.frc2018.config.Commands;
 import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.subsystems.Climber;
@@ -94,6 +98,7 @@ public class OperatorInterface {
 		} else if(mClimberStick.getButtonPressed(2)) {
 			newCommands.wantedLockState = Climber.LockState.UNLOCKED;
 		}
+
 		if(mClimberStick.getButtonPressed(4)) {
 			newCommands.wantedClimbSide = Climber.Side.LEFT;
 		} else if(mClimberStick.getButtonPressed(5)) {
@@ -105,29 +110,34 @@ public class OperatorInterface {
 		 */
 
 		//Operator intake control
-		if(prevCommands.wantedIntakeOpenCloseState == Intake.OpenCloseState.CLOSED && mOperatorStick.getButtonPressed(2)) {
-			newCommands.wantedIntakeUpDownState = Intake.UpDownState.UP;
+		//Up/Down block
+		if(mOperatorStick.getButtonPressed(2)) {
+			newCommands.addWantedRoutine(new IntakeUpRoutine());
 		} else if(mOperatorStick.getButtonPressed(3)) {
-			newCommands.wantedIntakeUpDownState = Intake.UpDownState.DOWN;
+			newCommands.addWantedRoutine(new IntakeDownRoutine());
 		}
 
-		if(prevCommands.wantedIntakeUpDownState == Intake.UpDownState.DOWN && mOperatorStick.getTriggerPressed()) {
-			newCommands.wantedIntakingState = Intake.IntakeState.EXPELLING;
+		//Close/Open block, cannot be executed along with up/down
+		else if(mOperatorStick.getButtonPressed(4)) {
+			newCommands.addWantedRoutine(new IntakeCloseRoutine());
+		} else if(mOperatorStick.getButtonPressed(5)) {
+			newCommands.addWantedRoutine(new IntakeOpenRoutine());
+		}
+
+		//Intake wheel logic block
+		if(mOperatorStick.getTriggerPressed()) {
+			newCommands.wantedIntakingState = Intake.WheelState.EXPELLING;
 		} else {
-			newCommands.wantedIntakingState = Intake.IntakeState.IDLE;
-		}
-
-		if(mOperatorStick.getButtonPressed(4)) {
-			newCommands.wantedIntakeOpenCloseState = Intake.OpenCloseState.CLOSED;
-		} else if(prevCommands.wantedIntakeUpDownState == Intake.UpDownState.DOWN && mOperatorStick.getButtonPressed(5)) {
-			newCommands.wantedIntakeOpenCloseState = Intake.OpenCloseState.OPEN;
+			newCommands.wantedIntakingState = Intake.WheelState.IDLE;
 		}
 
 		//Driver intake control
+		//Override above intake wheel logic block
+		//Default idle state is in above logic block
 		if(mTurnStick.getButtonPressed(3)) {
-			newCommands.wantedIntakingState = Intake.IntakeState.INTAKING;
+			newCommands.wantedIntakingState = Intake.WheelState.INTAKING;
 		} else if(mTurnStick.getButtonPressed(4)) {
-			newCommands.wantedIntakingState = Intake.IntakeState.EXPELLING;
+			newCommands.wantedIntakingState = Intake.WheelState.EXPELLING;
 		}
 
 		return newCommands;

@@ -3,6 +3,7 @@ package com.palyrobotics.frc2018.behavior;
 import com.palyrobotics.frc2018.config.Commands;
 import com.palyrobotics.frc2018.subsystems.Drive;
 import com.palyrobotics.frc2018.subsystems.Elevator;
+import com.palyrobotics.frc2018.subsystems.Intake;
 import com.palyrobotics.frc2018.subsystems.Subsystem;
 
 /**
@@ -17,6 +18,7 @@ public abstract class Routine {
 	 * Keeps access to all subsystems to modify their output and read their status
 	 */
 	protected final Drive drive = Drive.getInstance();
+	protected final Intake intake = Intake.getInstance();
 	protected final Elevator elevator = Elevator.getInstance();
 
 	//Called to start a routine

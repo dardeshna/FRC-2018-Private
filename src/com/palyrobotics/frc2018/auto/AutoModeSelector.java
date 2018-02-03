@@ -1,18 +1,16 @@
 package com.palyrobotics.frc2018.auto;
 
-import java.util.ArrayList;
-import java.util.logging.Level;
-
-import com.palyrobotics.frc2018.auto.modes.*;
-import org.json.simple.JSONArray;
-
 import com.palyrobotics.frc2018.auto.AutoModeBase.Alliance;
 import com.palyrobotics.frc2018.auto.AutoModeBase.Decision;
 import com.palyrobotics.frc2018.auto.AutoModeBase.Priority;
 import com.palyrobotics.frc2018.auto.AutoModeBase.StartingPosition;
+import com.palyrobotics.frc2018.auto.modes.*;
 import com.palyrobotics.frc2018.util.logger.Logger;
-
 import edu.wpi.first.wpilibj.DriverStation;
+import org.json.simple.JSONArray;
+
+import java.util.ArrayList;
+import java.util.logging.Level;
 
 /**
  * @author Nihar, based off Team 254 2015
@@ -93,16 +91,17 @@ public class AutoModeSelector {
 //		return getAutoModeByName("test");
 //		return getAutoModeFromDashboard("test");
 		boolean fmsConnected = false;
+
 		try {
 			fmsConnected = DriverStation.getInstance().isFMSAttached();
 		} catch(UnsatisfiedLinkError e) {
-			System.out.println("FMS is not attached");
+			Logger.getInstance().logRobotThread(Level.WARNING, "FMS is not connected");
 		}
+
 		if(fmsConnected) {
 			return getAutoMode(AutoModeBase.mAlliance, AutoModeBase.mStartingPosition, AutoModeBase.mScaleDecision, 
 					AutoModeBase.mSwitchDecision, AutoModeBase.mPriority);
-		}
-		else {
+		} else {
 			return getAutoModeByIndex(0);
 		}
 	}
@@ -135,7 +134,7 @@ public class AutoModeSelector {
 
 		if(startingPosition == StartingPosition.LEFT) {
 			//Scale decision block
-			if(AutoFMS.getInstance().getScaleSide() == AutoFMS.Side.LEFT) {
+			if(autoFMS.getScaleSide() == AutoFMS.Side.LEFT) {
 				if(scaleDecision == Decision.LEFT || scaleDecision == Decision.BOTH) {
 					if(alliance == Alliance.BLUE) {
 						scaleIndex = 14;
@@ -145,7 +144,7 @@ public class AutoModeSelector {
 						Logger.getInstance().logRobotThread(Level.WARNING, "Alliance not set, defaulting to baseline");
 					}
 				}
-			} else if(AutoFMS.getInstance().getScaleSide() == AutoFMS.Side.RIGHT){
+			} else if(autoFMS.getScaleSide() == AutoFMS.Side.RIGHT){
 				if(scaleDecision == Decision.RIGHT || scaleDecision == Decision.BOTH) {
 					if(alliance == Alliance.BLUE) {
 						scaleIndex = 20;
@@ -160,7 +159,7 @@ public class AutoModeSelector {
 			}
 
 			//Switch decision block
-			if(AutoFMS.getInstance().getSwitchSide() == AutoFMS.Side.LEFT) {
+			if(autoFMS.getSwitchSide() == AutoFMS.Side.LEFT) {
 				if(switchDecision == Decision.LEFT || switchDecision == Decision.BOTH) {
 					if(alliance == Alliance.BLUE) {
 						switchIndex = 2;
@@ -170,7 +169,7 @@ public class AutoModeSelector {
 						Logger.getInstance().logRobotThread(Level.WARNING, "Alliance not set, defaulting to baseline");
 					}
 				}
-			} else if(AutoFMS.getInstance().getSwitchSide() == AutoFMS.Side.RIGHT) {
+			} else if(autoFMS.getSwitchSide() == AutoFMS.Side.RIGHT) {
 				if(switchDecision == Decision.RIGHT || switchDecision == Decision.BOTH) {
 					if(alliance == Alliance.BLUE) {
 						switchIndex = 8;
@@ -185,7 +184,7 @@ public class AutoModeSelector {
 			}
 		} else if(startingPosition == StartingPosition.CENTER) {
 			//Scale decision block
-			if(AutoFMS.getInstance().getScaleSide() == AutoFMS.Side.LEFT) {
+			if(autoFMS.getScaleSide() == AutoFMS.Side.LEFT) {
 				if(scaleDecision == Decision.LEFT || scaleDecision == Decision.BOTH) {
 					if(alliance == Alliance.BLUE) {
 						scaleIndex = 16;
@@ -195,7 +194,7 @@ public class AutoModeSelector {
 						Logger.getInstance().logRobotThread(Level.WARNING, "Alliance not set, defaulting to baseline");
 					}
 				}
-			} else if(AutoFMS.getInstance().getScaleSide() == AutoFMS.Side.RIGHT){
+			} else if(autoFMS.getScaleSide() == AutoFMS.Side.RIGHT){
 				if(scaleDecision == Decision.RIGHT || scaleDecision == Decision.BOTH) {
 					if(alliance == Alliance.BLUE) {
 						scaleIndex = 22;
@@ -210,7 +209,7 @@ public class AutoModeSelector {
 			}
 
 			//Switch decision block
-			if(AutoFMS.getInstance().getSwitchSide() == AutoFMS.Side.LEFT) {
+			if(autoFMS.getSwitchSide() == AutoFMS.Side.LEFT) {
 				if(switchDecision == Decision.LEFT || switchDecision == Decision.BOTH) {
 					if(alliance == Alliance.BLUE) {
 						switchIndex = 4;
@@ -220,7 +219,7 @@ public class AutoModeSelector {
 						Logger.getInstance().logRobotThread(Level.WARNING, "Alliance not set, defaulting to baseline");
 					}
 				}
-			} else if(AutoFMS.getInstance().getSwitchSide() == AutoFMS.Side.RIGHT) {
+			} else if(autoFMS.getSwitchSide() == AutoFMS.Side.RIGHT) {
 				if(switchDecision == Decision.RIGHT || switchDecision == Decision.BOTH) {
 					if(alliance == Alliance.BLUE) {
 						switchIndex = 10;
@@ -236,7 +235,7 @@ public class AutoModeSelector {
 
 		} else if(startingPosition == StartingPosition.RIGHT) {
 			//Scale decision block
-			if(AutoFMS.getInstance().getScaleSide() == AutoFMS.Side.LEFT) {
+			if(autoFMS.getScaleSide() == AutoFMS.Side.LEFT) {
 				if(scaleDecision == Decision.LEFT || scaleDecision == Decision.BOTH) {
 					if(alliance == Alliance.BLUE) {
 						scaleIndex = 18;
@@ -246,7 +245,7 @@ public class AutoModeSelector {
 						Logger.getInstance().logRobotThread(Level.WARNING, "Alliance not set, defaulting to baseline");
 					}
 				}
-			} else if(AutoFMS.getInstance().getScaleSide() == AutoFMS.Side.RIGHT){
+			} else if(autoFMS.getScaleSide() == AutoFMS.Side.RIGHT){
 				if(scaleDecision == Decision.RIGHT || scaleDecision == Decision.BOTH) {
 					if(alliance == Alliance.BLUE) {
 						scaleIndex = 24;
@@ -261,7 +260,7 @@ public class AutoModeSelector {
 			}
 
 			//Switch decision block
-			if(AutoFMS.getInstance().getSwitchSide() == AutoFMS.Side.LEFT) {
+			if(autoFMS.getSwitchSide() == AutoFMS.Side.LEFT) {
 				if(switchDecision == Decision.LEFT || switchDecision == Decision.BOTH) {
 					if(alliance == Alliance.BLUE) {
 						switchIndex = 6;
@@ -271,7 +270,7 @@ public class AutoModeSelector {
 						Logger.getInstance().logRobotThread(Level.WARNING, "Alliance not set, defaulting to baseline");
 					}
 				}
-			} else if(AutoFMS.getInstance().getSwitchSide() == AutoFMS.Side.RIGHT) {
+			} else if(autoFMS.getSwitchSide() == AutoFMS.Side.RIGHT) {
 				if(switchDecision == Decision.RIGHT || switchDecision == Decision.BOTH) {
 					if(alliance == Alliance.BLUE) {
 						switchIndex = 12;

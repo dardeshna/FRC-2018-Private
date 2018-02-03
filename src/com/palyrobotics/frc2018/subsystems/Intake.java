@@ -20,7 +20,7 @@ public class Intake extends Subsystem {
 	private DoubleSolenoid.Value mOpenCloseOutput = DoubleSolenoid.Value.kReverse;
 	private DoubleSolenoid.Value mUpDownOutput = DoubleSolenoid.Value.kForward;
 
-	public enum IntakeState {
+	public enum WheelState {
 		INTAKING, IDLE, EXPELLING
 	}
 
@@ -32,7 +32,7 @@ public class Intake extends Subsystem {
 		OPEN, CLOSED
 	}
 
-	private IntakeState mIntakeState = IntakeState.IDLE;
+	private WheelState mWheelState = WheelState.IDLE;
 	private UpDownState mUpDownState = UpDownState.UP;
 	private OpenCloseState mOpenCloseState = OpenCloseState.CLOSED;
 
@@ -42,25 +42,25 @@ public class Intake extends Subsystem {
 
 	@Override
 	public void start() {
-		mIntakeState = IntakeState.IDLE;
+		mWheelState = WheelState.IDLE;
 		mUpDownState = UpDownState.UP;
 		mOpenCloseState = OpenCloseState.OPEN;
 	}
 
 	@Override
 	public void stop() {
-		mIntakeState = IntakeState.IDLE;
+		mWheelState = WheelState.IDLE;
 		mUpDownState = UpDownState.UP;
 		mOpenCloseState = OpenCloseState.OPEN;
 	}
 
 	@Override
 	public void update(Commands commands, RobotState robotState) {
-		mIntakeState = commands.wantedIntakingState;
+		mWheelState = commands.wantedIntakingState;
 		mUpDownState = commands.wantedIntakeUpDownState;
 		mOpenCloseState = commands.wantedIntakeOpenCloseState;
 
-		switch(mIntakeState) {
+		switch(mWheelState) {
 			case INTAKING:
 				mTalonOutput.setPercentOutput(Constants.kIntakingMotorVelocity);
 				break;
@@ -91,8 +91,8 @@ public class Intake extends Subsystem {
 		}
 	}
 
-	public IntakeState getIntakeState() {
-		return mIntakeState;
+	public WheelState getIntakeState() {
+		return mWheelState;
 	}
 
 	public UpDownState getUpDownState() {
@@ -117,7 +117,7 @@ public class Intake extends Subsystem {
 
 	@Override
 	public String getStatus() {
-		return "Intake State: " + mIntakeState + "\nOutput Control Mode: " + mTalonOutput.getControlMode() + "\nTalon Output: " + mTalonOutput.getSetpoint()
+		return "Intake State: " + mWheelState + "\nOutput Control Mode: " + mTalonOutput.getControlMode() + "\nTalon Output: " + mTalonOutput.getSetpoint()
 				+ "\n" + "\nOpen Close Output: " + mOpenCloseOutput + "\n" + "\nUp Down Output: " + mUpDownOutput + "\n";
 	}
 }

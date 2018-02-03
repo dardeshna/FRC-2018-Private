@@ -1,13 +1,13 @@
 package com.palyrobotics.frc2018.behavior.routines.elevator;
 
-import java.util.Optional;
-import java.util.logging.Level;
-
 import com.palyrobotics.frc2018.behavior.Routine;
 import com.palyrobotics.frc2018.config.Commands;
 import com.palyrobotics.frc2018.subsystems.Elevator;
 import com.palyrobotics.frc2018.subsystems.Subsystem;
 import com.palyrobotics.frc2018.util.logger.Logger;
+
+import java.util.Optional;
+import java.util.logging.Level;
 
 public class ElevatorCustomPositioningRoutine extends Routine {
 	

@@ -1,10 +1,9 @@
 package com.palyrobotics.frc2018.auto;
 
-import java.util.logging.Level;
-
 import com.palyrobotics.frc2018.util.logger.Logger;
-
 import edu.wpi.first.wpilibj.DriverStation;
+
+import java.util.logging.Level;
 
 public class AutoFMS {
 

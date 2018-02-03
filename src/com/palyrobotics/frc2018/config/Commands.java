@@ -39,7 +39,7 @@ public class Commands {
 	public Climber.Side wantedClimbSide = Climber.Side.NOT_SET;
 	public Climber.LockState wantedLockState = Climber.LockState.UNLOCKED;
 	public Elevator.ElevatorState wantedElevatorState = Elevator.ElevatorState.CALIBRATING;
-	public Intake.IntakeState wantedIntakingState = Intake.IntakeState.IDLE;
+	public Intake.WheelState wantedIntakingState = Intake.WheelState.IDLE;
 	public Intake.UpDownState wantedIntakeUpDownState = Intake.UpDownState.UP;
 	public Intake.OpenCloseState wantedIntakeOpenCloseState = Intake.OpenCloseState.CLOSED;
 
