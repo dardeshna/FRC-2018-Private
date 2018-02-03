@@ -2,6 +2,7 @@ package com.palyrobotics.frc2018.subsystems;
 
 import com.palyrobotics.frc2018.config.Commands;
 import com.palyrobotics.frc2018.config.Constants;
+import com.palyrobotics.frc2018.config.MockCommands;
 import com.palyrobotics.frc2018.config.MockRobotState;
 import com.palyrobotics.frc2018.config.RobotState.GamePeriod;
 import com.palyrobotics.frc2018.robot.MockRobot;
@@ -14,6 +15,7 @@ import java.util.Optional;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class ElevatorTest {
 
@@ -38,7 +40,7 @@ public class ElevatorTest {
 			elevator.update(commands, robotState);
 			assertFalse("Calibration timed out!", ++counter > 5000);
 		}
-		assertThat("Elevator bottom setpoint not properly set", elevator.getElevatorBottomPosition(), equalTo(Optional.of(0.0)));
+		assertTrue("Elevator bottom setpoint not properly set", Math.abs(elevator.getElevatorBottomPosition().get()) <= 4 );
 		assertThat("Elevator top setpoint not properly set", elevator.getElevatorTopPosition(), equalTo(Optional.of(Constants.kTopBottomEncoderDifference)));
 
 		assertFalse("Elevator is calibrating when it should be finished", elevator.getState() == ElevatorState.CALIBRATING);
@@ -49,6 +51,7 @@ public class ElevatorTest {
 	public void testInitCalibrationBottom() {
 		robotState.elevatorBottomHFX = true;
 
+		elevator.update(commands, robotState);
 		elevator.update(commands, robotState);
 
 		assertThat("Elevator bottom setpoint not properly set", elevator.getElevatorBottomPosition(), equalTo(Optional.of(0.0)));
@@ -62,6 +65,7 @@ public class ElevatorTest {
 	public void testInitCalibrationTop() {
 		robotState.elevatorPosition = Constants.kTopBottomEncoderDifference;
 		robotState.elevatorTopHFX = true;
+		elevator.update(commands, robotState);
 		elevator.update(commands, robotState);
 
 		assertThat("Elevator bottom setpoint not properly set", elevator.getElevatorBottomPosition().get(), equalTo(0.0));
@@ -128,31 +132,6 @@ public class ElevatorTest {
 		commands.robotSetpoints.elevatorPositionSetpoint = Optional.of(500.0);
 		elevator.update(commands, robotState);
 		assertThat("Custom positioning interrupts calibration when it shouldn't", elevator.getState(), equalTo(ElevatorState.CALIBRATING));
-
-		//Attempt to interrupt with manual positioning
-		robotState.gamePeriod = GamePeriod.TELEOP;
-		robotState.elevatorStickInput.setY(1);
-		commands.wantedElevatorState = ElevatorState.CALIBRATING;
-		elevator.update(commands, robotState);
-		assertThat("Manual input doesn't interrupt calibration when it should", elevator.getState(), equalTo(ElevatorState.MANUAL_POSITIONING));
-
-		//Finish calibration
-		robotState.elevatorBottomHFX = true;
-		robotState.elevatorStickInput.setY(0);
-		elevator.update(commands, robotState);
-		robotState.elevatorBottomHFX = false;
-
-		//Request manual positioning
-		robotState.elevatorStickInput.setY(1);
-		elevator.update(commands, robotState);
-		assertThat("Manual input ignored after calibration", elevator.getState(), equalTo(ElevatorState.MANUAL_POSITIONING));
-
-		//Request custom positioning
-		robotState.elevatorStickInput.setY(0);
-		commands.wantedElevatorState = ElevatorState.CUSTOM_POSITIONING;
-		commands.robotSetpoints.elevatorPositionSetpoint = Optional.of(500.0);
-		elevator.update(commands, robotState);
-		assertThat("Custom positioning ignored after calibration", elevator.getState(), equalTo(ElevatorState.CALIBRATING));
 	}
 
 	//Ensure that the robot updates the top/bottom encoder values when it
@@ -182,13 +161,11 @@ public class ElevatorTest {
 	@Before
 	public void initMockRobot() {
 		robotState = MockRobot.getRobotState();
-		elevator = Elevator.getInstance();
-		commands = MockRobot.getCommands();
 		Elevator.resetInstance();
-		Commands.reset();
-
+		elevator = Elevator.getInstance();
+		MockCommands.reset();
+		commands = MockRobot.getCommands();
 		commands.wantedElevatorState = ElevatorState.CALIBRATING;
-
 		robotState.elevatorPosition = 0;
 		robotState.elevatorBottomHFX = false;
 		robotState.elevatorTopHFX = false;

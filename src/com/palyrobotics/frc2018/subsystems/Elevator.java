@@ -163,7 +163,6 @@ public class Elevator extends Subsystem {
 				}
 
 				mState = ElevatorState.CUSTOM_POSITIONING;
-
 			} else {
 				//If not calibrated, calibrate.
 				mState = ElevatorState.CALIBRATING;
@@ -175,7 +174,8 @@ public class Elevator extends Subsystem {
 
 		//If custom positioning is finished, hold it
 		if(onTarget()) {
-			mState = ElevatorState.HOLD;
+			//Hold it next cycle
+			commands.wantedElevatorState = ElevatorState.HOLD;
 		}
 	}
 
@@ -234,7 +234,7 @@ public class Elevator extends Subsystem {
 			return false;
 		}
 
-		return (Math.abs(mElevatorWantedPosition.get() - mRobotState.elevatorPosition) < Constants.kElevatorAcceptablePositionError)
+		return (Math.abs(mElevatorWantedPosition.get()/Constants.kElevatorTicksPerInch - mRobotState.elevatorPosition) < Constants.kElevatorAcceptablePositionError)
 				&& (Math.abs(mRobotState.elevatorVelocity) < Constants.kElevatorAcceptableVelocityError);
 	}
 

@@ -3,6 +3,7 @@ package com.palyrobotics.frc2018.behavior.routines.elevator;
 import com.palyrobotics.frc2018.behavior.Routine;
 import com.palyrobotics.frc2018.config.Commands;
 import com.palyrobotics.frc2018.subsystems.Elevator;
+import com.palyrobotics.frc2018.subsystems.Elevator.ElevatorState;
 import com.palyrobotics.frc2018.subsystems.Subsystem;
 import com.palyrobotics.frc2018.util.logger.Logger;
 
@@ -10,7 +11,7 @@ import java.util.Optional;
 import java.util.logging.Level;
 
 public class ElevatorCustomPositioningRoutine extends Routine {
-	
+
 	//Which elevator position should move to
 	private double mPosition;
 	
@@ -42,7 +43,7 @@ public class ElevatorCustomPositioningRoutine extends Routine {
 	 */
 	@Override
 	public Commands update(Commands commands) {
-		Commands.getInstance().wantedElevatorState = Elevator.ElevatorState.CUSTOM_POSITIONING;
+		commands.wantedElevatorState = Elevator.ElevatorState.CUSTOM_POSITIONING;
 		commands.robotSetpoints.elevatorPositionSetpoint = Optional.of(mPosition);
 		return commands;
 	}
@@ -67,7 +68,7 @@ public class ElevatorCustomPositioningRoutine extends Routine {
 	public Subsystem[] getRequiredSubsystems() {
 		return new Subsystem[] { elevator };
 	}
-
+	
 	@Override
 	public String getName() {
 		return "ElevatorCustomPositioningRoutine";
