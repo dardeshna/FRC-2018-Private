@@ -11,40 +11,39 @@ import com.palyrobotics.frc2018.subsystems.Subsystem;
 public class IntakeWheelRoutine extends Routine {
 
     private Intake.WheelState wantedWheelState;
-    private boolean alreadyRan;
+    
+    //How long the wheels spin for (seconds)
+  	private double mTimeout;
+  	
+  	private long mStartTime;
 
-    public IntakeWheelRoutine(Intake.WheelState wantedWheelState) {
+    public IntakeWheelRoutine(Intake.WheelState wantedWheelState, double timeout) {
         this.wantedWheelState = wantedWheelState;
+        mTimeout = timeout;
     }
 
     @Override
     public void start() {
-        alreadyRan = false;
+        mStartTime = System.currentTimeMillis();
     }
 
     @Override
     public Commands update(Commands commands) {
-        switch(wantedWheelState) {
-            case INTAKING:
-                commands.wantedIntakingState = Intake.WheelState.INTAKING;
-            case EXPELLING:
-                commands.wantedIntakingState = Intake.WheelState.EXPELLING;
-            case IDLE:
-                commands.wantedIntakingState = Intake.WheelState.IDLE;
-        }
 
-        alreadyRan = true;
+    	commands.wantedIntakingState = wantedWheelState;
+
         return commands;
     }
 
     @Override
     public Commands cancel(Commands commands) {
+    	commands.wantedIntakingState = Intake.WheelState.IDLE;
         return commands;
     }
 
     @Override
     public boolean finished() {
-        return alreadyRan;
+        return System.currentTimeMillis() - mStartTime > mTimeout * 1000;
     }
 
     @Override

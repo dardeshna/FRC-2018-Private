@@ -1,5 +1,6 @@
 package com.palyrobotics.frc2018.config;
 
+import com.palyrobotics.frc2018.behavior.Routine;
 import com.palyrobotics.frc2018.util.DriveSignal;
 
 import java.util.Optional;
@@ -14,6 +15,37 @@ public class MockCommands extends Commands {
 	
 	private MockCommands() {
 		super();
+	}
+	
+	@Override
+	/**
+	 * @return a copy of these commands
+	 */
+	public MockCommands copy() {
+		MockCommands copy = new MockCommands();
+		copy.wantedDriveState = this.wantedDriveState;
+		copy.wantedClimbSide = this.wantedClimbSide;
+		copy.wantedClimbMovement = this.wantedClimbMovement;
+		copy.wantedLockState = this.wantedLockState;
+		copy.wantedElevatorState = this.wantedElevatorState;
+		copy.cancelCurrentRoutines = this.cancelCurrentRoutines;
+		copy.wantedIntakingState = this.wantedIntakingState;
+		copy.wantedIntakeUpDownState = this.wantedIntakeUpDownState;
+		copy.wantedIntakeOpenCloseState = this.wantedIntakeOpenCloseState;
+
+//		copy.cancelCurrentRoutines = this.cancelCurrentRoutines;
+
+		for(Routine r : this.wantedRoutines) {
+			copy.wantedRoutines.add(r);
+		}
+
+		//Copy robot setpoints
+		copy.robotSetpoints = new MockSetpoints();
+		//Copy optionals that are present
+		robotSetpoints.drivePowerSetpoint.ifPresent((DriveSignal signal) -> copy.robotSetpoints.drivePowerSetpoint = Optional.of(signal));
+		robotSetpoints.elevatorPositionSetpoint
+				.ifPresent((Double elevatorPositionSetpoint) -> copy.robotSetpoints.elevatorPositionSetpoint = Optional.of(elevatorPositionSetpoint));
+		return copy;
 	}
 	
 	public static class MockSetpoints extends Setpoints {

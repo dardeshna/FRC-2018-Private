@@ -16,7 +16,7 @@ public class IntakeCloseRoutine extends Routine {
     public void start() {
         alreadyRan = false;
     }
-
+    
     @Override
     public Commands update(Commands commands) {
         commands.wantedIntakeOpenCloseState = Intake.OpenCloseState.CLOSED;
