@@ -1,5 +1,6 @@
 package com.palyrobotics.frc2018.robot;
 
+import com.palyrobotics.frc2018.auto.AutoFMS;
 import com.palyrobotics.frc2018.auto.AutoModeBase;
 import com.palyrobotics.frc2018.auto.AutoModeSelector;
 import com.palyrobotics.frc2018.behavior.RoutineManager;
@@ -101,6 +102,9 @@ public class Robot extends TimedRobot {
 		} catch(InterruptedException e) {
 
 		}
+
+		AutoFMS.getInstance().getScaleSide();
+
 
 		mHardwareUpdater.updateState(robotState);
 		mRoutineManager.reset(commands);

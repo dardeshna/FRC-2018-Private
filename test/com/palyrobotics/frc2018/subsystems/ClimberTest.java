@@ -3,15 +3,13 @@ package com.palyrobotics.frc2018.subsystems;
 import com.palyrobotics.frc2018.config.Commands;
 import com.palyrobotics.frc2018.config.RobotState;
 import com.palyrobotics.frc2018.robot.MockRobot;
-import com.palyrobotics.frc2018.robot.Robot;
+import org.junit.Before;
 import org.junit.Test;
 
 import static com.palyrobotics.frc2018.subsystems.Climber.LockState;
 import static com.palyrobotics.frc2018.subsystems.Climber.MotionSubstate;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
-
-import org.junit.Before;
 
 public class ClimberTest {
 	Climber climber;

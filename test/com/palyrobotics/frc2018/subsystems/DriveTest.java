@@ -1,20 +1,17 @@
 package com.palyrobotics.frc2018.subsystems;
 
-import com.palyrobotics.frc2018.config.*;
+import com.palyrobotics.frc2018.config.MockCommands;
+import com.palyrobotics.frc2018.config.RobotState;
 import com.palyrobotics.frc2018.robot.MockRobot;
-import com.palyrobotics.frc2018.robot.Robot;
 import com.palyrobotics.frc2018.util.CheesyDriveHelper;
 import com.palyrobotics.frc2018.util.DriveSignal;
-import org.junit.AfterClass;
+import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
-
-import org.junit.After;
 
 /**
  * 

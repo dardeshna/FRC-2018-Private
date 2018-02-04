@@ -4,8 +4,6 @@ import com.palyrobotics.frc2018.subsystems.SubsystemUpdateTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-import com.palyrobotics.frc2018.subsystems.SubsystemUpdateTest;
-
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ SubsystemUpdateTest.class })
 /**

@@ -9,6 +9,35 @@ public abstract class AutoModeBase {
 
 	//Will be run before the routine is taken
 	public abstract void prestart();
+	
+	public enum Alliance {
+		RED,
+		BLUE
+	}
+
+	public enum StartingPosition {
+		LEFT,
+		CENTER,
+		RIGHT
+	}
+
+	public enum Decision {
+		NEVER,
+		LEFT,
+		RIGHT,
+		BOTH
+	}
+
+	public enum Priority {
+		SCALE,
+		SWITCH
+	}
+	
+	public static Alliance mAlliance = null;
+	public static StartingPosition mStartingPosition = null;
+	public static Decision mScaleDecision = null;
+	public static Decision mSwitchDecision = null;
+	public static Priority mPriority = null;
 
 	public abstract Routine getRoutine();
 

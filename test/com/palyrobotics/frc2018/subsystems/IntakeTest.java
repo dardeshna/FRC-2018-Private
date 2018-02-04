@@ -4,7 +4,6 @@ import com.palyrobotics.frc2018.config.Commands;
 import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.config.RobotState;
 import com.palyrobotics.frc2018.robot.MockRobot;
-import com.palyrobotics.frc2018.robot.Robot;
 import com.palyrobotics.frc2018.subsystems.Intake.IntakeState;
 import com.palyrobotics.frc2018.subsystems.Intake.OpenCloseState;
 import edu.wpi.first.wpilibj.DoubleSolenoid;

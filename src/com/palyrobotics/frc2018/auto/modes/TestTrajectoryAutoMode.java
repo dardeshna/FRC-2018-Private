@@ -1,5 +1,8 @@
 package com.palyrobotics.frc2018.auto.modes;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.palyrobotics.frc2018.auto.AutoModeBase;
 import com.palyrobotics.frc2018.behavior.Routine;
 import com.palyrobotics.frc2018.behavior.SequentialRoutine;
@@ -8,9 +11,6 @@ import com.palyrobotics.frc2018.behavior.routines.drive.DriveSensorResetRoutine;
 import com.palyrobotics.frc2018.util.trajectory.Path;
 import com.palyrobotics.frc2018.util.trajectory.Path.Waypoint;
 import com.palyrobotics.frc2018.util.trajectory.Translation2d;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Nihar on 4/5/17.

@@ -1,9 +1,8 @@
 package com.palyrobotics.frc2018.config;
 
-import java.util.Optional;
-
-import com.palyrobotics.frc2018.config.Commands.Setpoints;
 import com.palyrobotics.frc2018.util.DriveSignal;
+
+import java.util.Optional;
 
 public class MockCommands extends Commands {
 	
