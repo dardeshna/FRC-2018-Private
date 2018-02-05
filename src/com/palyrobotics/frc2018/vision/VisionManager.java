@@ -1,250 +1,181 @@
 package com.palyrobotics.frc2018.vision;
 
 import com.palyrobotics.frc2018.config.Constants;
-import com.palyrobotics.frc2018.util.logger.Logger;
-import com.palyrobotics.frc2018.vision.networking.ReceiverBase;
 import com.palyrobotics.frc2018.vision.networking.VisionDataReceiver;
-import com.palyrobotics.frc2018.vision.networking.VisionVideoReceiver;
 import com.palyrobotics.frc2018.vision.networking.VisionVideoServer;
-import com.palyrobotics.frc2018.vision.networking.recievers.ReceiverSelector.VisionReceiverType;
-import com.palyrobotics.frc2018.vision.util.VisionThreadBase;
+import com.palyrobotics.frc2018.vision.util.AbstractVisionThread;
 import com.palyrobotics.frc2018.vision.util.commandline.CommandExecutor;
+import com.palyrobotics.frc2018.vision.util.commandline.DeviceStatus;
 
 import java.util.logging.Level;
 
 /**
+ * Handles starting the ADB server, finding the android device, starting the vision application, and starting networking sub-processes.
+ *
  * @author Alvin
  */
-public class VisionManager extends VisionThreadBase {
-	//Instance and state variables
-	private static VisionManager s_instance;
+public class VisionManager extends AbstractVisionThread {
+
+	private static VisionManager s_Instance;
 
 	/**
-	 * @return The instance of the ACH
+	 * @return The singleton
 	 */
 	public static VisionManager getInstance() {
-
-		if(s_instance == null) {
-			s_instance = new VisionManager();
-		}
-		return s_instance;
+		if (s_Instance == null)
+			s_Instance = new VisionManager();
+		return s_Instance;
 	}
 
 	protected VisionManager(final String threadName) {
 		super(threadName);
 	}
 
-	public enum ConnectionState {
-		PRE_INIT, STARTING_ADB, STARTING_SUB_PROCESSES, IDLE, START_VISION_APP, STREAMING, GIVEN_UP
+	public enum State {
+        PRE_INITIALIZE, STARTING_SUB_PROCESSES, INITIALIZE_CMD_ENV, FINDING_DEVICE, STARTING_VISION_APP, STREAMING, GIVEN_UP
 	}
 
-	private ConnectionState m_connectionState = ConnectionState.PRE_INIT;
+	private State m_State = State.PRE_INITIALIZE;
+	private VisionDataReceiver m_Receiver = new VisionDataReceiver();
+	private int m_InitAdbRetryCount = 0;
+	private boolean m_IsADBServerStarted = false;
 
-	//Utility variables
-	private ReceiverBase mReceiverBaseVideo = new VisionVideoReceiver();
-	private ReceiverBase mReceiverBaseData = new VisionDataReceiver();
-	private boolean m_adbServerCreated = false;
-	private boolean m_visionRunning = false;
-
-	private int initAdbRetryCount = 0;
-	private boolean useTimeout = true;
-
-	/**
-	 * Creates an VisionManager instance Cannot be called outside as a Singleton
-	 */
 	private VisionManager() {
 		super("Vision Manager");
 	}
 
-	/**
-	 * Sets the state of connection
-	 * 
-	 * @param state
-	 *            State to switch to
-	 */
-	private void SetState(ConnectionState state) {
-		m_connectionState = state;
+	private void setState(State state) {
+		m_State = state;
 	}
+
+	public boolean isADBServerStarted() {
+	    return m_IsADBServerStarted;
+    }
 
 	@Override
 	@Deprecated
-	public void start(int updateRate) {
-		super.start(updateRate);
+	public void start(final long updateRate) {
+		throw new RuntimeException();
 	}
 
-	public void start(int updateRate, boolean isTesting) {
-
+	public void start(final long updateRate, final boolean isTesting) {
 		super.start(updateRate);
 		CommandExecutor.setTesting(isTesting);
 	}
 
-	/**
-	 * Starts the VisionManager thread <br>
-	 * (accounts for running program for testing)</br>
-	 */
 	@Override
 	public void init() {
-
-		if(m_connectionState != ConnectionState.PRE_INIT) { //This should never happen
-			//System.out.println("Error: in VisionManager.start(), "
-			//+ "connection is already initialized");
-		}
-
-		//Initialize Thread Variables
-		this.SetState(ConnectionState.STARTING_ADB);
+		if (m_State != State.PRE_INITIALIZE)
+			log(Level.WARNING, "Thread has been already initialized in initialization mode!");
+		setState(State.STARTING_SUB_PROCESSES);
 	}
 
-	private ConnectionState StartSubprocesses() {
-
-		mReceiverBaseData.start(Constants.kAndroidDataSocketUpdateRate, VisionReceiverType.JSON);
-		mReceiverBaseVideo.start(Constants.kAndroidVisionSocketUpdateRate, VisionReceiverType.SOCKET);
-		new VisionVideoServer().start(Constants.kMJPEGVisionSocketUpdateRate, Constants.kMJPEGServerSocketPort, false);
-
-		return ConnectionState.STREAMING;
+    /**
+     * Start the sub-processes, the receiver of video from the device and the sender to the driver station.
+     *
+     * @return The state after execution
+     */
+	private State startSubProcesses() {
+		m_Receiver.start(Constants.kVisionVideoReceiverUpdateRate, Constants.kVisionVideoReceiverSocketPort, true);
+		new VisionVideoServer().start(Constants.kVisionVideoServerUpdateRate, Constants.kVisionVideoSocketPort, true);
+		return State.INITIALIZE_CMD_ENV;
 	}
 
 	/**
-	 * Initializes RIOdroid and RIOadb
+	 * Try to find the android device via the adb server.
+     * If the device can not be found, try restarting the ADB server with an increasing timeout.
 	 * 
 	 * @return The state after execution
 	 */
-	private ConnectionState StartADB() {
-
-		if(!CommandExecutor.isNexusConnected()) {
-
-			initAdbRetryCount++;
-
-			if(useTimeout) {
-				try {
-					Thread.sleep(initAdbRetryCount * 40);
-				} catch(InterruptedException e) {
-					Logger.getInstance().logRobotThread(Level.FINEST, e);
-
-					return ConnectionState.GIVEN_UP;
-				}
-			}
-
-			return this.m_connectionState;
-		}
-
-		if(m_adbServerCreated) {
-			if(!this.isAppStarted()) {
-				this.VisionInit();
-			} else {
-				this.m_visionRunning = true;
-			}
-
-			if(this.m_visionRunning) {
-				//System.out.println("[Info] Connected to vision app");
-				//Logger.getInstance().logRobotThread("Connected to vision app");
-				return ConnectionState.STARTING_SUB_PROCESSES;
-			} else {
-				//System.out.println("[Warning] Could not start vision app, retrying");
-				//Logger.getInstance().logRobotThread("Could not start vision app, retrying");
-				return this.m_connectionState;
-			}
-		} else {
-			this.InitializeAdbServer();
-			return this.m_connectionState;
-		}
-
+	private State findDevice() {
+		if (CommandExecutor.getNexusStatus() != DeviceStatus.DEVICE) {
+            // Device was not found. Try restarting adb server continually with timeout.
+            if (Constants.kVisionUseTimeout) {
+            	final long wait = Math.min(m_InitAdbRetryCount * 100, Constants.kVisionMaxTimeoutWait);
+            	log(Level.INFO, String.format("Device could not be found. Retrying in %d ms", wait));
+                try {
+                    Thread.sleep(wait);
+                    CommandExecutor.restartADBServer();
+                } catch (final InterruptedException e) {
+                    log(Level.FINEST, e.toString());
+                    return State.GIVEN_UP;
+                }
+                m_InitAdbRetryCount++;
+            } else {
+                return State.GIVEN_UP;
+            }
+            return State.FINDING_DEVICE;
+        } else {
+            return State.STARTING_VISION_APP;
+        }
 	}
 
-	private void InitializeAdbServer() {
-
-		boolean connected = false;
-
-		try {
-			CommandExecutor.adbServerInit();
-			connected = true;
-		} catch(Exception e) {
-			//System.out.println("[Error] in VisionManager.StartADB(), "
-			//+ "could not connect..");
-			Logger.getInstance().logRobotThread(Level.FINEST, e);
-		}
-
-		if(connected) { //Adb server started successfully
-			m_adbServerCreated = true;
-			//System.out.println("[Info] Adb server started");
-			//Logger.getInstance().logRobotThread("[Info] Adb server started");
-		} else { //Adb server failed to start
-			//System.out.println("[Error] Failed to start adb server");
-			//Logger.getInstance().logRobotThread("[Error] Failed to start adb server");
-		}
-	}
+    /**
+     * Initialize the command line interface for the android device.
+     * This initializes RIODroid.
+     *
+     * @return The state after execution
+     */
+	private State initializeCmdEnv() {
+        try {
+            CommandExecutor.initializeADBServerFirstTime();
+            m_IsADBServerStarted = true;
+        } catch (final Exception e) {
+            log(Level.FINEST, e.toString());
+            log(Level.WARNING, "Exception when starting ADB server!");
+            // TODO timeout here maybe
+            return State.GIVEN_UP;
+        }
+        log(Level.INFO, "ADB server started!");
+        return State.FINDING_DEVICE;
+    }
 
 	/**
-	 * Sends command to boot up the vision app
+	 * Sends adb command to boot up the vision app.
 	 * 
 	 * @return The state after execution
 	 */
-	private ConnectionState VisionInit() {
-		boolean connected = false;
+	private State startVisionApp() {
 		try {
-			String outp = CommandExecutor.visionInit();
-
-			connected = true;
-		} catch(Exception e) {
-			//log("Could not connect in initialization.");
-			Logger.getInstance().logRobotThread(Level.FINEST, e);
-		}
-
-		if(connected) { //App started successfully
-			m_visionRunning = true;
-			//System.out.println("[Info] Starting Vision Stream");
-			return ConnectionState.STREAMING;
-		} else { //Failed to start app
-			return m_connectionState;
+			CommandExecutor.startVisionApp();
+			return State.STARTING_SUB_PROCESSES;
+		} catch (final Exception e) {
+			log(Level.FINEST, e.toString());
+			return State.GIVEN_UP;
 		}
 	}
 
-	public boolean isAppStarted() {
+	@Override protected void onPause() { }
 
-		String pidret = CommandExecutor.appPID();
-		return pidret != null && !pidret.isEmpty() && pidret != "";
+	@Override protected void onResume() { }
+
+	@Override protected void onStop() { }
+
+	private boolean isAppStarted() {
+		final String pid = CommandExecutor.getAppPID();
+		// TODO proper checking
+		return pid != null && !pid.isEmpty();
 	}
 
-	public boolean isServerStarted() {
-		return m_adbServerCreated;
-	}
-
-	/**
-	 * Updates the thread at {@link Constants#kAndroidConnectionUpdateRate} ms
-	 */
 	@Override
 	public void update() {
-
-		switch(m_connectionState) {
-
-			case PRE_INIT: //Shouldn't happen, but can due to error
-				//System.out.println("Error: in VisionManager.run(), "
-				//+ "thread running on preinit state");
+		switch(m_State) {
+			case PRE_INITIALIZE:
 				break;
-
-			case STARTING_ADB: //Triggered by start(), should be called externally
-				SetState(StartADB());
-				break;
-
 			case STARTING_SUB_PROCESSES:
-				SetState(StartSubprocesses());
+				setState(startSubProcesses());
 				break;
-
-			case START_VISION_APP: //Triggered by StartVisionApp(), should be called externally
-				SetState(VisionInit());
+            case INITIALIZE_CMD_ENV:
+                setState(initializeCmdEnv());
+                break;
+			case FINDING_DEVICE:
+				setState(findDevice());
 				break;
-
+            case STARTING_VISION_APP:
+                setState(startVisionApp());
+                break;
 			case STREAMING:
 				break;
-
-			case IDLE:
-				break;
 		}
 	}
-
-	@Override
-	protected void tearDown() {
-		//TODO Auto-generated method stub
-
-	}
-
 }

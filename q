@@ -1,0 +1,172 @@
+[1mdiff --git a/src/com/palyrobotics/frc2018/robot/Robot.java b/src/com/palyrobotics/frc2018/robot/Robot.java[m
+[1mindex 500e5ee..b6afb64 100644[m
+[1m--- a/src/com/palyrobotics/frc2018/robot/Robot.java[m
+[1m+++ b/src/com/palyrobotics/frc2018/robot/Robot.java[m
+[36m@@ -54,7 +54,7 @@[m [mpublic class Robot extends TimedRobot {[m
+ [m
+ 	@Override[m
+ 	public void robotInit() {[m
+[31m-		Logger.getInstance().setFileName("2018 season");[m
+[32m+[m		[32mLogger.getInstance().setFileName("Vision");[m
+ 		Logger.getInstance().start();[m
+ [m
+ 		Logger.getInstance().logRobotThread(Level.INFO, "Start robotInit() for " + Constants.kRobotName.toString());[m
+[1mdiff --git a/src/com/palyrobotics/frc2018/vision/VisionManager.java b/src/com/palyrobotics/frc2018/vision/VisionManager.java[m
+[1mindex fe504c3..62d4add 100644[m
+[1m--- a/src/com/palyrobotics/frc2018/vision/VisionManager.java[m
+[1m+++ b/src/com/palyrobotics/frc2018/vision/VisionManager.java[m
+[36m@@ -66,7 +66,7 @@[m [mpublic class VisionManager extends AbstractVisionThread {[m
+ 	}[m
+ [m
+ 	private State startSubProcesses() {[m
+[31m-		m_Receiver.start(-1, Constants.kVisionVideoReceiverSocketPort, true);[m
+[32m+[m		[32mm_Receiver.start(-1L, Constants.kVisionVideoReceiverSocketPort, true);[m
+ 		new VisionVideoServer().start(Constants.kVisionVideoServerUpdateRate, Constants.kVisionVideoSocketPort, true);[m
+ 		return State.STREAMING;[m
+ 	}[m
+[1mdiff --git a/src/com/palyrobotics/frc2018/vision/networking/VisionDataReceiver.java b/src/com/palyrobotics/frc2018/vision/networking/VisionDataReceiver.java[m
+[1mindex 4dc2a6e..2faf60e 100644[m
+[1m--- a/src/com/palyrobotics/frc2018/vision/networking/VisionDataReceiver.java[m
+[1m+++ b/src/com/palyrobotics/frc2018/vision/networking/VisionDataReceiver.java[m
+[36m@@ -12,17 +12,19 @@[m [mimport java.util.logging.Level;[m
+ [m
+ public class VisionDataReceiver extends SocketReceiver {[m
+ [m
+[32m+[m	[32mprivate static final int MAX_FRAME_QUEUE_SIZE = 1;[m
+[32m+[m
+ 	public VisionDataReceiver() {[m
+ 		super("Video Receiver");[m
+ 		// super("Video Receiver", Constants.kVisionVideoFileName, Constants.kVisionVideoReceiverSocketPort, Constants.kVisionVideoReceiverUpdateRate, false);[m
+ 	}[m
+ [m
+ 	@Override[m
+[31m-	protected void processData(byte[] image) {[m
+[32m+[m	[32mprotected void processData(final byte[] image) {[m
+ 		final ConcurrentLinkedQueue<byte[]> frameQueue = VisionData.getVideoQueue();[m
+ 		if (image != null && image.length != 0) {[m
+ 			// Make sure queue does not get too big[m
+[31m-			while (frameQueue.size() > 2)[m
+[32m+[m			[32mwhile (frameQueue.size() > MAX_FRAME_QUEUE_SIZE)[m
+ 				frameQueue.remove();[m
+ 			frameQueue.add(image);[m
+ 		}[m
+[1mdiff --git a/src/com/palyrobotics/frc2018/vision/networking/VisionVideoServer.java b/src/com/palyrobotics/frc2018/vision/networking/VisionVideoServer.java[m
+[1mindex 5f5fad0..07ccc23 100644[m
+[1m--- a/src/com/palyrobotics/frc2018/vision/networking/VisionVideoServer.java[m
+[1m+++ b/src/com/palyrobotics/frc2018/vision/networking/VisionVideoServer.java[m
+[36m@@ -39,15 +39,12 @@[m [mpublic class VisionVideoServer extends AbstractVisionServer {[m
+ 	 */[m
+ 	private void writeImageToServer(final byte[] data) {[m
+ 		try {[m
+[31m-			final OutputStream clientOutputStream = m_Client.getOutputStream();[m
+[31m-			final DataOutputStream writer = new DataOutputStream(clientOutputStream);[m
+[31m-			writer.writeInt(data.length);[m
+[31m-			writer.write(data);[m
+[31m-		} catch (final IOException e) {[m
+[31m-			log(Level.FINEST, e.toString());[m
+[32m+[m			[32mfinal DataOutputStream outputStream = new DataOutputStream(m_Client.getOutputStream());[m
+[32m+[m			[32moutputStream.writeInt(data.length);[m
+[32m+[m			[32moutputStream.write(data);[m
+[32m+[m		[32m} catch (final IOException ioe) {[m
+[32m+[m			[32mlog(Level.FINEST, ioe.toString());[m
+ 			closeClient();[m
+[31m-		} catch (final NullPointerException e) {[m
+[31m-			log(Level.FINEST, e.toString());[m
+ 		}[m
+ 	}[m
+ [m
+[1mdiff --git a/src/com/palyrobotics/frc2018/vision/networking/recievers/SocketReceiver.java b/src/com/palyrobotics/frc2018/vision/networking/recievers/SocketReceiver.java[m
+[1mindex b5c88e0..81db273 100644[m
+[1m--- a/src/com/palyrobotics/frc2018/vision/networking/recievers/SocketReceiver.java[m
+[1m+++ b/src/com/palyrobotics/frc2018/vision/networking/recievers/SocketReceiver.java[m
+[36m@@ -40,16 +40,15 @@[m [mpublic abstract class SocketReceiver extends AbstractVisionServer {[m
+ 	 * @return Byte array from socket[m
+ 	 */[m
+ 	protected byte[] extractDataBytes() {[m
+[31m-		try (final DataInputStream inputStream = new DataInputStream(m_Client.getInputStream())) {[m
+[31m-			while (inputStream.available() > 0) {[m
+[31m-				try {[m
+[31m-					final int length = inputStream.readInt();[m
+[31m-					final byte[] data = new byte[length];[m
+[31m-					inputStream.readFully(data, 0, length);[m
+[31m-				} catch (final EOFException eofe) {[m
+[31m-					log(Level.FINEST, eofe.toString());[m
+[31m-					log(Level.FINEST, String.format("Bytes skipped: %s", inputStream.skip(inputStream.available())));[m
+[31m-				}[m
+[32m+[m		[32mtry {[m
+[32m+[m[32m            final DataInputStream inputStream = new DataInputStream(m_Client.getInputStream());[m
+[32m+[m[32m            try {[m
+[32m+[m				[32mfinal int length = inputStream.readInt();[m
+[32m+[m				[32mfinal byte[] data = new byte[length];[m
+[32m+[m				[32minputStream.readFully(data, 0, length);[m
+[32m+[m				[32mreturn data;[m
+[32m+[m			[32m} catch (final EOFException eofe) {[m
+[32m+[m				[32mlog(Level.FINEST, eofe.toString());[m
+ 			}[m
+ 		} catch (final IOException ioe) {[m
+ 			log(Level.FINEST, ioe.toString());[m
+[1mdiff --git a/src/com/palyrobotics/frc2018/vision/util/AbstractVisionServer.java b/src/com/palyrobotics/frc2018/vision/util/AbstractVisionServer.java[m
+[1mindex 9bc0771..49ed90f 100644[m
+[1m--- a/src/com/palyrobotics/frc2018/vision/util/AbstractVisionServer.java[m
+[1m+++ b/src/com/palyrobotics/frc2018/vision/util/AbstractVisionServer.java[m
+[36m@@ -5,6 +5,7 @@[m [mimport com.palyrobotics.frc2018.util.logger.Logger;[m
+ import java.io.IOException;[m
+ import java.net.ServerSocket;[m
+ import java.net.Socket;[m
+[32m+[m[32mimport java.util.Arrays;[m
+ import java.util.logging.Level;[m
+ [m
+ /**[m
+[36m@@ -34,7 +35,7 @@[m [mpublic abstract class AbstractVisionServer extends AbstractVisionThread {[m
+ 	 * @param updateRate Update rate of the thread[m
+ 	 * @param port The port to connect the server to[m
+ 	 */[m
+[31m-	public void start(final int updateRate, final int port, final boolean logConnectionStatus) {[m
+[32m+[m	[32mpublic void start(final long updateRate, final int port, final boolean logConnectionStatus) {[m
+ 		super.start(updateRate);[m
+ 		m_Port = port;[m
+ 		m_LogConnectionStatus = logConnectionStatus;[m
+[36m@@ -57,9 +58,18 @@[m [mpublic abstract class AbstractVisionServer extends AbstractVisionThread {[m
+ 	 */[m
+ 	protected ServerState checkConnection() {[m
+ 		final boolean notConnected = !m_Client.isConnected(), closed = m_Client.isClosed(), shouldRetry = notConnected || closed;[m
+[31m-		if (notConnected && m_LogConnectionStatus) log(Level.FINEST, String.format("Lost connection to port: %d", m_Client.getPort()));[m
+[31m-		if (notConnected && m_LogConnectionStatus) log(Level.FINEST, String.format("Connection was closed on port: %d", m_Client.getPort()));[m
+[31m-		return shouldRetry ? ServerState.ATTEMPTING_CONNECTION : ServerState.OPEN;[m
+[32m+[m		[32mif (notConnected && m_LogConnectionStatus) log(Level.FINEST, String.format("Lost connection to port: %d"      , m_Port));[m
+[32m+[m		[32mif (closed       && m_LogConnectionStatus) log(Level.FINEST, String.format("Connection was closed on port: %d", m_Port));[m
+[32m+[m		[32mif (shouldRetry) {[m
+[32m+[m			[32mtry {[m
+[32m+[m				[32mThread.sleep(200);[m
+[32m+[m			[32m} catch (final InterruptedException ie) {[m
+[32m+[m				[32mie.printStackTrace();[m
+[32m+[m			[32m}[m
+[32m+[m			[32mreturn ServerState.ATTEMPTING_CONNECTION;[m
+[32m+[m		[32m} else {[m
+[32m+[m			[32mreturn ServerState.OPEN;[m
+[32m+[m		[32m}[m
+ 	}[m
+ [m
+ 	/**[m
+[36m@@ -87,8 +97,8 @@[m [mpublic abstract class AbstractVisionServer extends AbstractVisionThread {[m
+ 			m_Client = m_Server.accept();[m
+ 			log(Level.INFO, String.format("Connected to client on port %d", m_Port));[m
+ 			return ServerState.OPEN;[m
+[31m-		} catch (final IOException e) {[m
+[31m-			log(Level.FINEST, e.toString());[m
+[32m+[m		[32m} catch (final IOException ioe) {[m
+[32m+[m			[32mlog(Level.FINEST, ioe.toString());[m
+ 			return ServerState.ATTEMPTING_CONNECTION;[m
+ 		}[m
+ 	}[m
+[36m@@ -96,8 +106,8 @@[m [mpublic abstract class AbstractVisionServer extends AbstractVisionThread {[m
+ 	protected void closeClient() {[m
+ 		try {[m
+ 			m_Client.close();[m
+[31m-		} catch (final IOException e) {[m
+[31m-			log(Level.FINEST, e.toString());[m
+[32m+[m		[32m} catch (final IOException ioe) {[m
+[32m+[m			[32mlog(Level.FINEST, ioe.toString());[m
+ 		}[m
+ 	}[m
+ [m

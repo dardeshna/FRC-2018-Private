@@ -25,17 +25,18 @@ public class Constants {
 	public static final FieldName kFieldName = FieldName.TEAM_8;
 
 	//Android app information
-	public static final String kPackageName = "com.frc8.team8vision";
-	public static final String kActivityName = "MainActivity";
+	public static final String kPackageName = "com.frc8.team8vision.visionapp2018";
+	public static final String kActivityName = "CameraActivity";
 	public static final String kVisionDataFileName = "data.json";
 	public static final String kVisionVideoFileName = "video.json";
-	public static final int kAndroidConnectionUpdateRate = 5; //Update rate in milliseconds
-	public static final int kAndroidDataSocketUpdateRate = 100;
-	public static final int kAndroidVisionSocketUpdateRate = 10;
-	public static final int kMJPEGVisionSocketUpdateRate = 20;
-	public static final int kVisionDataPort = 8008;
-	public static final int kVideoPort = 8009;
-	public static final int kMJPEGServerSocketPort = 1180;
+	public static final int kVisionManagerUpdateRate = 100; //Update rate in milliseconds
+	public static final int kVisionVideoReceiverUpdateRate = 10;
+	public static final int kVisionVideoServerUpdateRate = 40;
+	public static final int kVisionDataPort = 8009;
+	public static final int kVisionVideoReceiverSocketPort = 8008;
+	public static final int kVisionVideoSocketPort = 1180;
+	public static final boolean kVisionUseTimeout = true;
+	public static final int kVisionMaxTimeoutWait = 5000;
 
 	/**
 	 * Cheesy Drive Constants Set by DriverProfiles

@@ -1,72 +1,76 @@
 package com.palyrobotics.frc2018.vision.networking.recievers;
 
-import com.palyrobotics.frc2018.util.logger.Logger;
-import com.palyrobotics.frc2018.vision.util.VisionServerBase;
+import com.palyrobotics.frc2018.vision.util.AbstractVisionServer;
 
-import java.io.BufferedReader;
 import java.io.DataInputStream;
+import java.io.EOFException;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.logging.Level;
 
-public class SocketReceiver extends VisionServerBase implements VisionReceiverBase {
+public abstract class SocketReceiver extends AbstractVisionServer {
 
-	public SocketReceiver() {
-
-		super("Socket Receiver");
+	public SocketReceiver(final String name) {
+		super(name);
 	}
 
-	@Override
-	public String extractData() {
+//	public String extractData() {
+//		if (m_Client.isConnected() && !m_Client.isClosed()) {
+//			final StringBuilder data = new StringBuilder();
+//			try {
+//				String line;
+//				final BufferedReader reader = new BufferedReader(new InputStreamReader(m_Client.getInputStream()));
+//				while ((line = reader.readLine()) != null) {
+//					data.append(line);
+//					data.append("\n");
+//				}
+//				return data.toString();
+//			} catch(final IOException e) {
+//				log(Level.FINEST, e.toString());
+//				return null;
+//			}
+//		}
+//		return null;
+//	}
 
-		if(m_client.isConnected() && !m_client.isClosed()) {
+	@Override protected void afterInit() { }
 
-			String data = "";
-			try {
-				String line;
-				BufferedReader mReader = new BufferedReader(new InputStreamReader(m_client.getInputStream()));
-				while((line = mReader.readLine()) != null) {
-					data += line + "\n";
-				}
+	/**
+	 * Extract byte array data from the client.
+	 *
+	 * @return Byte array from socket
+	 */
+	protected byte[] extractDataBytes() {
+		try {
+            final DataInputStream inputStream = new DataInputStream(m_Client.getInputStream());
+            try {
+				final int length = inputStream.readInt();
+				final byte[] data = new byte[length];
+				inputStream.readFully(data, 0, length);
 				return data;
-			} catch(IOException e) {
-				Logger.getInstance().logRobotThread(Level.FINEST, e);
-				return null;
+			} catch (final EOFException eofe) {
+				log(Level.FINEST, eofe.toString());
 			}
+		} catch (final IOException ioe) {
+			log(Level.FINEST, ioe.toString());
+			closeClient();
 		}
-
 		return null;
 	}
 
-	@Override
-	protected void tearDown() {
-
-	}
-
-	@Override
-	public byte[] extractDataBytes() {
-
-		if(m_client.isConnected() && !m_client.isClosed()) {
-
-			try {
-				DataInputStream dis = new DataInputStream(m_client.getInputStream());
-				int len = dis.readInt();
-				byte[] data = new byte[len];
-				if(len > 0) {
-					dis.readFully(data);
-				}
-				return data;
-			} catch(IOException e) {
-
-				Logger.getInstance().logRobotThread(Level.FINEST, e);
-				closeClient();
-			}
-		}
-
-		return null;
-	}
+	protected abstract void processData(final byte[] data);
 
 	@Override
 	protected void afterUpdate() {
+		switch (m_ThreadState) {
+			case RUNNING: {
+				switch (m_ServerState) {
+					case OPEN: {
+						processData(extractDataBytes());
+						break;
+					}
+				}
+				break;
+			}
+		}
 	}
 }

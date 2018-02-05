@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Forseti.iml" filepath="$PROJECT_DIR$/Forseti.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android-viewer/android-viewer.iml" filepath="$PROJECT_DIR$/android-viewer/android-viewer.iml" />
     </modules>
   </component>
 </project>

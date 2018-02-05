@@ -60,16 +60,16 @@ public class Robot extends TimedRobot {
 		Logger.getInstance().logRobotThread(Level.INFO, "Start robotInit() for " + Constants.kRobotName.toString());
 
 		DashboardManager.getInstance().robotInit();
-		//VisionManager.getInstance().start(Constants.kAndroidConnectionUpdateRate, false);
+		VisionManager.getInstance().start(Constants.kVisionManagerUpdateRate, false);
 
-		Logger.getInstance().logRobotThread(Level.CONFIG, "Startup sucessful");
+		Logger.getInstance().logRobotThread(Level.CONFIG, "Startup successful");
 		Logger.getInstance().logRobotThread(Level.CONFIG, "Robot name: " + Constants.kRobotName);
 		Logger.getInstance().logRobotThread(Level.CONFIG, "Alliance: " + DriverStation.getInstance().getAlliance());
 		Logger.getInstance().logRobotThread(Level.CONFIG, "FMS connected: " + DriverStation.getInstance().isFMSAttached());
 		Logger.getInstance().logRobotThread(Level.CONFIG, "Alliance station: " + DriverStation.getInstance().getLocation());
 		try {
-			Logger.getInstance().logRobotThread((VisionManager.getInstance().isServerStarted()) ? Level.CONFIG : Level.WARNING,
-					(VisionManager.getInstance().isServerStarted()) ? "Nexus streaming" : "Nexus not streaming");
+			Logger.getInstance().logRobotThread((VisionManager.getInstance().isADBServerStarted()) ? Level.CONFIG : Level.WARNING,
+					(VisionManager.getInstance().isADBServerStarted()) ? "Nexus streaming" : "Nexus not streaming");
 			Logger.getInstance().logRobotThread(Level.INFO, "Auto", AutoModeSelector.getInstance().getAutoMode().toString());
 		} catch(NullPointerException e) {
 			Logger.getInstance().logRobotThread(Level.SEVERE, "Auto", e);

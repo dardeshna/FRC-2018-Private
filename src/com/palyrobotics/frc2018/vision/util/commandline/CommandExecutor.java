@@ -7,92 +7,80 @@ import org.spectrum3847.RIOdroid.RIOdroid;
 import java.util.logging.Level;
 
 public class CommandExecutor {
-	private static boolean isTesting = false;
-	private static boolean isFlashOn = false;
 
-	public static String visionInit() {
-		return exec("adb shell am start -n " + Constants.kPackageName + "/" + Constants.kPackageName + "." + Constants.kActivityName);
+	private static boolean s_IsTesting = false;
+	private static boolean s_IsFlashOn = false;
+
+	public static String startVisionApp() {
+		return exec(String.format("adb shell am start -n %s/%s.%s", Constants.kPackageName, Constants.kPackageName, Constants.kActivityName));
 	}
 
 	public static void setTesting(boolean testing) {
-		isTesting = testing;
+		s_IsTesting = testing;
 	}
 
-	public static void adbServerInit() {
-		Logger.getInstance().logRobotThread(Level.INFO, "Initializing RIODroid...");
-
-		if(!isTesting) {
+	public static void initializeADBServerFirstTime() {
+		if (!s_IsTesting) {
+			Logger.getInstance().logRobotThread(Level.INFO, "[Command Executor] Initializing RIODroid...");
 			RIOdroid.init();
-		} else {
-			RuntimeExecutor.getInstance().init();
 		}
+		startADBServer();
+	}
 
-		//System.out.println("[Info] TCP Reversing ports...");
+	public static String startADBServer() {
+		String output = exec("adb start-server");
+		reversePorts();
+		return output;
+	}
 
-		exec("adb reverse tcp:" + Constants.kVideoPort + " tcp:" + Constants.kVideoPort);
-
-		exec("adb reverse tcp:" + Constants.kVisionDataPort + " tcp:" + Constants.kVisionDataPort);
-
-		//System.out.println("[Info] Starting Video Manager...");
+	public static String reversePorts() {
+		Logger.getInstance().logRobotThread(Level.INFO, "[Command Executor] Starting TCP port reversal...");
+		final String output = exec(String.format("adb reverse tcp:%d tcp:%d", Constants.kVisionVideoReceiverSocketPort, Constants.kVisionVideoReceiverSocketPort));
+		Logger.getInstance().logRobotThread(Level.INFO, String.format("[Command Executor] Reversed ports with output: %s", output));
+		return output;
 	}
 
 	/**
-	 * Detects if the nexus is connected through the command "adb devices" and looking at the output
+	 * Detects the status of phone with the command "adb devices" and looking at the output.
 	 *
 	 * @return Whether or not a nexus device is connected
 	 */
-	public static boolean isNexusConnected() {
-
-		//System.out.println("[Info] Trying to find nexus...");
-
-		boolean hasDevice = false;
-		String[] devicesOutput = RuntimeExecutor.getInstance().exec("adb devices").split("\\n");
-		//System.out.println("[Info] Restarting server...");
-
-		for(int i = 1; i < devicesOutput.length && !hasDevice; i++) {
-			hasDevice = devicesOutput[i].contains("device");
+	public static DeviceStatus getNexusStatus() {
+		final String devicesOutput = exec("adb devices");
+		if (devicesOutput.contains("DEVICE")) {
+			return DeviceStatus.DEVICE;
+		} else if (devicesOutput.contains("offline")) {
+			return DeviceStatus.OFFLINE;
+		} else if (devicesOutput.contains("unauthorized")) {
+			return DeviceStatus.UNAUTHORIZED;
+		} else {
+			return DeviceStatus.NOT_FOUND;
 		}
-
-		//if (!hasDevice) System.out.println("[Warning] No device found with USB scan!");
-
-		return hasDevice;
 	}
 
-	public static void restartAdbServer() {
-
-		String restartOut;
-		do {
-			Logger.getInstance().logRobotThread(Level.INFO, "Restarting server...");
-
-			Logger.getInstance().logRobotThread(Level.FINER, exec("adb kill-server"));
-			restartOut = exec("adb start-server");
-
-			Logger.getInstance().logRobotThread(Level.FINER, restartOut);
-		} while(!restartOut.contains("daemon started successfully"));
+	public static void restartADBServer() {
+		Logger.getInstance().logRobotThread(Level.INFO, "Restarting server...");
+		final String restartOut = exec("adb kill-server") + startADBServer();
+		Logger.getInstance().logRobotThread(Level.INFO, String.format("Restarted with output: %s", restartOut));
 	}
 
 	public static String toggleFlash() {
-		return exec("adb shell am broadcast -a " + Constants.kPackageName + ".GET_DATA --es type flash --ez isFlash " + isFlashOn);
+		return exec(String.format("adb shell am broadcast -a %s.GET_DATA --es type flash --ez isFlash %s", Constants.kPackageName, Boolean.toString(s_IsFlashOn)));
 	}
 
 	public static String catFile(String fileName) {
-		return exec("adb shell run-as " + Constants.kPackageName + " cat /data/data/" + Constants.kPackageName + "/files/" + fileName);
+		return exec(String.format("adb shell run-as %s cat /data/data/%s/files/%s", Constants.kPackageName, Constants.kPackageName, fileName));
 	}
 
 	/**
-	 * @returns the PID of the vision app
+	 * @return the PID of the vision app
 	 */
-	public static String appPID() {
-		return exec("adb shell pidof " + Constants.kPackageName);
-
+	public static String getAppPID() {
+		return exec(String.format("adb shell pidof %s", Constants.kPackageName));
 	}
 
-	public static String exec(String string) {
-		if(!isTesting) {
-			return RIOdroid.executeCommand(string);
-		} else {
-			return RuntimeExecutor.getInstance().exec(string);
-		}
+	public static String exec(final String command) {
+		return s_IsTesting ? RuntimeExecutor.getInstance().exec(command) : RIOdroid.executeCommand(command);
 	}
 
 }
