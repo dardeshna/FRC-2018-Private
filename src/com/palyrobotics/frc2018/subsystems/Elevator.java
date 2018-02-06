@@ -125,7 +125,7 @@ public class Elevator extends Subsystem {
 	 *
 	 * Behavior for desired states:
 	 * <ul>
-	 * <li>{@link ElevatorState#CALIBRATING}: Sets the state to calibrate. If already calibrated, ignores the request and proceeds as usual.</li>
+	 * <li>{@link ElevatorState#CALIBRATING}: Sets the state to calibrate. If already calibrated, ignores the request and holds instead.</li>
 	 * <li>{@link ElevatorState#HOLD}: Sets the desired holding position and state to hold.</li>
 	 * <li>{@link ElevatorState#MANUAL_POSITIONING}: Sets the state to manual.</li>
 	 * <li>{@link ElevatorState#CUSTOM_POSITIONING}: Sets the desired custom position and state to custom positioning. If not calibrated, set to calibrate instead.</li>
@@ -139,9 +139,11 @@ public class Elevator extends Subsystem {
 	 */
 	private void handleState(Commands commands) {
 		if(commands.wantedElevatorState == ElevatorState.CALIBRATING) {
-			//If already calibrated, ignore it
 			if(!kElevatorBottomPosition.isPresent() || !kElevatorTopPosition.isPresent()) {
 				mState = ElevatorState.CALIBRATING;
+			} else {
+				//If already calibrated, ignore it and hold
+				mState = ElevatorState.HOLD;
 			}
 		} else if(commands.wantedElevatorState == ElevatorState.HOLD) {
 			//Set the wanted elevator position if not already set, or if switching from a
