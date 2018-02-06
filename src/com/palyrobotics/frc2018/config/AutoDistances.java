@@ -5,28 +5,46 @@ package com.palyrobotics.frc2018.config;
  */
 public class AutoDistances {
 	//Base line
-	public static double kRedBaseLineDistanceInches = 110;
-	public static double kBlueBaseLineDistanceInches = 110;
-	
-	//Switch
-	public static double kRedRightSwitchX = 0;
-	public static double kRedRightSwitchY = 0;
-	
-	public static double kBlueRightSwitchX = 0;
-	public static double kBlueRightSwitchY = 0;
-	
-	public static double kRedLeftSwitchX = 0;
-	public static double kRedLeftSwitchY = 0;
-	
-	public static double kBlueLeftSwitchX = 0;
-	public static double kBlueLeftSwitchY = 0;
-	
-	public static double kFieldWidth = 0;
-	public static double kCenterStartFromRight = 0.0; //from edge of robot
+	public final static double kRedBaseLineDistanceInches = 110;
+	public final static double kBlueBaseLineDistanceInches = 110;
 
-	// Scale
-	public static double kDistanceToScaleStart = 0; // distance to the start of scale plane
-	public static double kDistWallToScale = 0;
-	public static double kScaleToSwitchDist = 0; // drivable distance between the switch and the scale distance
-	public static double kDistAcrossScale = 0;
+	//Switch
+	public final static double kRedRightSwitchX = 0;
+	public final static double kRedRightSwitchY = 0;
+
+	public final static double kBlueRightSwitchX = 0;
+	public final static double kBlueRightSwitchY = 0;
+
+	public final static double kRedLeftSwitchX = 0;
+	public final static double kRedLeftSwitchY = 0;
+
+	public final static double kBlueLeftSwitchX = 0;
+	public final static double kBlueLeftSwitchY = 0;
+
+	public final static double kBlueLeftScaleX = 0;
+	public final static double kBlueLeftScaleY = 0;
+
+	public final static double kBlueRightScaleX = 0;
+	public final static double kBlueRightScaleY = 0;
+
+	public final static double kRedLeftScaleX = 0;
+	public final static double kRedLeftScaleY = 0;
+
+	public final static double kRedRightScaleX = 0;
+	public final static double kRedRightScaleY = 0;
+
+	public final static double kRedLeftCornerOffset = 0;
+
+	public final static double kRedRightCornerOffset = 0;
+
+	public final static double kBlueLeftCornerOffset = 0;
+	public final static double kBlueRightCornerOffset = 0;
+
+	public final static double kFieldWidth = 0;
+
+	public final static double kBlueLeftToCenterY = 0;
+	public final static double kRedLeftToCenterY = 0;
+
+	public final static double kBlueScaleSwitchMidlineX = 0;
+	public final static double kRedScaleSwitchMidlineX = 0;
 }

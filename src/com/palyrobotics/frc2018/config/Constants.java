@@ -62,7 +62,7 @@ public class Constants {
 	public static final double kElevatorTopPositionInches = 75;
 	public static final double kElevatorSwitchPositionInches = 30;
 	public static final double kElevatorBottomPositionInches = 0;
-	
+
 
 	/*
 	 * Control loop constants for both robots
@@ -161,6 +161,9 @@ public class Constants {
 	public static final int kForsetiIntakeOpenCloseSolenoidReverseID = 4;
 
 	//!!! Physical constants
+	public static final double kPlateWidth = 0.0;
+	public static final double kPlateLength = 0.0;
+
 
 	//!!! Loop rate of normal Looper
 	public static final double kNormalLoopsDt = 0.02;

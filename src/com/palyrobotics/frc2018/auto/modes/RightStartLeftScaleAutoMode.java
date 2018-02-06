@@ -2,6 +2,17 @@ package com.palyrobotics.frc2018.auto.modes;
 
 import com.palyrobotics.frc2018.auto.AutoModeBase;
 import com.palyrobotics.frc2018.behavior.Routine;
+import com.palyrobotics.frc2018.behavior.SequentialRoutine;
+import com.palyrobotics.frc2018.behavior.routines.drive.DrivePathRoutine;
+import com.palyrobotics.frc2018.behavior.routines.drive.DriveSensorResetRoutine;
+import com.palyrobotics.frc2018.config.AutoDistances;
+import com.palyrobotics.frc2018.config.Constants;
+import com.palyrobotics.frc2018.util.trajectory.Path;
+import com.palyrobotics.frc2018.util.trajectory.Path.Waypoint;
+import com.palyrobotics.frc2018.util.trajectory.Translation2d;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RightStartLeftScaleAutoMode extends AutoModeBase {
 
@@ -23,6 +34,31 @@ public class RightStartLeftScaleAutoMode extends AutoModeBase {
 
     @Override
     public Routine getRoutine() {
-        return null;
+        List<Waypoint> path = new ArrayList<>();
+        path.add(new Waypoint(new Translation2d(0.0, 0.0), 72.0));
+        if(mAlliance == Alliance.BLUE) {
+            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueScaleSwitchMidlineX
+                    - Constants.kRobotLengthInches, 0.0), 72.0));
+            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueScaleSwitchMidlineX,
+                    AutoDistances.kFieldWidth - (Constants.kRobotWidthInches / 2) - AutoDistances.kBlueRightCornerOffset
+                            - AutoDistances.kBlueLeftCornerOffset - (Constants.kPlateWidth / 2)), 72.0));
+            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueLeftScaleX - Constants.kRobotLengthInches,
+                    AutoDistances.kFieldWidth - (Constants.kRobotWidthInches / 2) - AutoDistances.kBlueRightCornerOffset
+                            - AutoDistances.kBlueLeftCornerOffset - (Constants.kPlateWidth / 2)), 0.0));
+        } else {
+            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedScaleSwitchMidlineX
+                    - Constants.kRobotLengthInches, 0.0), 72.0));
+            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedScaleSwitchMidlineX - Constants.kRobotLengthInches,
+                    AutoDistances.kFieldWidth - (Constants.kRobotWidthInches / 2) - AutoDistances.kRedRightCornerOffset
+                            - AutoDistances.kRedLeftCornerOffset - (Constants.kPlateWidth / 2)), 72.0));
+            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedLeftScaleX - Constants.kRobotLengthInches,
+                    AutoDistances.kFieldWidth - (Constants.kRobotWidthInches / 2) - AutoDistances.kRedRightCornerOffset
+                            - AutoDistances.kRedLeftCornerOffset - (Constants.kPlateWidth / 2)), 0.0));
+        }
+        ArrayList<Routine> routines = new ArrayList<>();
+        routines.add(new DriveSensorResetRoutine());
+        routines.add(new DrivePathRoutine(new Path(path), false));
+
+        return new SequentialRoutine(routines);
     }
 }
