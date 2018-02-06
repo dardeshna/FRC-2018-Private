@@ -100,7 +100,7 @@ public class Elevator extends Subsystem {
 				break;
 			case CUSTOM_POSITIONING:
 				//Control loop
-				mOutput.setPosition(kElevatorBottomPosition.get() + mElevatorWantedPosition.get(), Gains.elevatorPosition);
+				mOutput.setPosition(mElevatorWantedPosition.get(), Gains.elevatorPosition);
 				break;
 			case IDLE:
 				//Clear any existing wanted positions
@@ -156,8 +156,8 @@ public class Elevator extends Subsystem {
 				//Set the setpoint
 				//If the desired custom positioning setpoint is different than what currently
 				//exists, replace it
-				if(!mElevatorWantedPosition.equals(Optional.of(kElevatorBottomPosition.get() + commands.robotSetpoints.elevatorPositionSetpoint.get()))) {
-					mElevatorWantedPosition = Optional.of(kElevatorBottomPosition.get() + commands.robotSetpoints.elevatorPositionSetpoint.get());
+				if(!mElevatorWantedPosition.equals(Optional.of(kElevatorBottomPosition.get() + commands.robotSetpoints.elevatorPositionSetpoint.get() * Constants.kElevatorTicksPerInch))) {
+					mElevatorWantedPosition = Optional.of(kElevatorBottomPosition.get() + commands.robotSetpoints.elevatorPositionSetpoint.get() * Constants.kElevatorTicksPerInch);
 				}
 
 				mState = ElevatorState.CUSTOM_POSITIONING;
@@ -247,9 +247,5 @@ public class Elevator extends Subsystem {
 
 	public void setTopPosition(Optional<Double> value) {
 		kElevatorTopPosition = value;
-	}
-	
-	public void setWantedPosition(double value) {
-		mElevatorWantedPosition = Optional.of(value);
 	}
 }

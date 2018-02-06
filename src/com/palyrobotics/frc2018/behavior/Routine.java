@@ -14,7 +14,7 @@ import com.palyrobotics.frc2018.subsystems.Subsystem;
  */
 public abstract class Routine {
 	/**
-	 * Keeps access to all subsystems to modify their output and read their status like {@link LegacyDrive#controllerOnTarget()}
+	 * Keeps access to all subsystems to modify their output and read their status
 	 */
 	protected final Drive drive = Drive.getInstance();
 	protected final Elevator elevator = Elevator.getInstance();
