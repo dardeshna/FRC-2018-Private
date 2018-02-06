@@ -1,6 +1,7 @@
 package com.palyrobotics.frc2018.robot;
 
 import com.palyrobotics.frc2018.behavior.Routine;
+import com.palyrobotics.frc2018.behavior.SequentialRoutine;
 import com.palyrobotics.frc2018.behavior.routines.intake.IntakeCloseRoutine;
 import com.palyrobotics.frc2018.behavior.routines.intake.IntakeDownRoutine;
 import com.palyrobotics.frc2018.behavior.routines.intake.IntakeOpenRoutine;
@@ -13,6 +14,8 @@ import com.palyrobotics.frc2018.subsystems.Elevator;
 import com.palyrobotics.frc2018.subsystems.Intake;
 import com.palyrobotics.frc2018.util.ChezyMath;
 import com.palyrobotics.frc2018.util.JoystickInput;
+
+import java.util.ArrayList;
 
 /**
  * Used to produce Commands {@link Commands} from human input Singleton class. Should only be used in robot package.
@@ -101,8 +104,16 @@ public class OperatorInterface {
 
 		if(mClimberStick.getButtonPressed(4)) {
 			newCommands.wantedClimbSide = Climber.Side.LEFT;
+			newCommands.addWantedRoutine(new SequentialRoutine(new ArrayList<Routine>() {{
+				new IntakeCloseRoutine();
+				new IntakeUpRoutine();
+			}}));
 		} else if(mClimberStick.getButtonPressed(5)) {
 			newCommands.wantedClimbSide = Climber.Side.RIGHT;
+			newCommands.addWantedRoutine(new SequentialRoutine(new ArrayList<Routine>() {{
+				new IntakeCloseRoutine();
+				new IntakeUpRoutine();
+			}}));
 		}
 
 		/**
