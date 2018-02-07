@@ -5,7 +5,6 @@ import com.palyrobotics.frc2018.config.Commands;
 import com.palyrobotics.frc2018.config.MockCommands;
 import com.palyrobotics.frc2018.config.MockRobotState;
 import com.palyrobotics.frc2018.robot.MockRobot;
-
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 import org.junit.Before;
@@ -34,7 +33,7 @@ public class IntakeRoutineTest {
 	@Before
 	public void init() {
 		Intake.resetInstance();
-		Commands.reset();
+		MockCommands.reset();
 		
 		robotState = MockRobot.getRobotState();
 		intake = Intake.getInstance();
@@ -45,7 +44,6 @@ public class IntakeRoutineTest {
 	//Does each routine function properly when run independently?
 	@Test
 	public void testSingleRoutines() {
-
 		Routine routine = new IntakeUpRoutine();
 		routine.start();
 		routine.update(commands);
@@ -127,6 +125,7 @@ public class IntakeRoutineTest {
 		assertTrue("Idle routine doesn't finish immediately after initiation", routine.finished());
 	}
 	
+	//Can the intake execute a sequence routine in the correct order?
 	@Test
 	public void testComboRoutines() {
 		RoutineManager routineManager = RoutineManager.getInstance();
@@ -136,10 +135,8 @@ public class IntakeRoutineTest {
 		routines.add(new IntakeWheelRoutine(Intake.WheelState.INTAKING, 1));
 		routines.add(new IntakeCloseRoutine());
 		routines.add(new IntakeWheelRoutine(Intake.WheelState.IDLE, 1));
-		
 		SequentialRoutine getCube = new SequentialRoutine(routines);
 		routineManager.addNewRoutine(getCube);
-		
 		commands = (MockCommands) routineManager.update(commands);
 		intake.update(commands, robotState);
 		assertThat("Intake didn't flip down at the right point in the routine sequence", intake.getUpDownOutput(), equalTo(DoubleSolenoid.Value.kForward));
@@ -157,8 +154,8 @@ public class IntakeRoutineTest {
 			Thread.sleep(1000);
 		} catch(InterruptedException e) {
 			e.printStackTrace();
-		}//while (System.currentTimeMillis() - mStartTime < 1000);
-		
+		}
+
 		commands = (MockCommands) routineManager.update(commands);
 		intake.update(commands, robotState);
 		
@@ -169,6 +166,34 @@ public class IntakeRoutineTest {
 		commands = (MockCommands) routineManager.update(commands);
 		intake.update(commands, robotState);
 		assertTrue("Intake isn't idle at the right point in the routine sequence", intake.getTalonOutput().getSetpoint() == 0);
+	}
+	
+	//Certain intake states should ignore other intake requests
+	@Test
+	public void testSafetyChecks() {
+		//Default intake state is up and closed
+		
+		Routine routine = new IntakeOpenRoutine();
+		routine.start();
+		routine.update(commands);
+		intake.update(commands, robotState);
+		assertFalse("Intake opened while flipped up when it shouldn't have", intake.getOpenCloseOutput() == DoubleSolenoid.Value.kForward);
+		
+		routine = new IntakeDownRoutine();
+		routine.start();
+		routine.update(commands);
+		intake.update(commands, robotState);
+		
+		routine = new IntakeOpenRoutine();
+		routine.start();
+		routine.update(commands);
+		intake.update(commands, robotState);
+
+		routine = new IntakeUpRoutine();
+		routine.start();
+		routine.update(commands);
+		intake.update(commands, robotState);
+		assertFalse("Intake wheels flipped up while open when it shouldn't have", intake.getUpDownOutput() == DoubleSolenoid.Value.kReverse);
 	}
 	
 }

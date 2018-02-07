@@ -15,7 +15,9 @@ public class Intake extends Subsystem {
 	public static Intake getInstance() {
 		return instance;
 	}
-
+	
+	public static void resetInstance() { instance = new Intake(); }
+	
 	private TalonSRXOutput mTalonOutput = new TalonSRXOutput();
 	private DoubleSolenoid.Value mOpenCloseOutput = DoubleSolenoid.Value.kReverse;
 	private DoubleSolenoid.Value mUpDownOutput = DoubleSolenoid.Value.kForward;
@@ -44,14 +46,14 @@ public class Intake extends Subsystem {
 	public void start() {
 		mWheelState = WheelState.IDLE;
 		mUpDownState = UpDownState.UP;
-		mOpenCloseState = OpenCloseState.OPEN;
+		mOpenCloseState = OpenCloseState.CLOSED;
 	}
 
 	@Override
 	public void stop() {
 		mWheelState = WheelState.IDLE;
 		mUpDownState = UpDownState.UP;
-		mOpenCloseState = OpenCloseState.OPEN;
+		mOpenCloseState = OpenCloseState.CLOSED;
 	}
 
 	@Override

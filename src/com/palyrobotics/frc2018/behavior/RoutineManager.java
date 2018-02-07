@@ -1,7 +1,10 @@
 package com.palyrobotics.frc2018.behavior;
 
 import com.palyrobotics.frc2018.config.Commands;
+import com.palyrobotics.frc2018.subsystems.Climber;
 import com.palyrobotics.frc2018.subsystems.Drive;
+import com.palyrobotics.frc2018.subsystems.Elevator;
+import com.palyrobotics.frc2018.subsystems.Intake;
 import com.palyrobotics.frc2018.subsystems.Subsystem;
 import com.palyrobotics.frc2018.util.logger.Logger;
 
@@ -158,6 +161,7 @@ public class RoutineManager {
 				continue;
 			}
 		}
+		System.out.println("Conflicts are " + conflicts);
 		return conflicts;
 	}
 
@@ -180,9 +184,12 @@ public class RoutineManager {
 		HashMap<Subsystem, Integer> counter = new HashMap<Subsystem, Integer>();
 		counter.put(null, 0); //for SampleRoutine
 		counter.put(Drive.getInstance(), 0);
-		//Count the number of times each subsystem appears
-		for(Routine routine : routines) {
-			for(Subsystem subsystem : routine.getRequiredSubsystems()) {
+		counter.put(Elevator.getInstance(), 0);
+		counter.put(Intake.getInstance(), 0);
+		counter.put(Climber.getInstance(), 0);
+		// Count the number of times each subsystem appears
+		for (Routine routine : routines) {
+			for (Subsystem subsystem : routine.getRequiredSubsystems()) {
 				counter.put(subsystem, counter.get(subsystem) + 1);
 			}
 		}
