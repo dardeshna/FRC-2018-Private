@@ -9,6 +9,7 @@ import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.config.RobotState;
 import com.palyrobotics.frc2018.config.dashboard.DashboardManager;
 import com.palyrobotics.frc2018.config.driveteam.DriveTeam;
+import com.palyrobotics.frc2018.config.fields.FieldSelector;
 import com.palyrobotics.frc2018.subsystems.Climber;
 import com.palyrobotics.frc2018.subsystems.Drive;
 import com.palyrobotics.frc2018.subsystems.Elevator;
@@ -81,6 +82,7 @@ public class Robot extends TimedRobot {
 		mHardwareUpdater.initHardware();
 
 		DriveTeam.configConstants();
+		FieldSelector.configureFieldMeasurements();
 
 		Logger.getInstance().logRobotThread(Level.INFO, "Auto" + AutoModeSelector.getInstance().getAutoMode().toString());
 		Logger.getInstance().logRobotThread(Level.INFO, "End robotInit()");

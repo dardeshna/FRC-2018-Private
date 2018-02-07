@@ -5,46 +5,50 @@ package com.palyrobotics.frc2018.config;
  */
 public class AutoDistances {
 	//Base line
-	public final static double kRedBaseLineDistanceInches = 110;
-	public final static double kBlueBaseLineDistanceInches = 110;
+	public static double kRedBaseLineDistanceInches;
+	public static double kBlueBaseLineDistanceInches;
 
-	//Switch
-	public final static double kRedRightSwitchX = 0;
-	public final static double kRedRightSwitchY = 0;
+	//Switches
+	public static double kRedRightSwitchX;
+	public static double kRedRightSwitchY;
+	
+	public static double kBlueRightSwitchX;
+	public static double kBlueRightSwitchY;
+	
+	public static double kRedLeftSwitchX;
+	public static double kRedLeftSwitchY;
+	
+	public static double kBlueLeftSwitchX;
+	public static double kBlueLeftSwitchY;
 
-	public final static double kBlueRightSwitchX = 0;
-	public final static double kBlueRightSwitchY = 0;
+	//Scales
+	public static double kBlueLeftScaleX;
+	public static double kBlueLeftScaleY;
 
-	public final static double kRedLeftSwitchX = 0;
-	public final static double kRedLeftSwitchY = 0;
+	public static double kBlueRightScaleX;
+	public static double kBlueRightScaleY;
 
-	public final static double kBlueLeftSwitchX = 0;
-	public final static double kBlueLeftSwitchY = 0;
+	public static double kRedLeftScaleX;
+	public static double kRedLeftScaleY;
 
-	public final static double kBlueLeftScaleX = 0;
-	public final static double kBlueLeftScaleY = 0;
+	public static double kRedRightScaleX;
+	public static double kRedRightScaleY;
 
-	public final static double kBlueRightScaleX = 0;
-	public final static double kBlueRightScaleY = 0;
+	//Offsets
+	public static double kRedLeftCornerOffset;
+	public static double kRedRightCornerOffset;
 
-	public final static double kRedLeftScaleX = 0;
-	public final static double kRedLeftScaleY = 0;
+	public static double kBlueLeftCornerOffset;
+	public static double kBlueRightCornerOffset;
 
-	public final static double kRedRightScaleX = 0;
-	public final static double kRedRightScaleY = 0;
+	//Self explanatory
+	public static double kFieldWidth;
 
-	public final static double kRedLeftCornerOffset = 0;
+	//Length from left field wall to right edge of the exchange zone
+	public static double kBlueLeftToCenterY;
+	public static double kRedLeftToCenterY;
 
-	public final static double kRedRightCornerOffset = 0;
-
-	public final static double kBlueLeftCornerOffset = 0;
-	public final static double kBlueRightCornerOffset = 0;
-
-	public final static double kFieldWidth = 0;
-
-	public final static double kBlueLeftToCenterY = 0;
-	public final static double kRedLeftToCenterY = 0;
-
-	public final static double kBlueScaleSwitchMidlineX = 0;
-	public final static double kRedScaleSwitchMidlineX = 0;
+	//Distance to the somewhat arbitrary line between the scale and the switch along which the robot drives
+	public static double kBlueScaleSwitchMidlineX;
+	public static double kRedScaleSwitchMidlineX;
 }

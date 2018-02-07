@@ -8,7 +8,7 @@ public class DriverProfiles {
 	 * 
 	 * @author Justin
 	 */
-	public static void configConstants() {
+	public static void configureConstants() {
 		switch(Constants.kDriverName) {
 			case ERIC:
 				Constants.kDeadband = 0.02;
