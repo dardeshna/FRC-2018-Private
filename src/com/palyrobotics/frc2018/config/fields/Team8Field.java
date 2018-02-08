@@ -9,17 +9,20 @@ public class Team8Field {
         AutoDistances.kBlueBaseLineDistanceInches = 121.0;
 
         //Switches
-        AutoDistances.kRedRightSwitchX = 0;
-        AutoDistances.kRedRightSwitchY = 0;
+        AutoDistances.kRedRightSwitchX = 100;
+        AutoDistances.kRedRightSwitchY = 50;
 
         AutoDistances.kBlueRightSwitchX = 139.5;
         AutoDistances.kBlueRightSwitchY = 82.5;
 
-        AutoDistances.kRedLeftSwitchX = 0;
-        AutoDistances.kRedLeftSwitchY = 0;
+        AutoDistances.kRedLeftSwitchX = 100;
+        AutoDistances.kRedLeftSwitchY = 50;
 
         AutoDistances.kBlueLeftSwitchX = 139.5;
         AutoDistances.kBlueLeftSwitchY = 85.0;
+
+        AutoDistances.kBlueLeftSwitchX = 100;
+        AutoDistances.kBlueLeftSwitchY = 50;
 
         //Scales
         AutoDistances.kBlueLeftScaleX = 0;

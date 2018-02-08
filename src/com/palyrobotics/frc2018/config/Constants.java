@@ -89,8 +89,8 @@ public class Constants {
 	/**
 	 * Physical robot Constants
 	 */
-	public static final double kRobotWidthInches = 40.0;
-	public static final double kRobotLengthInches = 31.0;
+	public static final double kRobotWidthInches = 27.0;
+	public static final double kRobotLengthInches = 32.0;
 
 	/**
 	 * Tolerances

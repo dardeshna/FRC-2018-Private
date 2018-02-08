@@ -200,4 +200,8 @@ public class Path {
 			}
 		}
 	}
+
+	public List<Waypoint> getmWaypoints() {
+		return this.mWaypoints;
+	}
 }

@@ -6,6 +6,9 @@ import com.palyrobotics.frc2018.subsystems.Drive;
 import com.palyrobotics.frc2018.subsystems.Subsystem;
 import com.palyrobotics.frc2018.util.trajectory.Path;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Nihar on 4/5/17.
  */
@@ -54,5 +57,18 @@ public class DrivePathRoutine extends Routine {
 	@Override
 	public String getName() {
 		return "DrivePathRoutine";
+	}
+
+	@Override
+	public String toString() {
+		final int offsetX = 0;
+		final int offsetY = 0;
+		String enumeratedPath = "";
+		List<Path.Waypoint> path = mPath.getmWaypoints();
+		enumeratedPath += "0,0,0\n";
+		for (int i = 0; i < path.size(); i++) {
+			enumeratedPath += (path.get(i).position.getX() +offsetX)  + "," + (path.get(i).position.getY() + offsetY) + "," + path.get(i).speed + "\n";
+		}
+		return enumeratedPath;
 	}
 }

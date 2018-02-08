@@ -6,6 +6,8 @@ import com.palyrobotics.frc2018.subsystems.Elevator;
 import com.palyrobotics.frc2018.subsystems.Intake;
 import com.palyrobotics.frc2018.subsystems.Subsystem;
 
+import java.util.ArrayList;
+
 /**
  * Abstract superclass for a routine, which specifies an autonomous series of actions <br />
  * Each routine takes in Commands and returns modified Setpoints Requires the specific subsystems
@@ -38,6 +40,10 @@ public abstract class Routine {
 
 	//Force override of getName()
 	public abstract String getName();
+
+	public ArrayList<Routine> getEnclosingSequentialRoutine() {
+		return null;
+	}
 
 	@Override
 	public String toString() {
