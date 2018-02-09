@@ -142,8 +142,8 @@ public class Elevator extends Subsystem {
 			if(!kElevatorBottomPosition.isPresent() || !kElevatorTopPosition.isPresent()) {
 				mState = ElevatorState.CALIBRATING;
 			} else {
-				//If already calibrated, ignore it and hold
-				mState = ElevatorState.HOLD;
+				//If already calibrated, ignore it and hold next cycle
+				commands.wantedElevatorState = ElevatorState.HOLD;
 			}
 		} else if(commands.wantedElevatorState == ElevatorState.HOLD) {
 			//Set the wanted elevator position if not already set, or if switching from a
