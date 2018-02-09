@@ -23,7 +23,7 @@ public class BaselineAutoMode extends AutoModeBase {
 	
 	@Override
 	public String toString() {
-		return " Baseline Auto Mode";
+		return mAlliance + this.getClass().toString();
 	}
 
 	@Override

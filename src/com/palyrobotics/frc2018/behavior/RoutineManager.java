@@ -161,7 +161,6 @@ public class RoutineManager {
 				continue;
 			}
 		}
-		System.out.println("Conflicts are " + conflicts);
 		return conflicts;
 	}
 

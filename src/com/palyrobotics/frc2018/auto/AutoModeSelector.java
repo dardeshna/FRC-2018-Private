@@ -98,12 +98,12 @@ public class AutoModeSelector {
 
 		try {
 			fmsConnected = DriverStation.getInstance().isFMSAttached();
-		} catch(UnsatisfiedLinkError e) {
+		} catch(NoClassDefFoundError e) {
 			Logger.getInstance().logRobotThread(Level.WARNING, "FMS is not connected");
 		}
 
 		if(fmsConnected) {
-			return getAutoMode(AutoModeBase.mAlliance, AutoModeBase.mStartingPosition, AutoModeBase.mScaleDecision, 
+			return getAutoMode(AutoModeBase.mAlliance, AutoModeBase.mStartingPosition, AutoModeBase.mScaleDecision,
 					AutoModeBase.mSwitchDecision, AutoModeBase.mPriority);
 		} else {
 			return getAutoModeByIndex(0);

@@ -22,8 +22,31 @@ public class AutoFMS {
         return instance_;
     }
 
+    /*
+    For Unit Tests
+     */
+    private Side switchSide;
+    private Side scaleSide;
+
+    public void setSwitch(Side side) {
+        this.switchSide = side;
+    }
+
+    public void setScale(Side side) {
+        this.scaleSide = side;
+    }
+
     public Side getSwitchSide() {
-        String dataString = DriverStation.getInstance().getGameSpecificMessage();
+        String dataString;
+        try {
+            dataString = DriverStation.getInstance().getGameSpecificMessage();
+        }
+        catch (UnsatisfiedLinkError error) {
+            return this.switchSide;
+        }
+        catch (NoClassDefFoundError error) {
+            return this.switchSide;
+        }
         if(String.valueOf(dataString.charAt(0)).equals("L")) {
             return Side.LEFT;
         } else if(String.valueOf(dataString.charAt(0)).equals("R")) {
@@ -35,7 +58,16 @@ public class AutoFMS {
     }
 
     public Side getScaleSide() {
-        String dataString = DriverStation.getInstance().getGameSpecificMessage();
+        String dataString;
+        try {
+            dataString = DriverStation.getInstance().getGameSpecificMessage();
+        }
+        catch (UnsatisfiedLinkError error) {
+            return this.scaleSide;
+        }
+        catch (NoClassDefFoundError error) {
+            return this.scaleSide;
+        }
         if(String.valueOf(dataString.charAt(1)).equals("L")) {
             return Side.LEFT;
         } else if(String.valueOf(dataString.charAt(1)).equals("R")) {
