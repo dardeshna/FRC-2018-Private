@@ -13,13 +13,14 @@ public class AutoDistances {
 	public static double kRedRightSwitchY;
 	
 	public static double kBlueRightSwitchX;
+
 	public static double kBlueRightSwitchY;
-	
+
 	public static double kRedLeftSwitchX;
 	public static double kRedLeftSwitchY;
 	
 	public static double kBlueLeftSwitchX;
-	public static double kBlueLeftSwitchY;
+    public static double kBlueLeftSwitchY;
 
 	//Scales
 	public static double kBlueLeftScaleX;
