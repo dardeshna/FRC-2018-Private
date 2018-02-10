@@ -163,6 +163,8 @@ public class Constants {
 	public static final int kForsetiIntakeDistanceSensorID = 0;
 	public static final int kForsetiIntakeUpDownSolenoidForwardID = 1;
 	public static final int kForsetiIntakeUpDownSolenoidReverseID = 2;
+	public static final int kForsetiIntakeOpenCloseOtherSolenoidForwardID = 0; //TODO: add actual ports
+	public static final int kForsetiIntakeOpenCloseOtherSolenoidReverseID = 0;
 	public static final int kForsetiIntakeOpenCloseSolenoidForwardID = 3;
 	public static final int kForsetiIntakeOpenCloseSolenoidReverseID = 4;
 

@@ -121,14 +121,16 @@ public class HardwareAdapter {
 		public final WPI_TalonSRX masterTalon;
 		public final WPI_TalonSRX slaveTalon;
 		public final DoubleSolenoid upDownSolenoid;
-		public final DoubleSolenoid openCloseSolenoid;
+		public final Solenoid openCloseSolenoid;
+		public final Solenoid openCloseOtherSolenoid;
 		public final AnalogInput distanceSensor;
 
 		protected IntakeHardware() {
 			masterTalon = new WPI_TalonSRX(Constants.kForsetiIntakeMasterDeviceID);
 			slaveTalon = new WPI_TalonSRX(Constants.kForsetiIntakeSlaveDeviceID);
 			upDownSolenoid = new DoubleSolenoid(Constants.kForsetiIntakeUpDownSolenoidForwardID, Constants.kForsetiIntakeUpDownSolenoidReverseID);
-			openCloseSolenoid = new DoubleSolenoid(Constants.kForsetiIntakeOpenCloseSolenoidForwardID, Constants.kForsetiIntakeOpenCloseSolenoidReverseID);
+			openCloseSolenoid = new Solenoid(Constants.kForsetiIntakeOpenCloseSolenoidForwardID, Constants.kForsetiIntakeOpenCloseSolenoidReverseID);
+			openCloseOtherSolenoid = new Solenoid(Constants.kForsetiIntakeOpenCloseOtherSolenoidForwardID, Constants.kForsetiIntakeOpenCloseOtherSolenoidReverseID);
 			distanceSensor = new AnalogInput(Constants.kForsetiIntakeDistanceSensorID);
 		}
 	}

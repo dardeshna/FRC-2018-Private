@@ -5,9 +5,10 @@ import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.config.RobotState;
 import com.palyrobotics.frc2018.util.TalonSRXOutput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Solenoid;
 
 /**
- * @author Justin and Jason
+ * @author Justin and Jason and Prashanti
  */
 public class Intake extends Subsystem {
 	public static Intake instance = new Intake();
@@ -19,7 +20,7 @@ public class Intake extends Subsystem {
 	public static void resetInstance() { instance = new Intake(); }
 	
 	private TalonSRXOutput mTalonOutput = new TalonSRXOutput();
-	private DoubleSolenoid.Value mOpenCloseOutput = DoubleSolenoid.Value.kReverse;
+	private boolean[] mOpenCloseOutput = new boolean[2];
 	private DoubleSolenoid.Value mUpDownOutput = DoubleSolenoid.Value.kForward;
 
 	public enum WheelState {
@@ -31,7 +32,7 @@ public class Intake extends Subsystem {
 	}
 
 	public enum OpenCloseState {
-		OPEN, CLOSED
+		OPEN, CLOSED, NEUTRAL
 	}
 
 	private WheelState mWheelState = WheelState.IDLE;
@@ -85,15 +86,21 @@ public class Intake extends Subsystem {
 
 		switch(mOpenCloseState) {
 			case OPEN:
-				mOpenCloseOutput = DoubleSolenoid.Value.kReverse;
+				mOpenCloseOutput[0] = true;
+				mOpenCloseOutput[1] = false;
 				break;
 			case CLOSED:
-				mOpenCloseOutput = DoubleSolenoid.Value.kForward;
+				mOpenCloseOutput[0] = false;
+				mOpenCloseOutput[1] = true;
 				break;
+			case NEUTRAL:
+				mOpenCloseOutput[0] = false;
+				mOpenCloseOutput[1] = false;
+				
 		}
 	}
 
-	public WheelState getIntakeState() {
+	public WheelState getWheelState() {
 		return mWheelState;
 	}
 
@@ -109,7 +116,7 @@ public class Intake extends Subsystem {
 		return mTalonOutput;
 	}
 
-	public DoubleSolenoid.Value getOpenCloseOutput() {
+	public boolean[] getOpenCloseOutput() {
 		return mOpenCloseOutput;
 	}
 
