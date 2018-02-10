@@ -1,7 +1,7 @@
 package com.palyrobotics.frc2018.subsystems;
 
 import com.palyrobotics.frc2018.config.MockCommands;
-import com.palyrobotics.frc2018.config.RobotState;
+import com.palyrobotics.frc2018.config.MockRobotState;
 import com.palyrobotics.frc2018.robot.MockRobot;
 import com.palyrobotics.frc2018.util.CheesyDriveHelper;
 import com.palyrobotics.frc2018.util.DriveSignal;
@@ -13,6 +13,8 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 
+import java.util.Optional;
+
 /**
  * 
  * 
@@ -20,7 +22,7 @@ import static org.junit.Assert.assertThat;
  */
 public class DriveTest {
 	private static MockCommands commands;
-	private static RobotState state;
+	private static MockRobotState state;
 	private static Drive drive;
 
 	@Before
@@ -28,6 +30,7 @@ public class DriveTest {
 		commands = MockRobot.getCommands();
 		state = MockRobot.getRobotState();
 		drive = Drive.getInstance();
+		drive.setNeutral();
 	}
 
 	@After
@@ -40,13 +43,14 @@ public class DriveTest {
 	@Test
 	public void testOffboard() {
 		drive.update(commands, state);
-		commands.wantedDriveState = Drive.DriveState.OFF_BOARD_CONTROLLER;
-		drive.update(commands, state);
 
 		DriveSignal signal = DriveSignal.getNeutralSignal();
 		signal.leftMotor.setPercentOutput(0.5);
 		signal.rightMotor.setPercentOutput(0.5);
+		
 		drive.setTalonSRXController(signal);
+		commands.wantedDriveState = Drive.DriveState.OFF_BOARD_CONTROLLER;
+		
 		drive.update(commands, state);
 		assertThat("not updating correctly", drive.getDriveSignal(), equalTo(signal));
 		signal.leftMotor.setPercentOutput(1);
@@ -57,15 +61,16 @@ public class DriveTest {
 	@Test
 	public void testPassByReference() {
 		drive.update(commands, state);
-		commands.wantedDriveState = Drive.DriveState.OFF_BOARD_CONTROLLER;
-		drive.update(commands, state);
 
-		DriveSignal newSignal = DriveSignal.getNeutralSignal();
-		newSignal.leftMotor.setPercentOutput(1);
-		newSignal.rightMotor.setPercentOutput(1);
-		drive.setTalonSRXController(newSignal);
+		DriveSignal signal = DriveSignal.getNeutralSignal();
+		signal.leftMotor.setPercentOutput(0.5);
+		signal.rightMotor.setPercentOutput(0.5);
+		
+		drive.setTalonSRXController(signal);
+		commands.wantedDriveState = Drive.DriveState.OFF_BOARD_CONTROLLER;
+		
 		drive.update(commands, state);
-		assertThat("not updating correctly", drive.getDriveSignal(), equalTo(newSignal));
+		assertThat("not updating correctly", drive.getDriveSignal(), equalTo(signal));
 	}
 
 	@Test
@@ -79,13 +84,13 @@ public class DriveTest {
 	public void testChezyDrive() {
 		commands.wantedDriveState = Drive.DriveState.CHEZY;
 		drive.update(commands, state);
-		assertThat("Did not sucessfully set CheesyDrive", drive.getController(), equalTo(CheesyDriveHelper.class));
+		assertThat("Did not sucessfully set CheesyDrive", drive.getDriveSignal(), equalTo(new CheesyDriveHelper().cheesyDrive(commands, state)));
 	}
 
 	@Test
 	public void testOpenLoop() {
 		commands.wantedDriveState = Drive.DriveState.OPEN_LOOP;
-		commands.robotSetpoints.setDrivePowerSetpoint(DriveSignal.getNeutralSignal());
+		commands.robotSetpoints.drivePowerSetpoint = Optional.of(DriveSignal.getNeutralSignal());
 		drive.update(commands, state);
 		assertThat("Drive output not corresponding to driveSetpoint", commands.robotSetpoints.drivePowerSetpoint.orElse(null), equalTo(drive.getDriveSignal()));
 	}

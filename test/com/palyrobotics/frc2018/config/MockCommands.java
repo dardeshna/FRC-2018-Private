@@ -53,7 +53,7 @@ public class MockCommands extends Commands {
 			this.drivePowerSetpoint = Optional.of(driveSignal);
 		}
 	}
-	public MockSetpoints robotSetpoints = new MockSetpoints();
+	public MockSetpoints mockSetpoints = new MockSetpoints();
 	
 	public boolean cancelCurrentRoutines = false;
 }
