@@ -33,6 +33,7 @@ public abstract class AutoModeBase {
 		SWITCH
 	}
 	
+	// To set the auto mode, set these variables in code!
 	public static Alliance mAlliance = null;
 	public static StartingPosition mStartingPosition = null;
 	public static Decision mScaleDecision = null;
@@ -47,5 +48,9 @@ public abstract class AutoModeBase {
 
 	public boolean isActive() {
 		return active;
+	}
+	
+	public String getKey() {
+		return "";
 	}
 }

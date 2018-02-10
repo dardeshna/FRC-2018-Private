@@ -1,5 +1,6 @@
 package com.palyrobotics.frc2018.auto;
 
+import com.palyrobotics.frc2018.auto.AutoFMS.Side;
 import com.palyrobotics.frc2018.auto.AutoModeBase.Alliance;
 import com.palyrobotics.frc2018.auto.AutoModeBase.Decision;
 import com.palyrobotics.frc2018.auto.AutoModeBase.Priority;
@@ -10,6 +11,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import org.json.simple.JSONArray;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Level;
 
 /**
@@ -18,6 +20,7 @@ import java.util.logging.Level;
 public class AutoModeSelector {
 	private static AutoModeSelector instance = null;
 	private ArrayList<AutoModeBase> mAutoModes = new ArrayList<>();
+	private HashMap<String, Integer> mAutoMap = new HashMap<>();
 
 	private AutoFMS autoFMS = AutoFMS.getInstance();
 
@@ -30,44 +33,44 @@ public class AutoModeSelector {
 
 	protected AutoModeSelector() {
 		// left to right, blue alliance to red alliance
-		/* 0 */ registerAutonomous(new BaselineAutoMode(Alliance.BLUE));
-		/* 1 */ registerAutonomous(new BaselineAutoMode(Alliance.RED));
+		/* 0 */ registerAutonomous(new BaselineAutoMode(Alliance.BLUE), 0);
+		/* 1 */ registerAutonomous(new BaselineAutoMode(Alliance.RED), 1);
 
-		/* 2 */ registerAutonomous(new LeftStartLeftSwitchAutoMode(Alliance.BLUE));
-		/* 3 */ registerAutonomous(new LeftStartLeftSwitchAutoMode(Alliance.RED));
+		/* 2 */ registerAutonomous(new LeftStartLeftSwitchAutoMode(Alliance.BLUE), 2);
+		/* 3 */ registerAutonomous(new LeftStartLeftSwitchAutoMode(Alliance.RED), 3);
 
-		/* 4 */ registerAutonomous(new CenterStartLeftSwitchAutoMode(Alliance.BLUE));
-		/* 5 */ registerAutonomous(new CenterStartLeftSwitchAutoMode(Alliance.RED));
+		/* 4 */ registerAutonomous(new CenterStartLeftSwitchAutoMode(Alliance.BLUE), 4);
+		/* 5 */ registerAutonomous(new CenterStartLeftSwitchAutoMode(Alliance.RED), 5);
 
-		/* 6 */ registerAutonomous(new RightStartLeftSwitchAutoMode(Alliance.BLUE));
-		/* 7 */ registerAutonomous(new RightStartLeftSwitchAutoMode(Alliance.RED));
+		/* 6 */ registerAutonomous(new RightStartLeftSwitchAutoMode(Alliance.BLUE), 6);
+		/* 7 */ registerAutonomous(new RightStartLeftSwitchAutoMode(Alliance.RED), 7);
 
-		/* 8 */ registerAutonomous(new LeftStartRightSwitchAutoMode(Alliance.BLUE));
-		/* 9 */ registerAutonomous(new LeftStartRightSwitchAutoMode(Alliance.RED));
+		/* 8 */ registerAutonomous(new LeftStartRightSwitchAutoMode(Alliance.BLUE), 8);
+		/* 9 */ registerAutonomous(new LeftStartRightSwitchAutoMode(Alliance.RED), 9);
 
-		/* 10 */ registerAutonomous(new CenterStartRightSwitchAutoMode(Alliance.BLUE));
-		/* 11 */ registerAutonomous(new CenterStartRightSwitchAutoMode(Alliance.RED));
+		/* 10 */ registerAutonomous(new CenterStartRightSwitchAutoMode(Alliance.BLUE), 10);
+		/* 11 */ registerAutonomous(new CenterStartRightSwitchAutoMode(Alliance.RED), 11);
 
-		/* 12 */ registerAutonomous(new RightStartRightSwitchAutoMode(Alliance.BLUE));
-		/* 13 */ registerAutonomous(new RightStartRightSwitchAutoMode(Alliance.RED));
+		/* 12 */ registerAutonomous(new RightStartRightSwitchAutoMode(Alliance.BLUE), 12);
+		/* 13 */ registerAutonomous(new RightStartRightSwitchAutoMode(Alliance.RED), 13);
 
-		/* 14 */ registerAutonomous(new LeftStartLeftScaleAutoMode(Alliance.BLUE));
-		/* 15 */ registerAutonomous(new LeftStartLeftScaleAutoMode(Alliance.RED));
+		/* 14 */ registerAutonomous(new LeftStartLeftScaleAutoMode(Alliance.BLUE), 14);
+		/* 15 */ registerAutonomous(new LeftStartLeftScaleAutoMode(Alliance.RED), 15);
 
-		/* 16 */ registerAutonomous(new CenterStartLeftScaleAutoMode(Alliance.BLUE));
-		/* 17 */ registerAutonomous(new CenterStartLeftScaleAutoMode(Alliance.RED));
+		/* 16 */ registerAutonomous(new CenterStartLeftScaleAutoMode(Alliance.BLUE), 16);
+		/* 17 */ registerAutonomous(new CenterStartLeftScaleAutoMode(Alliance.RED), 17);
 
-		/* 18 */ registerAutonomous(new RightStartLeftScaleAutoMode(Alliance.BLUE));
-		/* 19 */ registerAutonomous(new RightStartLeftScaleAutoMode(Alliance.RED));
+		/* 18 */ registerAutonomous(new RightStartLeftScaleAutoMode(Alliance.BLUE), 18);
+		/* 19 */ registerAutonomous(new RightStartLeftScaleAutoMode(Alliance.RED), 19);
 
-		/* 20 */ registerAutonomous(new LeftStartRightScaleAutoMode(Alliance.BLUE));
-		/* 21 */ registerAutonomous(new LeftStartRightScaleAutoMode(Alliance.RED));
+		/* 20 */ registerAutonomous(new LeftStartRightScaleAutoMode(Alliance.BLUE), 20);
+		/* 21 */ registerAutonomous(new LeftStartRightScaleAutoMode(Alliance.RED), 21);
 
-		/* 22 */ registerAutonomous(new CenterStartRightScaleAutoMode(Alliance.BLUE));
-		/* 23 */ registerAutonomous(new CenterStartRightScaleAutoMode(Alliance.RED));
+		/* 22 */ registerAutonomous(new CenterStartRightScaleAutoMode(Alliance.BLUE), 22);
+		/* 23 */ registerAutonomous(new CenterStartRightScaleAutoMode(Alliance.RED), 23);
 
-		/* 24 */ registerAutonomous(new RightStartRightScaleAutoMode(Alliance.BLUE));
-		/* 25 */ registerAutonomous(new RightStartRightScaleAutoMode(Alliance.RED));
+		/* 24 */ registerAutonomous(new RightStartRightScaleAutoMode(Alliance.BLUE), 24);
+		/* 25 */ registerAutonomous(new RightStartRightScaleAutoMode(Alliance.RED), 25);
 
 	}
 
@@ -77,8 +80,9 @@ public class AutoModeSelector {
 	 * @param auto
 	 *            AutoMode to add
 	 */
-	public void registerAutonomous(AutoModeBase auto) {
+	public void registerAutonomous(AutoModeBase auto, int id) {
 		mAutoModes.add(auto);
+		mAutoMap.put(auto.getKey(), id);
 	}
 
 	/**
@@ -111,180 +115,35 @@ public class AutoModeSelector {
 	 * 
 	 * @return AutoMode at specified index
 	 */
+	
 	public AutoModeBase getAutoMode(Alliance alliance, StartingPosition startingPosition, Decision scaleDecision, Decision switchDecision, Priority priority) {
 
 		//Final index
 		int selectedIndex;
 
-		//Intermediate indices
+		//Index of the ideal scale and switch autos; the robot's priority determines which one is run
 		int scaleIndex = -1;
 		int switchIndex = -1;
-
-		/**
-		 * Below is the nastiest block of logic you will ever see in your life
-		 * Here is how it works
-		 *
-		 * 1. Check left/center/right starting cases
-		 * 2. In each case, check the actual scale position. Match with the desired decision, then match with alliance
-		 * 3. In each case, check the actual switch position. Match with the desired decision, then match with alliance
-		 *
-		 * After these, check the scale/switch priority and set the desired index
-		 * Have fun
-		 */
-
-		if(startingPosition == StartingPosition.LEFT) {
-			//Scale decision block
-			if(autoFMS.getScaleSide() == AutoFMS.Side.LEFT) {
-				if(scaleDecision == Decision.LEFT || scaleDecision == Decision.BOTH) {
-					if(alliance == Alliance.BLUE) {
-						scaleIndex = 14;
-					} else if(alliance == Alliance.RED) {
-						scaleIndex = 15;
-					} else {
-						Logger.getInstance().logRobotThread(Level.WARNING, "Alliance not set, defaulting to baseline");
-					}
-				}
-			} else if(autoFMS.getScaleSide() == AutoFMS.Side.RIGHT){
-				if(scaleDecision == Decision.RIGHT || scaleDecision == Decision.BOTH) {
-					if(alliance == Alliance.BLUE) {
-						scaleIndex = 20;
-					} else if(alliance == Alliance.RED) {
-						scaleIndex = 21;
-					} else {
-						Logger.getInstance().logRobotThread(Level.WARNING, "Alliance not set, defaulting to baseline");
-					}
-				}
-			} else {
-				Logger.getInstance().logRobotThread(Level.WARNING, "Defaulting scale to baseline");
+		
+		AutoFMS.Side scaleSide = autoFMS.getScaleSide();
+		AutoFMS.Side switchSide = autoFMS.getSwitchSide();
+		
+		//Find ideal scale auto, or the auto it would execute if it had to score on the scale
+		if(scaleDecision != Decision.NEVER) {
+			if(scaleDecision == Decision.BOTH || (scaleDecision == Decision.LEFT && scaleSide == Side.LEFT) || scaleDecision == Decision.RIGHT && scaleSide == Side.RIGHT) {
+				String key = alliance + " " + startingPosition + " SCALE " + scaleSide;
+				scaleIndex = mAutoMap.get(key);
+				Logger.getInstance().logRobotThread(Level.INFO, "Attempted to find scale auto mode with this key: " + key);
 			}
-
-			//Switch decision block
-			if(autoFMS.getSwitchSide() == AutoFMS.Side.LEFT) {
-				if(switchDecision == Decision.LEFT || switchDecision == Decision.BOTH) {
-					if(alliance == Alliance.BLUE) {
-						switchIndex = 2;
-					} else if(alliance == Alliance.RED) {
-						switchIndex = 3;
-					} else {
-						Logger.getInstance().logRobotThread(Level.WARNING, "Alliance not set, defaulting to baseline");
-					}
-				}
-			} else if(autoFMS.getSwitchSide() == AutoFMS.Side.RIGHT) {
-				if(switchDecision == Decision.RIGHT || switchDecision == Decision.BOTH) {
-					if(alliance == Alliance.BLUE) {
-						switchIndex = 8;
-					} else if(alliance == Alliance.RED) {
-						switchIndex = 9;
-					} else {
-						Logger.getInstance().logRobotThread(Level.WARNING, "Alliance not set, defaulting to baseline");
-					}
-				}
-			} else {
-				Logger.getInstance().logRobotThread(Level.WARNING, "No side received from FMS, defaulting switch to baseline");
+		}
+		
+		//Find ideal switch auto, or the auto it would execute if it had to score on the switch
+		if(switchDecision != Decision.NEVER) {
+			if(switchDecision == Decision.BOTH || (switchDecision == Decision.LEFT && switchSide == Side.LEFT) || switchDecision == Decision.RIGHT && switchSide == Side.RIGHT) {
+				String key = alliance + " " + startingPosition + " SWITCH " + switchSide;
+				switchIndex = mAutoMap.get(key);
+				Logger.getInstance().logRobotThread(Level.INFO, "Attempted to find switch auto mode with this key: " + key);
 			}
-		} else if(startingPosition == StartingPosition.CENTER) {
-			//Scale decision block
-			if(autoFMS.getScaleSide() == AutoFMS.Side.LEFT) {
-				if(scaleDecision == Decision.LEFT || scaleDecision == Decision.BOTH) {
-					if(alliance == Alliance.BLUE) {
-						scaleIndex = 16;
-					} else if(alliance == Alliance.RED) {
-						scaleIndex = 17;
-					} else {
-						Logger.getInstance().logRobotThread(Level.WARNING, "Alliance not set, defaulting to baseline");
-					}
-				}
-			} else if(autoFMS.getScaleSide() == AutoFMS.Side.RIGHT){
-				if(scaleDecision == Decision.RIGHT || scaleDecision == Decision.BOTH) {
-					if(alliance == Alliance.BLUE) {
-						scaleIndex = 22;
-					} else if(alliance == Alliance.RED) {
-						scaleIndex = 23;
-					} else {
-						Logger.getInstance().logRobotThread(Level.WARNING, "Alliance not set, defaulting to baseline");
-					}
-				}
-			} else {
-				Logger.getInstance().logRobotThread(Level.WARNING, "Defaulting scale to baseline");
-			}
-
-			//Switch decision block
-			if(autoFMS.getSwitchSide() == AutoFMS.Side.LEFT) {
-				if(switchDecision == Decision.LEFT || switchDecision == Decision.BOTH) {
-					if(alliance == Alliance.BLUE) {
-						switchIndex = 4;
-					} else if(alliance == Alliance.RED) {
-						switchIndex = 5;
-					} else {
-						Logger.getInstance().logRobotThread(Level.WARNING, "Alliance not set, defaulting to baseline");
-					}
-				}
-			} else if(autoFMS.getSwitchSide() == AutoFMS.Side.RIGHT) {
-				if(switchDecision == Decision.RIGHT || switchDecision == Decision.BOTH) {
-					if(alliance == Alliance.BLUE) {
-						switchIndex = 10;
-					} else if(alliance == Alliance.RED) {
-						switchIndex = 11;
-					} else {
-						Logger.getInstance().logRobotThread(Level.WARNING, "Alliance not set, defaulting to baseline");
-					}
-				}
-			} else {
-				Logger.getInstance().logRobotThread(Level.WARNING, "Defaulting switch to baseline");
-			}
-
-		} else if(startingPosition == StartingPosition.RIGHT) {
-			//Scale decision block
-			if(autoFMS.getScaleSide() == AutoFMS.Side.LEFT) {
-				if(scaleDecision == Decision.LEFT || scaleDecision == Decision.BOTH) {
-					if(alliance == Alliance.BLUE) {
-						scaleIndex = 18;
-					} else if(alliance == Alliance.RED) {
-						scaleIndex = 19;
-					} else {
-						Logger.getInstance().logRobotThread(Level.WARNING, "Alliance not set, defaulting to baseline");
-					}
-				}
-			} else if(autoFMS.getScaleSide() == AutoFMS.Side.RIGHT){
-				if(scaleDecision == Decision.RIGHT || scaleDecision == Decision.BOTH) {
-					if(alliance == Alliance.BLUE) {
-						scaleIndex = 24;
-					} else if(alliance == Alliance.RED) {
-						scaleIndex = 25;
-					} else {
-						Logger.getInstance().logRobotThread(Level.WARNING, "Alliance not set, defaulting to baseline");
-					}
-				}
-			} else {
-				Logger.getInstance().logRobotThread(Level.WARNING, "Defaulting scale to baseline");
-			}
-
-			//Switch decision block
-			if(autoFMS.getSwitchSide() == AutoFMS.Side.LEFT) {
-				if(switchDecision == Decision.LEFT || switchDecision == Decision.BOTH) {
-					if(alliance == Alliance.BLUE) {
-						switchIndex = 6;
-					} else if(alliance == Alliance.RED) {
-						switchIndex = 7;
-					} else {
-						Logger.getInstance().logRobotThread(Level.WARNING, "Alliance not set, defaulting to baseline");
-					}
-				}
-			} else if(autoFMS.getSwitchSide() == AutoFMS.Side.RIGHT) {
-				if(switchDecision == Decision.RIGHT || switchDecision == Decision.BOTH) {
-					if(alliance == Alliance.BLUE) {
-						switchIndex = 12;
-					} else if(alliance == Alliance.RED) {
-						switchIndex = 13;
-					} else {
-						Logger.getInstance().logRobotThread(Level.WARNING, "Alliance not set, defaulting to baseline");
-					}
-				}
-			} else {
-				Logger.getInstance().logRobotThread(Level.WARNING, "Defaulting switch to baseline");
-			}
-		} else {
-			Logger.getInstance().logRobotThread(Level.WARNING, "Starting position not set, defaulting to baseline!");
 		}
 
 		//Priority checking
@@ -294,7 +153,7 @@ public class AutoModeSelector {
 			} else if(switchIndex != -1) {
 				selectedIndex = switchIndex;
 			} else {
-				selectedIndex = (alliance == Alliance.BLUE) ? 0 : 1;
+				selectedIndex = mAutoMap.get(alliance.toString());
 			}
 		} else if(priority == Priority.SWITCH) {
 			if(switchIndex != -1) {
@@ -302,14 +161,16 @@ public class AutoModeSelector {
 			} else if(scaleIndex != -1) {
 				selectedIndex = scaleIndex;
 			} else {
-				selectedIndex = (alliance == Alliance.BLUE) ? 0 : 1;
+				selectedIndex = mAutoMap.get(alliance.toString());
 			}
 		} else {
 			selectedIndex = (alliance == Alliance.BLUE) ? 0 : 1;
 			Logger.getInstance().logRobotThread(Level.WARNING, "Priority not set, defaulting to baseline!");
 		}
 
-		return mAutoModes.get(selectedIndex);
+		AutoModeBase selectedAuto = mAutoModes.get(selectedIndex);
+		Logger.getInstance().logRobotThread(Level.INFO, "Selected " + selectedAuto);
+		return selectedAuto;
 	}
 
 	/**
@@ -339,16 +200,13 @@ public class AutoModeSelector {
 	 * @see AutoModeBase#toString()
 	 */
 	public AutoModeBase getAutoModeByName(String name) {
-		int numOccurrences = 0;
-		for(int i = 0; i < mAutoModes.size(); i++) {
-			if(mAutoModes.get(i).toString().equals(name)) {
-				return getAutoModeByIndex(i);
-			}
+		if(!(mAutoMap.containsKey(name))) {
+			Logger.getInstance().logRobotThread(Level.WARNING, "AutoModeSelector does not contain auto mode", name);
+			return null;
 		}
-
-		Logger.getInstance().logRobotThread(Level.FINE, ((numOccurrences == 0) ? "Couldn't find AutoMode" : "Found multiple AutoModes"), name);
-		Logger.getInstance().logRobotThread(Level.WARNING, "Didn't set AutoMode");
-		return null;
+		int index = mAutoMap.get(name);
+		Logger.getInstance().logRobotThread(Level.INFO, "Setting auto mode by name", name);
+		return mAutoModes.get(index);
 	}
 
 	//TODO: what's this supposed to do
@@ -363,10 +221,10 @@ public class AutoModeSelector {
 
 	public AutoModeBase getAutoModeByIndex(int index) {
 		if(index < 0 || index >= mAutoModes.size()) {
+			Logger.getInstance().logRobotThread(Level.WARNING, "Invalid AutoMode index, defautling to 0", index);
 			index = 0;
 		}
-		Logger.getInstance().logRobotThread(Level.INFO, "Selected AutoMode", mAutoModes.get(index));
+		Logger.getInstance().logRobotThread(Level.INFO, "Selected AutoMode by index", mAutoModes.get(index));
 		return mAutoModes.get(index);
 	}
-
 }

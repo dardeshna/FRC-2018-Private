@@ -62,4 +62,9 @@ public class CenterStartRightScaleAutoMode extends AutoModeBase {
 
         return new SequentialRoutine(routines);
     }
+
+	@Override
+	public String getKey() {
+		return mAlliance + " CENTER SCALE RIGHT";
+	}
 }

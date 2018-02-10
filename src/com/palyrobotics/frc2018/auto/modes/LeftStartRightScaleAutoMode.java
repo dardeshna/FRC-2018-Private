@@ -60,4 +60,9 @@ public class LeftStartRightScaleAutoMode extends AutoModeBase {
 
         return new SequentialRoutine(routines);
     }
+
+	@Override
+	public String getKey() {
+		return mAlliance + " LEFT SCALE RIGHT";
+	}
 }

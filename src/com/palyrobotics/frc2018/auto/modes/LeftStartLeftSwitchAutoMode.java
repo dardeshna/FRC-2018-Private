@@ -52,4 +52,9 @@ public class LeftStartLeftSwitchAutoMode extends AutoModeBase {
 
         return new SequentialRoutine(routines);
     }
+
+	@Override
+	public String getKey() {
+		return mAlliance + " LEFT SWITCH LEFT";
+	}
 }

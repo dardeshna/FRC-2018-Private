@@ -58,5 +58,4 @@ public class TestAutoMode extends AutoModeBase {
 
 		return new SequentialRoutine(sequence);
 	}
-
 }

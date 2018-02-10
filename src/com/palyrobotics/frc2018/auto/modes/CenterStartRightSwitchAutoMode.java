@@ -64,4 +64,8 @@ public class CenterStartRightSwitchAutoMode extends AutoModeBase {
         return new SequentialRoutine(routines);
 	}
 
+	@Override
+	public String getKey() {
+		return mAlliance + " CENTER SWITCH RIGHT";
+	}
 }

@@ -60,4 +60,9 @@ public class RightStartLeftSwitchAutoMode extends AutoModeBase {
 
         return new SequentialRoutine(routines);
     }
+
+	@Override
+	public String getKey() {
+		return mAlliance + " RIGHT SWITCH LEFT";
+	}
 }
