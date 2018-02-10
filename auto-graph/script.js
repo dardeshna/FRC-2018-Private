@@ -386,15 +386,15 @@ function importData() {
 			var y = NaN
 
 			if (name[0] == "C" || name[0] == "B") {
-				x = 118
+				x = 108
 				y = 164
 			}
 			else if (name[0] == "L") {
-				x = 118
+				x = 108
 				y = 264
 			}
 			else {
-				x = 118
+				x = 108
 				y = 64
 			}
 

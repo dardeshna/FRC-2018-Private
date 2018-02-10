@@ -18,7 +18,7 @@ public class AutoGrapher {
     @Test
     public void showAuto() throws IOException {
         FieldSelector.configureFieldMeasurements();
-        for (int i = 0; i < 26; i++) {
+        for (int i = 0; i < 26; i+=2) {
             loadAutos(AutoModeSelector.getInstance().getAutoModeByIndex(i));
         }
 
