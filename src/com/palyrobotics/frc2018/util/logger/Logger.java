@@ -46,8 +46,8 @@ public class Logger {
 	//Stores the runnable for the thread to be restarted
 	private Runnable mRunnable;
 
-	StringWriter sw = new StringWriter();
-	PrintWriter pw = new PrintWriter(sw);
+	private StringWriter sw = new StringWriter();
+	private PrintWriter pw = new PrintWriter(sw);
 
 	private int duplicatePrevent = 0;
 	private File mainLog;

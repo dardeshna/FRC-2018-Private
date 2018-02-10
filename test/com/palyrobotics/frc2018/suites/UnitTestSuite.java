@@ -8,12 +8,11 @@ import com.palyrobotics.frc2018.subsystems.ClimberTest;
 import com.palyrobotics.frc2018.subsystems.DriveTest;
 import com.palyrobotics.frc2018.subsystems.IntakeTest;
 import com.palyrobotics.frc2018.util.CheesyDriveHelperTest;
-import com.palyrobotics.frc2018.util.logger.LoggerTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ DriveTest.class, CommandsTest.class, CheesyDriveHelperTest.class, LoggerTest.class, RoutineManagerTest.class, AutoModeSelectorTest.class,
+@Suite.SuiteClasses({ DriveTest.class, CommandsTest.class, CheesyDriveHelperTest.class, RoutineManagerTest.class, AutoModeSelectorTest.class,
 	 ClimberTest.class, IntakeTest.class, CommandsTest.class, RobotStateTest.class, RoutineManagerTest.class
 })
 /**
