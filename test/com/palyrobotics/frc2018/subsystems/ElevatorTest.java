@@ -1,5 +1,6 @@
 package com.palyrobotics.frc2018.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.palyrobotics.frc2018.config.Commands;
 import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.config.MockCommands;
@@ -156,6 +157,32 @@ public class ElevatorTest {
 		elevator.update(commands, robotState);
 		assertThat("Bottom encoder position not properly updated!", elevator.getElevatorBottomPosition(), equalTo(Optional.of(-500.0)));
 		robotState.elevatorBottomHFX = false;
+	}
+	
+	@Test
+	public void testHold() {
+		//Obligatory calibration
+		robotState.elevatorBottomHFX = true;
+		robotState.elevatorPosition = 0;
+		elevator.update(commands, robotState);
+		robotState.elevatorBottomHFX = true;
+		
+		commands.wantedElevatorState = ElevatorState.HOLD;
+		elevator.update(commands, robotState);
+		assertThat("Elevator gives power when at the bottom for hold!", elevator.getOutput().getControlMode(), equalTo(ControlMode.PercentOutput));
+		assertThat("Elevator gives power when at the bottom for hold!", elevator.getOutput().getSetpoint(), equalTo(0.0));
+		
+		robotState.elevatorPosition = 100;
+		elevator.update(commands, robotState);
+		assertThat("Elevator gives power when at the bottom for hold!", elevator.getOutput().getControlMode(), equalTo(ControlMode.PercentOutput));
+		assertThat("Elevator gives power when at the bottom for hold!", elevator.getOutput().getSetpoint(), equalTo(0.0));
+		
+		robotState.elevatorBottomHFX = false;
+		robotState.elevatorTopHFX = true;
+		elevator.update(commands, robotState);
+		assertThat("Elevator doesn't give power when not at the bottom!", elevator.getOutput().getControlMode(), equalTo(ControlMode.Position));
+		assertThat("Elevator doesn't give power when not at the bottom!", elevator.getOutput().getSetpoint(), equalTo(0.0));
+
 	}
 
 	@Before
