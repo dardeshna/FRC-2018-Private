@@ -1,10 +1,13 @@
 package com.palyrobotics.frc2018.auto.modes;
 
 import com.palyrobotics.frc2018.auto.AutoModeBase;
+import com.palyrobotics.frc2018.behavior.ParallelRoutine;
 import com.palyrobotics.frc2018.behavior.Routine;
 import com.palyrobotics.frc2018.behavior.SequentialRoutine;
 import com.palyrobotics.frc2018.behavior.routines.drive.DrivePathRoutine;
 import com.palyrobotics.frc2018.behavior.routines.drive.DriveSensorResetRoutine;
+import com.palyrobotics.frc2018.behavior.routines.elevator.ElevatorCustomPositioningRoutine;
+import com.palyrobotics.frc2018.behavior.routines.intake.IntakeOpenRoutine;
 import com.palyrobotics.frc2018.config.AutoDistances;
 import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.util.trajectory.Path;
@@ -58,11 +61,20 @@ public class LeftStartLeftScaleAutoMode extends AutoModeBase {
                     (Constants.kRobotWidthInches/2.0 + AutoDistances.kRedLeftCornerOffset)
                             - AutoDistances.kRedLeftScaleY - Constants.kPlateWidth/2.0), 0.0));
         }
-        ArrayList<Routine> routines = new ArrayList<>();
-        routines.add(new DriveSensorResetRoutine());
-        routines.add(new DrivePathRoutine(new Path(path), false));
-
-        return new SequentialRoutine(routines);
+        ArrayList<Routine> driveRoutines = new ArrayList<>();
+        driveRoutines.add(new DriveSensorResetRoutine());
+        driveRoutines.add(new DrivePathRoutine(new Path(path), false));
+        driveRoutines.add(new IntakeOpenRoutine());
+        Routine driveRoutine = new SequentialRoutine(driveRoutines);
+        
+        ArrayList<Routine> elevatorRoutines = new ArrayList<>();
+        elevatorRoutines.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorTopPositionInches, 15));
+        Routine elevatorRoutine = new SequentialRoutine(elevatorRoutines);
+        
+        ArrayList<Routine> routines = new ArrayList<Routine>();
+        routines.add(driveRoutine);
+        routines.add(elevatorRoutine);
+        return new ParallelRoutine(routines);
     }
 
 
