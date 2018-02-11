@@ -2,10 +2,7 @@ package com.palyrobotics.frc2018.robot;
 
 import com.palyrobotics.frc2018.behavior.Routine;
 import com.palyrobotics.frc2018.behavior.SequentialRoutine;
-import com.palyrobotics.frc2018.behavior.routines.intake.IntakeCloseRoutine;
-import com.palyrobotics.frc2018.behavior.routines.intake.IntakeDownRoutine;
-import com.palyrobotics.frc2018.behavior.routines.intake.IntakeOpenRoutine;
-import com.palyrobotics.frc2018.behavior.routines.intake.IntakeUpRoutine;
+import com.palyrobotics.frc2018.behavior.routines.intake.*;
 import com.palyrobotics.frc2018.config.Commands;
 import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.subsystems.Climber;
@@ -29,6 +26,8 @@ public class OperatorInterface {
 	public static OperatorInterface getInstance() {
 		return instance;
 	}
+
+	private boolean operatorButtonFourPressable = true;
 
 	protected OperatorInterface() {
 	}
@@ -122,24 +121,33 @@ public class OperatorInterface {
 
 		//Operator intake control
 		//Up/Down block
-		if(mOperatorStick.getButtonPressed(2)) {
-			newCommands.addWantedRoutine(new IntakeUpRoutine());
-		} else if(mOperatorStick.getButtonPressed(3)) {
-			newCommands.addWantedRoutine(new IntakeDownRoutine());
+		if(mOperatorStick.getButtonPressed(3)) {
+			newCommands.addWantedRoutine(new IntakeNeutralRoutine());
+		} else if(mOperatorStick.getButtonPressed(4) && operatorButtonFourPressable) {
+			if(prevCommands.wantedIntakeUpDownState == Intake.UpDownState.DOWN) {
+				newCommands.addWantedRoutine(new IntakeUpRoutine());
+			} else {
+				newCommands.addWantedRoutine(new IntakeDownRoutine());
+			}
+			operatorButtonFourPressable = false;
 		}
 
 		//Close/Open block, cannot be executed along with up/down
-		else if(mOperatorStick.getButtonPressed(4)) {
+		else if(mOperatorStick.getButtonPressed(5)) {
 			newCommands.addWantedRoutine(new IntakeCloseRoutine());
-		} else if(mOperatorStick.getButtonPressed(5)) {
+		} else if(mOperatorStick.getButtonPressed(6)) {
 			newCommands.addWantedRoutine(new IntakeOpenRoutine());
+		} else {
+			operatorButtonFourPressable = true;
 		}
 
 		//Intake wheel logic block
 		if(mOperatorStick.getTriggerPressed()) {
-			newCommands.wantedIntakingState = Intake.WheelState.EXPELLING;
+			newCommands.addWantedRoutine(new IntakeWheelRoutine(Intake.WheelState.EXPELLING, 0));
+		} else if(mOperatorStick.getButtonPressed(2)) {
+			newCommands.addWantedRoutine(new IntakeWheelRoutine(Intake.WheelState.INTAKING, 0));
 		} else {
-			newCommands.wantedIntakingState = Intake.WheelState.IDLE;
+			newCommands.addWantedRoutine(new IntakeWheelRoutine(Intake.WheelState.IDLE, 0));
 		}
 
 		//Driver intake control
