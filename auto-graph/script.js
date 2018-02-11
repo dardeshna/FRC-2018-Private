@@ -387,15 +387,15 @@ function importData() {
 
 			if (name[0] == "C" || name[0] == "B") {
 				x = 18
-				y = 170
+				y = 175
 			}
 			else if (name[0] == "L") {
 				x = 18
-				y = 280
+				y = 290
 			}
 			else {
 				x = 18
-				y = 60
+				y = 56
 			}
 
 			
