@@ -62,14 +62,14 @@ public class IntakeRoutineTest {
 		routine.start();
 		routine.update(commands);
 		intake.update(commands, robotState);
-		assertThat("Intake didn't close upon close routine", intake.getOpenCloseOutput(), equalTo(DoubleSolenoid.Value.kForward));
+		assertThat("Intake didn't close upon close routine", intake.getOpenCloseOutput(), equalTo(new boolean[]{false, true}));
 		assertTrue("Close routine doesn't finish immediately after initiation", routine.finished());
 		
 		routine = new IntakeOpenRoutine();
 		routine.start();
 		routine.update(commands);
 		intake.update(commands, robotState);
-		assertThat("Intake didn't open upon open routine", intake.getOpenCloseOutput(), equalTo(DoubleSolenoid.Value.kReverse));
+		assertThat("Intake didn't open upon open routine", intake.getOpenCloseOutput(), equalTo(new boolean[]{true, false}));
 		assertTrue("Open routine doesn't finish immediately after initiation", routine.finished());
 		
 		routine = new IntakeWheelRoutine(Intake.WheelState.INTAKING, 1);
@@ -143,7 +143,7 @@ public class IntakeRoutineTest {
 		
 		commands = (MockCommands) routineManager.update(commands);
 		intake.update(commands, robotState);
-		assertThat("Intake didn't open at the right point in the routine sequence", intake.getOpenCloseOutput(), equalTo(DoubleSolenoid.Value.kReverse));
+		assertThat("Intake didn't open at the right point in the routine sequence", intake.getOpenCloseOutput(), equalTo(new boolean[]{true, false}));
 		
 		commands = (MockCommands) routineManager.update(commands);
 		mStartTime = System.currentTimeMillis();
@@ -161,7 +161,7 @@ public class IntakeRoutineTest {
 		
 		commands = (MockCommands) routineManager.update(commands);
 		intake.update(commands, robotState);
-		assertThat("Intake didn't close at the right point in the routine sequence", intake.getOpenCloseOutput(), equalTo(DoubleSolenoid.Value.kForward));
+		assertThat("Intake didn't close at the right point in the routine sequence", intake.getOpenCloseOutput(), equalTo(new boolean[]{false, true}));
 		
 		commands = (MockCommands) routineManager.update(commands);
 		intake.update(commands, robotState);
@@ -177,7 +177,7 @@ public class IntakeRoutineTest {
 		routine.start();
 		routine.update(commands);
 		intake.update(commands, robotState);
-		assertFalse("Intake opened while flipped up when it shouldn't have", intake.getOpenCloseOutput() == DoubleSolenoid.Value.kForward);
+		assertFalse("Intake opened while flipped up when it shouldn't have", !intake.getOpenCloseOutput()[0] && intake.getOpenCloseOutput()[1]);
 		
 		routine = new IntakeDownRoutine();
 		routine.start();
