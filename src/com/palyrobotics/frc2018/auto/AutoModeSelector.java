@@ -87,35 +87,20 @@ public class AutoModeSelector {
 
 	/**
 	 * Get the currently selected AutoMode
-	 * 
+	 *
 	 * @return AutoMode currently selected
 	 */
 	public AutoModeBase getAutoMode() {
-//		return getAutoModeByIndex(0);
-//		return getAutoModeByName("test");
-//		return getAutoModeFromDashboard("test");
-		boolean fmsConnected = false;
-
-		try {
-			fmsConnected = DriverStation.getInstance().isFMSAttached();
-		} catch(NoClassDefFoundError e) {
-			Logger.getInstance().logRobotThread(Level.WARNING, "FMS is not connected");
-		}
-
-		if(fmsConnected) {
-			return getAutoMode(AutoModeBase.mAlliance, AutoModeBase.mStartingPosition, AutoModeBase.mScaleDecision,
-					AutoModeBase.mSwitchDecision, AutoModeBase.mPriority);
-		} else {
-			return getAutoModeByIndex(0);
-		}
+		return getAutoMode(AutoModeBase.mAlliance, AutoModeBase.mStartingPosition, AutoModeBase.mScaleDecision,
+				AutoModeBase.mSwitchDecision, AutoModeBase.mPriority);
 	}
 
 	/**
 	 * Get the AutoMode at specified index
-	 * 
+	 *
 	 * @return AutoMode at specified index
 	 */
-	
+
 	public AutoModeBase getAutoMode(Alliance alliance, StartingPosition startingPosition, Decision scaleDecision, Decision switchDecision, Priority priority) {
 
 		//Final index
@@ -124,10 +109,10 @@ public class AutoModeSelector {
 		//Index of the ideal scale and switch autos; the robot's priority determines which one is run
 		int scaleIndex = -1;
 		int switchIndex = -1;
-		
+
 		AutoFMS.Side scaleSide = autoFMS.getScaleSide();
 		AutoFMS.Side switchSide = autoFMS.getSwitchSide();
-		
+
 		//Find ideal scale auto, or the auto it would execute if it had to score on the scale
 		if(scaleDecision != Decision.NEVER) {
 			if(scaleDecision == Decision.BOTH || (scaleDecision == Decision.LEFT && scaleSide == Side.LEFT) || scaleDecision == Decision.RIGHT && scaleSide == Side.RIGHT) {
@@ -136,7 +121,7 @@ public class AutoModeSelector {
 				Logger.getInstance().logRobotThread(Level.INFO, "Attempted to find scale auto mode with this key: " + key);
 			}
 		}
-		
+
 		//Find ideal switch auto, or the auto it would execute if it had to score on the switch
 		if(switchDecision != Decision.NEVER) {
 			if(switchDecision == Decision.BOTH || (switchDecision == Decision.LEFT && switchSide == Side.LEFT) || switchDecision == Decision.RIGHT && switchSide == Side.RIGHT) {
@@ -175,7 +160,7 @@ public class AutoModeSelector {
 
 	/**
 	 * Gets the names of all registered AutoModes
-	 * 
+	 *
 	 * @return ArrayList of AutoModes string name
 	 * @see AutoModeBase#toString()
 	 */
@@ -195,7 +180,7 @@ public class AutoModeSelector {
 
 	/**
 	 * Attempt to set
-	 * 
+	 *
 	 * @return false if unable to find appropriate AutoMode
 	 * @see AutoModeBase#toString()
 	 */
@@ -212,7 +197,7 @@ public class AutoModeSelector {
 	//TODO: what's this supposed to do
 	/**
 	 * Called during disabled in order to access dashboard and set auto mode
-	 * 
+	 *
 	 * @return
 	 */
 	public AutoModeBase getAutoModeFromDashboard(String selection) {
@@ -228,3 +213,4 @@ public class AutoModeSelector {
 		return mAutoModes.get(index);
 	}
 }
+

@@ -9,7 +9,8 @@ public class AutoFMS {
 
     public enum Side {
         LEFT,
-        RIGHT
+        RIGHT,
+        NONE
     }
 
     protected AutoFMS() {
@@ -40,13 +41,16 @@ public class AutoFMS {
         String dataString;
         try {
             dataString = DriverStation.getInstance().getGameSpecificMessage();
-        }
-        catch (UnsatisfiedLinkError error) {
+        } catch(UnsatisfiedLinkError error) {
+            return this.switchSide;
+        } catch(NoClassDefFoundError error) {
             return this.switchSide;
         }
-        catch (NoClassDefFoundError error) {
-            return this.switchSide;
+
+        if(dataString.length() == 0) {
+            return Side.NONE;
         }
+
         if(String.valueOf(dataString.charAt(0)).equals("L")) {
             return Side.LEFT;
         } else if(String.valueOf(dataString.charAt(0)).equals("R")) {
@@ -61,12 +65,14 @@ public class AutoFMS {
         String dataString;
         try {
             dataString = DriverStation.getInstance().getGameSpecificMessage();
-        }
-        catch (UnsatisfiedLinkError error) {
+        } catch (UnsatisfiedLinkError error) {
+            return this.scaleSide;
+        } catch (NoClassDefFoundError error) {
             return this.scaleSide;
         }
-        catch (NoClassDefFoundError error) {
-            return this.scaleSide;
+        
+        if (dataString.length() == 0) {
+            return Side.NONE;
         }
         if(String.valueOf(dataString.charAt(1)).equals("L")) {
             return Side.LEFT;
@@ -78,3 +84,4 @@ public class AutoFMS {
         }
     }
 }
+
