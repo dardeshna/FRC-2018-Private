@@ -5,7 +5,6 @@ import com.palyrobotics.frc2018.config.Commands;
 import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.config.MockCommands;
 import com.palyrobotics.frc2018.config.MockRobotState;
-import com.palyrobotics.frc2018.config.RobotState.GamePeriod;
 import com.palyrobotics.frc2018.robot.MockRobot;
 import com.palyrobotics.frc2018.subsystems.Elevator.ElevatorState;
 import org.junit.Before;
@@ -14,9 +13,7 @@ import org.junit.Test;
 import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class ElevatorTest {
 

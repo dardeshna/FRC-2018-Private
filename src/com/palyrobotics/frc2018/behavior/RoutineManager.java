@@ -1,11 +1,7 @@
 package com.palyrobotics.frc2018.behavior;
 
 import com.palyrobotics.frc2018.config.Commands;
-import com.palyrobotics.frc2018.subsystems.Climber;
-import com.palyrobotics.frc2018.subsystems.Drive;
-import com.palyrobotics.frc2018.subsystems.Elevator;
-import com.palyrobotics.frc2018.subsystems.Intake;
-import com.palyrobotics.frc2018.subsystems.Subsystem;
+import com.palyrobotics.frc2018.subsystems.*;
 import com.palyrobotics.frc2018.util.logger.Logger;
 
 import java.util.ArrayList;

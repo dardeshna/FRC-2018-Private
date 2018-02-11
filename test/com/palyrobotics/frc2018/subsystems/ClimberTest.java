@@ -4,7 +4,6 @@ import com.palyrobotics.frc2018.config.Commands;
 import com.palyrobotics.frc2018.config.RobotState;
 import com.palyrobotics.frc2018.robot.MockRobot;
 import com.palyrobotics.frc2018.subsystems.Climber.Side;
-
 import org.junit.Before;
 import org.junit.Test;
 

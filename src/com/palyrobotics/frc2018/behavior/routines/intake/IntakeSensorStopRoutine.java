@@ -1,15 +1,14 @@
 package com.palyrobotics.frc2018.behavior.routines.intake;
 
-import java.util.logging.Level;
-
 import com.palyrobotics.frc2018.behavior.Routine;
 import com.palyrobotics.frc2018.config.Commands;
 import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.config.RobotState;
-import com.palyrobotics.frc2018.robot.Robot;
 import com.palyrobotics.frc2018.subsystems.Intake;
 import com.palyrobotics.frc2018.subsystems.Subsystem;
 import com.palyrobotics.frc2018.util.logger.Logger;
+
+import java.util.logging.Level;
 
 /**
  * @author Jason
@@ -18,16 +17,17 @@ public class IntakeSensorStopRoutine extends Routine {
 	
     private Intake.WheelState wantedWheelState;
     
-    private RobotState mRobotState = Robot.getRobotState();
+    private RobotState mRobotState = null;
     
     //How long the wheels spin for (seconds)
   	private double mTimeout;
   	
   	private long mStartTime;
 
-    public IntakeSensorStopRoutine(Intake.WheelState wantedWheelState, double timeout) {
+    public IntakeSensorStopRoutine(Intake.WheelState wantedWheelState, double timeout, RobotState state) {
         this.wantedWheelState = wantedWheelState;
         mTimeout = timeout;
+        mRobotState = state;
     }
 
     @Override

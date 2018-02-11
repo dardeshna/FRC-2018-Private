@@ -1,9 +1,5 @@
 package com.palyrobotics.frc2018.auto;
 
-import com.palyrobotics.frc2018.auto.modes.CenterStartLeftSwitchAutoMode;
-import com.palyrobotics.frc2018.auto.modes.CenterStartRightSwitchAutoMode;
-import com.palyrobotics.frc2018.auto.modes.LeftStartLeftSwitchAutoMode;
-import com.palyrobotics.frc2018.auto.modes.RightStartLeftSwitchAutoMode;
 import com.palyrobotics.frc2018.behavior.Routine;
 import com.palyrobotics.frc2018.behavior.routines.drive.DrivePathRoutine;
 import com.palyrobotics.frc2018.config.fields.FieldSelector;

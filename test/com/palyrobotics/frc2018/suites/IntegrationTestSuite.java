@@ -1,11 +1,13 @@
 package com.palyrobotics.frc2018.suites;
 
+import com.palyrobotics.frc2018.behavior.IntakeRoutineTest;
+import com.palyrobotics.frc2018.behavior.RoutineManagerTest;
 import com.palyrobotics.frc2018.subsystems.SubsystemUpdateTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ SubsystemUpdateTest.class })
+@Suite.SuiteClasses({ SubsystemUpdateTest.class, IntakeRoutineTest.class, RoutineManagerTest.class })
 /**
  * Test suite for integration tests
  * 

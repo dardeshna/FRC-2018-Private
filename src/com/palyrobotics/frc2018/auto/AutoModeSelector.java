@@ -7,7 +7,6 @@ import com.palyrobotics.frc2018.auto.AutoModeBase.Priority;
 import com.palyrobotics.frc2018.auto.AutoModeBase.StartingPosition;
 import com.palyrobotics.frc2018.auto.modes.*;
 import com.palyrobotics.frc2018.util.logger.Logger;
-import edu.wpi.first.wpilibj.DriverStation;
 import org.json.simple.JSONArray;
 
 import java.util.ArrayList;

@@ -1,24 +1,18 @@
 package com.palyrobotics.frc2018.behavior;
 
 import com.palyrobotics.frc2018.behavior.routines.intake.*;
-import com.palyrobotics.frc2018.config.Commands;
 import com.palyrobotics.frc2018.config.MockCommands;
 import com.palyrobotics.frc2018.config.MockRobotState;
 import com.palyrobotics.frc2018.robot.MockRobot;
+import com.palyrobotics.frc2018.subsystems.Intake;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-
-import com.palyrobotics.frc2018.behavior.routines.intake.IntakeCloseRoutine;
-import com.palyrobotics.frc2018.subsystems.Intake;
+import static org.junit.Assert.*;
 
 public class IntakeRoutineTest {
 	
@@ -43,36 +37,103 @@ public class IntakeRoutineTest {
 	
 	//Does each routine function properly when run independently?
 	@Test
-	public void testSingleRoutines() {
+	public void testIntakeUpRoutine() {	
 		Routine routine = new IntakeUpRoutine();
 		routine.start();
 		routine.update(commands);
 		intake.update(commands, robotState);
 		assertThat("Intake didn't flip up upon up routine", intake.getUpDownOutput(), equalTo(DoubleSolenoid.Value.kReverse));
 		assertTrue("Up routine doesn't finish immediately after initiation", routine.finished());
-		
-		routine = new IntakeDownRoutine();
+	}
+	
+	@Test
+	public void testIntakeDownRoutine() {		
+		Routine routine = new IntakeDownRoutine();
 		routine.start();
 		routine.update(commands);
 		intake.update(commands, robotState);
 		assertThat("Intake didn't flip down upon down routine", intake.getUpDownOutput(), equalTo(DoubleSolenoid.Value.kForward));
 		assertTrue("Down routine doesn't finish immediately after initiation", routine.finished());
-		
-		routine = new IntakeCloseRoutine();
+	}
+	
+	@Test
+	public void testIntakeCloseRoutine() {	
+		Routine routine = new IntakeCloseRoutine();
 		routine.start();
 		routine.update(commands);
 		intake.update(commands, robotState);
 		assertThat("Intake didn't close upon close routine", intake.getOpenCloseOutput(), equalTo(new boolean[]{false, true}));
 		assertTrue("Close routine doesn't finish immediately after initiation", routine.finished());
-		
-		routine = new IntakeOpenRoutine();
+	}
+	
+	@Test
+	public void testIntakeOpenRoutine() {
+		Routine routine = new IntakeOpenRoutine();
 		routine.start();
 		routine.update(commands);
 		intake.update(commands, robotState);
 		assertThat("Intake didn't open upon open routine", intake.getOpenCloseOutput(), equalTo(new boolean[]{true, false}));
 		assertTrue("Open routine doesn't finish immediately after initiation", routine.finished());
+	}
+	
+	@Test
+	public void testIntakeWheelRoutine() {
+		Routine routine = new IntakeWheelRoutine(Intake.WheelState.INTAKING, 1);
+		routine.start();
+		mStartTime = System.currentTimeMillis();
+		routine.update(commands);
+		intake.update(commands, robotState);
+		assertTrue("Intake didn't intake upon intaking routine", intake.getTalonOutput().getSetpoint() > 0);
+		for (int i = 0; i < 1005; i++) {
+			try {
+				Thread.sleep(1);
+			} catch(InterruptedException e) {
+				e.printStackTrace();
+			}
+			routine.update(commands);
+			assertFalse("Intaking routine timed out early", routine.finished() && System.currentTimeMillis() - mStartTime < 1000);
+		}
+		routine.update(commands);
+		assertTrue("Intaking routine doesn't time out correctly", routine.finished());
 		
-		routine = new IntakeWheelRoutine(Intake.WheelState.INTAKING, 1);
+		routine = new IntakeWheelRoutine(Intake.WheelState.EXPELLING, 1);
+		routine.start();
+		routine.update(commands);
+		intake.update(commands, robotState);
+		assertTrue("Intake didn't expel upon expel routine", intake.getTalonOutput().getSetpoint() < 0);
+		for (int i = 0; i < 1005; i++) {
+			try {
+				Thread.sleep(1);
+			} catch(InterruptedException e) {
+				e.printStackTrace();
+			}
+			routine.update(commands);
+			assertFalse("Expel routine timed out early", routine.finished() && System.currentTimeMillis() - mStartTime < 1000);
+		}
+		routine.update(commands);
+		assertTrue("Expel routine doesn't finish immediately after initiation", routine.finished());
+		
+		routine = new IntakeWheelRoutine(Intake.WheelState.IDLE, 1);
+		routine.start();
+		routine.update(commands);
+		intake.update(commands, robotState);
+		assertTrue("Intake isn't idle upon idle routine", intake.getTalonOutput().getSetpoint() == 0);
+		for (int i = 0; i < 1005; i++) {
+			try {
+				Thread.sleep(1);
+			} catch(InterruptedException e) {
+				e.printStackTrace();
+			}
+			routine.update(commands);
+			assertFalse("Idle routine timed out early", routine.finished() && System.currentTimeMillis() - mStartTime < 1000);
+		}
+		routine.update(commands);
+		assertTrue("Idle routine doesn't finish immediately after initiation", routine.finished());
+	}
+	
+	@Test
+	public void testIntakeSensorStopRoutine() {
+		Routine routine = new IntakeWheelRoutine(Intake.WheelState.INTAKING, 1);
 		routine.start();
 		mStartTime = System.currentTimeMillis();
 		routine.update(commands);

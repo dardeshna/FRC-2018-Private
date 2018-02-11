@@ -6,7 +6,6 @@ import com.palyrobotics.frc2018.subsystems.Drive;
 import com.palyrobotics.frc2018.subsystems.Subsystem;
 import com.palyrobotics.frc2018.util.trajectory.Path;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

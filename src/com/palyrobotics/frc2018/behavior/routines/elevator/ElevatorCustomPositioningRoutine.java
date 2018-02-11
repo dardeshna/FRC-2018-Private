@@ -3,7 +3,6 @@ package com.palyrobotics.frc2018.behavior.routines.elevator;
 import com.palyrobotics.frc2018.behavior.Routine;
 import com.palyrobotics.frc2018.config.Commands;
 import com.palyrobotics.frc2018.subsystems.Elevator;
-import com.palyrobotics.frc2018.subsystems.Elevator.ElevatorState;
 import com.palyrobotics.frc2018.subsystems.Subsystem;
 import com.palyrobotics.frc2018.util.logger.Logger;
 

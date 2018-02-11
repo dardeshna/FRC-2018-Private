@@ -1,11 +1,5 @@
 package com.palyrobotics.frc2018.behavior;
 
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import com.palyrobotics.frc2018.behavior.routines.elevator.ElevatorCustomPositioningRoutine;
 import com.palyrobotics.frc2018.config.Commands;
 import com.palyrobotics.frc2018.config.MockCommands;
@@ -13,8 +7,13 @@ import com.palyrobotics.frc2018.config.MockRobotState;
 import com.palyrobotics.frc2018.robot.MockRobot;
 import com.palyrobotics.frc2018.subsystems.Elevator;
 import com.palyrobotics.frc2018.subsystems.Elevator.ElevatorState;
+import org.junit.Before;
+import org.junit.Test;
+
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 public class ElevatorCustomPositioningRoutineTest {
 	
