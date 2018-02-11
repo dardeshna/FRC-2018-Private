@@ -109,6 +109,9 @@ public class Constants {
 	public static final double kIntakingMotorVelocity = 1.0;
 	public static final double kExpellingMotorVelocity = -1.0;
 	public static final double kExpelToScoreTime = 0.5;
+	//TODO: Tune distance for ultrasound, determine variability
+	public static final double kIntakeCloseSensorThreshold = 0.0;
+	public static final double kIntakeFarSensorThreshold = 1.0;
 
 	/*
 	 * !!! End of editable Constants! !!!
