@@ -19,7 +19,7 @@ public class IntakeUpRoutine extends Routine {
 
     @Override
     public Commands update(Commands commands) {
-        if(intake.getOpenCloseState() != Intake.OpenCloseState.OPEN) {
+        if(intake.getOpenCloseState() == Intake.OpenCloseState.CLOSED) {
             commands.wantedIntakeUpDownState = Intake.UpDownState.UP;
         }
 
