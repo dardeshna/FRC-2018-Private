@@ -36,14 +36,14 @@ public class RightStartRightScaleAutoMode extends AutoModeBase {
         List<Path.Waypoint> path = new ArrayList<>();
         path.add(new Path.Waypoint(new Translation2d(0.0, 0.0), 72.0));
         if(mAlliance == Alliance.BLUE) {
-            path.add(new Path.Waypoint(new Translation2d((AutoDistances.kBlueRightScaleX
-                    - Constants.kRobotLengthInches) / 2, 0.0), 72.0));
-            path.add(new Path.Waypoint(new Translation2d((AutoDistances.kBlueRightScaleX - Constants.kRobotLengthInches) / 2,
-                    AutoDistances.kBlueRightScaleY + (Constants.kPlateWidth / 2) - AutoDistances.kBlueRightCornerOffset
-                            - (Constants.kPlateWidth / 2)), 72.0));
+            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueRightSwitchX + Constants.kRobotLengthInches,
+                    -(Constants.kRobotWidthInches/2.0 + AutoDistances.kBlueRightCornerOffset) + AutoDistances.kBlueRightSwitchY/2.0), 72.0));
+            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueRightScaleX - 2.0 * Constants.kRobotLengthInches,
+                    -(Constants.kRobotWidthInches/2.0 + AutoDistances.kBlueRightCornerOffset)
+                            + AutoDistances.kBlueRightScaleY + Constants.kPlateWidth/2.0), 72.0));
             path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueRightScaleX - Constants.kRobotLengthInches,
-                    AutoDistances.kBlueRightScaleY + (Constants.kPlateWidth / 2) - AutoDistances.kBlueRightCornerOffset
-                            - (Constants.kPlateWidth / 2)), 0.0));
+                    -(Constants.kRobotWidthInches/2.0 + AutoDistances.kBlueRightCornerOffset)
+                    + AutoDistances.kBlueRightScaleY + Constants.kPlateWidth/2.0), 0.0));
         } else {
             path.add(new Path.Waypoint(new Translation2d((AutoDistances.kRedRightScaleX
                     - Constants.kRobotLengthInches) / 2, 0.0), 72.0));

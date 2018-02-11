@@ -36,10 +36,11 @@ public class RightStartRightSwitchAutoMode extends AutoModeBase {
         List<Path.Waypoint> path = new ArrayList<>();
         path.add(new Path.Waypoint(new Translation2d(0.0, 0.0), 72.0));
         if(mAlliance == Alliance.BLUE) {
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueRightSwitchX - Constants.kRobotLengthInches
-                    + (Constants.kPlateLength / 2), 0.0), 72.0));
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueRightSwitchX - Constants.kRobotLengthInches
-                    + (Constants.kPlateLength / 2), AutoDistances.kBlueRightSwitchY - Constants.kRobotLengthInches), 0.0));
+            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueRightSwitchX  + Constants.kPlateLength/2.0,
+                    -(Constants.kRobotWidthInches/2.0 + AutoDistances.kBlueRightCornerOffset) + AutoDistances.kBlueRightSwitchY/2.0), 72.0));
+            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueRightSwitchX + Constants.kPlateLength/2.0,
+                    AutoDistances.kBlueRightSwitchY - Constants.kRobotWidthInches/2.0 - AutoDistances.kBlueRightCornerOffset
+                    - Constants.kRobotLengthInches), 0.0));
         } else {
             path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedRightSwitchX - Constants.kRobotLengthInches
                     + (Constants.kPlateLength / 2), 0.0), 72.0));

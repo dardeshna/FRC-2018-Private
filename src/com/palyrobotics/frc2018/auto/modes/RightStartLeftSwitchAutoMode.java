@@ -36,14 +36,11 @@ public class RightStartLeftSwitchAutoMode extends AutoModeBase {
         List<Path.Waypoint> path = new ArrayList<>();
         path.add(new Path.Waypoint(new Translation2d(0.0, 0.0), 72.0));
         if(mAlliance == Alliance.BLUE) {
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueScaleSwitchMidlineX
-                    - Constants.kRobotLengthInches, 0.0), 72.0));
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueScaleSwitchMidlineX - Constants.kRobotLengthInches,
-                    AutoDistances.kFieldWidth - AutoDistances.kBlueRightCornerOffset - (Constants.kRobotWidthInches / 2)
-                            - AutoDistances.kBlueLeftSwitchY - (Constants.kPlateWidth / 2)), 72.0));
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueLeftSwitchX + Constants.kPlateLength
-                    + Constants.kRobotLengthInches, AutoDistances.kFieldWidth - AutoDistances.kBlueRightCornerOffset
-                        - (Constants.kRobotWidthInches / 2) - AutoDistances.kBlueLeftSwitchY - (Constants.kPlateWidth / 2)), 0.0));
+            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueScaleSwitchMidlineX - Constants.kRobotLengthInches/2.0,
+                    -Constants.kRobotWidthInches/2.0 - AutoDistances.kBlueRightCornerOffset + AutoDistances.kBlueRightSwitchY/2.0), 72.0));
+            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueLeftSwitchX + Constants.kPlateLength + Constants.kRobotLengthInches/2.0
+                    + Constants.kSquareCubeLength, AutoDistances.kFieldWidth - Constants.kRobotWidthInches/2.0 - AutoDistances.kBlueRightCornerOffset
+                    - AutoDistances.kBlueLeftSwitchY - Constants.kPlateWidth/2.0), 0.0));
         } else {
             path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedScaleSwitchMidlineX
                     - Constants.kRobotLengthInches, 0.0), 72.0));

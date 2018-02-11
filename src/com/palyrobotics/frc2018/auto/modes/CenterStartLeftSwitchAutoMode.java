@@ -37,13 +37,12 @@ public class CenterStartLeftSwitchAutoMode extends AutoModeBase {
         List<Waypoint> path = new ArrayList<>();
         path.add(new Waypoint(new Translation2d(0, 0), 72.0));
         if (mAlliance == Alliance.BLUE) {
-            path.add(new Waypoint(new Translation2d((AutoDistances.kBlueLeftSwitchX - Constants.kRobotLengthInches)
-                    / 2.0, 0), 72.0));
-            path.add(new Waypoint(new Translation2d((AutoDistances.kBlueLeftSwitchX - Constants.kRobotLengthInches)/2.0,
-                    AutoDistances.kBlueLeftToCenterY - AutoDistances.kBlueLeftSwitchY - Constants.kPlateWidth/2.0), 72.0));
+            path.add(new Waypoint(new Translation2d(2.0 * Constants.kRobotLengthInches,
+                    AutoDistances.kBlueLeftToCenterY + Constants.kRobotWidthInches
+                            - AutoDistances.kBlueLeftSwitchY - Constants.kPlateWidth/2.0), 72.0));
             path.add(new Waypoint(new Translation2d(AutoDistances.kBlueLeftSwitchX - Constants.kRobotLengthInches,
-                    AutoDistances.kFieldWidth - AutoDistances.kBlueLeftToCenterY - AutoDistances.kBlueLeftSwitchY
-                            - Constants.kPlateWidth / 2.0), 0.0));
+                    AutoDistances.kBlueLeftToCenterY + Constants.kRobotWidthInches
+                            - AutoDistances.kBlueLeftSwitchY - Constants.kPlateWidth/2.0), 0.0));
         } else {
             path.add(new Waypoint(new Translation2d((AutoDistances.kRedLeftSwitchX - Constants.kRobotLengthInches)
                     / 2.0, 0), 72.0));

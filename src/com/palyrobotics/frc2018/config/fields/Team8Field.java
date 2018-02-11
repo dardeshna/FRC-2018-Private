@@ -5,37 +5,34 @@ import com.palyrobotics.frc2018.config.AutoDistances;
 public class Team8Field {
     public static void configureFieldMeasurements() {
         //Base line
-        AutoDistances.kRedBaseLineDistanceInches = 0;
+        AutoDistances.kRedBaseLineDistanceInches = 0.0;
         AutoDistances.kBlueBaseLineDistanceInches = 121.0;
 
         //Switches
-        AutoDistances.kRedRightSwitchX = 100;
-        AutoDistances.kRedRightSwitchY = 50;
+        AutoDistances.kRedRightSwitchX = 100.0;
+        AutoDistances.kRedRightSwitchY = 50.0;
 
         AutoDistances.kBlueRightSwitchX = 139.5;
         AutoDistances.kBlueRightSwitchY = 82.5;
 
-        AutoDistances.kRedLeftSwitchX = 100;
-        AutoDistances.kRedLeftSwitchY = 50;
+        AutoDistances.kRedLeftSwitchX = 100.0;
+        AutoDistances.kRedLeftSwitchY = 50.0;
 
         AutoDistances.kBlueLeftSwitchX = 139.5;
         AutoDistances.kBlueLeftSwitchY = 85.0;
 
-        AutoDistances.kBlueLeftSwitchX = 100;
-        AutoDistances.kBlueLeftSwitchY = 50;
-
         //Scales
-        AutoDistances.kBlueLeftScaleX = 0;
-        AutoDistances.kBlueLeftScaleY = 0;
+        AutoDistances.kBlueLeftScaleX = 282.0;
+        AutoDistances.kBlueLeftScaleY = 69.5;
 
-        AutoDistances.kBlueRightScaleX = 0;
-        AutoDistances.kBlueRightScaleY = 0;
+        AutoDistances.kBlueRightScaleX = 282.0;
+        AutoDistances.kBlueRightScaleY = 69.5;
 
-        AutoDistances.kRedLeftScaleX = 0;
-        AutoDistances.kRedLeftScaleY = 0;
+        AutoDistances.kRedLeftScaleX = 282.0;
+        AutoDistances.kRedLeftScaleY = 69.5;
 
-        AutoDistances.kRedRightScaleX = 0;
-        AutoDistances.kRedRightScaleY = 0;
+        AutoDistances.kRedRightScaleX = 282.0;
+        AutoDistances.kRedRightScaleY = 69.5;
 
         //Offsets
         AutoDistances.kRedLeftCornerOffset = 0;
@@ -45,7 +42,7 @@ public class Team8Field {
         AutoDistances.kBlueRightCornerOffset = 28.0;
 
         //Self explanatory
-        AutoDistances.kFieldWidth = 132;
+        AutoDistances.kFieldWidth = 321;
 
         //Length from left field wall to right edge of the exchange zone
         AutoDistances.kBlueLeftToCenterY = 139.0;

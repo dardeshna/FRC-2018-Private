@@ -36,14 +36,14 @@ public class LeftStartRightScaleAutoMode extends AutoModeBase {
         List<Path.Waypoint> path = new ArrayList<>();
         path.add(new Path.Waypoint(new Translation2d(0.0, 0.0), 72.0));
         if(mAlliance == Alliance.BLUE) {
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueScaleSwitchMidlineX
-                    - Constants.kRobotLengthInches, 0.0), 72.0));
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueScaleSwitchMidlineX,
-                    -(AutoDistances.kFieldWidth - (Constants.kRobotWidthInches / 2) - AutoDistances.kBlueLeftCornerOffset
-                            - AutoDistances.kBlueRightCornerOffset - (Constants.kPlateWidth / 2))), 72.0));
+            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueScaleSwitchMidlineX - Constants.kRobotLengthInches/2.0,
+                    Constants.kRobotWidthInches/2.0 + AutoDistances.kBlueLeftCornerOffset - AutoDistances.kBlueLeftSwitchY/2.0), 72.0));
+            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueScaleSwitchMidlineX - Constants.kRobotLengthInches/2.0,
+                    -AutoDistances.kFieldWidth + Constants.kRobotWidthInches/2.0 + AutoDistances.kBlueLeftCornerOffset
+                            + AutoDistances.kBlueRightScaleY + Constants.kPlateWidth/2.0), 72.0));
             path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueRightScaleX - Constants.kRobotLengthInches,
-                    -(AutoDistances.kFieldWidth - (Constants.kRobotWidthInches / 2) - AutoDistances.kBlueLeftCornerOffset
-                            - AutoDistances.kBlueRightCornerOffset - (Constants.kPlateWidth / 2))), 0.0));
+                    -AutoDistances.kFieldWidth + Constants.kRobotWidthInches/2.0 + AutoDistances.kBlueLeftCornerOffset
+                            + AutoDistances.kBlueRightScaleY + Constants.kPlateWidth/2.0), 0.0));
         } else {
             path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedScaleSwitchMidlineX
                     - Constants.kRobotLengthInches, 0.0), 72.0));
