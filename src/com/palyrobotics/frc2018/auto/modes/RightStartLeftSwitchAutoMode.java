@@ -42,14 +42,11 @@ public class RightStartLeftSwitchAutoMode extends AutoModeBase {
                     + Constants.kSquareCubeLength, AutoDistances.kFieldWidth - Constants.kRobotWidthInches/2.0 - AutoDistances.kBlueRightCornerOffset
                     - AutoDistances.kBlueLeftSwitchY - Constants.kPlateWidth/2.0), 0.0));
         } else {
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedScaleSwitchMidlineX
-                    - Constants.kRobotLengthInches, 0.0), 72.0));
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedScaleSwitchMidlineX - Constants.kRobotLengthInches,
-                    AutoDistances.kFieldWidth - AutoDistances.kRedRightCornerOffset - (Constants.kRobotWidthInches / 2)
-                            - AutoDistances.kRedLeftSwitchY - (Constants.kPlateWidth / 2)), 72.0));
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedLeftSwitchX + Constants.kPlateLength
-                    + Constants.kRobotLengthInches, AutoDistances.kFieldWidth - AutoDistances.kRedRightCornerOffset
-                        - (Constants.kRobotWidthInches / 2) - AutoDistances.kRedLeftSwitchY - (Constants.kPlateWidth / 2)), 0.0));
+            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedScaleSwitchMidlineX - Constants.kRobotLengthInches/2.0,
+                    -Constants.kRobotWidthInches/2.0 - AutoDistances.kRedRightCornerOffset + AutoDistances.kRedRightSwitchY/2.0), 72.0));
+            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedLeftSwitchX + Constants.kPlateLength + Constants.kRobotLengthInches/2.0
+                    + Constants.kSquareCubeLength, AutoDistances.kFieldWidth - Constants.kRobotWidthInches/2.0 - AutoDistances.kRedRightCornerOffset
+                    - AutoDistances.kRedLeftSwitchY - Constants.kPlateWidth/2.0), 0.0));
         }
         ArrayList<Routine> routines = new ArrayList<>();
         routines.add(new DriveSensorResetRoutine());

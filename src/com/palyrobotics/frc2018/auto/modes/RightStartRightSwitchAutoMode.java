@@ -42,10 +42,11 @@ public class RightStartRightSwitchAutoMode extends AutoModeBase {
                     AutoDistances.kBlueRightSwitchY - Constants.kRobotWidthInches/2.0 - AutoDistances.kBlueRightCornerOffset
                     - Constants.kRobotLengthInches), 0.0));
         } else {
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedRightSwitchX - Constants.kRobotLengthInches
-                    + (Constants.kPlateLength / 2), 0.0), 72.0));
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedRightSwitchX - Constants.kRobotLengthInches
-                    + (Constants.kPlateLength / 2), AutoDistances.kRedRightSwitchY - Constants.kRobotLengthInches), 0.0));
+            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedRightSwitchX  + Constants.kPlateLength/2.0,
+                    -(Constants.kRobotWidthInches/2.0 + AutoDistances.kRedRightCornerOffset) + AutoDistances.kRedRightSwitchY/2.0), 72.0));
+            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedRightSwitchX + Constants.kPlateLength/2.0,
+                    AutoDistances.kRedRightSwitchY - Constants.kRobotWidthInches/2.0 - AutoDistances.kRedRightCornerOffset
+                    - Constants.kRobotLengthInches), 0.0));
         }
         ArrayList<Routine> routines = new ArrayList<>();
         routines.add(new DriveSensorResetRoutine());

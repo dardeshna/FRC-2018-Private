@@ -47,14 +47,16 @@ public class LeftStartLeftScaleAutoMode extends AutoModeBase {
                     (Constants.kRobotWidthInches/2.0 + AutoDistances.kBlueLeftCornerOffset)
                             - AutoDistances.kBlueLeftScaleY - Constants.kPlateWidth/2.0), 0.0));
         } else {
-            path.add(new Path.Waypoint(new Translation2d((AutoDistances.kRedLeftScaleX
-                    - Constants.kRobotLengthInches) / 2, 0.0), 72.0));
-            path.add(new Path.Waypoint(new Translation2d((AutoDistances.kRedLeftScaleX - Constants.kRobotLengthInches) / 2,
-                    -(AutoDistances.kRedLeftScaleY + (Constants.kPlateWidth / 2) - AutoDistances.kRedLeftCornerOffset
-                            - (Constants.kPlateWidth / 2))), 72.0));
+            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedLeftSwitchX - Constants.kRobotLengthInches,
+                    Constants.kRobotWidthInches/2.0 + AutoDistances.kRedLeftCornerOffset - AutoDistances.kRedLeftSwitchY/2.0), 72.0));
+            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedLeftSwitchX + Constants.kRobotLengthInches,
+                    Constants.kRobotWidthInches/2.0 + AutoDistances.kRedLeftCornerOffset - AutoDistances.kRedLeftSwitchY/2.0), 72.0));
+            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedLeftScaleX - 2.0*Constants.kRobotLengthInches,
+                    (Constants.kRobotWidthInches/2.0 + AutoDistances.kRedLeftCornerOffset)
+                            - AutoDistances.kRedLeftScaleY - Constants.kPlateWidth/2.0), 72.0));
             path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedLeftScaleX - Constants.kRobotLengthInches,
-                    -(AutoDistances.kRedLeftScaleY + (Constants.kPlateWidth / 2) - AutoDistances.kRedLeftCornerOffset
-                            - (Constants.kPlateWidth / 2))), 0.0));
+                    (Constants.kRobotWidthInches/2.0 + AutoDistances.kRedLeftCornerOffset)
+                            - AutoDistances.kRedLeftScaleY - Constants.kPlateWidth/2.0), 0.0));
         }
         ArrayList<Routine> routines = new ArrayList<>();
         routines.add(new DriveSensorResetRoutine());

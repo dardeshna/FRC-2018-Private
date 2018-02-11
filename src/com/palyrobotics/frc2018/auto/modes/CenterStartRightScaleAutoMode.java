@@ -49,14 +49,18 @@ public class CenterStartRightScaleAutoMode extends AutoModeBase {
                     -(AutoDistances.kFieldWidth - AutoDistances.kBlueLeftToCenterY - Constants.kRobotWidthInches/2.0)
                             + AutoDistances.kBlueRightScaleY + Constants.kPlateWidth/2.0), 0.0));
         } else {
-            path.add(new Path.Waypoint(new Translation2d((AutoDistances.kRedRightScaleX - Constants.kRobotLengthInches)
-                    / 2.0, 0), 72.0));
-            path.add(new Path.Waypoint(new Translation2d((AutoDistances.kRedRightScaleX - Constants.kRobotLengthInches)
-                    / 2.0, -(AutoDistances.kFieldWidth - AutoDistances.kRedLeftToCenterY - AutoDistances.kRedRightScaleY
-                    - Constants.kPlateWidth/2.0)), 72.0));
+            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedRightSwitchX - Constants.kRobotLengthInches,
+                    -(AutoDistances.kFieldWidth - AutoDistances.kRedLeftToCenterY - Constants.kRobotWidthInches)
+                            + AutoDistances.kRedRightSwitchY/2.0), 72.0));
+            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedRightSwitchX + Constants.kRobotLengthInches,
+                    -(AutoDistances.kFieldWidth - AutoDistances.kRedLeftToCenterY - Constants.kRobotWidthInches)
+                            + AutoDistances.kRedRightSwitchY/2.0), 72.0));
+            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedRightScaleX - 2.0 * Constants.kRobotLengthInches,
+                    -(AutoDistances.kFieldWidth - AutoDistances.kRedLeftToCenterY - Constants.kRobotWidthInches/2.0)
+                            + AutoDistances.kRedRightScaleY + Constants.kPlateWidth/2.0), 72.0));
             path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedRightScaleX - Constants.kRobotLengthInches,
-                    -(AutoDistances.kFieldWidth - AutoDistances.kRedLeftToCenterY - AutoDistances.kRedRightScaleY
-                            - Constants.kPlateWidth/2.0)), 0.0));
+                    -(AutoDistances.kFieldWidth - AutoDistances.kRedLeftToCenterY - Constants.kRobotWidthInches/2.0)
+                            + AutoDistances.kRedRightScaleY + Constants.kPlateWidth/2.0), 0.0));
         }
 
         ArrayList<Routine> routines = new ArrayList<>();

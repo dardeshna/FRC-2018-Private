@@ -40,10 +40,9 @@ public class LeftStartLeftSwitchAutoMode extends AutoModeBase {
             path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueLeftSwitchX + Constants.kPlateLength/2.0,
                     -AutoDistances.kBlueLeftSwitchY + Constants.kRobotLengthInches + Constants.kRobotWidthInches/2.0 + AutoDistances.kBlueLeftCornerOffset), 0.0));
         } else {
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedLeftSwitchX - Constants.kRobotLengthInches
-                    + (Constants.kPlateLength / 2), 0.0), 72.0));
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedRightSwitchX - Constants.kRobotLengthInches
-                    + (Constants.kPlateLength / 2), AutoDistances.kRedRightSwitchY - Constants.kRobotLengthInches/2 - AutoDistances.kRedLeftCornerOffset), 0.0));
+            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedLeftSwitchX + Constants.kPlateLength/2.0, 0.0), 72.0));
+            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedLeftSwitchX + Constants.kPlateLength/2.0,
+                    -AutoDistances.kRedLeftSwitchY + Constants.kRobotLengthInches + Constants.kRobotWidthInches/2.0 + AutoDistances.kRedLeftCornerOffset), 0.0));
         }
         ArrayList<Routine> routines = new ArrayList<>();
         routines.add(new DriveSensorResetRoutine());

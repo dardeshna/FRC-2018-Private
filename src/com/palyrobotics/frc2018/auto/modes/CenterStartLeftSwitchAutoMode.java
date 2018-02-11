@@ -44,13 +44,12 @@ public class CenterStartLeftSwitchAutoMode extends AutoModeBase {
                     AutoDistances.kBlueLeftToCenterY + Constants.kRobotWidthInches
                             - AutoDistances.kBlueLeftSwitchY - Constants.kPlateWidth/2.0), 0.0));
         } else {
-            path.add(new Waypoint(new Translation2d((AutoDistances.kRedLeftSwitchX - Constants.kRobotLengthInches)
-                    / 2.0, 0), 72.0));
-            path.add(new Waypoint(new Translation2d((AutoDistances.kRedLeftSwitchX - Constants.kRobotLengthInches)/2.0,
-                    AutoDistances.kRedLeftToCenterY - AutoDistances.kRedLeftSwitchY - Constants.kPlateWidth / 2.0), 72.0));
+            path.add(new Waypoint(new Translation2d(2.0 * Constants.kRobotLengthInches,
+                    AutoDistances.kRedLeftToCenterY + Constants.kRobotWidthInches
+                            - AutoDistances.kRedLeftSwitchY - Constants.kPlateWidth/2.0), 72.0));
             path.add(new Waypoint(new Translation2d(AutoDistances.kRedLeftSwitchX - Constants.kRobotLengthInches,
-                    AutoDistances.kFieldWidth - AutoDistances.kRedLeftToCenterY - AutoDistances.kRedLeftSwitchY
-                            - Constants.kPlateWidth / 2.0), 0.0));
+                    AutoDistances.kRedLeftToCenterY + Constants.kRobotWidthInches
+                            - AutoDistances.kRedLeftSwitchY - Constants.kPlateWidth/2.0), 0.0));
         }
 
         ArrayList<Routine> routines = new ArrayList<>();

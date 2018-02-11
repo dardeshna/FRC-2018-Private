@@ -48,12 +48,15 @@ public class CenterStartLeftScaleAutoMode extends AutoModeBase {
                     AutoDistances.kBlueLeftToCenterY + Constants.kRobotWidthInches/2.0 - AutoDistances.kBlueLeftScaleY
                             - Constants.kPlateWidth/2.0), 0.0));
         } else {
-            path.add(new Waypoint(new Translation2d((AutoDistances.kRedLeftScaleX - Constants.kRobotLengthInches)
-                    / 2.0, 0), 72.0));
-            path.add(new Waypoint(new Translation2d((AutoDistances.kRedLeftScaleX - Constants.kRobotLengthInches)/2.0,
-                    AutoDistances.kRedLeftToCenterY - AutoDistances.kRedLeftScaleY - Constants.kPlateWidth/2.0), 72.0));
+            path.add(new Waypoint(new Translation2d(AutoDistances.kRedLeftSwitchX - Constants.kRobotLengthInches,
+                    AutoDistances.kRedLeftToCenterY + Constants.kRobotWidthInches/2.0 - AutoDistances.kRedLeftSwitchY/2.0), 72.0));
+            path.add(new Waypoint(new Translation2d(AutoDistances.kRedLeftSwitchX + Constants.kRobotLengthInches,
+                    AutoDistances.kRedLeftToCenterY + Constants.kRobotWidthInches/2.0 - AutoDistances.kRedLeftSwitchY/2.0), 72.0));
+            path.add(new Waypoint(new Translation2d(AutoDistances.kRedLeftScaleX - 2.0 * Constants.kRobotLengthInches,
+                    AutoDistances.kRedLeftToCenterY + Constants.kRobotWidthInches/2.0 - AutoDistances.kRedLeftScaleY
+                            - Constants.kPlateWidth/2.0), 72.0));
             path.add(new Waypoint(new Translation2d(AutoDistances.kRedLeftScaleX - Constants.kRobotLengthInches,
-                    AutoDistances.kFieldWidth - AutoDistances.kRedLeftToCenterY - AutoDistances.kRedLeftScaleY
+                    AutoDistances.kRedLeftToCenterY + Constants.kRobotWidthInches/2.0 - AutoDistances.kRedLeftScaleY
                             - Constants.kPlateWidth/2.0), 0.0));
         }
 
