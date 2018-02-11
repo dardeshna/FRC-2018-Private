@@ -3,7 +3,7 @@ var ctx;
 var width = 1656; //pixels
 var height = 823; //pixels
 var fieldWidth = 652; // in inches
-var fieldHeight = 324; // in inches
+var fieldHeight = 350; // in inches
 var robotWidth = 27.0; //inches
 var robotHeight = 32.0; //inches
 var pointRadius = 5;
@@ -386,16 +386,16 @@ function importData() {
 			var y = NaN
 
 			if (name[0] == "C" || name[0] == "B") {
-				x = 108
-				y = 164
+				x = 18
+				y = 180
 			}
 			else if (name[0] == "L") {
-				x = 108
-				y = 264
+				x = 18
+				y = 290
 			}
 			else {
-				x = 108
-				y = 64
+				x = 18
+				y = 70
 			}
 
 			
