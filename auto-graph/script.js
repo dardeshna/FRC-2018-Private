@@ -385,6 +385,18 @@ function importData() {
 			var x = NaN
 			var y = NaN
 
+			var blue = NaN
+
+			console.log(name[name.length - 5])
+
+			if (name[name.length - 5] == "d") {
+				// red
+				blue = false
+			}
+			else {
+				blue = true
+			}
+
 			if (name[0] == "C" || name[0] == "B") {
 				x = 18
 				y = 175
@@ -400,10 +412,22 @@ function importData() {
 
 			
 			lines = c.split(/\r?\n/);
+			console.log(lines)
 			$("tbody").empty();
 			lines.forEach((wpd) => {
 				data = wpd.split(",")
-				let wp = new Waypoint(new Translation2d(parseFloat(data[0])+x, parseFloat(data[1])+y), data[2], 20, "No Comment");
+				console.log("LOADED")
+				console.log(data)
+				var wp = undefined
+				if (blue) {
+					wp = new Waypoint(new Translation2d(parseFloat(data[0])+x, parseFloat(data[1])+y), data[2], 20, "No Comment");
+				}
+				else {
+					var x_off_red = 652
+					wp = new Waypoint(new Translation2d(-1*parseFloat(data[0])-x + x_off_red, parseFloat(data[1])+y), data[2], 20, "No Comment");
+				}
+				
+
 				// console.log(wp);
 				$("tbody").append("<tr>"
 					+"<td><input value='" + wp.position.x + "'></td>"

@@ -60,6 +60,12 @@ public class ParallelRoutine extends Routine {
 		return RoutineManager.sharedSubsystems(mRoutines);
 	}
 
+
+	@Override
+	public ArrayList<Routine> getEnclosingSequentialRoutine() {
+		return this.mRoutines;
+	}
+
 	@Override
 	public String getName() {
 		String name = "ParallelRoutine of (";
