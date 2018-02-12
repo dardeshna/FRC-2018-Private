@@ -43,99 +43,107 @@ public class AutoModeSelectorTest {
 	public void testAutoPaths() {
 		AutoFMS.getInstance().setSwitch(AutoFMS.Side.LEFT);
 		AutoFMS.getInstance().setScale(AutoFMS.Side.LEFT);
-		assertThat("Correct Left Scale", auto.getAutoMode(AutoModeBase.Alliance.BLUE, AutoModeBase.StartingPosition.LEFT,  AutoModeBase.Decision.LEFT, AutoModeBase.Decision.LEFT, AutoModeBase.Priority.SCALE).getClass(), equalTo(new LeftStartLeftScaleAutoMode(AutoModeBase.Alliance.BLUE).getClass()));
+		assertThat("Incorrect Baseline", auto.getAutoMode(AutoModeBase.Alliance.BLUE, AutoModeBase.StartingPosition.LEFT, AutoModeBase.Decision.RIGHT, AutoModeBase.Decision.RIGHT, AutoModeBase.Priority.SWITCH).getClass(), equalTo(new BaselineAutoMode(AutoModeBase.Alliance.BLUE).getClass()));
 
 		AutoFMS.getInstance().setSwitch(AutoFMS.Side.LEFT);
 		AutoFMS.getInstance().setScale(AutoFMS.Side.RIGHT);
-		assertThat("Correct Left Switch", auto.getAutoMode(AutoModeBase.Alliance.BLUE, AutoModeBase.StartingPosition.LEFT,  AutoModeBase.Decision.LEFT, AutoModeBase.Decision.LEFT, AutoModeBase.Priority.SCALE).getClass(), equalTo(new LeftStartLeftSwitchAutoMode(AutoModeBase.Alliance.BLUE).getClass()));
+		assertThat("Incorrect Baseline", auto.getAutoMode(AutoModeBase.Alliance.BLUE, AutoModeBase.StartingPosition.LEFT, AutoModeBase.Decision.NEVER, AutoModeBase.Decision.RIGHT, AutoModeBase.Priority.SWITCH).getClass(), equalTo(new BaselineAutoMode(AutoModeBase.Alliance.BLUE).getClass()));
+
+		AutoFMS.getInstance().setSwitch(AutoFMS.Side.LEFT);
+		AutoFMS.getInstance().setScale(AutoFMS.Side.LEFT);
+		assertThat("Incorrect Left Scale", auto.getAutoMode(AutoModeBase.Alliance.BLUE, AutoModeBase.StartingPosition.LEFT,  AutoModeBase.Decision.LEFT, AutoModeBase.Decision.LEFT, AutoModeBase.Priority.SCALE).getClass(), equalTo(new LeftStartLeftScaleAutoMode(AutoModeBase.Alliance.BLUE).getClass()));
 
 		AutoFMS.getInstance().setSwitch(AutoFMS.Side.LEFT);
 		AutoFMS.getInstance().setScale(AutoFMS.Side.RIGHT);
-		assertThat("Correct Left Scale despite Opposite Scale", auto.getAutoMode(AutoModeBase.Alliance.BLUE, AutoModeBase.StartingPosition.LEFT,  AutoModeBase.Decision.BOTH, AutoModeBase.Decision.LEFT, AutoModeBase.Priority.SCALE).getClass(), equalTo(new LeftStartRightScaleAutoMode(AutoModeBase.Alliance.BLUE).getClass()));
+		assertThat("Incorrect Left Switch", auto.getAutoMode(AutoModeBase.Alliance.BLUE, AutoModeBase.StartingPosition.LEFT,  AutoModeBase.Decision.LEFT, AutoModeBase.Decision.LEFT, AutoModeBase.Priority.SCALE).getClass(), equalTo(new LeftStartLeftSwitchAutoMode(AutoModeBase.Alliance.BLUE).getClass()));
+
+		AutoFMS.getInstance().setSwitch(AutoFMS.Side.LEFT);
+		AutoFMS.getInstance().setScale(AutoFMS.Side.RIGHT);
+		assertThat("Incorrect Left Scale despite Opposite Scale", auto.getAutoMode(AutoModeBase.Alliance.BLUE, AutoModeBase.StartingPosition.LEFT,  AutoModeBase.Decision.BOTH, AutoModeBase.Decision.LEFT, AutoModeBase.Priority.SCALE).getClass(), equalTo(new LeftStartRightScaleAutoMode(AutoModeBase.Alliance.BLUE).getClass()));
 
 		AutoFMS.getInstance().setSwitch(AutoFMS.Side.RIGHT);
 		AutoFMS.getInstance().setScale(AutoFMS.Side.LEFT);
-		assertThat("Correct Left Switch despite Opposite Switch", auto.getAutoMode(AutoModeBase.Alliance.BLUE, AutoModeBase.StartingPosition.LEFT,  AutoModeBase.Decision.LEFT, AutoModeBase.Decision.BOTH, AutoModeBase.Priority.SWITCH).getClass(), equalTo(new LeftStartRightSwitchAutoMode(AutoModeBase.Alliance.BLUE).getClass()));
+		assertThat("Incorrect Left Switch despite Opposite Switch", auto.getAutoMode(AutoModeBase.Alliance.BLUE, AutoModeBase.StartingPosition.LEFT,  AutoModeBase.Decision.LEFT, AutoModeBase.Decision.BOTH, AutoModeBase.Priority.SWITCH).getClass(), equalTo(new LeftStartRightSwitchAutoMode(AutoModeBase.Alliance.BLUE).getClass()));
 		
 		AutoFMS.getInstance().setSwitch(AutoFMS.Side.RIGHT);
 		AutoFMS.getInstance().setScale(AutoFMS.Side.RIGHT);
-		assertThat("Correct Right Scale", auto.getAutoMode(AutoModeBase.Alliance.BLUE, AutoModeBase.StartingPosition.RIGHT,  AutoModeBase.Decision.BOTH, AutoModeBase.Decision.RIGHT, AutoModeBase.Priority.SCALE).getClass(), equalTo(new RightStartRightScaleAutoMode(AutoModeBase.Alliance.BLUE).getClass()));
+		assertThat("Incorrect Right Scale", auto.getAutoMode(AutoModeBase.Alliance.BLUE, AutoModeBase.StartingPosition.RIGHT,  AutoModeBase.Decision.BOTH, AutoModeBase.Decision.RIGHT, AutoModeBase.Priority.SCALE).getClass(), equalTo(new RightStartRightScaleAutoMode(AutoModeBase.Alliance.BLUE).getClass()));
 
 		AutoFMS.getInstance().setSwitch(AutoFMS.Side.RIGHT);
 		AutoFMS.getInstance().setScale(AutoFMS.Side.LEFT);
-		assertThat("Correct Right Switch", auto.getAutoMode(AutoModeBase.Alliance.BLUE, AutoModeBase.StartingPosition.RIGHT,  AutoModeBase.Decision.RIGHT, AutoModeBase.Decision.RIGHT, AutoModeBase.Priority.SWITCH).getClass(), equalTo(new RightStartRightSwitchAutoMode(AutoModeBase.Alliance.BLUE).getClass()));
+		assertThat("Incorrect Right Switch", auto.getAutoMode(AutoModeBase.Alliance.BLUE, AutoModeBase.StartingPosition.RIGHT,  AutoModeBase.Decision.RIGHT, AutoModeBase.Decision.RIGHT, AutoModeBase.Priority.SWITCH).getClass(), equalTo(new RightStartRightSwitchAutoMode(AutoModeBase.Alliance.BLUE).getClass()));
 
 		AutoFMS.getInstance().setSwitch(AutoFMS.Side.RIGHT);
 		AutoFMS.getInstance().setScale(AutoFMS.Side.LEFT);
-		assertThat("Correct Right Scale despite Opposite Scale", auto.getAutoMode(AutoModeBase.Alliance.BLUE, AutoModeBase.StartingPosition.RIGHT,  AutoModeBase.Decision.BOTH, AutoModeBase.Decision.RIGHT, AutoModeBase.Priority.SCALE).getClass(), equalTo(new RightStartLeftScaleAutoMode(AutoModeBase.Alliance.BLUE).getClass()));
+		assertThat("Incorrect Right Scale despite Opposite Scale", auto.getAutoMode(AutoModeBase.Alliance.BLUE, AutoModeBase.StartingPosition.RIGHT,  AutoModeBase.Decision.BOTH, AutoModeBase.Decision.RIGHT, AutoModeBase.Priority.SCALE).getClass(), equalTo(new RightStartLeftScaleAutoMode(AutoModeBase.Alliance.BLUE).getClass()));
 		
 		AutoFMS.getInstance().setSwitch(AutoFMS.Side.LEFT);
 		AutoFMS.getInstance().setScale(AutoFMS.Side.RIGHT);
-		assertThat("Correct Right Switch despite Opposite Switch", auto.getAutoMode(AutoModeBase.Alliance.BLUE, AutoModeBase.StartingPosition.RIGHT,  AutoModeBase.Decision.RIGHT, AutoModeBase.Decision.BOTH, AutoModeBase.Priority.SWITCH).getClass(), equalTo(new RightStartLeftSwitchAutoMode(AutoModeBase.Alliance.BLUE).getClass()));
+		assertThat("Incorrect Right Switch despite Opposite Switch", auto.getAutoMode(AutoModeBase.Alliance.BLUE, AutoModeBase.StartingPosition.RIGHT,  AutoModeBase.Decision.RIGHT, AutoModeBase.Decision.BOTH, AutoModeBase.Priority.SWITCH).getClass(), equalTo(new RightStartLeftSwitchAutoMode(AutoModeBase.Alliance.BLUE).getClass()));
 
 		AutoFMS.getInstance().setSwitch(AutoFMS.Side.LEFT);
 		AutoFMS.getInstance().setScale(AutoFMS.Side.LEFT);
-		assertThat("Correct Left Scale from Center", auto.getAutoMode(AutoModeBase.Alliance.BLUE, AutoModeBase.StartingPosition.CENTER,  AutoModeBase.Decision.LEFT, AutoModeBase.Decision.BOTH, AutoModeBase.Priority.SCALE).getClass(), equalTo(new CenterStartLeftScaleAutoMode(AutoModeBase.Alliance.BLUE).getClass()));
+		assertThat("Incorrect Left Scale from Center", auto.getAutoMode(AutoModeBase.Alliance.BLUE, AutoModeBase.StartingPosition.CENTER,  AutoModeBase.Decision.LEFT, AutoModeBase.Decision.BOTH, AutoModeBase.Priority.SCALE).getClass(), equalTo(new CenterStartLeftScaleAutoMode(AutoModeBase.Alliance.BLUE).getClass()));
 
 		AutoFMS.getInstance().setSwitch(AutoFMS.Side.LEFT);
 		AutoFMS.getInstance().setScale(AutoFMS.Side.LEFT);
-		assertThat("Correct Left Switch from Center", auto.getAutoMode(AutoModeBase.Alliance.BLUE, AutoModeBase.StartingPosition.CENTER,  AutoModeBase.Decision.BOTH, AutoModeBase.Decision.LEFT, AutoModeBase.Priority.SWITCH).getClass(), equalTo(new CenterStartLeftSwitchAutoMode(AutoModeBase.Alliance.BLUE).getClass()));
+		assertThat("Incorrect Left Switch from Center", auto.getAutoMode(AutoModeBase.Alliance.BLUE, AutoModeBase.StartingPosition.CENTER,  AutoModeBase.Decision.BOTH, AutoModeBase.Decision.LEFT, AutoModeBase.Priority.SWITCH).getClass(), equalTo(new CenterStartLeftSwitchAutoMode(AutoModeBase.Alliance.BLUE).getClass()));
 
 		AutoFMS.getInstance().setSwitch(AutoFMS.Side.LEFT);
 		AutoFMS.getInstance().setScale(AutoFMS.Side.RIGHT);
-		assertThat("Correct Right Scale from Center", auto.getAutoMode(AutoModeBase.Alliance.BLUE, AutoModeBase.StartingPosition.CENTER,  AutoModeBase.Decision.RIGHT, AutoModeBase.Decision.BOTH, AutoModeBase.Priority.SCALE).getClass(), equalTo(new CenterStartRightScaleAutoMode(AutoModeBase.Alliance.BLUE).getClass()));
+		assertThat("Incorrect Right Scale from Center", auto.getAutoMode(AutoModeBase.Alliance.BLUE, AutoModeBase.StartingPosition.CENTER,  AutoModeBase.Decision.RIGHT, AutoModeBase.Decision.BOTH, AutoModeBase.Priority.SCALE).getClass(), equalTo(new CenterStartRightScaleAutoMode(AutoModeBase.Alliance.BLUE).getClass()));
 		
 		AutoFMS.getInstance().setSwitch(AutoFMS.Side.RIGHT);
 		AutoFMS.getInstance().setScale(AutoFMS.Side.LEFT);
-		assertThat("Correct Right Switch from Center", auto.getAutoMode(AutoModeBase.Alliance.BLUE, AutoModeBase.StartingPosition.CENTER,  AutoModeBase.Decision.BOTH, AutoModeBase.Decision.RIGHT, AutoModeBase.Priority.SWITCH).getClass(), equalTo(new CenterStartRightSwitchAutoMode(AutoModeBase.Alliance.BLUE).getClass()));
+		assertThat("Incorrect Right Switch from Center", auto.getAutoMode(AutoModeBase.Alliance.BLUE, AutoModeBase.StartingPosition.CENTER,  AutoModeBase.Decision.BOTH, AutoModeBase.Decision.RIGHT, AutoModeBase.Priority.SWITCH).getClass(), equalTo(new CenterStartRightSwitchAutoMode(AutoModeBase.Alliance.BLUE).getClass()));
 
 		AutoFMS.getInstance().setSwitch(AutoFMS.Side.LEFT);
 		AutoFMS.getInstance().setScale(AutoFMS.Side.LEFT);
-		assertThat("Correct Left Scale", auto.getAutoMode(AutoModeBase.Alliance.RED, AutoModeBase.StartingPosition.LEFT,  AutoModeBase.Decision.LEFT, AutoModeBase.Decision.LEFT, AutoModeBase.Priority.SCALE).getClass(), equalTo(new LeftStartLeftScaleAutoMode(AutoModeBase.Alliance.BLUE).getClass()));
+		assertThat("Incorrect Left Scale", auto.getAutoMode(AutoModeBase.Alliance.RED, AutoModeBase.StartingPosition.LEFT,  AutoModeBase.Decision.LEFT, AutoModeBase.Decision.LEFT, AutoModeBase.Priority.SCALE).getClass(), equalTo(new LeftStartLeftScaleAutoMode(AutoModeBase.Alliance.BLUE).getClass()));
 
 		AutoFMS.getInstance().setSwitch(AutoFMS.Side.LEFT);
 		AutoFMS.getInstance().setScale(AutoFMS.Side.RIGHT);
-		assertThat("Correct Left Switch", auto.getAutoMode(AutoModeBase.Alliance.RED, AutoModeBase.StartingPosition.LEFT,  AutoModeBase.Decision.LEFT, AutoModeBase.Decision.LEFT, AutoModeBase.Priority.SCALE).getClass(), equalTo(new LeftStartLeftSwitchAutoMode(AutoModeBase.Alliance.BLUE).getClass()));
+		assertThat("Incorrect Left Switch", auto.getAutoMode(AutoModeBase.Alliance.RED, AutoModeBase.StartingPosition.LEFT,  AutoModeBase.Decision.LEFT, AutoModeBase.Decision.LEFT, AutoModeBase.Priority.SCALE).getClass(), equalTo(new LeftStartLeftSwitchAutoMode(AutoModeBase.Alliance.BLUE).getClass()));
 
 		AutoFMS.getInstance().setSwitch(AutoFMS.Side.LEFT);
 		AutoFMS.getInstance().setScale(AutoFMS.Side.RIGHT);
-		assertThat("Correct Left Scale despite Opposite Scale", auto.getAutoMode(AutoModeBase.Alliance.RED, AutoModeBase.StartingPosition.LEFT,  AutoModeBase.Decision.BOTH, AutoModeBase.Decision.LEFT, AutoModeBase.Priority.SCALE).getClass(), equalTo(new LeftStartRightScaleAutoMode(AutoModeBase.Alliance.BLUE).getClass()));
+		assertThat("Incorrect Left Scale despite Opposite Scale", auto.getAutoMode(AutoModeBase.Alliance.RED, AutoModeBase.StartingPosition.LEFT,  AutoModeBase.Decision.BOTH, AutoModeBase.Decision.LEFT, AutoModeBase.Priority.SCALE).getClass(), equalTo(new LeftStartRightScaleAutoMode(AutoModeBase.Alliance.BLUE).getClass()));
 
 		AutoFMS.getInstance().setSwitch(AutoFMS.Side.RIGHT);
 		AutoFMS.getInstance().setScale(AutoFMS.Side.LEFT);
-		assertThat("Correct Left Switch despite Opposite Switch", auto.getAutoMode(AutoModeBase.Alliance.RED, AutoModeBase.StartingPosition.LEFT,  AutoModeBase.Decision.LEFT, AutoModeBase.Decision.BOTH, AutoModeBase.Priority.SWITCH).getClass(), equalTo(new LeftStartRightSwitchAutoMode(AutoModeBase.Alliance.BLUE).getClass()));
+		assertThat("Incorrect Left Switch despite Opposite Switch", auto.getAutoMode(AutoModeBase.Alliance.RED, AutoModeBase.StartingPosition.LEFT,  AutoModeBase.Decision.LEFT, AutoModeBase.Decision.BOTH, AutoModeBase.Priority.SWITCH).getClass(), equalTo(new LeftStartRightSwitchAutoMode(AutoModeBase.Alliance.BLUE).getClass()));
 		
 		AutoFMS.getInstance().setSwitch(AutoFMS.Side.RIGHT);
 		AutoFMS.getInstance().setScale(AutoFMS.Side.RIGHT);
-		assertThat("Correct Right Scale", auto.getAutoMode(AutoModeBase.Alliance.RED, AutoModeBase.StartingPosition.RIGHT,  AutoModeBase.Decision.BOTH, AutoModeBase.Decision.RIGHT, AutoModeBase.Priority.SCALE).getClass(), equalTo(new RightStartRightScaleAutoMode(AutoModeBase.Alliance.RED).getClass()));
+		assertThat("Incorrect Right Scale", auto.getAutoMode(AutoModeBase.Alliance.RED, AutoModeBase.StartingPosition.RIGHT,  AutoModeBase.Decision.BOTH, AutoModeBase.Decision.RIGHT, AutoModeBase.Priority.SCALE).getClass(), equalTo(new RightStartRightScaleAutoMode(AutoModeBase.Alliance.RED).getClass()));
 
 		AutoFMS.getInstance().setSwitch(AutoFMS.Side.RIGHT);
 		AutoFMS.getInstance().setScale(AutoFMS.Side.LEFT);
-		assertThat("Correct Right Switch", auto.getAutoMode(AutoModeBase.Alliance.RED, AutoModeBase.StartingPosition.RIGHT,  AutoModeBase.Decision.RIGHT, AutoModeBase.Decision.RIGHT, AutoModeBase.Priority.SWITCH).getClass(), equalTo(new RightStartRightSwitchAutoMode(AutoModeBase.Alliance.RED).getClass()));
+		assertThat("Incorrect Right Switch", auto.getAutoMode(AutoModeBase.Alliance.RED, AutoModeBase.StartingPosition.RIGHT,  AutoModeBase.Decision.RIGHT, AutoModeBase.Decision.RIGHT, AutoModeBase.Priority.SWITCH).getClass(), equalTo(new RightStartRightSwitchAutoMode(AutoModeBase.Alliance.RED).getClass()));
 
 		AutoFMS.getInstance().setSwitch(AutoFMS.Side.RIGHT);
 		AutoFMS.getInstance().setScale(AutoFMS.Side.LEFT);
-		assertThat("Correct Right Scale despite Opposite Scale", auto.getAutoMode(AutoModeBase.Alliance.RED, AutoModeBase.StartingPosition.RIGHT,  AutoModeBase.Decision.BOTH, AutoModeBase.Decision.RIGHT, AutoModeBase.Priority.SCALE).getClass(), equalTo(new RightStartLeftScaleAutoMode(AutoModeBase.Alliance.RED).getClass()));
+		assertThat("Incorrect Right Scale despite Opposite Scale", auto.getAutoMode(AutoModeBase.Alliance.RED, AutoModeBase.StartingPosition.RIGHT,  AutoModeBase.Decision.BOTH, AutoModeBase.Decision.RIGHT, AutoModeBase.Priority.SCALE).getClass(), equalTo(new RightStartLeftScaleAutoMode(AutoModeBase.Alliance.RED).getClass()));
 		
 		AutoFMS.getInstance().setSwitch(AutoFMS.Side.LEFT);
 		AutoFMS.getInstance().setScale(AutoFMS.Side.RIGHT);
-		assertThat("Correct Right Switch despite Opposite Switch", auto.getAutoMode(AutoModeBase.Alliance.RED, AutoModeBase.StartingPosition.RIGHT,  AutoModeBase.Decision.RIGHT, AutoModeBase.Decision.BOTH, AutoModeBase.Priority.SWITCH).getClass(), equalTo(new RightStartLeftSwitchAutoMode(AutoModeBase.Alliance.RED).getClass()));
+		assertThat("Incorrect Right Switch despite Opposite Switch", auto.getAutoMode(AutoModeBase.Alliance.RED, AutoModeBase.StartingPosition.RIGHT,  AutoModeBase.Decision.RIGHT, AutoModeBase.Decision.BOTH, AutoModeBase.Priority.SWITCH).getClass(), equalTo(new RightStartLeftSwitchAutoMode(AutoModeBase.Alliance.RED).getClass()));
 
 		AutoFMS.getInstance().setSwitch(AutoFMS.Side.LEFT);
 		AutoFMS.getInstance().setScale(AutoFMS.Side.LEFT);
-		assertThat("Correct Left Scale from Center", auto.getAutoMode(AutoModeBase.Alliance.RED, AutoModeBase.StartingPosition.CENTER,  AutoModeBase.Decision.LEFT, AutoModeBase.Decision.BOTH, AutoModeBase.Priority.SCALE).getClass(), equalTo(new CenterStartLeftScaleAutoMode(AutoModeBase.Alliance.RED).getClass()));
+		assertThat("Incorrect Left Scale from Center", auto.getAutoMode(AutoModeBase.Alliance.RED, AutoModeBase.StartingPosition.CENTER,  AutoModeBase.Decision.LEFT, AutoModeBase.Decision.BOTH, AutoModeBase.Priority.SCALE).getClass(), equalTo(new CenterStartLeftScaleAutoMode(AutoModeBase.Alliance.RED).getClass()));
 
 		AutoFMS.getInstance().setSwitch(AutoFMS.Side.LEFT);
 		AutoFMS.getInstance().setScale(AutoFMS.Side.LEFT);
-		assertThat("Correct Left Switch from Center", auto.getAutoMode(AutoModeBase.Alliance.RED, AutoModeBase.StartingPosition.CENTER,  AutoModeBase.Decision.BOTH, AutoModeBase.Decision.LEFT, AutoModeBase.Priority.SWITCH).getClass(), equalTo(new CenterStartLeftSwitchAutoMode(AutoModeBase.Alliance.RED).getClass()));
+		assertThat("Incorrect Left Switch from Center", auto.getAutoMode(AutoModeBase.Alliance.RED, AutoModeBase.StartingPosition.CENTER,  AutoModeBase.Decision.BOTH, AutoModeBase.Decision.LEFT, AutoModeBase.Priority.SWITCH).getClass(), equalTo(new CenterStartLeftSwitchAutoMode(AutoModeBase.Alliance.RED).getClass()));
 
 		AutoFMS.getInstance().setSwitch(AutoFMS.Side.LEFT);
 		AutoFMS.getInstance().setScale(AutoFMS.Side.RIGHT);
-		assertThat("Correct Right Scale from Center", auto.getAutoMode(AutoModeBase.Alliance.RED, AutoModeBase.StartingPosition.CENTER,  AutoModeBase.Decision.RIGHT, AutoModeBase.Decision.BOTH, AutoModeBase.Priority.SCALE).getClass(), equalTo(new CenterStartRightScaleAutoMode(AutoModeBase.Alliance.RED).getClass()));
+		assertThat("Incorrect Right Scale from Center", auto.getAutoMode(AutoModeBase.Alliance.RED, AutoModeBase.StartingPosition.CENTER,  AutoModeBase.Decision.RIGHT, AutoModeBase.Decision.BOTH, AutoModeBase.Priority.SCALE).getClass(), equalTo(new CenterStartRightScaleAutoMode(AutoModeBase.Alliance.RED).getClass()));
 		
 		AutoFMS.getInstance().setSwitch(AutoFMS.Side.RIGHT);
 		AutoFMS.getInstance().setScale(AutoFMS.Side.LEFT);
-		assertThat("Correct Right Switch from Center", auto.getAutoMode(AutoModeBase.Alliance.RED, AutoModeBase.StartingPosition.CENTER,  AutoModeBase.Decision.BOTH, AutoModeBase.Decision.RIGHT, AutoModeBase.Priority.SWITCH).getClass(), equalTo(new CenterStartRightSwitchAutoMode(AutoModeBase.Alliance.RED).getClass()));
+		assertThat("Incorrect Right Switch from Center", auto.getAutoMode(AutoModeBase.Alliance.RED, AutoModeBase.StartingPosition.CENTER,  AutoModeBase.Decision.BOTH, AutoModeBase.Decision.RIGHT, AutoModeBase.Priority.SWITCH).getClass(), equalTo(new CenterStartRightSwitchAutoMode(AutoModeBase.Alliance.RED).getClass()));
 
 	}
 

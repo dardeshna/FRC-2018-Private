@@ -7,6 +7,7 @@ import com.palyrobotics.frc2018.behavior.SequentialRoutine;
 import com.palyrobotics.frc2018.behavior.routines.drive.DrivePathRoutine;
 import com.palyrobotics.frc2018.behavior.routines.drive.DriveSensorResetRoutine;
 import com.palyrobotics.frc2018.behavior.routines.elevator.ElevatorCustomPositioningRoutine;
+import com.palyrobotics.frc2018.behavior.routines.intake.IntakeDownRoutine;
 import com.palyrobotics.frc2018.behavior.routines.intake.IntakeOpenRoutine;
 import com.palyrobotics.frc2018.config.AutoDistances;
 import com.palyrobotics.frc2018.config.Constants;
@@ -61,20 +62,23 @@ public class LeftStartLeftScaleAutoMode extends AutoModeBase {
                     (Constants.kRobotWidthInches/2.0 + AutoDistances.kRedLeftCornerOffset)
                             - AutoDistances.kRedLeftScaleY - Constants.kPlateWidth/2.0), 0.0));
         }
-        ArrayList<Routine> driveRoutines = new ArrayList<>();
-        driveRoutines.add(new DriveSensorResetRoutine());
-        driveRoutines.add(new DrivePathRoutine(new Path(path), false));
-        driveRoutines.add(new IntakeOpenRoutine());
-        Routine driveRoutine = new SequentialRoutine(driveRoutines);
-        
-        ArrayList<Routine> elevatorRoutines = new ArrayList<>();
-        elevatorRoutines.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorTopPositionInches, 15));
-        Routine elevatorRoutine = new SequentialRoutine(elevatorRoutines);
-        
+
         ArrayList<Routine> routines = new ArrayList<Routine>();
-        routines.add(driveRoutine);
-        routines.add(elevatorRoutine);
-        return new ParallelRoutine(routines);
+
+        //Reset sensors before
+        routines.add(new DriveSensorResetRoutine());
+
+        //Drive path while moving elevator up and moving intake down
+        ArrayList<Routine> inTransitRoutines = new ArrayList<>();
+        inTransitRoutines.add(new DrivePathRoutine(new Path(path), false));
+        inTransitRoutines.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorTopPositionInches, 15));
+        inTransitRoutines.add(new IntakeDownRoutine());
+        routines.add(new ParallelRoutine(inTransitRoutines));
+
+        //Open when everything is done to score
+        routines.add(new IntakeOpenRoutine());
+
+        return new SequentialRoutine(routines);
     }
 
 

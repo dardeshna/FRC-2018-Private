@@ -69,7 +69,6 @@ public class Constants {
 	public static final double kElevatorSwitchPositionInches = 30;
 	public static final double kElevatorBottomPositionInches = 0;
 
-
 	/*
 	 * Control loop constants for both robots
 	 */
@@ -109,6 +108,7 @@ public class Constants {
 	//Intake
 	public static final double kIntakingMotorVelocity = 1.0;
 	public static final double kExpellingMotorVelocity = -1.0;
+	public static final double kExpelToScoreTime = 0.5;
 
 	/*
 	 * !!! End of editable Constants! !!!

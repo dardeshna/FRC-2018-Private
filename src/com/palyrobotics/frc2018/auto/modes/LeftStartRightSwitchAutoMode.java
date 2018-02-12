@@ -6,10 +6,14 @@ import com.palyrobotics.frc2018.behavior.Routine;
 import com.palyrobotics.frc2018.behavior.SequentialRoutine;
 import com.palyrobotics.frc2018.behavior.routines.drive.DrivePathRoutine;
 import com.palyrobotics.frc2018.behavior.routines.drive.DriveSensorResetRoutine;
+import com.palyrobotics.frc2018.behavior.routines.drive.GyroMotionMagicTurnAngleRoutine;
 import com.palyrobotics.frc2018.behavior.routines.elevator.ElevatorCustomPositioningRoutine;
+import com.palyrobotics.frc2018.behavior.routines.intake.IntakeDownRoutine;
 import com.palyrobotics.frc2018.behavior.routines.intake.IntakeOpenRoutine;
+import com.palyrobotics.frc2018.behavior.routines.intake.IntakeWheelRoutine;
 import com.palyrobotics.frc2018.config.AutoDistances;
 import com.palyrobotics.frc2018.config.Constants;
+import com.palyrobotics.frc2018.subsystems.Intake;
 import com.palyrobotics.frc2018.util.trajectory.Path;
 import com.palyrobotics.frc2018.util.trajectory.Translation2d;
 
@@ -51,20 +55,30 @@ public class LeftStartRightSwitchAutoMode extends AutoModeBase {
                     + Constants.kSquareCubeLength, -AutoDistances.kFieldWidth + Constants.kRobotWidthInches/2.0 + AutoDistances.kRedLeftCornerOffset
                             + AutoDistances.kRedRightSwitchY + Constants.kPlateWidth/2.0), 0.0));
         }
-        ArrayList<Routine> driveRoutines = new ArrayList<>();
-        driveRoutines.add(new DriveSensorResetRoutine());
-        driveRoutines.add(new DrivePathRoutine(new Path(path), false));
-        driveRoutines.add(new IntakeOpenRoutine());
-        Routine driveRoutine = new SequentialRoutine(driveRoutines);
-        
-        ArrayList<Routine> elevatorRoutines = new ArrayList<>();
-        elevatorRoutines.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorSwitchPositionInches, 15));
-        Routine elevatorRoutine = new SequentialRoutine(elevatorRoutines);
-        
+
         ArrayList<Routine> routines = new ArrayList<Routine>();
-        routines.add(driveRoutine);
-        routines.add(elevatorRoutine);
-        return new ParallelRoutine(routines);
+
+        //Reset sensors before
+        routines.add(new DriveSensorResetRoutine());
+
+        ArrayList<Routine> inTransitRoutines = new ArrayList<>();
+        ArrayList<Routine> driveRoutines = new ArrayList<>();
+
+        //Drive there then turn angle to face
+        driveRoutines.add(new DrivePathRoutine(new Path(path), false));
+        //TODO: which turn angle? also is the angle correct?
+        driveRoutines.add(new GyroMotionMagicTurnAngleRoutine(-90));
+
+        //Get there, raise elevator, intake down
+        inTransitRoutines.add(new SequentialRoutine(driveRoutines));
+        inTransitRoutines.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorTopPositionInches, 15));
+        inTransitRoutines.add(new IntakeDownRoutine());
+        routines.add(new ParallelRoutine(inTransitRoutines));
+
+        //Spit out the cube at some speed to get it in the switch past the cube on the ground
+        routines.add(new IntakeWheelRoutine(Intake.WheelState.EXPELLING, Constants.kExpelToScoreTime));
+
+        return new SequentialRoutine(routines);
     }
 
 	@Override

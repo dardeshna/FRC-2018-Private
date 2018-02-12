@@ -17,6 +17,11 @@ public class IntakeWheelRoutine extends Routine {
   	
   	private long mStartTime;
 
+    /**
+     *
+     * @param wantedWheelState the desired state
+     * @param timeout how long (seconds) to run for
+     */
     public IntakeWheelRoutine(Intake.WheelState wantedWheelState, double timeout) {
         this.wantedWheelState = wantedWheelState;
         mTimeout = timeout;
