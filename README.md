@@ -9,7 +9,7 @@ Inspired by Team 148's 2016 climbing mechanism
 #### Elevator
 3-stage cascading elevator used for moving the scoring mechanism up and down
 #### Intake
-UNDETERMINED FILL OUT LATER ACTUALLY FILL OUT LATER DON'T FORGET TO FILL OUT LATER
+Wheel intake with pneumatic fold-down and open-close mechanisms
 #### Drivetrain
 A 8 wheel 6-CIM west coast drivetrain
 ## Acknowledgements
