@@ -4,19 +4,21 @@ import com.palyrobotics.frc2018.config.AutoDistances;
 
 public class Team8Field {
     public static void configureFieldMeasurements() {
+    	//TODO: Find actual red constants, currently using blue values
+    	
         //Base line
-        AutoDistances.kRedBaseLineDistanceInches = 0.0;
+        AutoDistances.kRedBaseLineDistanceInches = 121.0;
         AutoDistances.kBlueBaseLineDistanceInches = 121.0;
 
         //Switches
-        AutoDistances.kRedRightSwitchX = 100.0;
-        AutoDistances.kRedRightSwitchY = 50.0;
+        AutoDistances.kRedRightSwitchX = 139.5;
+        AutoDistances.kRedRightSwitchY = 82.5;
 
         AutoDistances.kBlueRightSwitchX = 139.5;
         AutoDistances.kBlueRightSwitchY = 82.5;
 
-        AutoDistances.kRedLeftSwitchX = 100.0;
-        AutoDistances.kRedLeftSwitchY = 50.0;
+        AutoDistances.kRedLeftSwitchX = 139.5;
+        AutoDistances.kRedLeftSwitchY = 85.0;
 
         AutoDistances.kBlueLeftSwitchX = 139.5;
         AutoDistances.kBlueLeftSwitchY = 85.0;
@@ -35,8 +37,8 @@ public class Team8Field {
         AutoDistances.kRedRightScaleY = 69.5;
 
         //Offsets
-        AutoDistances.kRedLeftCornerOffset = 0;
-        AutoDistances.kRedRightCornerOffset = 0;
+        AutoDistances.kRedLeftCornerOffset = 28.0;
+        AutoDistances.kRedRightCornerOffset = 28.0;
 
         AutoDistances.kBlueLeftCornerOffset = 28.0;
         AutoDistances.kBlueRightCornerOffset = 28.0;
@@ -46,10 +48,10 @@ public class Team8Field {
 
         //Length from left field wall to right edge of the exchange zone
         AutoDistances.kBlueLeftToCenterY = 139.0;
-        AutoDistances.kRedLeftToCenterY = 0;
+        AutoDistances.kRedLeftToCenterY = 139.0;
 
         //Distance to the somewhat arbitrary line between the scale and the switch along which the robot drives
         AutoDistances.kBlueScaleSwitchMidlineX = 234.0;
-        AutoDistances.kRedScaleSwitchMidlineX = 0;
+        AutoDistances.kRedScaleSwitchMidlineX = 234.0;
     }
 }

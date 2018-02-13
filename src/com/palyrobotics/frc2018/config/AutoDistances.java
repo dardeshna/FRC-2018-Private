@@ -1,7 +1,7 @@
 package com.palyrobotics.frc2018.config;
 
 /**
- * Created by Nihar on 4/13/17.
+ * Created by Eric on 2/12/18
  */
 public class AutoDistances {
 	//Base line
@@ -13,14 +13,13 @@ public class AutoDistances {
 	public static double kRedRightSwitchY;
 	
 	public static double kBlueRightSwitchX;
-
 	public static double kBlueRightSwitchY;
 
 	public static double kRedLeftSwitchX;
 	public static double kRedLeftSwitchY;
 	
 	public static double kBlueLeftSwitchX;
-    public static double kBlueLeftSwitchY;
+	public static double kBlueLeftSwitchY;
 
 	//Scales
 	public static double kBlueLeftScaleX;
