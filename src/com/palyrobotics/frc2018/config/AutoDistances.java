@@ -21,6 +21,9 @@ public class AutoDistances {
 	public static double kBlueLeftSwitchX;
 	public static double kBlueLeftSwitchY;
 
+    public static double pyramidStackX;
+	public static double pyramidStackY;
+
 	//Scales
 	public static double kBlueLeftScaleX;
 	public static double kBlueLeftScaleY;

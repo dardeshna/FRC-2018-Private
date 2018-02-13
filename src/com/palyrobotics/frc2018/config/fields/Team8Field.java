@@ -21,6 +21,10 @@ public class Team8Field {
         AutoDistances.kBlueLeftSwitchX = 139.5;
         AutoDistances.kBlueLeftSwitchY = 85.0;
 
+        AutoDistances.pyramidStackX = 42.0;
+        AutoDistances.pyramidStackY = 60;
+
+
         //Scales
         AutoDistances.kBlueLeftScaleX = 282.0;
         AutoDistances.kBlueLeftScaleY = 69.5;
