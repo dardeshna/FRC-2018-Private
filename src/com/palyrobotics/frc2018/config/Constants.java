@@ -141,28 +141,28 @@ public class Constants {
 	public static final int kForsetiRightDriveThirdMotorPDP = 0;
 
 	//CLIMBER
-	public static final int kForsetiClimberMotorLeftDeviceID = 1;
-	public static final int kForsetiClimberMotorRightDeviceID = 2;
+	public static final int kForsetiClimberMotorLeftDeviceID = 7;
+	public static final int kForsetiClimberMotorRightDeviceID = 8;
 
 	public static final int kForsetiClimberLeftArmForward = 3;
-	public static final int kForsetiClimberLeftArmBack = 3;
+	public static final int kForsetiClimberLeftArmBack = 4;
 
-	public static final int kForsetiClimberRightArmForward = 3;
-	public static final int kForsetiClimberRightArmBack = 3;
+	public static final int kForsetiClimberRightArmForward = 5;
+	public static final int kForsetiClimberRightArmBack = 6;
 
-	public static final int kForsetiClimberLeftBrakeSolenoid = 4;
-	public static final int kForsetiClimberRightBrakeSolenoid = 5;
+	public static final int kForsetiClimberLeftBrakeSolenoid = 7;
+	public static final int kForsetiClimberRightBrakeSolenoid = 8;
 
 	//ELEVATOR
 	//PDP slots for elevator TBD (currently 7, 8, 9, 10)
-	public static final int kForsetiElevatorMasterTalonID = 7;
-	public static final int kForsetiElevatorSlaveTalonID = 9;
-	public static final int kForsetiBottomElevatorHFXID = 8;
+	public static final int kForsetiElevatorMasterTalonID = 9;
+	public static final int kForsetiElevatorSlaveTalonID = 10;
+	public static final int kForsetiBottomElevatorHFXID = 9;
 	public static final int kForsetiTopElevatorHFXID = 10;
 
 	//INTAKE
-	public static final int kForsetiIntakeMasterDeviceID = 7;
-	public static final int kForsetiIntakeSlaveDeviceID = 8;
+	public static final int kForsetiIntakeMasterDeviceID = 11;
+	public static final int kForsetiIntakeSlaveDeviceID = 12;
 	public static final int kForsetiIntakeDistanceSensorID = 0;
 	public static final int kForsetiIntakeUpDownSolenoidForwardID = 1;
 	public static final int kForsetiIntakeUpDownSolenoidReverseID = 2;

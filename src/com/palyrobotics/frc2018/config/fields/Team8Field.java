@@ -4,8 +4,6 @@ import com.palyrobotics.frc2018.config.AutoDistances;
 
 public class Team8Field {
     public static void configureFieldMeasurements() {
-    	//TODO: Find actual red constants, currently using blue values
-    	
         //Base line
         AutoDistances.kRedBaseLineDistanceInches = 121.0;
         AutoDistances.kBlueBaseLineDistanceInches = 121.0;
