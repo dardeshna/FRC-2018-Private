@@ -1,5 +1,9 @@
 package com.palyrobotics.frc2018.config;
 
+import java.io.File;
+
+import com.palyrobotics.frc2018.util.JSONFormatter;
+
 /**
  * Created by Eric on 2/12/18
  */
@@ -54,4 +58,80 @@ public class AutoDistances {
 	//Distance to the somewhat arbitrary line between the scale and the switch along which the robot drives
 	public static double kBlueScaleSwitchMidlineX;
 	public static double kRedScaleSwitchMidlineX;
+	
+	public static void updateAutoDistances() {
+		loadField();
+		setAutoDistances();
+	}
+	
+	private static File field;
+	
+	private static void loadField() { // Make sure to ant deploy constants to roboRIO
+		switch (Constants.kFieldName) {
+		case AZN:
+			field = JSONFormatter.loadFileDirectory("constants/fields", "AZNField.json");
+			break;
+		case AZN_PRACTICE:
+			field = JSONFormatter.loadFileDirectory("constants/fields", "AZNPracticeField.json");
+			break;
+		case CMP:
+			field = JSONFormatter.loadFileDirectory("constants/fields", "CMPField.json");
+			break;
+		case CMP_PRACTICE:
+			field = JSONFormatter.loadFileDirectory("constants/fields", "CMPPracticeField.json");
+			break;
+		case SVR:
+			field = JSONFormatter.loadFileDirectory("constants/fields", "SVRField.json");
+			break;
+		case SVR_PRACTICE:
+			field = JSONFormatter.loadFileDirectory("constants/fields", "SVRPracticeField.json");
+			break;
+		case TEAM_254:
+			field = JSONFormatter.loadFileDirectory("constants/fields", "Team254Field.json");
+			break;
+		case TEAM_8:
+			field = JSONFormatter.loadFileDirectory("constants/fields", "Team8Field.json");
+			break;
+		}
+	}
+	
+	private static void setAutoDistances() { // run after loading chosen field
+		kRedBaseLineDistanceInches = getDoubleValue("kRedBaseLineDistanceInches");
+		kBlueBaseLineDistanceInches = getDoubleValue("kBlueBaseLineDistanceInches");
+		kRedRightSwitchX = getDoubleValue("kRedRightSwitchX");
+		kRedRightSwitchY = getDoubleValue("kRedRightSwitchY");
+		kBlueRightSwitchX = getDoubleValue("kBlueRightSwitchX");
+		kBlueRightSwitchY = getDoubleValue("kBlueRightSwitchY");
+		kRedLeftSwitchX = getDoubleValue("kRedLeftSwitchX");
+		kRedLeftSwitchY = getDoubleValue("kRedLeftSwitchY");
+		kBlueLeftSwitchX = getDoubleValue("kBlueLeftSwitchX");
+		kBlueLeftSwitchY = getDoubleValue("kBlueLeftSwitchY");
+		kBlueLeftScaleX = getDoubleValue("kBlueLeftScaleX");
+		kBlueLeftScaleY = getDoubleValue("kBlueLeftScaleY");
+		kBlueRightScaleX = getDoubleValue("kBlueRightScaleX");
+		kBlueRightScaleY = getDoubleValue("kBlueRightScaleY");
+		kRedLeftScaleX = getDoubleValue("kRedLeftScaleX");
+		kRedLeftScaleY = getDoubleValue("kRedLeftScaleY");
+		kRedRightScaleX = getDoubleValue("kRedRightScaleX");
+		kRedRightScaleY = getDoubleValue("kRedRightScaleY");
+		kRedLeftCornerOffset = getDoubleValue("kRedLeftCornerOffset");
+		kRedRightCornerOffset = getDoubleValue("kRedRightCornerOffset");
+		kBlueLeftCornerOffset = getDoubleValue("kBlueLeftCornerOffset");
+		kBlueRightCornerOffset = getDoubleValue("kBlueRightCornerOffset");
+		kFieldWidth = getDoubleValue("kFieldWidth");
+		kBlueLeftToCenterY = getDoubleValue("kBlueLeftToCenterY");
+		kRedLeftToCenterY = getDoubleValue("kRedLeftToCenterY");
+		kBlueScaleSwitchMidlineX = getDoubleValue("kBlueScaleSwitchMidlineX");
+		kRedScaleSwitchMidlineX = getDoubleValue("kRedScaleSwitchMidlineX");
+	}
+	
+	/**
+	 * Return value of given key in the given field
+	 * @param key
+	 * @return
+	 */
+	private static Double getDoubleValue(String key) {
+		Object value = JSONFormatter.getValueInFile(field, key);
+		return (Double) value;
+	}
 }

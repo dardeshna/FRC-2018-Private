@@ -50,5 +50,32 @@
         command="${deploy.kill.command}"/>
     </sequential>
   </target>
+  <target name="deploy-constants" description="copy constants to rio"
+    depends="get-target-ip">
+    <sequential>
+     <echo>[deploy-constants] Deploying constants from ${constants.dir} to ${rioConstants.dir}</echo>
+       <sshexec host="${target}"
+                                   username="${username}"
+                                   password="${password}"
+                                   trust="true"
+                                   failonerror="false"
+                                   command="mkdir ${rioConstants.dir}"/>
+        <echo>[deploy-constants]Creating constants directory on rio</echo>
+        <scp todir="${username}@${target}:${rioConstants.dir}" password="${password}" trust="true">
+        <fileset dir="${constants.dir}">
+          <include name="**/fields/*.json"/>
+          <include name="*.json"/>
+        </fileset>
+      </scp>
+      <echo>Done deploying constants</echo>
+      <echo>Restarting Robot Code</echo>
+      <sshexec host="${target}"
+        username="${username}"
+        password="${password}"
+        trust="true"
+        failonerror="false"
+        command="${deploy.kill.command}"/>
+    </sequential>
+  </target>
 <import file="${wpilib.ant.dir}/build.xml"/>
 </project> 

@@ -2,7 +2,8 @@ package com.palyrobotics.frc2018.auto;
 
 import com.palyrobotics.frc2018.behavior.Routine;
 import com.palyrobotics.frc2018.behavior.routines.drive.DrivePathRoutine;
-import com.palyrobotics.frc2018.config.fields.FieldSelector;
+import com.palyrobotics.frc2018.config.AutoDistances;
+
 import org.junit.Test;
 
 import java.io.FileOutputStream;
@@ -13,7 +14,7 @@ public class AutoGrapher {
 
     @Test
     public void showAuto() throws IOException {
-        FieldSelector.configureFieldMeasurements();
+    	AutoDistances.updateAutoDistances();
         for (int i = 0; i < 26; i++) {
             loadAutos(AutoModeSelector.getInstance().getAutoModeByIndex(i), (i%2==0 ? "Blue" : "Red"));
         }
