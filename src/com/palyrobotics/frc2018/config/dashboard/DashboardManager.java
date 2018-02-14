@@ -52,7 +52,7 @@ public class DashboardManager {
 		//Gains.initNetworkTableGains();
 		if(enableCANTable) {
 			this.canTable = net_instance.getTable(CAN_TABLE_NAME);
-			net_instance.setUpdateRate(.015);
+			net_instance.setUpdateRate(.005);
 		}
 	}
 

@@ -69,7 +69,7 @@ public class Elevator extends Subsystem {
 		//Update for use in handleState()
 		mRobotState = robotState;
 
-		checkCalibration();
+
 
 		handleState(commands);
 
@@ -79,6 +79,7 @@ public class Elevator extends Subsystem {
 			//Actual calibration logic is not done in the state machine
 			case CALIBRATING:
 				mOutput.setPercentOutput(Constants.kCalibratePower);
+				checkCalibration();
 				break;
 			case HOLD:
 				//If at the bottom, supply no power
@@ -139,7 +140,7 @@ public class Elevator extends Subsystem {
 	 */
 	private void handleState(Commands commands) {
 		if(commands.wantedElevatorState == ElevatorState.CALIBRATING) {
-			if(!kElevatorBottomPosition.isPresent() || !kElevatorTopPosition.isPresent()) {
+			if(!isCalibrated()) {
 				mState = ElevatorState.CALIBRATING;
 			} else {
 				//If already calibrated, ignore it and hold next cycle
@@ -154,19 +155,20 @@ public class Elevator extends Subsystem {
 			mState = commands.wantedElevatorState;
 		} else if(commands.wantedElevatorState == ElevatorState.CUSTOM_POSITIONING) {
 			//If calibrated
-			if(kElevatorBottomPosition.isPresent() && kElevatorTopPosition.isPresent()) {
+			if(isCalibrated()) {
 				//Set the setpoint
 				//If the desired custom positioning setpoint is different than what currently
 				//exists, replace it
 				if(!mElevatorWantedPosition.equals(Optional.of(kElevatorBottomPosition.get() + commands.robotSetpoints.elevatorPositionSetpoint.get() * Constants.kElevatorTicksPerInch))) {
 					mElevatorWantedPosition = Optional.of(kElevatorBottomPosition.get() + commands.robotSetpoints.elevatorPositionSetpoint.get() * Constants.kElevatorTicksPerInch);
 				}
-
-				mState = ElevatorState.CUSTOM_POSITIONING;
 			} else {
-				//If not calibrated, calibrate.
-				mState = ElevatorState.CALIBRATING;
-			}
+				//Assume bottom position is the bottom
+                if(!mElevatorWantedPosition.equals(Optional.of(commands.robotSetpoints.elevatorPositionSetpoint.get() * Constants.kElevatorTicksPerInch))) {
+                    mElevatorWantedPosition = Optional.of(commands.robotSetpoints.elevatorPositionSetpoint.get() * Constants.kElevatorTicksPerInch);
+                }
+            }
+			mState = ElevatorState.CUSTOM_POSITIONING;
 		} else {
 			//For idle/manual positioning, just set it
 			mState = commands.wantedElevatorState;
@@ -196,10 +198,16 @@ public class Elevator extends Subsystem {
 		}
 	}
 
+	public boolean isCalibrated() {
+	    return (kElevatorTopPosition.isPresent() && kElevatorBottomPosition.isPresent());
+    }
+
+    @Override
 	public void start() {
 
 	}
 
+	@Override
 	public void stop() {
 
 	}

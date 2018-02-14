@@ -47,7 +47,7 @@ public class Robot extends TimedRobot {
 	private Intake mIntake = Intake.getInstance();
 
 	//Hardware Updater
-	private HardwareUpdater mHardwareUpdater;
+	private HardwareUpdater mHardwareUpdater = new HardwareUpdater(mDrive, mClimber, mElevator, mIntake);
 
 	// Started boolean for if auto has been started.
 	private boolean mAutoStarted = false;
@@ -73,13 +73,6 @@ public class Robot extends TimedRobot {
 			Logger.getInstance().logRobotThread(Level.INFO, "Auto", AutoModeSelector.getInstance().getAutoMode().toString());
 		} catch(NullPointerException e) {
 			Logger.getInstance().logRobotThread(Level.SEVERE, "Auto", e);
-		}
-
-		try {
-			mHardwareUpdater = new HardwareUpdater(mDrive, mClimber, mElevator, mIntake);
-		} catch(Exception e) {
-			Logger.getInstance().logRobotThread(Level.SEVERE, e);
-			System.exit(1);
 		}
 
 		mHardwareUpdater.initHardware();
@@ -227,22 +220,22 @@ public class Robot extends TimedRobot {
 
 	private void startSubsystems() {
 		mDrive.start();
-		mClimber.start();
+//		mClimber.start();
 		mElevator.start();
-		mIntake.start();
+//		mIntake.start();
 	}
 
 	private void updateSubsystems() {
 		mDrive.update(commands, robotState);
-		mClimber.update(commands, robotState);
+//		mClimber.update(commands, robotState);
 		mElevator.update(commands, robotState);
-		mIntake.update(commands, robotState);
+//		mIntake.update(commands, robotState);
 	}
 
 	private void stopSubsystems() {
 		mDrive.stop();
-		mClimber.stop();
+//		mClimber.stop();
 		mElevator.stop();
-		mIntake.stop();
+//		mIntake.stop();
 	}
 }

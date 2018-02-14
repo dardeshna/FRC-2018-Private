@@ -27,19 +27,6 @@ import java.util.logging.Level;
  * Should only be used in robot package.
  */
 class HardwareUpdater {
-	private static HardwareUpdater instance;
-	{
-		try {
-			instance = new HardwareUpdater(Drive.getInstance(), Climber.getInstance(), Elevator.getInstance(), Intake.getInstance());
-		} catch(Exception e) {
-			Logger.getInstance().logRobotThread(Level.SEVERE, e);
-		}
-
-	}
-
-	public static HardwareUpdater getInstance() {
-		return instance;
-	}
 
 	//Subsystem references
 	private Drive mDrive;
@@ -50,7 +37,7 @@ class HardwareUpdater {
 	/**
 	 * Hardware Updater for Forseti
 	 */
-	protected HardwareUpdater(Drive drive, Climber climber, Elevator elevator, Intake intake) throws Exception {
+	protected HardwareUpdater(Drive drive, Climber climber, Elevator elevator, Intake intake) {
 		this.mDrive = drive;
 		this.mClimber = climber;
 		this.mElevator = elevator;
@@ -63,9 +50,9 @@ class HardwareUpdater {
 	void initHardware() {
 		Logger.getInstance().logRobotThread(Level.INFO, "Init hardware");
 		configureTalons();
-		PigeonIMU gyro = HardwareAdapter.getInstance().getDrivetrain().gyro;
-		gyro.setYaw(0, 0);
-		gyro.setFusedHeading(0, 0);
+//		PigeonIMU gyro = HardwareAdapter.getInstance().getDrivetrain().gyro;
+//		gyro.setYaw(0, 0);
+//		gyro.setFusedHeading(0, 0);
 	}
 
 	void disableTalons() {
@@ -94,9 +81,9 @@ class HardwareUpdater {
 
 	void configureTalons() {
 		configureDriveTalons();
-		configureClimberTalons();
+//		configureClimberTalons();
 		configureElevatorTalons();
-		configureIntakeTalons();
+//		configureIntakeTalons();
 	}
 
 	void configureDriveTalons() {
@@ -162,8 +149,8 @@ class HardwareUpdater {
 		leftMasterTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
 		rightMasterTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
 
-		leftMasterTalon.setSensorPhase(false);
-		rightMasterTalon.setSensorPhase(false);
+		leftMasterTalon.setSensorPhase(true);
+		rightMasterTalon.setSensorPhase(true);
 
 		leftMasterTalon.setStatusFramePeriod(0, 5, 0);
 		rightMasterTalon.setStatusFramePeriod(0, 5, 0);
@@ -184,20 +171,23 @@ class HardwareUpdater {
 		rightSlave2Victor.setInverted(true);
 
 		//Set slave victors to follower mode
-		leftSlave1Victor.set(ControlMode.Follower, leftMasterTalon.getDeviceID());
-		leftSlave2Victor.set(ControlMode.Follower, leftMasterTalon.getDeviceID());
-		rightSlave1Victor.set(ControlMode.Follower, rightMasterTalon.getDeviceID());
-		rightSlave2Victor.set(ControlMode.Follower, rightMasterTalon.getDeviceID());
+		leftSlave1Victor.follow(leftMasterTalon);
+		leftSlave2Victor.follow(leftMasterTalon);
+		rightSlave1Victor.follow(rightMasterTalon);
+		rightSlave2Victor.follow(rightMasterTalon);
 	}
 
 	void configureElevatorTalons() {
 		WPI_TalonSRX masterTalon = HardwareAdapter.getInstance().getElevator().elevatorMasterTalon;
 		WPI_TalonSRX slaveTalon = HardwareAdapter.getInstance().getElevator().elevatorSlaveTalon;
-		slaveTalon.set(ControlMode.Follower, masterTalon.getDeviceID());
 
-		masterTalon.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 100);
-		masterTalon.configReverseLimitSwitchSource(RemoteLimitSwitchSource.RemoteTalonSRX, LimitSwitchNormal.NormallyOpen,
-				Constants.kForsetiElevatorSlaveTalonID, 100);
+		masterTalon.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0); // TOP
+		masterTalon.configReverseLimitSwitchSource(RemoteLimitSwitchSource.RemoteTalonSRX, LimitSwitchNormal.NormallyOpen, slaveTalon.getDeviceID(), 0); // BOTTOM
+
+		masterTalon.setInverted(false);
+		slaveTalon.setInverted(true);
+
+		slaveTalon.follow(masterTalon);
 
 		masterTalon.enableVoltageCompensation(true);
 		slaveTalon.enableVoltageCompensation(true);
@@ -206,10 +196,10 @@ class HardwareUpdater {
 		slaveTalon.configVoltageCompSaturation(14, 0);
 
 		//TODO: which way is up and how does it work w/ inverted
-		masterTalon.configNominalOutputForward(Constants.kNominalUpwardsOutput, 0);
-		masterTalon.configNominalOutputReverse(0, 0);
-		slaveTalon.configNominalOutputForward(Constants.kNominalUpwardsOutput, 0);
-		slaveTalon.configNominalOutputReverse(0, 0);
+//		masterTalon.configNominalOutputForward(Constants.kNominalUpwardsOutput, 0);
+//		masterTalon.configNominalOutputReverse(0, 0);
+//		slaveTalon.configNominalOutputForward(Constants.kNominalUpwardsOutput, 0);
+//		slaveTalon.configNominalOutputReverse(0, 0);
 
 		masterTalon.configPeakOutputForward(Constants.kElevatorMaxClosedLoopOutput, 0);
 		masterTalon.configPeakOutputReverse(-Constants.kElevatorMaxClosedLoopOutput, 0);
@@ -217,14 +207,10 @@ class HardwareUpdater {
 		slaveTalon.configPeakOutputReverse(-Constants.kElevatorMaxClosedLoopOutput, 0);
 
 		masterTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
-		//TODO: in phase or not?
-		masterTalon.setSensorPhase(true);
+		masterTalon.setSensorPhase(false);
 
 		//Zero encoders
 		masterTalon.setSelectedSensorPosition(0, 0, 0);
-
-		//Reverse right side
-		slaveTalon.setInverted(true);
 	}
 
 	void configureClimberTalons() {
@@ -269,17 +255,18 @@ class HardwareUpdater {
 		slaveTalon.setInverted(true);
 
 		//Set slave talons to follower mode
-		slaveTalon.set(ControlMode.Follower, masterTalon.getDeviceID());
+        slaveTalon.follow(masterTalon);
 	}
 
 	/**
 	 * Updates all the sensor data taken from the hardware
 	 */
 	void updateState(RobotState robotState) {
+
 		WPI_TalonSRX leftMasterTalon = HardwareAdapter.getInstance().getDrivetrain().leftMasterTalon;
 		WPI_TalonSRX rightMasterTalon = HardwareAdapter.getInstance().getDrivetrain().rightMasterTalon;
 
-		AnalogInput intakeDistanceSensor = HardwareAdapter.getInstance().getIntake().distanceSensor;
+//		AnalogInput intakeDistanceSensor = HardwareAdapter.getInstance().getIntake().distanceSensor;
 
 		robotState.leftControlMode = leftMasterTalon.getControlMode();
 		robotState.rightControlMode = rightMasterTalon.getControlMode();
@@ -291,7 +278,7 @@ class HardwareUpdater {
 
 		//Currently represents the voltage returned from the distance sensor, but the actual sensor is undetermined so
 		//we do not know the conversion.
-		robotState.cubeDistance = intakeDistanceSensor.getValue();
+//		robotState.cubeDistance = intakeDistanceSensor.getValue();
 
 		switch(robotState.leftControlMode) {
 			//Fall through
@@ -337,15 +324,15 @@ class HardwareUpdater {
 				break;
 		}
 
-		PigeonIMU gyro = HardwareAdapter.getInstance().getDrivetrain().gyro;
-		if(gyro != null) {
-			robotState.drivePose.heading = gyro.getFusedHeading();
-			robotState.drivePose.headingVelocity = (robotState.drivePose.heading - robotState.drivePose.lastHeading) / Constants.kNormalLoopsDt;
-			robotState.drivePose.lastHeading = gyro.getFusedHeading();
-		} else {
-			robotState.drivePose.heading = -0;
-			robotState.drivePose.headingVelocity = -0;
-		}
+//		PigeonIMU gyro = HardwareAdapter.getInstance().getDrivetrain().gyro;
+//		if(gyro != null) {
+//			robotState.drivePose.heading = gyro.getFusedHeading();
+//			robotState.drivePose.headingVelocity = (robotState.drivePose.heading - robotState.drivePose.lastHeading) / Constants.kNormalLoopsDt;
+//			robotState.drivePose.lastHeading = gyro.getFusedHeading();
+//		} else {
+//			robotState.drivePose.heading = -0;
+//			robotState.drivePose.headingVelocity = -0;
+//		}
 
 		robotState.drivePose.lastLeftEnc = robotState.drivePose.leftEnc;
 		robotState.drivePose.leftEnc = leftMasterTalon.getSelectedSensorPosition(0);
@@ -379,18 +366,18 @@ class HardwareUpdater {
 
 		//Rotation2d gyro_angle = Rotation2d.fromRadians((right_distance - left_distance) * Constants.kTrackScrubFactor
 		///Constants.kTrackEffectiveDiameter);
-		Rotation2d gyro_angle = Rotation2d.fromDegrees(robotState.drivePose.heading);
-		RigidTransform2d odometry = robotState.generateOdometryFromSensors(left_distance - robotState.drivePose.lastLeftEnc / Constants.kDriveTicksPerInch,
-				right_distance - robotState.drivePose.lastRightEnc / Constants.kDriveTicksPerInch, gyro_angle);
-		RigidTransform2d.Delta velocity = Kinematics.forwardKinematics(robotState.drivePose.leftEncVelocity, robotState.drivePose.rightEncVelocity);
-
-		robotState.addObservations(time, odometry, velocity);
-
-		//Update elevator sensors
+//		Rotation2d gyro_angle = Rotation2d.fromDegrees(robotState.drivePose.heading);
+//		RigidTransform2d odometry = robotState.generateOdometryFromSensors(left_distance - robotState.drivePose.lastLeftEnc / Constants.kDriveTicksPerInch,
+//				right_distance - robotState.drivePose.lastRightEnc / Constants.kDriveTicksPerInch, gyro_angle);
+//		RigidTransform2d.Delta velocity = Kinematics.forwardKinematics(robotState.drivePose.leftEncVelocity, robotState.drivePose.rightEncVelocity);
+//
+//		robotState.addObservations(time, odometry, velocity);
+//
+//		//Update elevator sensors
 		robotState.elevatorPosition = HardwareAdapter.getInstance().getElevator().elevatorMasterTalon.getSelectedSensorPosition(0);
 		robotState.elevatorVelocity = HardwareAdapter.getInstance().getElevator().elevatorMasterTalon.getSelectedSensorVelocity(0);
-		robotState.elevatorBottomHFX = HardwareAdapter.getInstance().getElevator().bottomHFX.get();
-		robotState.elevatorTopHFX = HardwareAdapter.getInstance().getElevator().topHFX.get();
+		robotState.elevatorBottomHFX = HardwareAdapter.getInstance().getElevator().elevatorMasterTalon.getSensorCollection().isRevLimitSwitchClosed();
+		robotState.elevatorTopHFX = HardwareAdapter.getInstance().getElevator().elevatorMasterTalon.getSensorCollection().isFwdLimitSwitchClosed();
 	}
 
 	/**
@@ -398,9 +385,9 @@ class HardwareUpdater {
 	 */
 	void updateHardware() {
 		updateDrivetrain();
-		updateClimber();
+//		updateClimber();
 		updateElevator();
-		updateIntake();
+//		updateIntake();
 	}
 
 	/**

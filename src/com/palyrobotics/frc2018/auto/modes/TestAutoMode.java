@@ -22,11 +22,7 @@ public class TestAutoMode extends AutoModeBase {
 
 	@Override
 	public Routine getRoutine() {
-		//ArrayList<Routine> parallel = new ArrayList<Routine>();
-		ArrayList<Routine> sequence = new ArrayList<Routine>();
-
-		sequence.add(new TimedDriveRoutine(6, 3.5));
-		return new SequentialRoutine(sequence);
+		return getDrive();
 	}
 
 	@Override
@@ -39,22 +35,19 @@ public class TestAutoMode extends AutoModeBase {
 		Logger.getInstance().logRobotThread(Level.FINE, "Starting TestAutoMode");
 	}
 
-	private SequentialRoutine getDrop() {
+	private SequentialRoutine getDrive() {
 		Gains mShortGains = Gains.forsetiShortDriveMotionMagicGains;
 
 		DriveSignal driveBackup = DriveSignal.getNeutralSignal();
-		double driveBackupSetpoint = -30 * Constants.kDriveTicksPerInch;
+		double driveBackupSetpoint = 30 * Constants.kDriveTicksPerInch;
 		driveBackup.leftMotor.setMotionMagic(driveBackupSetpoint, mShortGains, (int) Gains.kForsetiShortDriveMotionMagicCruiseVelocity,
 				(int) Gains.kForsetiShortDriveMotionMagicMaxAcceleration);
 		driveBackup.rightMotor.setMotionMagic(driveBackupSetpoint, mShortGains, (int) Gains.kForsetiShortDriveMotionMagicCruiseVelocity,
 				(int) Gains.kForsetiShortDriveMotionMagicMaxAcceleration);
 
 		ArrayList<Routine> sequence = new ArrayList<>();
-		ArrayList<Routine> parallelDrop = new ArrayList<>();
 
-		parallelDrop.add(new TalonSRXRoutine(driveBackup, true));
-		sequence.add(new ParallelRoutine(parallelDrop));
-		sequence.add(new EncoderTurnAngleRoutine(180));
+		sequence.add(new TalonSRXRoutine(driveBackup, true));
 
 		return new SequentialRoutine(sequence);
 	}

@@ -37,11 +37,11 @@ public class Gains {
 	//Short distance max speed 45 in/s Max accel 95 in/s^2
 	public static final double kForsetiShortDriveMotionMagicCruiseVelocity = 60 * Constants.kDriveSpeedUnitConversion;
 	public static final double kForsetiShortDriveMotionMagicMaxAcceleration = 100 * Constants.kDriveSpeedUnitConversion;
-	public static final double kForsetiShortDriveMotionMagickP = 2.40;
-	public static final double kForsetiShortDriveMotionMagickI = 0.00040;
-	public static final double kForsetiShortDriveMotionMagickD = 275;
-	public static final double kForsetiShortDriveMotionMagickF = 2.075;
-	public static final int kForsetiShortDriveMotionMagickIzone = 150;
+	public static final double kForsetiShortDriveMotionMagickP = 0 ;
+	public static final double kForsetiShortDriveMotionMagickI = 0; //0.00040 / 2;
+	public static final double kForsetiShortDriveMotionMagickD = 0; //275 / 2;
+	public static final double kForsetiShortDriveMotionMagickF = 0; //2.075 / 2;
+	public static final int kForsetiShortDriveMotionMagickIzone = 0; //150 / 2;
 	public static final double kForsetiShortDriveMotionMagickRampRate = 0.0;
 	public static final Gains forsetiShortDriveMotionMagicGains = new Gains(kForsetiShortDriveMotionMagickP, kForsetiShortDriveMotionMagickI,
 			kForsetiShortDriveMotionMagickD, kForsetiShortDriveMotionMagickF, kForsetiShortDriveMotionMagickIzone, kForsetiShortDriveMotionMagickRampRate);

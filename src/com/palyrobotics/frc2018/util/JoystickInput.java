@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.Joystick;
 public class JoystickInput {
 
 	protected double x, y;
-	protected boolean[] buttons = new boolean[15];
+	protected boolean[] buttons = new boolean[12];
 
 	@Override
 	public String toString() {
@@ -20,8 +20,8 @@ public class JoystickInput {
 	public void update(Joystick j) {
 		x = j.getX();
 		y = j.getY();
-		for(int i = 0; i < 15; i++) {
-			//getRawButton(0) is the trigger
+		for(int i = 1; i < 12; i++) {
+			//getRawButton(1) is the trigger
 			buttons[i] = j.getRawButton(i);
 		}
 	}
@@ -39,6 +39,6 @@ public class JoystickInput {
 	}
 
 	public boolean getTriggerPressed() {
-		return buttons[0];
+		return buttons[1];
 	}
 }

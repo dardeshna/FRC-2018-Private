@@ -7,16 +7,17 @@ from networktables import NetworkTables
 # AUTHOR: Robbie Selwyn
 
 GNUPLOT_SCRIPT = """
-    set title 'CANTables Plot'
-    set xlabel 'Time' # x-axis label
-    set ylabel 'Output Value' # y-axis label
-    
-    # Gnuplot Styling
-    set style line 12 lc rgb '#808080' lt 0 lw 1
-    set grid back ls 12
-    
-    set pointsize .5
-    
+set title 'CANTables Plot'
+set xlabel 'Time' # x-axis label
+set ylabel 'Output Value' # y-axis label
+set datafile separator ","
+
+# Gnuplot Styling
+set style line 12 lc rgb '#808080' lt 0 lw 1
+set grid back ls 12
+
+set pointsize .5
+
     """
 
 graph = sys.argv[1:]
@@ -33,7 +34,7 @@ recording = False
 f = None
 
 # All of the keys to get data on
-KEYS = ["dt_error_left", "dt_error_right", "dt_velocity_left", "dt_velocity_right", "slider_pot", "slider_enc", "dt_left_dist", "dt_right_dist"]
+KEYS = ["dt_error_left", "dt_error_right", "dt_velocity_left", "dt_velocity_right", "slider_pot", "dt_left_dist", "dt_right_dist"]
 
 time.sleep(1)
 print "Started Listening"
@@ -73,7 +74,7 @@ main_data_string = 'plot '
 colors = ["#2ecc71", "#f1c40f", "#8e44ad", "#34495e", "#3498db", "#c0392b", "#1F3A93", "#F22613"]
 for i in graph:
     print colors[graph.index(i)]
-    main_data_string += "\"can-data.csv\" u " + str(KEYS.index(i)) + \
+    main_data_string += "\"can-data.csv\" u 0:" + str(KEYS.index(i)+1) + \
         " pt 7 lt rgb '" + str(colors[graph.index(i)]) + "' with linespoint title '" + i.replace("_","-") +"', "
 f.write(main_data_string + "\n")
 

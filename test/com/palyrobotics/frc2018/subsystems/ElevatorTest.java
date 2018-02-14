@@ -65,6 +65,7 @@ public class ElevatorTest {
 		robotState.elevatorTopHFX = true;
 		elevator.update(commands, robotState);
 		elevator.update(commands, robotState);
+        elevator.update(commands, robotState);
 
 		assertThat("Elevator bottom setpoint not properly set", elevator.getElevatorBottomPosition().get(), equalTo(0.0));
 		assertThat("Elevator top setpoint not properly set", elevator.getElevatorTopPosition().get(), equalTo(Constants.kTopBottomEncoderDifference));

@@ -51,7 +51,7 @@ public class Constants {
 	public static double kPreciseQuickTurnSensitivity;
 	//The rate at which the QuickStopAccumulator will decrease
 	public static double kQuickStopAccumulatorDecreaseRate;
-	//The value at which the QuickStopAccumulator will begin to decrease
+	//The value at which the QuickStopAccumulator will stop decreasing
 	public static double kQuickStopAccumulatorDecreaseThreshold;
 	public static double kNegativeInertiaScalar;
 	//How much the QuickStopAccumulator is affected by the wheel
@@ -80,10 +80,10 @@ public class Constants {
 	/**
 	 * Unit conversions for Talons
 	 */
-	public static final double kDriveTicksPerInch = 360 / (3.95 * Math.PI);
+	public static final double kDriveTicksPerInch = 4096 / (6.25 * Math.PI);
 	public static final double kElevatorTicksPerInch = 360 / (3.95 * Math.PI); //TODO: Tune this!
 	public static final double kDriveInchesPerDegree = 0.99 * 21.5 / 90;
-	public static final double kDriveSpeedUnitConversion = 360 / (3.95 * Math.PI * 10);
+	public static final double kDriveSpeedUnitConversion = 4096 / (6.25 * Math.PI * 10);
 
 	/**
 	 * Physical robot Constants
@@ -133,9 +133,9 @@ public class Constants {
 	public static final int kForsetiLeftDriveFrontMotorPDP = 0;
 	public static final int kForsetiLeftDriveBackMotorPDP = 0;
 	public static final int kForsetiLeftDriveThirdMotorPDP = 0;
-	public static final int kForsetiRightDriveMasterDeviceID = 6;
+	public static final int kForsetiRightDriveMasterDeviceID = 4;
 	public static final int kForsetiRightDriveSlaveDeviceID = 5;
-	public static final int kForsetiRightDriveOtherSlaveDeviceID = 4;
+	public static final int kForsetiRightDriveOtherSlaveDeviceID = 6;
 	public static final int kForsetiRightDriveFrontMotorPDP = 0;
 	public static final int kForsetiRightDriveBackMotorPDP = 0;
 	public static final int kForsetiRightDriveThirdMotorPDP = 0;
@@ -144,32 +144,30 @@ public class Constants {
 	public static final int kForsetiClimberMotorLeftDeviceID = 7;
 	public static final int kForsetiClimberMotorRightDeviceID = 8;
 
-	public static final int kForsetiClimberLeftArmForward = 3;
-	public static final int kForsetiClimberLeftArmBack = 4;
+	public static final int kForsetiClimberLeftArmForward = 0;
+	public static final int kForsetiClimberLeftArmBack = 1;
 
-	public static final int kForsetiClimberRightArmForward = 5;
-	public static final int kForsetiClimberRightArmBack = 6;
+	public static final int kForsetiClimberRightArmForward = 2;
+	public static final int kForsetiClimberRightArmBack = 3;
 
-	public static final int kForsetiClimberLeftBrakeSolenoid = 7;
-	public static final int kForsetiClimberRightBrakeSolenoid = 8;
+	public static final int kForsetiClimberLeftBrakeSolenoid = 4;
+	public static final int kForsetiClimberRightBrakeSolenoid = 5;
 
 	//ELEVATOR
 	//PDP slots for elevator TBD (currently 7, 8, 9, 10)
-	public static final int kForsetiElevatorMasterTalonID = 9;
-	public static final int kForsetiElevatorSlaveTalonID = 10;
-	public static final int kForsetiBottomElevatorHFXID = 9;
-	public static final int kForsetiTopElevatorHFXID = 10;
+	public static final int kForsetiElevatorMasterTalonID = 12;
+	public static final int kForsetiElevatorSlaveTalonID = 11;
 
 	//INTAKE
-	public static final int kForsetiIntakeMasterDeviceID = 11;
-	public static final int kForsetiIntakeSlaveDeviceID = 12;
+	public static final int kForsetiIntakeMasterDeviceID = 9;
+	public static final int kForsetiIntakeSlaveDeviceID = 10;
 	public static final int kForsetiIntakeDistanceSensorID = 0;
-	public static final int kForsetiIntakeUpDownSolenoidForwardID = 1;
-	public static final int kForsetiIntakeUpDownSolenoidReverseID = 2;
+	public static final int kForsetiIntakeUpDownSolenoidForwardID = 6;
+	public static final int kForsetiIntakeUpDownSolenoidReverseID = 7;
 	public static final int kForsetiIntakeOpenCloseOtherSolenoidForwardID = 0; //TODO: add actual ports
-	public static final int kForsetiIntakeOpenCloseOtherSolenoidReverseID = 0;
-	public static final int kForsetiIntakeOpenCloseSolenoidForwardID = 3;
-	public static final int kForsetiIntakeOpenCloseSolenoidReverseID = 4;
+	public static final int kForsetiIntakeOpenCloseOtherSolenoidReverseID = 1;
+	public static final int kForsetiIntakeOpenCloseSolenoidForwardID = 2;
+	public static final int kForsetiIntakeOpenCloseSolenoidReverseID = 3;
 
 	//!!! Physical constants
 	public static final double kPlateWidth = 36.0;

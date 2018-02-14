@@ -67,15 +67,6 @@ public class CheesyDriveHelper {
 		//possible source of occasional overturn
 		wheel = wheel + negInertiaAccumulator;
 
-		//limit between [-1, 1]
-		if(negInertiaAccumulator > 1) {
-			negInertiaAccumulator -= 1;
-		} else if(negInertiaAccumulator < -1) {
-			negInertiaAccumulator += 1;
-		} else {
-			negInertiaAccumulator = 0;
-		}
-
 		//Handle braking
 		if(isBraking) {
 			//Set up braking rates for linear deceleration in a set amount of time
@@ -101,12 +92,6 @@ public class CheesyDriveHelper {
 
 		//Quickturn
 		if(isQuickTurn) {
-			//Can be tuned
-			double alpha = Constants.kAlpha;
-			mQuickStopAccumulator = (1 - alpha) * mQuickStopAccumulator + alpha * limit(wheel, 1.0) * 5;
-
-			overPower = 1.0;
-
 			if(Math.abs(robotState.rightStickInput.getX()) < Constants.kQuickTurnSensitivityThreshold) {
 				sensitivity = Constants.kPreciseQuickTurnSensitivity;
 			} else {
@@ -115,6 +100,11 @@ public class CheesyDriveHelper {
 
 			angularPower = wheel * sensitivity;
 
+			//Can be tuned
+			double alpha = Constants.kAlpha;
+			mQuickStopAccumulator = (1 - alpha) * mQuickStopAccumulator + alpha * angularPower * 5.5;
+
+			overPower = 1.0;
 		} else {
 			overPower = 0.0;
 

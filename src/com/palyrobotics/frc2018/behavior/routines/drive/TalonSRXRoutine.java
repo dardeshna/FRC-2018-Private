@@ -71,7 +71,6 @@ public class TalonSRXRoutine extends Routine {
 	public Commands update(Commands commands) {
 		Commands output = commands.copy();
 		output.wantedDriveState = Drive.DriveState.OFF_BOARD_CONTROLLER;
-		DashboardManager.getInstance().updateCANTable(((TalonSRXDriveController) drive.getController()).getCanTableString(), null);
 		return output;
 	}
 
@@ -85,11 +84,11 @@ public class TalonSRXRoutine extends Routine {
 	@Override
 	public boolean finished() {
 		//Wait for controller to be added before finishing routine
-		if(mSignal.leftMotor.getSetpoint() != Robot.getRobotState().leftSetpoint) {
+		if(Math.abs(mSignal.leftMotor.getSetpoint() - Robot.getRobotState().leftSetpoint) > 1) {
 			Logger.getInstance().logRobotThread(Level.WARNING, "Mismatched desired talon and actual talon setpoints! desired, actual");
 			Logger.getInstance().logRobotThread(Level.WARNING, "Left", mSignal.leftMotor.getSetpoint() + ", " + Robot.getRobotState().leftSetpoint);
 			return false;
-		} else if(mSignal.rightMotor.getSetpoint() != Robot.getRobotState().rightSetpoint) {
+		} else if(Math.abs(mSignal.rightMotor.getSetpoint() - Robot.getRobotState().rightSetpoint) > 1) {
 			Logger.getInstance().logRobotThread(Level.WARNING, "Mismatched desired talon and actual talon setpoints! desired, actual");
 			Logger.getInstance().logRobotThread(Level.WARNING, "Right", mSignal.rightMotor.getSetpoint() + ", " + Robot.getRobotState().rightSetpoint);
 			return false;

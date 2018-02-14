@@ -31,12 +31,12 @@ public class HardwareAdapter {
 		public final WPI_VictorSPX rightSlave1Victor;
 		public final WPI_VictorSPX rightSlave2Victor;
 
-		public final PigeonIMU gyro;
+//		public final PigeonIMU gyro;
 
 		public static void resetSensors() {
-			instance.gyro.setYaw(0, 0);
-			instance.gyro.setFusedHeading(0, 0);
-			instance.gyro.setAccumZAngle(0, 0);
+//			instance.gyro.setYaw(0, 0);
+//			instance.gyro.setFusedHeading(0, 0);
+//			instance.gyro.setAccumZAngle(0, 0);
 			instance.leftMasterTalon.setSelectedSensorPosition(0, 0, 0);
 			instance.rightMasterTalon.setSelectedSensorPosition(0, 0, 0);
 		}
@@ -48,7 +48,7 @@ public class HardwareAdapter {
 			rightMasterTalon = new WPI_TalonSRX(Constants.kForsetiRightDriveMasterDeviceID);
 			rightSlave1Victor = new WPI_VictorSPX(Constants.kForsetiRightDriveSlaveDeviceID);
 			rightSlave2Victor = new WPI_VictorSPX(Constants.kForsetiRightDriveOtherSlaveDeviceID);
-			gyro = new PigeonIMU(leftMasterTalon);
+//			gyro = new PigeonIMU(leftMasterTalon);
 		}
 	}
 
@@ -84,7 +84,7 @@ public class HardwareAdapter {
 	}
 
 	/**
-	 * Elevator - 2 WPI_TalonSRX's, 2 HFX (DigitalInputs)
+	 * Elevator - 2 WPI_TalonSRX's
 	 */
 	public static class ElevatorHardware {
 		private static ElevatorHardware instance = new ElevatorHardware();
@@ -96,15 +96,9 @@ public class HardwareAdapter {
 		public final WPI_TalonSRX elevatorMasterTalon;
 		public final WPI_TalonSRX elevatorSlaveTalon;
 
-		public final DigitalInput bottomHFX;
-		public final DigitalInput topHFX;
-
 		protected ElevatorHardware() {
 			elevatorMasterTalon = new WPI_TalonSRX(Constants.kForsetiElevatorMasterTalonID);
 			elevatorSlaveTalon = new WPI_TalonSRX(Constants.kForsetiElevatorSlaveTalonID);
-
-			topHFX = new DigitalInput(Constants.kForsetiTopElevatorHFXID);
-			bottomHFX = new DigitalInput(Constants.kForsetiBottomElevatorHFXID);
 		}
 	}
 
@@ -128,9 +122,9 @@ public class HardwareAdapter {
 		protected IntakeHardware() {
 			masterTalon = new WPI_TalonSRX(Constants.kForsetiIntakeMasterDeviceID);
 			slaveTalon = new WPI_TalonSRX(Constants.kForsetiIntakeSlaveDeviceID);
-			upDownSolenoid = new DoubleSolenoid(Constants.kForsetiIntakeUpDownSolenoidForwardID, Constants.kForsetiIntakeUpDownSolenoidReverseID);
-			openCloseSolenoid = new Solenoid(Constants.kForsetiIntakeOpenCloseSolenoidForwardID, Constants.kForsetiIntakeOpenCloseSolenoidReverseID);
-			openCloseOtherSolenoid = new Solenoid(Constants.kForsetiIntakeOpenCloseOtherSolenoidForwardID, Constants.kForsetiIntakeOpenCloseOtherSolenoidReverseID);
+			upDownSolenoid = new DoubleSolenoid(1, Constants.kForsetiIntakeUpDownSolenoidForwardID, Constants.kForsetiIntakeUpDownSolenoidReverseID);
+			openCloseSolenoid = new Solenoid(1, Constants.kForsetiIntakeOpenCloseSolenoidReverseID);
+			openCloseOtherSolenoid = new Solenoid(1, Constants.kForsetiIntakeOpenCloseOtherSolenoidReverseID);
 			distanceSensor = new AnalogInput(Constants.kForsetiIntakeDistanceSensorID);
 		}
 	}

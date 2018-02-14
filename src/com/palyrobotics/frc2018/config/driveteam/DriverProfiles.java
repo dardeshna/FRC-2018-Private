@@ -13,19 +13,19 @@ public class DriverProfiles {
 			case ERIC:
 				Constants.kDeadband = 0.02;
 
-				Constants.kDriveSensitivity = .70;
+				Constants.kDriveSensitivity = .66;
 
-				Constants.kQuickTurnSensitivity = 0.8;
+				Constants.kQuickTurnSensitivity = 0.675;//0.8;
 				Constants.kPreciseQuickTurnSensitivity = 0.35;
 
 				Constants.kQuickTurnSensitivityThreshold = 0.90;
 
 				Constants.kQuickStopAccumulatorDecreaseRate = 0.8;
 
-				Constants.kQuickStopAccumulatorDecreaseThreshold = 1.2;
+				Constants.kQuickStopAccumulatorDecreaseThreshold = 1.1;//1.2;
 				Constants.kNegativeInertiaScalar = 5.0;
 
-				Constants.kAlpha = 0.45;
+				Constants.kAlpha = 0.55;//0.45;
 
 				Constants.kCyclesUntilStop = 50;
 

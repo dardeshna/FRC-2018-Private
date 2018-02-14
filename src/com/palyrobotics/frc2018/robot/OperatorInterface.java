@@ -81,9 +81,9 @@ public class OperatorInterface {
 		 * Elevator controls
 		 */
 		if(Math.abs(ChezyMath.handleDeadband(mOperatorStick.getY(), Constants.kDeadband)) > 0.0) {
-			newCommands.wantedElevatorState = Elevator.ElevatorState.MANUAL_POSITIONING;
+		    newCommands.wantedElevatorState = Elevator.ElevatorState.MANUAL_POSITIONING;
 		} else {
-			newCommands.wantedElevatorState = Elevator.ElevatorState.HOLD;
+//			newCommands.wantedElevatorState = Elevator.ElevatorState.HOLD;
 		}
 
 		/**
@@ -143,11 +143,11 @@ public class OperatorInterface {
 
 		//Intake wheel logic block
 		if(mOperatorStick.getTriggerPressed()) {
-			newCommands.addWantedRoutine(new IntakeWheelRoutine(Intake.WheelState.EXPELLING, 0));
+			newCommands.wantedIntakingState = Intake.WheelState.EXPELLING;
 		} else if(mOperatorStick.getButtonPressed(2)) {
-			newCommands.addWantedRoutine(new IntakeWheelRoutine(Intake.WheelState.INTAKING, 0));
+			newCommands.wantedIntakingState = Intake.WheelState.INTAKING;
 		} else {
-			newCommands.addWantedRoutine(new IntakeWheelRoutine(Intake.WheelState.IDLE, 0));
+			newCommands.wantedIntakingState = Intake.WheelState.IDLE;
 		}
 
 		//Driver intake control
