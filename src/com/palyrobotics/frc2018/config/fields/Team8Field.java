@@ -5,18 +5,18 @@ import com.palyrobotics.frc2018.config.AutoDistances;
 public class Team8Field {
     public static void configureFieldMeasurements() {
         //Base line
-        AutoDistances.kRedBaseLineDistanceInches = 121.0;
+        AutoDistances.kRedBaseLineDistanceInches = 120.8;
         AutoDistances.kBlueBaseLineDistanceInches = 121.0;
 
         //Switches
-        AutoDistances.kRedRightSwitchX = 139.5;
-        AutoDistances.kRedRightSwitchY = 82.5;
+        AutoDistances.kRedRightSwitchX = 138.2;
+        AutoDistances.kRedRightSwitchY = 82.8;
 
         AutoDistances.kBlueRightSwitchX = 139.5;
-        AutoDistances.kBlueRightSwitchY = 82.5;
+        AutoDistances.kBlueRightSwitchY = 82.5; 
 
-        AutoDistances.kRedLeftSwitchX = 139.5;
-        AutoDistances.kRedLeftSwitchY = 85.0;
+        AutoDistances.kRedLeftSwitchX = 138.0;
+        AutoDistances.kRedLeftSwitchY = 83.2;
 
         AutoDistances.kBlueLeftSwitchX = 139.5;
         AutoDistances.kBlueLeftSwitchY = 85.0;
@@ -28,17 +28,17 @@ public class Team8Field {
         AutoDistances.kBlueRightScaleX = 282.0;
         AutoDistances.kBlueRightScaleY = 69.5;
 
-        AutoDistances.kRedLeftScaleX = 282.0;
+        AutoDistances.kRedLeftScaleX = 282.0; 
         AutoDistances.kRedLeftScaleY = 69.5;
 
         AutoDistances.kRedRightScaleX = 282.0;
         AutoDistances.kRedRightScaleY = 69.5;
 
         //Offsets
-        AutoDistances.kRedLeftCornerOffset = 28.0;
-        AutoDistances.kRedRightCornerOffset = 28.0;
+        AutoDistances.kRedLeftCornerOffset = 30.7;
+        AutoDistances.kRedRightCornerOffset = 33.0;
 
-        AutoDistances.kBlueLeftCornerOffset = 28.0;
+        AutoDistances.kBlueLeftCornerOffset = 28.0; 
         AutoDistances.kBlueRightCornerOffset = 28.0;
 
         //Self explanatory
