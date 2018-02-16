@@ -69,8 +69,6 @@ public class Elevator extends Subsystem {
 		//Update for use in handleState()
 		mRobotState = robotState;
 
-
-
 		handleState(commands);
 
 		//Execute update loop based on the current state
@@ -91,13 +89,41 @@ public class Elevator extends Subsystem {
 				}
 				break;
 			case MANUAL_POSITIONING:
+				double distInchesFromBottom = (mRobotState.elevatorPosition - getElevatorBottomPosition().get())/Constants.kElevatorTicksPerInch;
+				double distInchesFromTop = (getElevatorTopPosition().get() - mRobotState.elevatorPosition)/Constants.kElevatorTicksPerInch;
+
 				//Clear any existing wanted positions
 				if(mElevatorWantedPosition.isPresent()) {
 					mElevatorWantedPosition = Optional.empty();
 				}
 
-				//Move with joystick input
-				mOutput.setPercentOutput(mRobotState.operatorStickInput.getY());
+				//close to bottom
+				if(commands.disableElevatorScaling) {
+					mOutput.setPercentOutput(mRobotState.operatorStickInput.getY());
+				} else {
+					if (distInchesFromBottom < Constants.kElevatorBottomScalingMarginInches) {
+						//going up is fine
+						if (mRobotState.operatorStickInput.getY() > 0) {
+							mOutput.setPercentOutput(mRobotState.operatorStickInput.getY());
+						} else {
+							//linearly scale with distance remaining
+							mOutput.setPercentOutput(Constants.kElevatorBottomScalingConstant * distInchesFromBottom / Constants.kElevatorBottomScalingMarginInches * mRobotState.operatorStickInput.getY());
+						}
+					} else if (distInchesFromTop < Constants.kElevatorTopScalingMarginInches) {
+						//close to top
+
+						//going down is fine
+						if (mRobotState.operatorStickInput.getY() < 0) {
+							mOutput.setPercentOutput(mRobotState.operatorStickInput.getY());
+						} else {
+							mOutput.setPercentOutput(Constants.kElevatorTopScalingConstant * distInchesFromTop / Constants.kElevatorTopScalingMarginInches * mRobotState.operatorStickInput.getY());
+						}
+					} else {
+						//in middle
+						mOutput.setPercentOutput(mRobotState.operatorStickInput.getY());
+					}
+				}
+
 				break;
 			case CUSTOM_POSITIONING:
 				//Control loop
@@ -188,12 +214,12 @@ public class Elevator extends Subsystem {
 		if(mRobotState.elevatorBottomHFX) {
 			kElevatorBottomPosition = Optional.of(mRobotState.elevatorPosition);
 			if(!kElevatorTopPosition.isPresent()) {
-				kElevatorTopPosition = Optional.of(mRobotState.elevatorPosition + Constants.kTopBottomEncoderDifference);
+				kElevatorTopPosition = Optional.of(mRobotState.elevatorPosition + Constants.kElevatorTopPositionInches * Constants.kElevatorTicksPerInch);
 			}
 		} else if(mRobotState.elevatorTopHFX) {
 			kElevatorTopPosition = Optional.of(mRobotState.elevatorPosition);
 			if(!kElevatorBottomPosition.isPresent()) {
-				kElevatorBottomPosition = Optional.of(mRobotState.elevatorPosition - Constants.kTopBottomEncoderDifference);
+				kElevatorBottomPosition = Optional.of(mRobotState.elevatorPosition - Constants.kElevatorTopPositionInches * Constants.kElevatorTicksPerInch);
 			}
 		}
 	}

@@ -38,10 +38,11 @@ public class Commands {
 	public Climber.MotionSubstate wantedClimbMovement = Climber.MotionSubstate.LOCKED;
 	public Climber.Side wantedClimbSide = Climber.Side.NOT_SET;
 	public Climber.LockState wantedLockState = Climber.LockState.UNLOCKED;
-	public Elevator.ElevatorState wantedElevatorState = Elevator.ElevatorState.IDLE;
+	public Elevator.ElevatorState wantedElevatorState = Elevator.ElevatorState.CALIBRATING;
 	public Intake.WheelState wantedIntakingState = Intake.WheelState.IDLE;
 	public Intake.UpDownState wantedIntakeUpDownState = Intake.UpDownState.UP;
 	public Intake.OpenCloseState wantedIntakeOpenCloseState = Intake.OpenCloseState.CLOSED;
+	public boolean disableElevatorScaling = false;
 
 	public void addWantedRoutine(Routine wantedRoutine) {
 		for(Routine routine : wantedRoutines) {
@@ -95,6 +96,7 @@ public class Commands {
 		copy.wantedIntakingState = this.wantedIntakingState;
 		copy.wantedIntakeUpDownState = this.wantedIntakeUpDownState;
 		copy.wantedIntakeOpenCloseState = this.wantedIntakeOpenCloseState;
+		copy.disableElevatorScaling = this.disableElevatorScaling;
 
 //		copy.cancelCurrentRoutines = this.cancelCurrentRoutines;
 

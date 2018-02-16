@@ -85,6 +85,9 @@ public class OperatorInterface {
 		} else {
 //			newCommands.wantedElevatorState = Elevator.ElevatorState.HOLD;
 		}
+		if(mOperatorStick.getButtonPressed(11)) {
+			newCommands.disableElevatorScaling = true;
+		}
 
 		/**
 		 * Climber controls

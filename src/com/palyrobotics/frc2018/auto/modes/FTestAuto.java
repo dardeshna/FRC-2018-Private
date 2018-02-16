@@ -40,8 +40,8 @@ public class FTestAuto extends AutoModeBase {
         Gains mShortGains = Gains.forsetiShortDriveMotionMagicGains;
 
         DriveSignal driveBackup = DriveSignal.getNeutralSignal();
-        driveBackup.leftMotor.setPercentOutput(.2);
-        driveBackup.rightMotor.setPercentOutput(.2);
+        driveBackup.leftMotor.setPercentOutput(.48);
+        driveBackup.rightMotor.setPercentOutput(.48);
         ArrayList<Routine> sequence = new ArrayList<>();
 
         sequence.add(new TalonSRXRoutine(driveBackup, true));

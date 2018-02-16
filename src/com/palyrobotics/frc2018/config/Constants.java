@@ -63,11 +63,14 @@ public class Constants {
 	/**
 	 * Elevator Constants
 	 */
-	public static final double kTopBottomEncoderDifference = 1000;
 	public static final double kNominalUpwardsOutput = 0.1;
-	public static final double kElevatorTopPositionInches = 75;
+	public static final double kElevatorTopPositionInches = 81;
 	public static final double kElevatorSwitchPositionInches = 30;
 	public static final double kElevatorBottomPositionInches = 0;
+	public static double kElevatorTopScalingMarginInches;
+	public static double kElevatorBottomScalingMarginInches;
+	public static double kElevatorTopScalingConstant;
+	public static double kElevatorBottomScalingConstant;
 
 	/*
 	 * Control loop constants for both robots
@@ -81,7 +84,7 @@ public class Constants {
 	 * Unit conversions for Talons
 	 */
 	public static final double kDriveTicksPerInch = 4096 / (6.25 * Math.PI);
-	public static final double kElevatorTicksPerInch = 360 / (3.95 * Math.PI); //TODO: Tune this!
+	public static final double kElevatorTicksPerInch = 4096 / (3 * 1.30567 * Math.PI);
 	public static final double kDriveInchesPerDegree = 0.99 * 21.5 / 90;
 	public static final double kDriveSpeedUnitConversion = 4096 / (6.25 * Math.PI * 10);
 

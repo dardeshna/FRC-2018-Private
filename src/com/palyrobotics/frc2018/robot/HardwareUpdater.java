@@ -181,8 +181,8 @@ class HardwareUpdater {
 		WPI_TalonSRX masterTalon = HardwareAdapter.getInstance().getElevator().elevatorMasterTalon;
 		WPI_TalonSRX slaveTalon = HardwareAdapter.getInstance().getElevator().elevatorSlaveTalon;
 
-		masterTalon.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0); // TOP
-		masterTalon.configReverseLimitSwitchSource(RemoteLimitSwitchSource.RemoteTalonSRX, LimitSwitchNormal.NormallyOpen, slaveTalon.getDeviceID(), 0); // BOTTOM
+//		masterTalon.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0); // TOP
+//		masterTalon.configReverseLimitSwitchSource(RemoteLimitSwitchSource.RemoteTalonSRX, LimitSwitchNormal.NormallyOpen, slaveTalon.getDeviceID(), 0); // BOTTOM
 
 		masterTalon.setInverted(false);
 		slaveTalon.setInverted(true);
@@ -201,10 +201,15 @@ class HardwareUpdater {
 //		slaveTalon.configNominalOutputForward(Constants.kNominalUpwardsOutput, 0);
 //		slaveTalon.configNominalOutputReverse(0, 0);
 
-		masterTalon.configPeakOutputForward(Constants.kElevatorMaxClosedLoopOutput, 0);
-		masterTalon.configPeakOutputReverse(-Constants.kElevatorMaxClosedLoopOutput, 0);
-		slaveTalon.configPeakOutputForward(Constants.kElevatorMaxClosedLoopOutput, 0);
-		slaveTalon.configPeakOutputReverse(-Constants.kElevatorMaxClosedLoopOutput, 0);
+//		masterTalon.configPeakOutputForward(Constants.kElevatorMaxClosedLoopOutput, 0);
+//		masterTalon.configPeakOutputReverse(-Constants.kElevatorMaxClosedLoopOutput, 0);
+//		slaveTalon.configPeakOutputForward(Constants.kElevatorMaxClosedLoopOutput, 0);
+//		slaveTalon.configPeakOutputReverse(-Constants.kElevatorMaxClosedLoopOutput, 0);
+
+		masterTalon.configPeakOutputForward(1, 0);
+		masterTalon.configPeakOutputReverse(-1, 0);
+		slaveTalon.configPeakOutputForward(1, 0);
+		slaveTalon.configPeakOutputReverse(-1, 0);
 
 		masterTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
 		masterTalon.setSensorPhase(false);
@@ -376,8 +381,10 @@ class HardwareUpdater {
 //		//Update elevator sensors
 		robotState.elevatorPosition = HardwareAdapter.getInstance().getElevator().elevatorMasterTalon.getSelectedSensorPosition(0);
 		robotState.elevatorVelocity = HardwareAdapter.getInstance().getElevator().elevatorMasterTalon.getSelectedSensorVelocity(0);
-		robotState.elevatorBottomHFX = HardwareAdapter.getInstance().getElevator().elevatorMasterTalon.getSensorCollection().isRevLimitSwitchClosed();
-		robotState.elevatorTopHFX = HardwareAdapter.getInstance().getElevator().elevatorMasterTalon.getSensorCollection().isFwdLimitSwitchClosed();
+//		robotState.elevatorBottomHFX = HardwareAdapter.getInstance().getElevator().elevatorMasterTalon.getSensorCollection().isRevLimitSwitchClosed();
+//		robotState.elevatorTopHFX = HardwareAdapter.getInstance().getElevator().elevatorMasterTalon.getSensorCollection().isFwdLimitSwitchClosed();
+		robotState.elevatorBottomHFX = true;
+		robotState.elevatorTopHFX = false;
 	}
 
 	/**

@@ -36,11 +36,11 @@ public class Gains {
 	//Drive Motion Magic offboard control loop
 	//Short distance max speed 45 in/s Max accel 95 in/s^2
 	public static final double kForsetiShortDriveMotionMagicCruiseVelocity = 60 * Constants.kDriveSpeedUnitConversion;
-	public static final double kForsetiShortDriveMotionMagicMaxAcceleration = 100 * Constants.kDriveSpeedUnitConversion;
-	public static final double kForsetiShortDriveMotionMagickP = 0 ;
+	public static final double kForsetiShortDriveMotionMagicMaxAcceleration = 120 * Constants.kDriveSpeedUnitConversion;
+	public static final double kForsetiShortDriveMotionMagickP = .5 ;
 	public static final double kForsetiShortDriveMotionMagickI = 0; //0.00040 / 2;
 	public static final double kForsetiShortDriveMotionMagickD = 0; //275 / 2;
-	public static final double kForsetiShortDriveMotionMagickF = 0; //2.075 / 2;
+	public static final double kForsetiShortDriveMotionMagickF = .1821; //2.075 / 2;
 	public static final int kForsetiShortDriveMotionMagickIzone = 0; //150 / 2;
 	public static final double kForsetiShortDriveMotionMagickRampRate = 0.0;
 	public static final Gains forsetiShortDriveMotionMagicGains = new Gains(kForsetiShortDriveMotionMagickP, kForsetiShortDriveMotionMagickI,
