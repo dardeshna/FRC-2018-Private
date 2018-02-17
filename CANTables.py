@@ -34,29 +34,29 @@ recording = False
 f = None
 
 # All of the keys to get data on
-KEYS = ["dt_error_left", "dt_error_right", "dt_velocity_left", "dt_velocity_right", "slider_pot", "dt_left_dist", "dt_right_dist"]
+KEYS = ["dt_error_left", "dt_error_right", "dt_velocity_left", "dt_velocity_right", "slider_pot", "dt_left_dist", "dt_right_dist", "elevator_hold_error"]
 
 time.sleep(1)
 print "Started Listening"
 
 while True:
     print table.getString("start","no value")
-    
+
     if table.getString("start", "0") == "true" and not recording:
         print "Received Start"
         recording = True
         f = open("can-data.csv", "w")
-    
+
     if table.getString("end", "0") == "true" and recording:
         print "Received End; Starting CLI"
         recording = False
         f.close()
         break
-    
+
     if recording:
         data = [table.getString(i,"0").replace("\n","") for i in KEYS]
         f.write(",".join(data) + "\n")
-    
+
     time.sleep(0.02)
 # print "Wait"
 

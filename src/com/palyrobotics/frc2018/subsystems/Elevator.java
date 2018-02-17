@@ -91,7 +91,8 @@ public class Elevator extends Subsystem {
 			case MANUAL_POSITIONING:
 				double distInchesFromBottom = (mRobotState.elevatorPosition - getElevatorBottomPosition().get())/Constants.kElevatorTicksPerInch;
 				double distInchesFromTop = (getElevatorTopPosition().get() - mRobotState.elevatorPosition)/Constants.kElevatorTicksPerInch;
-
+				System.out.println("Bottom Dist:" + distInchesFromBottom);
+				System.out.println("Top Dist:" + distInchesFromTop);
 				//Clear any existing wanted positions
 				if(mElevatorWantedPosition.isPresent()) {
 					mElevatorWantedPosition = Optional.empty();

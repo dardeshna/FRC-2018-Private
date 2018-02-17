@@ -63,8 +63,9 @@ public class Constants {
 	/**
 	 * Elevator Constants
 	 */
+	public static final double kTopPositionInches = 81.5;
 	public static final double kNominalUpwardsOutput = 0.1;
-	public static final double kElevatorTopPositionInches = 81;
+	public static final double kElevatorTopPositionInches = 82;
 	public static final double kElevatorSwitchPositionInches = 30;
 	public static final double kElevatorBottomPositionInches = 0;
 	public static double kElevatorTopScalingMarginInches;
@@ -76,7 +77,7 @@ public class Constants {
 	 * Control loop constants for both robots
 	 */
 	public static final double kTurnInPlacePower = 0.17; //for bang bang
-	public static final double kCalibratePower = -0.4;
+	public static final double kCalibratePower = -0.28;
 	public static final double kDriveMaxClosedLoopOutput = 8.0;
 	public static final double kElevatorMaxClosedLoopOutput = 0.666;
 

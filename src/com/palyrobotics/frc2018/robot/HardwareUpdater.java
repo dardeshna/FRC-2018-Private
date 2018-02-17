@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.config.RobotState;
+import com.palyrobotics.frc2018.config.dashboard.DashboardManager;
 import com.palyrobotics.frc2018.subsystems.Climber;
 import com.palyrobotics.frc2018.subsystems.Drive;
 import com.palyrobotics.frc2018.subsystems.Elevator;
@@ -94,6 +95,10 @@ class HardwareUpdater {
 		WPI_VictorSPX rightSlave1Victor = HardwareAdapter.getInstance().getDrivetrain().rightSlave1Victor;
 		WPI_VictorSPX rightSlave2Victor = HardwareAdapter.getInstance().getDrivetrain().rightSlave2Victor;
 
+		rightMasterTalon.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0); // TOP
+		rightMasterTalon.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0); // BOTTOM
+
+
 		//Enable all talons' brake mode and disables forward and reverse soft
 		leftMasterTalon.setNeutralMode(NeutralMode.Brake);
 		leftSlave1Victor.setNeutralMode(NeutralMode.Brake);
@@ -180,9 +185,6 @@ class HardwareUpdater {
 	void configureElevatorTalons() {
 		WPI_TalonSRX masterTalon = HardwareAdapter.getInstance().getElevator().elevatorMasterTalon;
 		WPI_TalonSRX slaveTalon = HardwareAdapter.getInstance().getElevator().elevatorSlaveTalon;
-
-//		masterTalon.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0); // TOP
-//		masterTalon.configReverseLimitSwitchSource(RemoteLimitSwitchSource.RemoteTalonSRX, LimitSwitchNormal.NormallyOpen, slaveTalon.getDeviceID(), 0); // BOTTOM
 
 		masterTalon.setInverted(false);
 		slaveTalon.setInverted(true);
@@ -381,10 +383,9 @@ class HardwareUpdater {
 //		//Update elevator sensors
 		robotState.elevatorPosition = HardwareAdapter.getInstance().getElevator().elevatorMasterTalon.getSelectedSensorPosition(0);
 		robotState.elevatorVelocity = HardwareAdapter.getInstance().getElevator().elevatorMasterTalon.getSelectedSensorVelocity(0);
-//		robotState.elevatorBottomHFX = HardwareAdapter.getInstance().getElevator().elevatorMasterTalon.getSensorCollection().isRevLimitSwitchClosed();
-//		robotState.elevatorTopHFX = HardwareAdapter.getInstance().getElevator().elevatorMasterTalon.getSensorCollection().isFwdLimitSwitchClosed();
-		robotState.elevatorBottomHFX = true;
-		robotState.elevatorTopHFX = false;
+		robotState.elevatorBottomHFX = HardwareAdapter.getInstance().getDrivetrain().rightMasterTalon.getSensorCollection().isFwdLimitSwitchClosed();
+		robotState.elevatorTopHFX = HardwareAdapter.getInstance().getDrivetrain().rightMasterTalon.getSensorCollection().isRevLimitSwitchClosed();
+		System.out.println(robotState.elevatorPosition);
 	}
 
 	/**
@@ -410,6 +411,7 @@ class HardwareUpdater {
 	 */
 	private void updateElevator() {
 		updateTalonSRX(HardwareAdapter.getInstance().getElevator().elevatorMasterTalon, mElevator.getOutput());
+		DashboardManager.getInstance().updateCANTable("elevator_hold_error",String.valueOf(HardwareAdapter.getInstance().getElevator().elevatorMasterTalon.getClosedLoopError(0)));
 	}
 
 	private void updateClimber() {
