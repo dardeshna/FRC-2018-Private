@@ -52,6 +52,7 @@ public class Logger {
 	private int duplicatePrevent = 0;
 	private File mainLog;
 	private boolean fmsConnected;
+	private int writeLimit;
 
 	//Finds the driver station console output
 
@@ -253,15 +254,17 @@ public class Logger {
 	private void writeLogs() {
 		synchronized(writingLock) {
 			if(isEnabled) {
+				writeLimit = 0;
 				mData = new ArrayList<>(mRobotThreadLogs);
 				mData.addAll(mSubsystemThreadLogs);
 				mData.sort(TimestampedString::compareTo);
 				mData.forEach((TimestampedString c) -> {
 					try {
-						if(c instanceof LeveledString && ((LeveledString) c).getLevel().intValue() >= LoggerConstants.displayLevel.intValue()) {
-							System.out.println(c.toString());
-							if(((LeveledString) c).getLevel().intValue() >= LoggerConstants.writeLevel.intValue()) {
-								Files.append(((LeveledString) c).getLeveledString(), mainLog, Charsets.UTF_8);
+						if(c instanceof LeveledString && ((LeveledString) c).getLevel().intValue() >= LoggerConstants.writeLevel.intValue()) {
+							Files.append(((LeveledString) c).getLeveledString(), mainLog, Charsets.UTF_8);
+							if(((LeveledString) c).getLevel().intValue() >= LoggerConstants.displayLevel.intValue() && writeLimit <= LoggerConstants.writeLimit) {
+								System.out.println(c.toString());
+								writeLimit++;
 							}
 						}
 					} catch(IOException e) {

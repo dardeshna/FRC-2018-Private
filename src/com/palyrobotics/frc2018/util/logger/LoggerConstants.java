@@ -20,6 +20,9 @@ public class LoggerConstants {
 	public static Level displayLevel = Level.INFO;
 	public static Level writeLevel = Level.CONFIG;
 
+	//Prevents the logger from printing too many messages to the console
+	public static int writeLimit = 10;
+	
 	//Used to control display times
 	//Need to change for out of state competitions
 	public static ZoneId tZone = ZoneId.of("UTC-8");
