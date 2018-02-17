@@ -89,40 +89,47 @@ public class Elevator extends Subsystem {
 				}
 				break;
 			case MANUAL_POSITIONING:
-				double distInchesFromBottom = (mRobotState.elevatorPosition - getElevatorBottomPosition().get())/Constants.kElevatorTicksPerInch;
-				double distInchesFromTop = (getElevatorTopPosition().get() - mRobotState.elevatorPosition)/Constants.kElevatorTicksPerInch;
-				System.out.println("Bottom Dist:" + distInchesFromBottom);
-				System.out.println("Top Dist:" + distInchesFromTop);
 				//Clear any existing wanted positions
 				if(mElevatorWantedPosition.isPresent()) {
 					mElevatorWantedPosition = Optional.empty();
 				}
 
-				//close to bottom
-				if(commands.disableElevatorScaling) {
-					mOutput.setPercentOutput(mRobotState.operatorStickInput.getY());
-				} else {
-					if (distInchesFromBottom < Constants.kElevatorBottomScalingMarginInches) {
-						//going up is fine
-						if (mRobotState.operatorStickInput.getY() > 0) {
-							mOutput.setPercentOutput(mRobotState.operatorStickInput.getY());
-						} else {
-							//linearly scale with distance remaining
-							mOutput.setPercentOutput(Constants.kElevatorBottomScalingConstant * distInchesFromBottom / Constants.kElevatorBottomScalingMarginInches * mRobotState.operatorStickInput.getY());
-						}
-					} else if (distInchesFromTop < Constants.kElevatorTopScalingMarginInches) {
-						//close to top
+				//If calibrated, run limiting code for top & bottom
+				if(isCalibrated()) {
+					double distInchesFromBottom = (mRobotState.elevatorPosition - getElevatorBottomPosition().get())/Constants.kElevatorTicksPerInch;
+					double distInchesFromTop = (getElevatorTopPosition().get() - mRobotState.elevatorPosition)/Constants.kElevatorTicksPerInch;
 
-						//going down is fine
-						if (mRobotState.operatorStickInput.getY() < 0) {
-							mOutput.setPercentOutput(mRobotState.operatorStickInput.getY());
-						} else {
-							mOutput.setPercentOutput(Constants.kElevatorTopScalingConstant * distInchesFromTop / Constants.kElevatorTopScalingMarginInches * mRobotState.operatorStickInput.getY());
-						}
-					} else {
-						//in middle
+					//close to bottom
+					if(commands.disableElevatorScaling) {
 						mOutput.setPercentOutput(mRobotState.operatorStickInput.getY());
+					} else {
+						if (distInchesFromBottom < Constants.kElevatorBottomScalingMarginInches) {
+							//going up is fine
+							if (mRobotState.operatorStickInput.getY() > 0) {
+								mOutput.setPercentOutput(mRobotState.operatorStickInput.getY());
+							} else {
+								//linearly scale with distance remaining
+								mOutput.setPercentOutput(Constants.kElevatorBottomScalingConstant * distInchesFromBottom / Constants.kElevatorBottomScalingMarginInches * mRobotState.operatorStickInput.getY());
+							}
+						} else if (distInchesFromTop < Constants.kElevatorTopScalingMarginInches) {
+							//close to top
+
+							//going down is fine
+							if (mRobotState.operatorStickInput.getY() < 0) {
+								mOutput.setPercentOutput(mRobotState.operatorStickInput.getY());
+							} else {
+								mOutput.setPercentOutput(Constants.kElevatorTopScalingConstant * distInchesFromTop / Constants.kElevatorTopScalingMarginInches * mRobotState.operatorStickInput.getY());
+							}
+						} else {
+							//in middle
+							mOutput.setPercentOutput(mRobotState.operatorStickInput.getY());
+						}
 					}
+				} else {
+					checkCalibration();
+
+					//if not calibrated, limit speed
+					mOutput.setPercentOutput(Constants.kElevatorUncalibratedManualPower * mRobotState.operatorStickInput.getY());
 				}
 
 				break;

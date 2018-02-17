@@ -37,7 +37,6 @@ public class TestAutoMode extends AutoModeBase {
 
 	private SequentialRoutine getDrive() {
 		Gains mShortGains = Gains.forsetiShortDriveMotionMagicGains;
-		System.out.println("MM");
 		DriveSignal driveBackup = DriveSignal.getNeutralSignal();
 		double driveBackupSetpoint = 30 * Constants.kDriveTicksPerInch;
 		driveBackup.leftMotor.setMotionMagic(driveBackupSetpoint, mShortGains, (int) Gains.kForsetiShortDriveMotionMagicCruiseVelocity,

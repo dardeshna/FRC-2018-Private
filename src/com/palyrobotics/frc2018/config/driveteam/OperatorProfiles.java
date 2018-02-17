@@ -10,6 +10,7 @@ public class OperatorProfiles {
 				Constants.kElevatorBottomScalingMarginInches = 11.0;
 				Constants.kElevatorTopScalingConstant = 0.55;
 				Constants.kElevatorBottomScalingConstant = 0.31;
+				Constants.kElevatorUncalibratedManualPower = 0.7;
 				break;
 		}
 	}

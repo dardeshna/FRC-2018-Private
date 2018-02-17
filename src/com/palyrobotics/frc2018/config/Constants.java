@@ -72,6 +72,7 @@ public class Constants {
 	public static double kElevatorBottomScalingMarginInches;
 	public static double kElevatorTopScalingConstant;
 	public static double kElevatorBottomScalingConstant;
+	public static double kElevatorUncalibratedManualPower;
 
 	/*
 	 * Control loop constants for both robots
@@ -148,14 +149,15 @@ public class Constants {
 	public static final int kForsetiClimberMotorLeftDeviceID = 7;
 	public static final int kForsetiClimberMotorRightDeviceID = 8;
 
+	//PCM 1 for now
 	public static final int kForsetiClimberLeftArmForward = 0;
 	public static final int kForsetiClimberLeftArmBack = 1;
 
 	public static final int kForsetiClimberRightArmForward = 2;
 	public static final int kForsetiClimberRightArmBack = 3;
 
-	public static final int kForsetiClimberLeftBrakeSolenoid = 4;
-	public static final int kForsetiClimberRightBrakeSolenoid = 5;
+	public static final int kForsetiClimberLeftBrakeSolenoid = 6;
+	public static final int kForsetiClimberRightBrakeSolenoid = 7;
 
 	//ELEVATOR
 	//PDP slots for elevator TBD (currently 7, 8, 9, 10)
@@ -166,12 +168,12 @@ public class Constants {
 	public static final int kForsetiIntakeMasterDeviceID = 9;
 	public static final int kForsetiIntakeSlaveDeviceID = 10;
 	public static final int kForsetiIntakeDistanceSensorID = 0;
-	public static final int kForsetiIntakeUpDownSolenoidForwardID = 6;
-	public static final int kForsetiIntakeUpDownSolenoidReverseID = 7;
-	public static final int kForsetiIntakeOpenCloseOtherSolenoidForwardID = 0; //TODO: add actual ports
-	public static final int kForsetiIntakeOpenCloseOtherSolenoidReverseID = 1;
-	public static final int kForsetiIntakeOpenCloseSolenoidForwardID = 2;
-	public static final int kForsetiIntakeOpenCloseSolenoidReverseID = 3;
+	//PCM 0
+	public static final int kForsetiIntakeUpDownSolenoidForwardID = 5;
+	public static final int kForsetiIntakeUpDownSolenoidReverseID = 2;
+	//PCM 1
+	public static final int kForsetiIntakeOpenCloseOtherSolenoidID = 4;
+	public static final int kForsetiIntakeOpenCloseSolenoidID = 5;
 
 	//!!! Physical constants
 	public static final double kPlateWidth = 36.0;

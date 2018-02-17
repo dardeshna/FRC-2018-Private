@@ -18,7 +18,9 @@ import com.palyrobotics.frc2018.util.trajectory.Kinematics;
 import com.palyrobotics.frc2018.util.trajectory.RigidTransform2d;
 import com.palyrobotics.frc2018.util.trajectory.Rotation2d;
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Timer;
 
 import java.util.Optional;
@@ -82,9 +84,9 @@ class HardwareUpdater {
 
 	void configureTalons() {
 		configureDriveTalons();
-//		configureClimberTalons();
+		configureClimberTalons();
 		configureElevatorTalons();
-//		configureIntakeTalons();
+		configureIntakeTalons();
 	}
 
 	void configureDriveTalons() {
@@ -94,10 +96,6 @@ class HardwareUpdater {
 		WPI_TalonSRX rightMasterTalon = HardwareAdapter.getInstance().getDrivetrain().rightMasterTalon;
 		WPI_VictorSPX rightSlave1Victor = HardwareAdapter.getInstance().getDrivetrain().rightSlave1Victor;
 		WPI_VictorSPX rightSlave2Victor = HardwareAdapter.getInstance().getDrivetrain().rightSlave2Victor;
-
-		rightMasterTalon.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0); // TOP
-		rightMasterTalon.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0); // BOTTOM
-
 
 		//Enable all talons' brake mode and disables forward and reverse soft
 		leftMasterTalon.setNeutralMode(NeutralMode.Brake);
@@ -157,6 +155,8 @@ class HardwareUpdater {
 		leftMasterTalon.setSensorPhase(true);
 		rightMasterTalon.setSensorPhase(true);
 
+		rightMasterTalon.overrideLimitSwitchesEnable(false);
+
 		leftMasterTalon.setStatusFramePeriod(0, 5, 0);
 		rightMasterTalon.setStatusFramePeriod(0, 5, 0);
 
@@ -208,6 +208,11 @@ class HardwareUpdater {
 //		slaveTalon.configPeakOutputForward(Constants.kElevatorMaxClosedLoopOutput, 0);
 //		slaveTalon.configPeakOutputReverse(-Constants.kElevatorMaxClosedLoopOutput, 0);
 
+//		masterTalon.configReverseLimitSwitchSource(RemoteLimitSwitchSource.RemoteTalonSRX, LimitSwitchNormal.NormallyOpen, HardwareAdapter.getInstance().getDrivetrain().rightMasterTalon.getDeviceID(), 0);
+//		masterTalon.configForwardLimitSwitchSource(RemoteLimitSwitchSource.RemoteTalonSRX, LimitSwitchNormal.NormallyOpen, HardwareAdapter.getInstance().getDrivetrain().rightMasterTalon.getDeviceID(), 0);
+
+		masterTalon.overrideLimitSwitchesEnable(false);
+
 		masterTalon.configPeakOutputForward(1, 0);
 		masterTalon.configPeakOutputReverse(-1, 0);
 		slaveTalon.configPeakOutputForward(1, 0);
@@ -240,6 +245,7 @@ class HardwareUpdater {
 	}
 
 	void configureIntakeTalons() {
+
 		WPI_TalonSRX masterTalon = HardwareAdapter.getInstance().getIntake().masterTalon;
 		WPI_TalonSRX slaveTalon = HardwareAdapter.getInstance().getIntake().slaveTalon;
 
@@ -259,7 +265,8 @@ class HardwareUpdater {
 		slaveTalon.configReverseSoftLimitEnable(false, 0);
 
 		//Reverse right side
-		slaveTalon.setInverted(true);
+		masterTalon.setInverted(false);
+		slaveTalon.setInverted(false);
 
 		//Set slave talons to follower mode
         slaveTalon.follow(masterTalon);
@@ -385,7 +392,6 @@ class HardwareUpdater {
 		robotState.elevatorVelocity = HardwareAdapter.getInstance().getElevator().elevatorMasterTalon.getSelectedSensorVelocity(0);
 		robotState.elevatorBottomHFX = HardwareAdapter.getInstance().getDrivetrain().rightMasterTalon.getSensorCollection().isFwdLimitSwitchClosed();
 		robotState.elevatorTopHFX = HardwareAdapter.getInstance().getDrivetrain().rightMasterTalon.getSensorCollection().isRevLimitSwitchClosed();
-		System.out.println(robotState.elevatorPosition);
 	}
 
 	/**
@@ -393,9 +399,9 @@ class HardwareUpdater {
 	 */
 	void updateHardware() {
 		updateDrivetrain();
-//		updateClimber();
+		updateClimber();
 		updateElevator();
-//		updateIntake();
+		updateIntake();
 	}
 
 	/**

@@ -2,7 +2,6 @@ package com.palyrobotics.frc2018.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
-import com.ctre.phoenix.sensors.PigeonIMU;
 import com.palyrobotics.frc2018.config.Constants;
 import edu.wpi.first.wpilibj.*;
 
@@ -75,11 +74,11 @@ public class HardwareAdapter {
 			leftVictor = new WPI_VictorSPX(Constants.kForsetiClimberMotorLeftDeviceID);
 			rightVictor = new WPI_VictorSPX(Constants.kForsetiClimberMotorRightDeviceID);
 
-			leftArmLock = new DoubleSolenoid(Constants.kForsetiClimberLeftArmBack, Constants.kForsetiClimberLeftArmForward);
-			rightArmLock = new DoubleSolenoid(Constants.kForsetiClimberRightArmBack, Constants.kForsetiClimberRightArmForward);
+			leftArmLock = new DoubleSolenoid(1, Constants.kForsetiClimberLeftArmBack, Constants.kForsetiClimberLeftArmForward);
+			rightArmLock = new DoubleSolenoid(1, Constants.kForsetiClimberRightArmBack, Constants.kForsetiClimberRightArmForward);
 
-			leftBrake = new Solenoid(Constants.kForsetiClimberLeftBrakeSolenoid);
-			rightBrake = new Solenoid(Constants.kForsetiClimberRightBrakeSolenoid);
+			leftBrake = new Solenoid(1, Constants.kForsetiClimberLeftBrakeSolenoid);
+			rightBrake = new Solenoid(1, Constants.kForsetiClimberRightBrakeSolenoid);
 		}
 	}
 
@@ -122,9 +121,9 @@ public class HardwareAdapter {
 		protected IntakeHardware() {
 			masterTalon = new WPI_TalonSRX(Constants.kForsetiIntakeMasterDeviceID);
 			slaveTalon = new WPI_TalonSRX(Constants.kForsetiIntakeSlaveDeviceID);
-			upDownSolenoid = new DoubleSolenoid(1, Constants.kForsetiIntakeUpDownSolenoidForwardID, Constants.kForsetiIntakeUpDownSolenoidReverseID);
-			openCloseSolenoid = new Solenoid(1, Constants.kForsetiIntakeOpenCloseSolenoidReverseID);
-			openCloseOtherSolenoid = new Solenoid(1, Constants.kForsetiIntakeOpenCloseOtherSolenoidReverseID);
+			upDownSolenoid = new DoubleSolenoid(0, Constants.kForsetiIntakeUpDownSolenoidForwardID, Constants.kForsetiIntakeUpDownSolenoidReverseID);
+			openCloseSolenoid = new Solenoid(1, Constants.kForsetiIntakeOpenCloseSolenoidID);
+			openCloseOtherSolenoid = new Solenoid(1, Constants.kForsetiIntakeOpenCloseOtherSolenoidID);
 			distanceSensor = new AnalogInput(Constants.kForsetiIntakeDistanceSensorID);
 		}
 	}

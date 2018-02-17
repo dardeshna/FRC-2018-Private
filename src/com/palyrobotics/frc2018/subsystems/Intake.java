@@ -77,7 +77,6 @@ public class Intake extends Subsystem {
 		switch(mUpDownState) {
 			case UP:
 				mUpDownOutput = DoubleSolenoid.Value.kReverse;
-
 				break;
 			case DOWN:
 				mUpDownOutput = DoubleSolenoid.Value.kForward;
