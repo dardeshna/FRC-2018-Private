@@ -49,6 +49,9 @@ public class Robot extends TimedRobot {
 	//Hardware Updater
 	private HardwareUpdater mHardwareUpdater;
 
+	// Started boolean for if auto has been started.
+	private boolean mAutoStarted = false;
+
 	@Override
 	public void robotInit() {
 		Logger.getInstance().setFileName("2018 season");
@@ -105,31 +108,34 @@ public class Robot extends TimedRobot {
 
 		}
 
-		AutoFMS.getInstance().getScaleSide();
-
-
 		mHardwareUpdater.updateState(robotState);
 		mRoutineManager.reset(commands);
 		robotState.reset(0, new RigidTransform2d());
 
 		startSubsystems();
-
-		//Get the selected auto mode
-		AutoModeBase mode = AutoModeSelector.getInstance().getAutoMode();
-
-		//Prestart and run the auto mode
-		mode.prestart();
-		mRoutineManager.addNewRoutine(mode.getRoutine());
-
 		Logger.getInstance().logRobotThread(Level.INFO, "End autoInit()");
 	}
 
+
 	@Override
 	public void autonomousPeriodic() {
-		commands = mRoutineManager.update(commands);
-		mHardwareUpdater.updateState(robotState);
-		updateSubsystems();
-		mHardwareUpdater.updateHardware();
+		if(AutoFMS.isFMSDataAvailable() && !this.mAutoStarted) {
+			//Get the selected auto mode
+			AutoModeBase mode = AutoModeSelector.getInstance().getAutoMode();
+
+			//Prestart and run the auto mode
+			mode.prestart();
+			mRoutineManager.addNewRoutine(mode.getRoutine());
+
+			this.mAutoStarted = true;
+		}
+
+		if(this.mAutoStarted) {
+			commands = mRoutineManager.update(commands);
+			mHardwareUpdater.updateState(robotState);
+			updateSubsystems();
+			mHardwareUpdater.updateHardware();
+		}
 
 		logPeriodic();
 	}
@@ -166,6 +172,7 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void disabledInit() {
+		mAutoStarted = false;
 		Logger.getInstance().start();
 
 		robotState.gamePeriod = RobotState.GamePeriod.DISABLED;

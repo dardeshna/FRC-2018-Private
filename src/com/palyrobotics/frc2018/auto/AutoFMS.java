@@ -65,13 +65,13 @@ public class AutoFMS {
         String dataString;
         try {
             dataString = DriverStation.getInstance().getGameSpecificMessage();
-        } catch (UnsatisfiedLinkError error) {
+        } catch(UnsatisfiedLinkError error) {
             return this.scaleSide;
-        } catch (NoClassDefFoundError error) {
+        } catch(NoClassDefFoundError error) {
             return this.scaleSide;
         }
         
-        if (dataString.length() == 0) {
+        if(dataString.length() == 0) {
             return Side.NONE;
         }
         if(String.valueOf(dataString.charAt(1)).equals("L")) {
@@ -82,6 +82,10 @@ public class AutoFMS {
             Logger.getInstance().logRobotThread(Level.SEVERE, "Failed to receive scale side from FMS!");
             return null;
         }
+    }
+
+    public static boolean isFMSDataAvailable() {
+        return AutoFMS.getInstance().getScaleSide() != AutoFMS.Side.NONE;
     }
 }
 
