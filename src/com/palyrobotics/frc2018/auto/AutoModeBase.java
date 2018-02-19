@@ -34,11 +34,11 @@ public abstract class AutoModeBase {
 	}
 	
 	// To set the auto mode, set these variables in code!
-	public static Alliance mAlliance = null;
-	public static StartingPosition mStartingPosition = null;
-	public static Decision mScaleDecision = null;
-	public static Decision mSwitchDecision = null;
-	public static Priority mPriority = null;
+	public static Alliance mAlliance = Alliance.BLUE;
+	public static StartingPosition mStartingPosition = StartingPosition.RIGHT;
+	public static Decision mScaleDecision = Decision.RIGHT;
+	public static Decision mSwitchDecision = Decision.RIGHT;
+	public static Priority mPriority = Priority.SWITCH;
 
 	public abstract Routine getRoutine();
 

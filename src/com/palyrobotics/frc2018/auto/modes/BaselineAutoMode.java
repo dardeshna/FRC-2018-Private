@@ -6,6 +6,7 @@ import com.palyrobotics.frc2018.behavior.SequentialRoutine;
 import com.palyrobotics.frc2018.behavior.routines.drive.DrivePathRoutine;
 import com.palyrobotics.frc2018.behavior.routines.drive.DriveSensorResetRoutine;
 import com.palyrobotics.frc2018.config.AutoDistances;
+import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.util.trajectory.Path;
 import com.palyrobotics.frc2018.util.trajectory.Path.Waypoint;
 import com.palyrobotics.frc2018.util.trajectory.Translation2d;
@@ -36,10 +37,10 @@ public class BaselineAutoMode extends AutoModeBase {
 		List<Waypoint> path = new ArrayList<>();
 		path.add(new Waypoint(new Translation2d(0,0), 72.0));
 		if(mAlliance == Alliance.BLUE) {
-			path.add(new Waypoint(new Translation2d(AutoDistances.kBlueBaseLineDistanceInches, 0.0), 0.0));
+			path.add(new Waypoint(new Translation2d(AutoDistances.kBlueBaseLineDistanceInches - Constants.kRobotLengthInches, 0.0), 0.0));
 		}
 		else {
-			path.add(new Waypoint(new Translation2d(AutoDistances.kRedBaseLineDistanceInches, 0.0), 0.0));
+			path.add(new Waypoint(new Translation2d(AutoDistances.kRedBaseLineDistanceInches  - Constants.kRobotLengthInches, 0.0), 0.0));
 		}
 		ArrayList<Routine> routines = new ArrayList<>();
 		routines.add(new DriveSensorResetRoutine());

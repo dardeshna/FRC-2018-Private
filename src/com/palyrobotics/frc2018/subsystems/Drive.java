@@ -143,6 +143,10 @@ public class Drive extends Subsystem {
 
 		switch(mState) {
 			case CHEZY:
+				/*DriveSignal deletthis = DriveSignal.getNeutralSignal();
+				deletthis.leftMotor.setPercentOutput(.1);
+				deletthis.rightMotor.setPercentOutput(.1);
+				setDriveOutputs(deletthis);*/
 				setDriveOutputs(mCDH.cheesyDrive(commands, mCachedRobotState));
 				break;
 			case OFF_BOARD_CONTROLLER:

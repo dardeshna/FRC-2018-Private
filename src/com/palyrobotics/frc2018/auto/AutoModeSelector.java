@@ -92,7 +92,7 @@ public class AutoModeSelector {
 	public AutoModeBase getAutoMode() {
 		return getAutoMode(AutoModeBase.mAlliance, AutoModeBase.mStartingPosition, AutoModeBase.mScaleDecision,
 				AutoModeBase.mSwitchDecision, AutoModeBase.mPriority);
-//		return new TestAutoMode();
+		//return new TestAutoMode();
 	}
 
 	/**
@@ -102,7 +102,6 @@ public class AutoModeSelector {
 	 */
 
 	public AutoModeBase getAutoMode(Alliance alliance, StartingPosition startingPosition, Decision scaleDecision, Decision switchDecision, Priority priority) {
-
 		//Final index
 		int selectedIndex;
 
@@ -138,6 +137,7 @@ public class AutoModeSelector {
 			} else if(switchIndex != -1) {
 				selectedIndex = switchIndex;
 			} else {
+				Logger.getInstance().logRobotThread(Level.WARNING, "No auto mode possible, defaulting to baseline!");
 				selectedIndex = mAutoMap.get(alliance.toString());
 			}
 		} else if(priority == Priority.SWITCH) {
@@ -146,6 +146,7 @@ public class AutoModeSelector {
 			} else if(scaleIndex != -1) {
 				selectedIndex = scaleIndex;
 			} else {
+				Logger.getInstance().logRobotThread(Level.WARNING, "No auto mode possible, defaulting to baseline!");
 				selectedIndex = mAutoMap.get(alliance.toString());
 			}
 		} else {

@@ -94,8 +94,8 @@ public class Constants {
 	/**
 	 * Physical robot Constants
 	 */
-	public static final double kRobotWidthInches = 27.0;
-	public static final double kRobotLengthInches = 32.0;
+	public static final double kRobotWidthInches = 34.0;
+	public static final double kRobotLengthInches = 38.0;
 
 	/**
 	 * Tolerances
@@ -185,14 +185,15 @@ public class Constants {
 	public static final double kNormalLoopsDt = 0.02;
 
 	//Adaptive Pure Pursuit Controller
-	public static final double kDriveWheelDiameterInches = 7.3;
-	public static final double kTrackLengthInches = 8.265;
-	public static final double kTrackWidthInches = 23.8;
+	public static final double kDriveWheelDiameterInches = 6.25;
+	public static final double kTrackLengthInches = 8.5;
+	public static final double kTrackWidthInches = 24.0;
 	public static final double kTrackEffectiveDiameter = (kTrackWidthInches * kTrackWidthInches + kTrackLengthInches * kTrackLengthInches) / kTrackWidthInches;
-	public static final double kTrackScrubFactor = 0.9;
+	public static final double kTrackScrubFactor = 5.0;
 	public static final double kPathFollowingLookahead = 20.0;
-	public static final double kPathFollowingMaxAccel = 5.0 * kDriveTicksPerInch;
-	public static final double kPathFollowingMaxVel = 10.0 * kDriveTicksPerInch;
+	public static final double kPathFollowingMaxAccel = 100.0;
+	public static final double kPathFollowingMaxVel = 72.0;
+	//public static final double kPathFollowingMaxVel = 5 * kPathFollowingMaxAccel;
 	public static final double kPathFollowingTolerance = 0.20;
 
 	@Override

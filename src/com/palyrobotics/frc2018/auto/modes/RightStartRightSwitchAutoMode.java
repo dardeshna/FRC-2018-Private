@@ -58,12 +58,12 @@ public class RightStartRightSwitchAutoMode extends AutoModeBase {
         //Drive path while moving elevator up and moving intake down
         ArrayList<Routine> inTransitRoutines = new ArrayList<>();
         inTransitRoutines.add(new DrivePathRoutine(new Path(path), false));
-        inTransitRoutines.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorSwitchPositionInches, 15));
-        inTransitRoutines.add(new IntakeDownRoutine());
+//        inTransitRoutines.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorSwitchPositionInches, 15));
+//        inTransitRoutines.add(new IntakeDownRoutine());
         routines.add(new ParallelRoutine(inTransitRoutines));
 
         //Open when everything is done to score
-        routines.add(new IntakeOpenRoutine());
+//        routines.add(new IntakeOpenRoutine());
 
         return new SequentialRoutine(routines);
     }

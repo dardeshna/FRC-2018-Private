@@ -2,6 +2,7 @@ package com.palyrobotics.frc2018.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import com.ctre.phoenix.sensors.PigeonIMU;
 import com.palyrobotics.frc2018.config.Constants;
 import edu.wpi.first.wpilibj.*;
 
@@ -30,12 +31,12 @@ public class HardwareAdapter {
 		public final WPI_VictorSPX rightSlave1Victor;
 		public final WPI_VictorSPX rightSlave2Victor;
 
-//		public final PigeonIMU gyro;
+		public final PigeonIMU gyro;
 
 		public static void resetSensors() {
-//			instance.gyro.setYaw(0, 0);
-//			instance.gyro.setFusedHeading(0, 0);
-//			instance.gyro.setAccumZAngle(0, 0);
+			instance.gyro.setYaw(0, 0);
+			instance.gyro.setFusedHeading(0, 0);
+			instance.gyro.setAccumZAngle(0, 0);
 			instance.leftMasterTalon.setSelectedSensorPosition(0, 0, 0);
 			instance.rightMasterTalon.setSelectedSensorPosition(0, 0, 0);
 		}
@@ -47,7 +48,8 @@ public class HardwareAdapter {
 			rightMasterTalon = new WPI_TalonSRX(Constants.kForsetiRightDriveMasterDeviceID);
 			rightSlave1Victor = new WPI_VictorSPX(Constants.kForsetiRightDriveSlaveDeviceID);
 			rightSlave2Victor = new WPI_VictorSPX(Constants.kForsetiRightDriveOtherSlaveDeviceID);
-//			gyro = new PigeonIMU(leftMasterTalon);
+			//Gyro is currently attached to elevator talon as an... emergency provision
+			gyro = new PigeonIMU(new WPI_TalonSRX(Constants.kForsetiElevatorSlaveTalonID));
 		}
 	}
 

@@ -19,7 +19,7 @@ public class AutoGrapher {
             loadAutos(AutoModeSelector.getInstance().getAutoModeByIndex(i), (i%2==0 ? "Blue" : "Red"));
         }
 
-        Runtime.getRuntime().exec( new String[] { "open" , "-a", "Safari", System.getProperty("user.dir") + "/auto-graph/index.html"}) ;
+        Runtime.getRuntime().exec(new String[]{"cmd", "/c","start chrome " + System.getProperty("user.dir") + "/auto-graph/index.html"});
     }
 
     public void loadAutos(AutoModeBase auto, String color) throws IOException {

@@ -131,7 +131,6 @@ public class Elevator extends Subsystem {
 					//if not calibrated, limit speed
 					mOutput.setPercentOutput(Constants.kElevatorUncalibratedManualPower * mRobotState.operatorStickInput.getY());
 				}
-
 				break;
 			case CUSTOM_POSITIONING:
 				//Control loop

@@ -107,6 +107,10 @@ public class Robot extends TimedRobot {
 		AutoDistances.updateAutoDistances();
 
 		startSubsystems();
+		
+		if(!AutoFMS.isFMSDataAvailable()) {
+			Logger.getInstance().logRobotThread(Level.WARNING, "No FMS data detected");
+		}
 
 		Logger.getInstance().logRobotThread(Level.INFO, "End autoInit()");
 	}
@@ -114,6 +118,7 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void autonomousPeriodic() {
+		//if(!this.mAutoStarted) {
 		if(AutoFMS.isFMSDataAvailable() && !this.mAutoStarted) {
 			//Get the selected auto mode
 			AutoModeBase mode = AutoModeSelector.getInstance().getAutoMode();
@@ -149,6 +154,7 @@ public class Robot extends TimedRobot {
 		commands.wantedDriveState = Drive.DriveState.CHEZY; //switch to chezy after auto ends
 		commands = operatorInterface.updateCommands(commands);
 		startSubsystems();
+		robotState.reset(0, new RigidTransform2d());
 
 		Logger.getInstance().logRobotThread(Level.INFO, "End teleopInit()");
 	}
@@ -223,21 +229,21 @@ public class Robot extends TimedRobot {
 
 	private void startSubsystems() {
 		mDrive.start();
-		mClimber.start();
+		//mClimber.start();
 		mElevator.start();
 		mIntake.start();
 	}
 
 	private void updateSubsystems() {
 		mDrive.update(commands, robotState);
-		mClimber.update(commands, robotState);
+		//mClimber.update(commands, robotState);
 		mElevator.update(commands, robotState);
 		mIntake.update(commands, robotState);
 	}
 
 	private void stopSubsystems() {
 		mDrive.stop();
-		mClimber.stop();
+		//mClimber.stop();
 		mElevator.stop();
 		mIntake.stop();
 	}
