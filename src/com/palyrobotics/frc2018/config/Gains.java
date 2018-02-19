@@ -75,6 +75,12 @@ public class Gains {
 	public static final double kForsetiTurnMotionMagickRampRate = 0.0;
 	public static final Gains forsetiTurnMotionMagicGains = new Gains(kForsetiTurnMotionMagickP, kForsetiTurnMotionMagickI, kForsetiTurnMotionMagickD,
 			kForsetiTurnMotionMagickF, kForsetiTurnMotionMagickIzone, kForsetiTurnMotionMagickRampRate);
+	
+	//Drive cascading turn angle gains
+	public static final double kForsetiCascadingTurnkP = 10;
+	public static final double kForsetiCascadingTurnkI = 0.5;
+	public static final double kForsetiCascadingTurnkD = -5;
+	public static final double kForsetiCascadingTurnkF = 0;
 
 	public static final double kForsetiElevatorDownPositionkP = 0.45;
 	public static final double kForsetiElevatorDownPositionkI = 0.0;

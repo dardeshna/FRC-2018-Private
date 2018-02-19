@@ -269,6 +269,11 @@ public class Drive extends Subsystem {
 		newController = true;
 	}
 
+	public void setCascadingGyroEncoderTurnAngleController(double angle) {
+		mController = new CascadingGyroEncoderTurnAngleController(mCachedPose, angle);
+		newController = true;
+	}
+
 	public void setTimedDrive(double voltage, double time) {
 		mController = new TimedDriveController(voltage, time);
 		newController = true;
