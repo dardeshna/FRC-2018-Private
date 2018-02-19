@@ -19,7 +19,9 @@ public class IntakeNeutralRoutine extends Routine {
 
     @Override
     public Commands update(Commands commands) {
-        commands.wantedIntakeOpenCloseState = Intake.OpenCloseState.NEUTRAL;
+        if(intake.getUpDownState() == Intake.UpDownState.DOWN) {
+            commands.wantedIntakeOpenCloseState = Intake.OpenCloseState.NEUTRAL;
+        }
         alreadyRan = true;
         return commands;
     }

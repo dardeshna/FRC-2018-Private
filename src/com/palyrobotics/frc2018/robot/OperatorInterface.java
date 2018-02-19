@@ -127,11 +127,9 @@ public class OperatorInterface {
 		 if(mOperatorStick.getButtonPressed(4)) {
 		 	if(operatorButtonFourPressable) {
 				if(prevCommands.wantedIntakeUpDownState == Intake.UpDownState.DOWN) {
-					newCommands.wantedIntakeUpDownState = Intake.UpDownState.UP;
-//				newCommands.addWantedRoutine(new IntakeUpRoutine());
+					newCommands.addWantedRoutine(new IntakeUpRoutine());
 				} else {
-					newCommands.wantedIntakeUpDownState = Intake.UpDownState.DOWN;
-//				newCommands.addWantedRoutine(new IntakeDownRoutine());
+					newCommands.addWantedRoutine(new IntakeDownRoutine());
 				}
 			}
 
@@ -140,14 +138,11 @@ public class OperatorInterface {
 
 		//Close/Open block, cannot be executed along with up/down
 		else if(mOperatorStick.getButtonPressed(3)) {
-		 	newCommands.wantedIntakeOpenCloseState = Intake.OpenCloseState.NEUTRAL;
-//			 newCommands.addWantedRoutine(new IntakeNeutralRoutine());
+			 newCommands.addWantedRoutine(new IntakeNeutralRoutine());
 		 } else if(mOperatorStick.getButtonPressed(5)) {
-		 	newCommands.wantedIntakeOpenCloseState = Intake.OpenCloseState.CLOSED;
-//			newCommands.addWantedRoutine(new IntakeCloseRoutine());
+			newCommands.addWantedRoutine(new IntakeCloseRoutine());
 		} else if(mOperatorStick.getButtonPressed(6)) {
-		 	newCommands.wantedIntakeOpenCloseState = Intake.OpenCloseState.OPEN;
-//			newCommands.addWantedRoutine(new IntakeOpenRoutine());
+			newCommands.addWantedRoutine(new IntakeOpenRoutine());
 		} else {
 			operatorButtonFourPressable = true;
 		}
@@ -171,9 +166,9 @@ public class OperatorInterface {
 		}
 
 		if(mTurnStick.getButtonPressed(5)) {
-		 	newCommands.wantedIntakeOpenCloseState = Intake.OpenCloseState.CLOSED;
+			newCommands.addWantedRoutine(new IntakeCloseRoutine());
 		} else if(mTurnStick.getButtonPressed(6)) {
-		 	newCommands.wantedIntakeOpenCloseState = Intake.OpenCloseState.NEUTRAL;
+			newCommands.addWantedRoutine(new IntakeNeutralRoutine());
 		}
 
 		return newCommands;

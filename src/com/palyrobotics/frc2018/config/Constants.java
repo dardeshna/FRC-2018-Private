@@ -167,8 +167,8 @@ public class Constants {
 	public static final int kForsetiIntakeSlaveDeviceID = 10;
 	public static final int kForsetiIntakeDistanceSensorID = 0;
 	//PCM 0
-	public static final int kForsetiIntakeUpDownSolenoidForwardID = 5;
-	public static final int kForsetiIntakeUpDownSolenoidReverseID = 2;
+	public static final int kForsetiIntakeUpDownSolenoidForwardID = 2;
+	public static final int kForsetiIntakeUpDownSolenoidReverseID = 5;
 	//PCM 1
 	public static final int kForsetiIntakeOpenCloseOtherSolenoidID = 4;
 	public static final int kForsetiIntakeOpenCloseSolenoidID = 5;
