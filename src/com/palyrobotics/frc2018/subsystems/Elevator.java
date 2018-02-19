@@ -222,12 +222,12 @@ public class Elevator extends Subsystem {
 		if(mRobotState.elevatorBottomHFX) {
 			kElevatorBottomPosition = Optional.of(mRobotState.elevatorPosition);
 			if(!kElevatorTopPosition.isPresent()) {
-				kElevatorTopPosition = Optional.of(mRobotState.elevatorPosition + Constants.kElevatorTopPositionInches * Constants.kElevatorTicksPerInch);
+				kElevatorTopPosition = Optional.of(mRobotState.elevatorPosition + Constants.kElevatorTopBottomDifferenceInches * Constants.kElevatorTicksPerInch);
 			}
 		} else if(mRobotState.elevatorTopHFX) {
 			kElevatorTopPosition = Optional.of(mRobotState.elevatorPosition);
 			if(!kElevatorBottomPosition.isPresent()) {
-				kElevatorBottomPosition = Optional.of(mRobotState.elevatorPosition - Constants.kElevatorTopPositionInches * Constants.kElevatorTicksPerInch);
+				kElevatorBottomPosition = Optional.of(mRobotState.elevatorPosition - Constants.kElevatorTopBottomDifferenceInches * Constants.kElevatorTicksPerInch);
 			}
 		}
 	}

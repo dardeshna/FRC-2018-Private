@@ -9,7 +9,6 @@ import com.palyrobotics.frc2018.behavior.routines.drive.DriveSensorResetRoutine;
 import com.palyrobotics.frc2018.behavior.routines.drive.GyroMotionMagicTurnAngleRoutine;
 import com.palyrobotics.frc2018.behavior.routines.elevator.ElevatorCustomPositioningRoutine;
 import com.palyrobotics.frc2018.behavior.routines.intake.IntakeDownRoutine;
-import com.palyrobotics.frc2018.behavior.routines.intake.IntakeOpenRoutine;
 import com.palyrobotics.frc2018.behavior.routines.intake.IntakeWheelRoutine;
 import com.palyrobotics.frc2018.config.AutoDistances;
 import com.palyrobotics.frc2018.config.Constants;
@@ -71,7 +70,7 @@ public class LeftStartRightSwitchAutoMode extends AutoModeBase {
 
         //Get there, raise elevator, intake down
         inTransitRoutines.add(new SequentialRoutine(driveRoutines));
-        inTransitRoutines.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorTopPositionInches, 15));
+        inTransitRoutines.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorTopBottomDifferenceInches, 15));
         inTransitRoutines.add(new IntakeDownRoutine());
         routines.add(new ParallelRoutine(inTransitRoutines));
 

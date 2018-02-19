@@ -63,11 +63,9 @@ public class Constants {
 	/**
 	 * Elevator Constants
 	 */
-	public static final double kTopPositionInches = 81.5;
 	public static final double kNominalUpwardsOutput = 0.1;
-	public static final double kElevatorTopPositionInches = 82;
+	public static final double kElevatorTopBottomDifferenceInches = 83.4192803716;
 	public static final double kElevatorSwitchPositionInches = 30;
-	public static final double kElevatorBottomPositionInches = 0;
 	public static double kElevatorTopScalingMarginInches;
 	public static double kElevatorBottomScalingMarginInches;
 	public static double kElevatorTopScalingConstant;
@@ -86,7 +84,7 @@ public class Constants {
 	 * Unit conversions for Talons
 	 */
 	public static final double kDriveTicksPerInch = 4096 / (6.25 * Math.PI);
-	public static final double kElevatorTicksPerInch = 4096 / (3 * 1.30567 * Math.PI);
+	public static final double kElevatorTicksPerInch = 4096 / (3 * 1.432 * Math.PI);
 	public static final double kDriveInchesPerDegree = 0.99 * 21.5 / 90;
 	public static final double kDriveSpeedUnitConversion = 4096 / (6.25 * Math.PI * 10);
 
