@@ -3,7 +3,6 @@ package com.palyrobotics.frc2018.robot;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
-import com.ctre.phoenix.sensors.PigeonIMU;
 import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.config.RobotState;
 import com.palyrobotics.frc2018.config.dashboard.DashboardManager;
@@ -14,14 +13,10 @@ import com.palyrobotics.frc2018.subsystems.Intake;
 import com.palyrobotics.frc2018.util.ClimberSignal;
 import com.palyrobotics.frc2018.util.TalonSRXOutput;
 import com.palyrobotics.frc2018.util.logger.Logger;
-import com.palyrobotics.frc2018.util.trajectory.Kinematics;
-import com.palyrobotics.frc2018.util.trajectory.RigidTransform2d;
-import com.palyrobotics.frc2018.util.trajectory.Rotation2d;
-import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 import java.util.Optional;
 import java.util.logging.Level;
@@ -52,7 +47,7 @@ class HardwareUpdater {
 	 */
 	void initHardware() {
 		Logger.getInstance().logRobotThread(Level.INFO, "Init hardware");
-		configureTalons();
+		configureHardware();
 //		PigeonIMU gyro = HardwareAdapter.getInstance().getDrivetrain().gyro;
 //		gyro.setYaw(0, 0);
 //		gyro.setFusedHeading(0, 0);
@@ -82,14 +77,14 @@ class HardwareUpdater {
 		HardwareAdapter.getInstance().getIntake().slaveTalon.set(ControlMode.Disabled, 0);
 	}
 
-	void configureTalons() {
-		configureDriveTalons();
-		configureClimberTalons();
-		configureElevatorTalons();
-		configureIntakeTalons();
+	void configureHardware() {
+		configureDriveHardware();
+		configureClimberHardware();
+		configureElevatorHardware();
+		configureIntakeHardware();
 	}
 
-	void configureDriveTalons() {
+	void configureDriveHardware() {
 		WPI_TalonSRX leftMasterTalon = HardwareAdapter.getInstance().getDrivetrain().leftMasterTalon;
 		WPI_VictorSPX leftSlave1Victor = HardwareAdapter.getInstance().getDrivetrain().leftSlave1Victor;
 		WPI_VictorSPX leftSlave2Victor = HardwareAdapter.getInstance().getDrivetrain().leftSlave2Victor;
@@ -182,7 +177,7 @@ class HardwareUpdater {
 		rightSlave2Victor.follow(rightMasterTalon);
 	}
 
-	void configureElevatorTalons() {
+	void configureElevatorHardware() {
 		WPI_TalonSRX masterTalon = HardwareAdapter.getInstance().getElevator().elevatorMasterTalon;
 		WPI_TalonSRX slaveTalon = HardwareAdapter.getInstance().getElevator().elevatorSlaveTalon;
 
@@ -225,7 +220,7 @@ class HardwareUpdater {
 		masterTalon.setSelectedSensorPosition(0, 0, 0);
 	}
 
-	void configureClimberTalons() {
+	void configureClimberHardware() {
 		WPI_VictorSPX climberLeft = HardwareAdapter.getInstance().getClimber().leftVictor;
 		WPI_VictorSPX climberRight = HardwareAdapter.getInstance().getClimber().rightVictor;
 
@@ -244,7 +239,7 @@ class HardwareUpdater {
 		climberRight.configReverseSoftLimitEnable(false, 0);
 	}
 
-	void configureIntakeTalons() {
+	void configureIntakeHardware() {
 
 		WPI_TalonSRX masterTalon = HardwareAdapter.getInstance().getIntake().masterTalon;
 		WPI_TalonSRX slaveTalon = HardwareAdapter.getInstance().getIntake().slaveTalon;

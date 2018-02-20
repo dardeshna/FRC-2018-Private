@@ -166,8 +166,6 @@ public class HardwareAdapter {
 		return Joysticks.getInstance();
 	}
 
-	public final PowerDistributionPanel kPDP = new PowerDistributionPanel();
-
 	//Singleton set up
 	private static final HardwareAdapter instance = new HardwareAdapter();
 

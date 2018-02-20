@@ -91,7 +91,7 @@ public class Robot extends TimedRobot {
 
 		DashboardManager.getInstance().toggleCANTable(true);
 		robotState.gamePeriod = RobotState.GamePeriod.AUTO;
-		mHardwareUpdater.configureTalons();
+		mHardwareUpdater.configureHardware();
 
 		//Wait for talons to update
 		try {
@@ -140,7 +140,7 @@ public class Robot extends TimedRobot {
 		Logger.getInstance().logRobotThread(Level.INFO, "Start teleopInit()");
 
 		robotState.gamePeriod = RobotState.GamePeriod.TELEOP;
-		mHardwareUpdater.configureTalons();
+		mHardwareUpdater.configureHardware();
 		mHardwareUpdater.updateState(robotState);
 		mHardwareUpdater.updateHardware();
 		mRoutineManager.reset(commands);
@@ -182,7 +182,7 @@ public class Robot extends TimedRobot {
 
 		//Stop controllers
 		mDrive.setNeutral();
-		mHardwareUpdater.configureTalons();
+		mHardwareUpdater.configureHardware();
 		mHardwareUpdater.disableTalons();
 		DashboardManager.getInstance().toggleCANTable(false);
 
