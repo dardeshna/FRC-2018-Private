@@ -178,6 +178,7 @@ public class Robot extends TimedRobot {
 
 		//Creates a new Commands instance in place of the old one
 		Commands.reset();
+		commands = Commands.getInstance();
 
 		//Stop controllers
 		mDrive.setNeutral();
