@@ -3,7 +3,6 @@ package com.palyrobotics.frc2018.subsystems;
 import com.palyrobotics.frc2018.config.Commands;
 import com.palyrobotics.frc2018.config.RobotState;
 import com.palyrobotics.frc2018.robot.MockRobot;
-import com.palyrobotics.frc2018.subsystems.Climber.Side;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -37,28 +36,13 @@ public class ClimberTest {
 	}
 	
 	@Test
-	public void testClimberLeftBrake() {
-		commands.wantedClimbMovement = MotionSubstate.MOVING;
-		commands.wantedClimbSide = Side.LEFT;
-		climber.update(commands, robotState);
-		assertThat("Climber Left Brake is On", climber.getSignal().leftBrake, equalTo(false));
-		
-		commands.wantedClimbMovement = MotionSubstate.LOCKED;
-		commands.wantedClimbSide = Side.LEFT;
-		climber.update(commands, robotState);
-		assertThat("Climber Left Brake is not On", climber.getSignal().leftBrake, equalTo(true));
-	}
-	
-	@Test
 	public void testClimberRightBrake() {
 		commands.wantedClimbMovement = MotionSubstate.MOVING;
-		commands.wantedClimbSide = Side.RIGHT;
 		climber.update(commands, robotState);
-		assertThat("Climber Right Brake is On", climber.getSignal().rightBrake, equalTo(false));
+		assertThat("Climber Right Brake is On", climber.getSignal().brake, equalTo(false));
 		
 		commands.wantedClimbMovement = MotionSubstate.LOCKED;
-		commands.wantedClimbSide = Side.RIGHT;
 		climber.update(commands, robotState);
-		assertThat("Climber Right Brake is not On", climber.getSignal().rightBrake, equalTo(true));
+		assertThat("Climber Right Brake is not On", climber.getSignal().brake, equalTo(true));
 	}
 }

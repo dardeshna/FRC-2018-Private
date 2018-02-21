@@ -36,7 +36,6 @@ public class Commands {
 	//Store WantedStates for each subsystem state machine
 	public Drive.DriveState wantedDriveState = Drive.DriveState.NEUTRAL;
 	public Climber.MotionSubstate wantedClimbMovement = Climber.MotionSubstate.LOCKED;
-	public Climber.Side wantedClimbSide = Climber.Side.NOT_SET;
 	public Climber.LockState wantedLockState = Climber.LockState.UNLOCKED;
 	public Elevator.ElevatorState wantedElevatorState = Elevator.ElevatorState.IDLE;
 	public Intake.WheelState wantedIntakingState = Intake.WheelState.IDLE;
@@ -88,7 +87,6 @@ public class Commands {
 	public Commands copy() {
 		Commands copy = new Commands();
 		copy.wantedDriveState = this.wantedDriveState;
-		copy.wantedClimbSide = this.wantedClimbSide;
 		copy.wantedClimbMovement = this.wantedClimbMovement;
 		copy.wantedLockState = this.wantedLockState;
 		copy.wantedElevatorState = this.wantedElevatorState;

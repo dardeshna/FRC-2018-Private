@@ -26,10 +26,8 @@ public class HardwareAdapter {
 
 		public final WPI_TalonSRX leftMasterTalon;
 		public final WPI_VictorSPX leftSlave1Victor;
-		public final WPI_VictorSPX leftSlave2Victor;
 		public final WPI_TalonSRX rightMasterTalon;
 		public final WPI_VictorSPX rightSlave1Victor;
-		public final WPI_VictorSPX rightSlave2Victor;
 
 		public final PigeonIMU gyro;
 
@@ -44,12 +42,15 @@ public class HardwareAdapter {
 		protected DrivetrainHardware() {
 			leftMasterTalon = new WPI_TalonSRX(Constants.kForsetiLeftDriveMasterDeviceID);
 			leftSlave1Victor = new WPI_VictorSPX(Constants.kForsetiLeftDriveSlaveDeviceID);
-			leftSlave2Victor = new WPI_VictorSPX(Constants.kForsetiLeftDriveOtherSlaveDeviceID);
 			rightMasterTalon = new WPI_TalonSRX(Constants.kForsetiRightDriveMasterDeviceID);
 			rightSlave1Victor = new WPI_VictorSPX(Constants.kForsetiRightDriveSlaveDeviceID);
-			rightSlave2Victor = new WPI_VictorSPX(Constants.kForsetiRightDriveOtherSlaveDeviceID);
 			//Gyro is currently attached to elevator talon as an... emergency provision
-			gyro = new PigeonIMU(new WPI_TalonSRX(Constants.kForsetiElevatorSlaveTalonID));
+
+			//HAL
+//			gyro = new PigeonIMU(new WPI_TalonSRX(Constants.kForsetiElevatorSlaveTalonID));
+
+			//Forseti
+			gyro = new PigeonIMU(new WPI_TalonSRX(Constants.kForsetiIntakeSlaveDeviceID));
 		}
 	}
 
@@ -63,24 +64,18 @@ public class HardwareAdapter {
 			return instance;
 		}
 
-		public final WPI_VictorSPX leftVictor;
-		public final WPI_VictorSPX rightVictor;
+		public final WPI_VictorSPX climberVictor;
 
-		public final DoubleSolenoid leftArmLock;
-		public final DoubleSolenoid rightArmLock;
+		public final DoubleSolenoid climberArmLock;
 
-		public final Solenoid leftBrake;
-		public final Solenoid rightBrake;
+		public final Solenoid climberBrake;
 
 		protected ClimberHardware() {
-			leftVictor = new WPI_VictorSPX(Constants.kForsetiClimberMotorLeftDeviceID);
-			rightVictor = new WPI_VictorSPX(Constants.kForsetiClimberMotorRightDeviceID);
+			climberVictor = new WPI_VictorSPX(Constants.kForsetiClimberMotorDeviceID);
 
-			leftArmLock = new DoubleSolenoid(1, Constants.kForsetiClimberLeftArmBack, Constants.kForsetiClimberLeftArmForward);
-			rightArmLock = new DoubleSolenoid(1, Constants.kForsetiClimberRightArmBack, Constants.kForsetiClimberRightArmForward);
+			climberArmLock = new DoubleSolenoid(0, Constants.kForsetiClimberLatchSolenoidReverseID, Constants.kForsetiClimberLatchSolenoidForwardID);
 
-			leftBrake = new Solenoid(1, Constants.kForsetiClimberLeftBrakeSolenoid);
-			rightBrake = new Solenoid(1, Constants.kForsetiClimberRightBrakeSolenoid);
+			climberBrake = new Solenoid(1, Constants.kForsetiClimberBrakeSolenoidID);
 		}
 	}
 

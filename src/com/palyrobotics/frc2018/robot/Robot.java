@@ -229,21 +229,21 @@ public class Robot extends TimedRobot {
 
 	private void startSubsystems() {
 		mDrive.start();
-		//mClimber.start();
+		mClimber.start();
 		mElevator.start();
 		mIntake.start();
 	}
 
 	private void updateSubsystems() {
 		mDrive.update(commands, robotState);
-		//mClimber.update(commands, robotState);
+		mClimber.update(commands, robotState);
 		mElevator.update(commands, robotState);
 		mIntake.update(commands, robotState);
 	}
 
 	private void stopSubsystems() {
 		mDrive.stop();
-		//mClimber.stop();
+		mClimber.stop();
 		mElevator.stop();
 		mIntake.stop();
 	}

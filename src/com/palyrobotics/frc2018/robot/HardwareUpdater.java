@@ -18,7 +18,6 @@ import com.palyrobotics.frc2018.util.trajectory.Kinematics;
 import com.palyrobotics.frc2018.util.trajectory.RigidTransform2d;
 import com.palyrobotics.frc2018.util.trajectory.Rotation2d;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
@@ -60,14 +59,11 @@ class HardwareUpdater {
 		//Disable drivetrain talons
 		HardwareAdapter.getInstance().getDrivetrain().leftMasterTalon.set(ControlMode.Disabled, 0);
 		HardwareAdapter.getInstance().getDrivetrain().leftSlave1Victor.set(ControlMode.Disabled, 0);
-		HardwareAdapter.getInstance().getDrivetrain().leftSlave2Victor.set(ControlMode.Disabled, 0);
 		HardwareAdapter.getInstance().getDrivetrain().rightMasterTalon.set(ControlMode.Disabled, 0);
 		HardwareAdapter.getInstance().getDrivetrain().rightSlave1Victor.set(ControlMode.Disabled, 0);
-		HardwareAdapter.getInstance().getDrivetrain().rightSlave2Victor.set(ControlMode.Disabled, 0);
 
 		//Disable climber talons
-		//HardwareAdapter.getInstance().getClimber().leftVictor.set(ControlMode.Disabled, 0);
-		//HardwareAdapter.getInstance().getClimber().rightVictor.set(ControlMode.Disabled, 0);
+		HardwareAdapter.getInstance().getClimber().climberVictor.set(ControlMode.Disabled, 0);
 
 		//Disable elevator talons
 		HardwareAdapter.getInstance().getElevator().elevatorMasterTalon.set(ControlMode.Disabled, 0);
@@ -92,61 +88,45 @@ class HardwareUpdater {
 
 		WPI_TalonSRX leftMasterTalon = HardwareAdapter.getInstance().getDrivetrain().leftMasterTalon;
 		WPI_VictorSPX leftSlave1Victor = HardwareAdapter.getInstance().getDrivetrain().leftSlave1Victor;
-		WPI_VictorSPX leftSlave2Victor = HardwareAdapter.getInstance().getDrivetrain().leftSlave2Victor;
 		WPI_TalonSRX rightMasterTalon = HardwareAdapter.getInstance().getDrivetrain().rightMasterTalon;
 		WPI_VictorSPX rightSlave1Victor = HardwareAdapter.getInstance().getDrivetrain().rightSlave1Victor;
-		WPI_VictorSPX rightSlave2Victor = HardwareAdapter.getInstance().getDrivetrain().rightSlave2Victor;
 
 		//Enable all talons' brake mode and disables forward and reverse soft
 		leftMasterTalon.setNeutralMode(NeutralMode.Brake);
 		leftSlave1Victor.setNeutralMode(NeutralMode.Brake);
-		leftSlave2Victor.setNeutralMode(NeutralMode.Brake);
 		rightMasterTalon.setNeutralMode(NeutralMode.Brake);
 		rightSlave1Victor.setNeutralMode(NeutralMode.Brake);
-		rightSlave2Victor.setNeutralMode(NeutralMode.Brake);
 
 		leftMasterTalon.enableVoltageCompensation(true);
 		leftSlave1Victor.enableVoltageCompensation(true);
-		leftSlave2Victor.enableVoltageCompensation(true);
 		rightMasterTalon.enableVoltageCompensation(true);
 		rightSlave1Victor.enableVoltageCompensation(true);
-		rightSlave2Victor.enableVoltageCompensation(true);
 
 		leftMasterTalon.configVoltageCompSaturation(14, 0);
 		leftSlave1Victor.configVoltageCompSaturation(14, 0);
-		leftSlave2Victor.configVoltageCompSaturation(14, 0);
 		rightMasterTalon.configVoltageCompSaturation(14, 0);
 		rightSlave1Victor.configVoltageCompSaturation(14, 0);
-		rightSlave2Victor.configVoltageCompSaturation(14, 0);
 
 		leftMasterTalon.configForwardSoftLimitEnable(false, 0);
 		leftMasterTalon.configReverseSoftLimitEnable(false, 0);
 		leftSlave1Victor.configForwardSoftLimitEnable(false, 0);
 		leftSlave1Victor.configReverseSoftLimitEnable(false, 0);
-		rightSlave2Victor.configForwardSoftLimitEnable(false, 0);
-		rightSlave2Victor.configReverseSoftLimitEnable(false, 0);
 
 		rightMasterTalon.configForwardSoftLimitEnable(false, 0);
 		rightMasterTalon.configReverseSoftLimitEnable(false, 0);
 		rightSlave1Victor.configForwardSoftLimitEnable(false, 0);
 		rightSlave1Victor.configReverseSoftLimitEnable(false, 0);
-		rightSlave2Victor.configForwardSoftLimitEnable(false, 0);
-		rightSlave2Victor.configReverseSoftLimitEnable(false, 0);
 
 		//Allow max voltage for closed loop control
 		leftMasterTalon.configPeakOutputForward(Constants.kDriveMaxClosedLoopOutput, 0);
 		leftMasterTalon.configPeakOutputReverse(-Constants.kDriveMaxClosedLoopOutput, 0);
 		leftSlave1Victor.configPeakOutputForward(Constants.kDriveMaxClosedLoopOutput, 0);
 		leftSlave1Victor.configPeakOutputReverse(-Constants.kDriveMaxClosedLoopOutput, 0);
-		leftSlave2Victor.configPeakOutputForward(Constants.kDriveMaxClosedLoopOutput, 0);
-		leftSlave2Victor.configPeakOutputReverse(-Constants.kDriveMaxClosedLoopOutput, 0);
 
 		rightMasterTalon.configPeakOutputForward(Constants.kDriveMaxClosedLoopOutput, 0);
 		rightMasterTalon.configPeakOutputReverse(-Constants.kDriveMaxClosedLoopOutput, 0);
 		rightSlave1Victor.configPeakOutputForward(Constants.kDriveMaxClosedLoopOutput, 0);
 		rightSlave1Victor.configPeakOutputReverse(-Constants.kDriveMaxClosedLoopOutput, 0);
-		rightSlave2Victor.configPeakOutputForward(Constants.kDriveMaxClosedLoopOutput, 0);
-		rightSlave2Victor.configPeakOutputReverse(-Constants.kDriveMaxClosedLoopOutput, 0);
 
 		//Configure master talon feedback devices
 		leftMasterTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
@@ -173,13 +153,10 @@ class HardwareUpdater {
 		//Reverse right side
 		rightMasterTalon.setInverted(true);
 		rightSlave1Victor.setInverted(true);
-		rightSlave2Victor.setInverted(true);
 
 		//Set slave victors to follower mode
 		leftSlave1Victor.follow(leftMasterTalon);
-		leftSlave2Victor.follow(leftMasterTalon);
 		rightSlave1Victor.follow(rightMasterTalon);
-		rightSlave2Victor.follow(rightMasterTalon);
 	}
 
 	void configureElevatorHardware() {
@@ -227,20 +204,14 @@ class HardwareUpdater {
 	}
 
 	void configureClimberHardware() {
-		WPI_VictorSPX climberLeft = HardwareAdapter.getInstance().getClimber().leftVictor;
-		WPI_VictorSPX climberRight = HardwareAdapter.getInstance().getClimber().rightVictor;
+		WPI_VictorSPX climberRight = HardwareAdapter.getInstance().getClimber().climberVictor;
 
-		climberLeft.enableVoltageCompensation(true);
 		climberRight.enableVoltageCompensation(true);
 
-		climberLeft.configVoltageCompSaturation(14, 0);
 		climberRight.configVoltageCompSaturation(14, 0);
 
-		climberLeft.setNeutralMode(NeutralMode.Brake);
 		climberRight.setNeutralMode(NeutralMode.Brake);
 
-		climberLeft.configForwardSoftLimitEnable(false, 0);
-		climberLeft.configReverseSoftLimitEnable(false, 0);
 		climberRight.configForwardSoftLimitEnable(false, 0);
 		climberRight.configReverseSoftLimitEnable(false, 0);
 	}
@@ -387,13 +358,7 @@ class HardwareUpdater {
 		RigidTransform2d.Delta velocity = Kinematics.forwardKinematics(robotState.drivePose.leftEncVelocity / Constants.kDriveSpeedUnitConversion, robotState.drivePose.rightEncVelocity / Constants.kDriveSpeedUnitConversion);
 
 		robotState.addObservations(time, odometry, velocity);
-		
-		System.out.println("Odometry = " + odometry.getTranslation().getX());
-		System.out.println("Velocity = " + velocity.dx);
-		System.out.println("Gyro angle = " + robotState.drivePose.heading);
-		/*System.out.println("Latest field to vehicle = " + robotState.getLatestFieldToVehicle().toString());
-		System.out.println("Encoder estimate = " + left_distance);*/
-		
+
 		//Update elevator sensors
 		robotState.elevatorPosition = HardwareAdapter.getInstance().getElevator().elevatorMasterTalon.getSelectedSensorPosition(0);
 		robotState.elevatorVelocity = HardwareAdapter.getInstance().getElevator().elevatorMasterTalon.getSelectedSensorVelocity(0);
@@ -406,7 +371,7 @@ class HardwareUpdater {
 	 */
 	void updateHardware() {
 		updateDrivetrain();
-		//updateClimber();
+		updateClimber();
 		updateElevator();
 		updateIntake();
 	}
@@ -429,12 +394,9 @@ class HardwareUpdater {
 
 	private void updateClimber() {
 		ClimberSignal signal = mClimber.getSignal();
-		HardwareAdapter.getInstance().getClimber().leftVictor.set(signal.leftVelocity);
-		HardwareAdapter.getInstance().getClimber().rightVictor.set(signal.rightVelocity);
-		HardwareAdapter.getInstance().getClimber().leftBrake.set(!signal.leftBrake);
-		HardwareAdapter.getInstance().getClimber().rightBrake.set(!signal.rightBrake);
-		HardwareAdapter.getInstance().getClimber().leftArmLock.set(signal.leftLatchLock ? Value.kForward : Value.kReverse);
-		HardwareAdapter.getInstance().getClimber().rightArmLock.set(signal.rightLatchLock ? Value.kForward : Value.kReverse);
+		HardwareAdapter.getInstance().getClimber().climberVictor.set(signal.velocity);
+		HardwareAdapter.getInstance().getClimber().climberBrake.set(!signal.brake);
+		HardwareAdapter.getInstance().getClimber().climberArmLock.set(signal.latchLock ? Value.kForward : Value.kReverse);
 	}
 
 	/**

@@ -94,24 +94,22 @@ public class OperatorInterface {
 		 */
 		if(Math.abs(ChezyMath.handleDeadband(mClimberStick.getY(), Constants.kDeadband)) > 0.0) {
 			newCommands.wantedClimbMovement = Climber.MotionSubstate.MOVING;
+			newCommands.addWantedRoutine(new SequentialRoutine(new ArrayList<Routine>() {{
+				new IntakeCloseRoutine();
+				new IntakeUpRoutine();
+			}}));
 		} else {
 			newCommands.wantedClimbMovement = Climber.MotionSubstate.LOCKED;
 		}
 
 		if(mClimberStick.getTriggerPressed()) {
 			newCommands.wantedLockState = Climber.LockState.LOCKED;
-		} else if(mClimberStick.getButtonPressed(2)) {
-			newCommands.wantedLockState = Climber.LockState.UNLOCKED;
-		}
-
-		if(mClimberStick.getButtonPressed(4)) {
-			newCommands.wantedClimbSide = Climber.Side.LEFT;
 			newCommands.addWantedRoutine(new SequentialRoutine(new ArrayList<Routine>() {{
 				new IntakeCloseRoutine();
 				new IntakeUpRoutine();
 			}}));
-		} else if(mClimberStick.getButtonPressed(5)) {
-			newCommands.wantedClimbSide = Climber.Side.RIGHT;
+		} else if(mClimberStick.getButtonPressed(2)) {
+			newCommands.wantedLockState = Climber.LockState.UNLOCKED;
 			newCommands.addWantedRoutine(new SequentialRoutine(new ArrayList<Routine>() {{
 				new IntakeCloseRoutine();
 				new IntakeUpRoutine();

@@ -7,10 +7,6 @@ import com.palyrobotics.frc2018.util.ClimberSignal;
 
 public class Climber extends Subsystem {
 
-	public enum Side {
-		NOT_SET, LEFT, RIGHT
-	}
-
 	public enum MotionSubstate {
 		MOVING, LOCKED
 	}
@@ -19,7 +15,6 @@ public class Climber extends Subsystem {
 		UNLOCKED, LOCKED
 	}
 
-	private Side mSide;
 	private MotionSubstate mMotionStatus;
 	private LockState mLock;
 	private ClimberSignal mSignal;
@@ -32,7 +27,6 @@ public class Climber extends Subsystem {
 
 	protected Climber() {
 		super("Climber");
-		mSide = Side.NOT_SET;
 		mMotionStatus = MotionSubstate.LOCKED;
 		mLock = LockState.UNLOCKED;
 	}
@@ -40,7 +34,6 @@ public class Climber extends Subsystem {
 	@Override
 	public void update(Commands commands, RobotState robotState) {
 		mMotionStatus = commands.wantedClimbMovement;
-		mSide = commands.wantedClimbSide;
 		mLock = commands.wantedLockState;
 
 		double motorOutput;
@@ -61,28 +54,11 @@ public class Climber extends Subsystem {
 			lock = true;
 		}
 
-		double leftMotor = 0.0, rightMotor = 0.0;
-		boolean leftBrake = true, rightBrake = true, leftLock = false, rightLock = false;
-
-		if(this.getSide() == Side.LEFT) {
-			leftMotor = motorOutput;
-			leftBrake = brake;
-			leftLock = lock;
-		} else if(this.getSide() == Side.RIGHT) {
-			rightMotor = motorOutput;
-			rightBrake = brake;
-			rightLock = lock;
-		}
-
-		mSignal = new ClimberSignal(leftMotor, rightMotor, leftBrake, rightBrake, leftLock, rightLock);
+		mSignal = new ClimberSignal(motorOutput, brake, lock);
 	}
 
 	public ClimberSignal getSignal() {
 		return mSignal;
-	}
-
-	public Side getSide() {
-		return mSide;
 	}
 
 	public MotionSubstate getMotionSubstate() {

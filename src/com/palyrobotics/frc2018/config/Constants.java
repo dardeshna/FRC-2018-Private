@@ -147,18 +147,13 @@ public class Constants {
 	public static final int kForsetiRightDriveThirdMotorPDP = 0;
 
 	//CLIMBER
-	public static final int kForsetiClimberMotorLeftDeviceID = 7;
-	public static final int kForsetiClimberMotorRightDeviceID = 8;
+	public static final int kForsetiClimberMotorDeviceID = 8;
 
 	//PCM 1 for now
-	public static final int kForsetiClimberLeftArmForward = 0;
-	public static final int kForsetiClimberLeftArmBack = 1;
+	public static final int kForsetiClimberLatchSolenoidForwardID = 7;
+	public static final int kForsetiClimberLatchSolenoidReverseID = 0;
 
-	public static final int kForsetiClimberRightArmForward = 2;
-	public static final int kForsetiClimberRightArmBack = 3;
-
-	public static final int kForsetiClimberLeftBrakeSolenoid = 6;
-	public static final int kForsetiClimberRightBrakeSolenoid = 7;
+	public static final int kForsetiClimberBrakeSolenoidID = 6;
 
 	//ELEVATOR
 	//PDP slots for elevator TBD (currently 7, 8, 9, 10)

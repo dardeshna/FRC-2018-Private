@@ -24,7 +24,6 @@ public class MockCommands extends Commands {
 	public MockCommands copy() {
 		MockCommands copy = new MockCommands();
 		copy.wantedDriveState = this.wantedDriveState;
-		copy.wantedClimbSide = this.wantedClimbSide;
 		copy.wantedClimbMovement = this.wantedClimbMovement;
 		copy.wantedLockState = this.wantedLockState;
 		copy.wantedElevatorState = this.wantedElevatorState;
