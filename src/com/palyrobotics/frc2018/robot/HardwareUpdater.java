@@ -394,7 +394,7 @@ class HardwareUpdater {
 
 	private void updateClimber() {
 		ClimberSignal signal = mClimber.getSignal();
-		HardwareAdapter.getInstance().getClimber().climberVictor.set(signal.velocity);
+		HardwareAdapter.getInstance().getClimber().climberVictor.set(ControlMode.PercentOutput, signal.velocity);
 		HardwareAdapter.getInstance().getClimber().climberBrake.set(!signal.brake);
 		HardwareAdapter.getInstance().getClimber().climberArmLock.set(signal.latchLock ? Value.kForward : Value.kReverse);
 	}

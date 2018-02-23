@@ -17,7 +17,7 @@ public class Climber extends Subsystem {
 
 	private MotionSubstate mMotionStatus;
 	private LockState mLock;
-	private ClimberSignal mSignal;
+	private ClimberSignal mSignal = ClimberSignal.getNeutralSignal();
 
 	private static Climber instance = new Climber();
 

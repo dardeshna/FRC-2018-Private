@@ -11,4 +11,8 @@ public class ClimberSignal {
 		this.latchLock = latchLock;
 		this.velocity = velocity;
 	}
+	
+	public static ClimberSignal getNeutralSignal() {
+		return new ClimberSignal(0, true, false);
+	}
 }

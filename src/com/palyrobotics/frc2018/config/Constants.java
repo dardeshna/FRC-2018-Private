@@ -150,8 +150,8 @@ public class Constants {
 	public static final int kForsetiClimberMotorDeviceID = 8;
 
 	//PCM 1 for now
-	public static final int kForsetiClimberLatchSolenoidForwardID = 7;
-	public static final int kForsetiClimberLatchSolenoidReverseID = 0;
+	public static final int kForsetiClimberLatchSolenoidForwardID = 6;
+	public static final int kForsetiClimberLatchSolenoidReverseID = 1;
 
 	public static final int kForsetiClimberBrakeSolenoidID = 6;
 
