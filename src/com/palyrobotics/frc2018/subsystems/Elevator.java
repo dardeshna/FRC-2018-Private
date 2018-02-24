@@ -68,7 +68,9 @@ public class Elevator extends Subsystem {
 
 		//Update for use in handleState()
 		mRobotState = robotState;
-
+		if(mState != ElevatorState.CUSTOM_POSITIONING && mState != ElevatorState.HOLD || !isCalibrated()) {
+			checkCalibration();
+		}
 		handleState(commands);
 
 		//Execute update loop based on the current state
@@ -77,7 +79,6 @@ public class Elevator extends Subsystem {
 			//Actual calibration logic is not done in the state machine
 			case CALIBRATING:
 				mOutput.setPercentOutput(Constants.kCalibratePower);
-				checkCalibration();
 				break;
 			case HOLD:
 				//If at the bottom, supply no power
@@ -218,15 +219,24 @@ public class Elevator extends Subsystem {
 	 * Calibrates the bottom or top position values depending on which HFX is triggered. If the other position is not already set, set that as well.
 	 */
 	public void checkCalibration() {
-		if(mRobotState.elevatorBottomHFX) {
-			kElevatorBottomPosition = Optional.of(mRobotState.elevatorPosition);
-			if(!kElevatorTopPosition.isPresent()) {
-				kElevatorTopPosition = Optional.of(mRobotState.elevatorPosition + Constants.kElevatorTopBottomDifferenceInches * Constants.kElevatorTicksPerInch);
+		if(!isCalibrated()) {
+			if(mRobotState.elevatorBottomHFX) {
+				kElevatorBottomPosition = Optional.of(mRobotState.elevatorPosition);
+				if(!kElevatorTopPosition.isPresent()) {
+					kElevatorTopPosition = Optional.of(mRobotState.elevatorPosition + Constants.kElevatorTopBottomDifferenceInches * Constants.kElevatorTicksPerInch);
+				}
+			} else if(mRobotState.elevatorTopHFX) {
+				kElevatorTopPosition = Optional.of(mRobotState.elevatorPosition);
+				if(!kElevatorBottomPosition.isPresent()) {
+					kElevatorBottomPosition = Optional.of(mRobotState.elevatorPosition - Constants.kElevatorTopBottomDifferenceInches * Constants.kElevatorTicksPerInch);
+				}
 			}
-		} else if(mRobotState.elevatorTopHFX) {
-			kElevatorTopPosition = Optional.of(mRobotState.elevatorPosition);
-			if(!kElevatorBottomPosition.isPresent()) {
-				kElevatorBottomPosition = Optional.of(mRobotState.elevatorPosition - Constants.kElevatorTopBottomDifferenceInches * Constants.kElevatorTicksPerInch);
+		}
+		else {
+			if(kElevatorBottomPosition.get() - mRobotState.elevatorPosition > Constants.kElevatorHFXAcceptableError ||
+					(mRobotState.elevatorPosition - kElevatorTopPosition.get()) > Constants.kElevatorHFXAcceptableError) {
+				kElevatorTopPosition = Optional.empty();
+				kElevatorBottomPosition = Optional.empty();
 			}
 		}
 	}

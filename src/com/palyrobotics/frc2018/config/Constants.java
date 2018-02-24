@@ -65,6 +65,7 @@ public class Constants {
 	 */
 	public static final double kNominalUpwardsOutput = 0.1;
 	public static final double kElevatorTopBottomDifferenceInches = 83.4192803716;
+	public static final double kElevatorHFXAcceptableError = 0.01;
 	public static final double kElevatorSwitchPositionInches = 30;
 	public static final double kElevatorBottomPositionInches = 0;
 
