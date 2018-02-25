@@ -68,7 +68,7 @@ public class Constants {
 	public static final double kElevatorHFXAcceptableError = 0.01;
 	public static final double kElevatorSwitchPositionInches = 30;
 	public static final double kElevatorBottomPositionInches = 0;
-
+	public static final double kElevatorHoldVoltage = -0.11;
 
 	public static double kElevatorTopScalingMarginInches;
 	public static double kElevatorBottomScalingMarginInches;

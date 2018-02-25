@@ -34,6 +34,10 @@ public class Elevator extends Subsystem {
 	private Optional<Double> kElevatorBottomPosition = Optional.empty();
 	private Optional<Double> kElevatorTopPosition = Optional.empty();
 
+	//Variables used to check if elevator is at the top or bottom position
+	private boolean isAtTop = false;
+	private boolean isAtBottom = true;
+
 	//Used for specifying where to hold/move to
 	private Optional<Double> mElevatorWantedPosition = Optional.empty();
 
@@ -72,7 +76,7 @@ public class Elevator extends Subsystem {
 			checkCalibration();
 		}
 		handleState(commands);
-
+		checkTopBottom(robotState);
 		//Execute update loop based on the current state
 		//Does not switch between states, only performs actions
 		switch(mState) {
@@ -90,6 +94,7 @@ public class Elevator extends Subsystem {
 				}
 				break;
 			case MANUAL_POSITIONING:
+				/**
 				//Clear any existing wanted positions
 				if(mElevatorWantedPosition.isPresent()) {
 					mElevatorWantedPosition = Optional.empty();
@@ -132,6 +137,9 @@ public class Elevator extends Subsystem {
 					//if not calibrated, limit speed
 					mOutput.setPercentOutput(Constants.kElevatorUncalibratedManualPower * mRobotState.operatorStickInput.getY());
 				}
+
+				 */
+				mOutput.setPercentOutput(-mRobotState.operatorStickInput.getY());
 				break;
 			case CUSTOM_POSITIONING:
 				//Control loop
@@ -215,6 +223,18 @@ public class Elevator extends Subsystem {
 		}
 	}
 
+	private void checkTopBottom(RobotState state) {
+		if(state.elevatorTopHFX || (isCalibrated() && state.elevatorPosition > kElevatorTopPosition.get())) {
+			isAtTop = true;
+		} else {
+			isAtTop = false;
+		}
+		if(state.elevatorBottomHFX || (isCalibrated() && state.elevatorPosition < kElevatorBottomPosition.get())) {
+			isAtBottom = true;
+		} else {
+			isAtBottom = false;
+		}
+	}
 	/**
 	 * Calibrates the bottom or top position values depending on which HFX is triggered. If the other position is not already set, set that as well.
 	 */
@@ -252,7 +272,8 @@ public class Elevator extends Subsystem {
 
 	@Override
 	public void stop() {
-
+		kElevatorBottomPosition = Optional.empty();
+		kElevatorTopPosition = Optional.empty();
 	}
 
 	public TalonSRXOutput getOutput() {
@@ -269,6 +290,14 @@ public class Elevator extends Subsystem {
 
 	public Optional<Double> getElevatorWantedPosition() {
 		return mElevatorWantedPosition;
+	}
+
+	public boolean getIsAtTop() {
+		return isAtTop;
+	}
+
+	public boolean getIsAtBottom() {
+		return isAtBottom;
 	}
 
 	/**

@@ -164,7 +164,7 @@ class HardwareUpdater {
 		WPI_TalonSRX slaveTalon = HardwareAdapter.getInstance().getElevator().elevatorSlaveTalon;
 
 		masterTalon.setInverted(false);
-		slaveTalon.setInverted(false);
+		slaveTalon.setInverted(true);
 
 		slaveTalon.follow(masterTalon);
 
@@ -186,10 +186,10 @@ class HardwareUpdater {
 //		slaveTalon.configPeakOutputReverse(-Constants.kElevatorMaxClosedLoopOutput, 0);
 
 //		masterTalon.configReverseLimitSwitchSource(RemoteLimitSwitchSource.RemoteTalonSRX, LimitSwitchNormal.NormallyOpen, HardwareAdapter.getInstance().getDrivetrain().rightMasterTalon.getDeviceID(), 0);
-//		masterTalon.configForwardLimitSwitchSource(RemoteLimitSwitchSource.RemoteTalonSRX, LimitSwitchNormal.NormallyOpen, HardwareAdapter.getInstance().getDrivetrain().rightMasterTalon.getDeviceID(), 0);
+		masterTalon.configForwardLimitSwitchSource(RemoteLimitSwitchSource.RemoteTalonSRX, LimitSwitchNormal.NormallyOpen, HardwareAdapter.getInstance().getDrivetrain().rightMasterTalon.getDeviceID(), 0);
 
-		masterTalon.overrideLimitSwitchesEnable(false);
-		slaveTalon.overrideLimitSwitchesEnable(false);
+		masterTalon.overrideLimitSwitchesEnable(true);
+		slaveTalon.overrideLimitSwitchesEnable(true);
 
 		masterTalon.configPeakOutputForward(1, 0);
 		masterTalon.configPeakOutputReverse(-1, 0);
@@ -388,10 +388,31 @@ class HardwareUpdater {
 	 * Updates the elevator
 	 */
 	private void updateElevator() {
-		updateTalonSRX(HardwareAdapter.getInstance().getElevator().elevatorMasterTalon, mElevator.getOutput());
+		if(mElevator.getIsAtTop() && movingUpwards(mElevator.getOutput())) {
+			TalonSRXOutput elevatorHoldOutput = new TalonSRXOutput();
+			elevatorHoldOutput.setPercentOutput(Constants.kElevatorHoldVoltage);
+			updateTalonSRX(HardwareAdapter.getInstance().getElevator().elevatorMasterTalon, elevatorHoldOutput);
+		} else {
+			updateTalonSRX(HardwareAdapter.getInstance().getElevator().elevatorMasterTalon, mElevator.getOutput());
+		}
 		DashboardManager.getInstance().updateCANTable("elevator_hold_error",String.valueOf(HardwareAdapter.getInstance().getElevator().elevatorMasterTalon.getClosedLoopError(0)));
 	}
 
+	private boolean movingUpwards(TalonSRXOutput output) {
+		//Negative is upwards
+		if((output.getControlMode() == ControlMode.PercentOutput || output.getControlMode() == ControlMode.Velocity) && output.getSetpoint() < Constants.kElevatorHoldVoltage) {
+			return true;
+		} else if(output.getControlMode() == ControlMode.MotionMagic || output.getControlMode() == ControlMode.Position) {
+			if(mElevator.isCalibrated()) {
+				if(output.getSetpoint() > mElevator.getElevatorTopPosition().get()) {
+					return true;
+				}
+			}
+		} else if(output.getControlMode() == ControlMode.Current) {
+			return true;
+		}
+		return false;
+	}
 	private void updateClimber() {
 		ClimberSignal signal = mClimber.getSignal();
 		HardwareAdapter.getInstance().getClimber().climberVictor.set(ControlMode.PercentOutput, signal.velocity);

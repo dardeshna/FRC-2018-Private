@@ -167,7 +167,6 @@ public class Robot extends TimedRobot {
 
 		//Update the hardware
 		mHardwareUpdater.updateHardware();
-
 		logPeriodic();
 	}
 
