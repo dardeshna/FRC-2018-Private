@@ -79,11 +79,11 @@ public class Gains {
 	public static final Gains elevatorPosition = new Gains(kForsetiElevatorPositionkP, kForsetiElevatorPositionkI, kForsetiElevatorPositionkD,
 			kForsetiElevatorPositionkF, kForsetiElevatorPositionkIzone, kForsetiElevatorPositionkRampRate);
 
-	public static final double kForsetiElevatorHoldkP = 6.0 / 2;
-	public static final double kForsetiElevatorHoldkI = 0.002 / 2;
-	public static final double kForsetiElevatorHoldkD = 85 / 2;
-	public static final double kForsetiElevatorHoldkF = 2.624 / 2;
-	public static final int kForsetiElevatorHoldkIzone = 800 / 2;
+	public static final double kForsetiElevatorHoldkP = 2.0;//0.1;
+	public static final double kForsetiElevatorHoldkI = 0;//0.002 / 2;
+	public static final double kForsetiElevatorHoldkD = 80.0;//85 / 2;
+	public static final double kForsetiElevatorHoldkF = 0;//2.624 / 2;
+	public static final int kForsetiElevatorHoldkIzone = 0;//800 / 2;
 	public static final double kForsetiElevatorHoldkRampRate = 0.0;
 	public static final Gains elevatorHold = new Gains(kForsetiElevatorHoldkP, kForsetiElevatorHoldkI, kForsetiElevatorHoldkD, kForsetiElevatorHoldkF,
 			kForsetiElevatorHoldkIzone, kForsetiElevatorHoldkRampRate);

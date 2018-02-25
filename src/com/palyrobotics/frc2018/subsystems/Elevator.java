@@ -274,6 +274,7 @@ public class Elevator extends Subsystem {
 	public void stop() {
 		kElevatorBottomPosition = Optional.empty();
 		kElevatorTopPosition = Optional.empty();
+		mElevatorWantedPosition = Optional.empty();
 	}
 
 	public TalonSRXOutput getOutput() {

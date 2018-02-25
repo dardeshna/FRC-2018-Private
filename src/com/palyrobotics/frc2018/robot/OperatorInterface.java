@@ -2,6 +2,7 @@ package com.palyrobotics.frc2018.robot;
 
 import com.palyrobotics.frc2018.behavior.Routine;
 import com.palyrobotics.frc2018.behavior.SequentialRoutine;
+import com.palyrobotics.frc2018.behavior.routines.elevator.ElevatorCustomPositioningRoutine;
 import com.palyrobotics.frc2018.behavior.routines.intake.*;
 import com.palyrobotics.frc2018.config.Commands;
 import com.palyrobotics.frc2018.config.Constants;
@@ -83,12 +84,11 @@ public class OperatorInterface {
 		if(Math.abs(ChezyMath.handleDeadband(mOperatorStick.getY(), Constants.kDeadband)) > 0.0) {
 		    newCommands.wantedElevatorState = Elevator.ElevatorState.MANUAL_POSITIONING;
 		} else {
-//			newCommands.wantedElevatorState = Elevator.ElevatorState.HOLD;
+			newCommands.wantedElevatorState = Elevator.ElevatorState.HOLD;
 		}
 		if(mOperatorStick.getButtonPressed(11)) {
 			newCommands.disableElevatorScaling = true;
 		}
-
 		/**
 		 * Climber controls
 		 */

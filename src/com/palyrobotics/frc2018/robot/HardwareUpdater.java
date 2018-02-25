@@ -197,7 +197,7 @@ class HardwareUpdater {
 		slaveTalon.configPeakOutputReverse(-1, 0);
 
 		masterTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
-		masterTalon.setSensorPhase(false);
+		masterTalon.setSensorPhase(true);
 
 		//Zero encoders
 		masterTalon.setSelectedSensorPosition(0, 0, 0);
@@ -395,7 +395,9 @@ class HardwareUpdater {
 		} else {
 			updateTalonSRX(HardwareAdapter.getInstance().getElevator().elevatorMasterTalon, mElevator.getOutput());
 		}
-		DashboardManager.getInstance().updateCANTable("elevator_hold_error",String.valueOf(HardwareAdapter.getInstance().getElevator().elevatorMasterTalon.getClosedLoopError(0)));
+		if(mElevator.getState() == Elevator.ElevatorState.HOLD) {
+            DashboardManager.getInstance().updateCANTable("elevator_hold_error",String.valueOf(HardwareAdapter.getInstance().getElevator().elevatorMasterTalon.getClosedLoopError(0)));
+        }
 	}
 
 	private boolean movingUpwards(TalonSRXOutput output) {
