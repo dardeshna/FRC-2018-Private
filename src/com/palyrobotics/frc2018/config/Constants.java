@@ -75,6 +75,7 @@ public class Constants {
 	public static double kElevatorTopScalingConstant;
 	public static double kElevatorBottomScalingConstant;
 	public static double kElevatorUncalibratedManualPower;
+	public static double kElevatorClosedLoopManualControlPositionSensitivity = 250;
 
 	/*
 	 * Control loop constants for both robots

@@ -178,6 +178,17 @@ public class ElevatorTest {
 
 	}
 
+	@Test
+	public void testClosedLoopManualControl() {
+		for (int i = 0; i < 100; i++) {
+			commands.wantedElevatorState = ElevatorState.MANUAL_POSITIONING;
+			robotState.operatorStickInput.setY(1.0);
+			System.out.println("Meme" + robotState.operatorStickInput.getY());
+			elevator.update(commands, robotState);
+			System.out.println(elevator.getElevatorWantedPosition().orElse(-1.0));
+		}
+	}
+
 	@Before
 	public void initMockRobot() {
 		robotState = MockRobot.getRobotState();
