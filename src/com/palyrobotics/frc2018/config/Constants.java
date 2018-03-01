@@ -110,12 +110,12 @@ public class Constants {
 	public static final double kAcceptableGyroZeroError = 3;
 	public static final double kAcceptableEncoderZeroError = 10;
 
-	public static final double kElevatorAcceptablePositionError = 0.01;
+	public static final double kElevatorAcceptablePositionError = 12;
 	public static final double kElevatorAcceptableVelocityError = 0.01;
 
 	//Intake
 	public static final double kIntakingMotorVelocity = 1.0;
-	public static final double kExpellingMotorVelocity = -1.0;
+	public static final double kExpellingMotorVelocity = -0.5;
 	public static final double kExpelToScoreTime = 0.5;
 	//TODO: Tune distance for ultrasound, determine variability
 	public static final double kIntakeCloseSensorThreshold = 0.0;
