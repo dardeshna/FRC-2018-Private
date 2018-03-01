@@ -6,10 +6,10 @@ public class OperatorProfiles {
 	public static void configureConstants() {
 		switch(Constants.kOperatorName) {
 			case JACOB:
-				Constants.kElevatorTopScalingMarginInches = 17.0;
+				Constants.kElevatorTopScalingMarginInches = 11.0;
 				Constants.kElevatorBottomScalingMarginInches = 11.0;
-				Constants.kElevatorTopScalingConstant = 0.55;
-				Constants.kElevatorBottomScalingConstant = 0.31;
+				Constants.kElevatorTopScalingConstant = 0.75;
+				Constants.kElevatorBottomScalingConstant = 0.25;
 				Constants.kElevatorUncalibratedManualPower = 0.7;
 				break;
 		}
