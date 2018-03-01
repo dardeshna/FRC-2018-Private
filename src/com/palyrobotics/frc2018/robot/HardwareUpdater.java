@@ -6,7 +6,6 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.config.RobotState;
-import com.palyrobotics.frc2018.config.dashboard.DashboardManager;
 import com.palyrobotics.frc2018.subsystems.Climber;
 import com.palyrobotics.frc2018.subsystems.Drive;
 import com.palyrobotics.frc2018.subsystems.Elevator;
@@ -19,7 +18,6 @@ import com.palyrobotics.frc2018.util.trajectory.RigidTransform2d;
 import com.palyrobotics.frc2018.util.trajectory.Rotation2d;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 import java.util.Optional;
 import java.util.logging.Level;
@@ -163,8 +161,8 @@ class HardwareUpdater {
 		WPI_TalonSRX masterTalon = HardwareAdapter.getInstance().getElevator().elevatorMasterTalon;
 		WPI_TalonSRX slaveTalon = HardwareAdapter.getInstance().getElevator().elevatorSlaveTalon;
 
-		masterTalon.setInverted(false);
-		slaveTalon.setInverted(true);
+		masterTalon.setInverted(true);
+		slaveTalon.setInverted(false);
 
 		slaveTalon.follow(masterTalon);
 
@@ -174,19 +172,8 @@ class HardwareUpdater {
 		masterTalon.configVoltageCompSaturation(14, 0);
 		slaveTalon.configVoltageCompSaturation(14, 0);
 
-		//TODO: which way is up and how does it work w/ inverted
-//		masterTalon.configNominalOutputForward(Constants.kNominalUpwardsOutput, 0);
-//		masterTalon.configNominalOutputReverse(0, 0);
-//		slaveTalon.configNominalOutputForward(Constants.kNominalUpwardsOutput, 0);
-//		slaveTalon.configNominalOutputReverse(0, 0);
-
-//		masterTalon.configPeakOutputForward(Constants.kElevatorMaxClosedLoopOutput, 0);
-//		masterTalon.configPeakOutputReverse(-Constants.kElevatorMaxClosedLoopOutput, 0);
-//		slaveTalon.configPeakOutputForward(Constants.kElevatorMaxClosedLoopOutput, 0);
-//		slaveTalon.configPeakOutputReverse(-Constants.kElevatorMaxClosedLoopOutput, 0);
-
-//		masterTalon.configReverseLimitSwitchSource(RemoteLimitSwitchSource.RemoteTalonSRX, LimitSwitchNormal.NormallyOpen, HardwareAdapter.getInstance().getDrivetrain().rightMasterTalon.getDeviceID(), 0);
-		masterTalon.configForwardLimitSwitchSource(RemoteLimitSwitchSource.RemoteTalonSRX, LimitSwitchNormal.NormallyOpen, HardwareAdapter.getInstance().getDrivetrain().rightMasterTalon.getDeviceID(), 0);
+		masterTalon.configReverseLimitSwitchSource(RemoteLimitSwitchSource.RemoteTalonSRX, LimitSwitchNormal.NormallyOpen, HardwareAdapter.getInstance().getDrivetrain().rightMasterTalon.getDeviceID(), 0);
+//		masterTalon.configForwardLimitSwitchSource(RemoteLimitSwitchSource.RemoteTalonSRX, LimitSwitchNormal.NormallyOpen, HardwareAdapter.getInstance().getDrivetrain().rightMasterTalon.getDeviceID(), 0);
 
 		masterTalon.overrideLimitSwitchesEnable(true);
 		slaveTalon.overrideLimitSwitchesEnable(true);
@@ -362,8 +349,8 @@ class HardwareUpdater {
 		//Update elevator sensors
 		robotState.elevatorPosition = HardwareAdapter.getInstance().getElevator().elevatorMasterTalon.getSelectedSensorPosition(0);
 		robotState.elevatorVelocity = HardwareAdapter.getInstance().getElevator().elevatorMasterTalon.getSelectedSensorVelocity(0);
-		robotState.elevatorBottomHFX = HardwareAdapter.getInstance().getDrivetrain().rightMasterTalon.getSensorCollection().isFwdLimitSwitchClosed();
-		robotState.elevatorTopHFX = HardwareAdapter.getInstance().getDrivetrain().rightMasterTalon.getSensorCollection().isRevLimitSwitchClosed();
+		robotState.elevatorBottomHFX = HardwareAdapter.getInstance().getDrivetrain().rightMasterTalon.getSensorCollection().isRevLimitSwitchClosed();
+		robotState.elevatorTopHFX = HardwareAdapter.getInstance().getDrivetrain().rightMasterTalon.getSensorCollection().isFwdLimitSwitchClosed();
 	}
 
 	/**
@@ -388,33 +375,21 @@ class HardwareUpdater {
 	 * Updates the elevator
 	 */
 	private void updateElevator() {
-		if(mElevator.getIsAtTop() && movingUpwards(mElevator.getOutput())) {
-			TalonSRXOutput elevatorHoldOutput = new TalonSRXOutput();
-			elevatorHoldOutput.setPercentOutput(Constants.kElevatorHoldVoltage);
-			updateTalonSRX(HardwareAdapter.getInstance().getElevator().elevatorMasterTalon, elevatorHoldOutput);
+
+		//If climber is up, disable elevator input
+		if(mClimber.getClimberPositionEstimate() > Constants.kClimberUpPositionEstimateThreshold) {
+			updateTalonSRX(HardwareAdapter.getInstance().getElevator().elevatorMasterTalon, new TalonSRXOutput());
 		} else {
-			updateTalonSRX(HardwareAdapter.getInstance().getElevator().elevatorMasterTalon, mElevator.getOutput());
+			if(mElevator.getIsAtTop() && mElevator.movingUpwards()) {
+				TalonSRXOutput elevatorHoldOutput = new TalonSRXOutput();
+				elevatorHoldOutput.setPercentOutput(Constants.kElevatorHoldVoltage);
+				updateTalonSRX(HardwareAdapter.getInstance().getElevator().elevatorMasterTalon, elevatorHoldOutput);
+			} else {
+				updateTalonSRX(HardwareAdapter.getInstance().getElevator().elevatorMasterTalon, mElevator.getOutput());
+			}
 		}
-		if(mElevator.getState() == Elevator.ElevatorState.HOLD) {
-            DashboardManager.getInstance().updateCANTable("elevator_hold_error",String.valueOf(HardwareAdapter.getInstance().getElevator().elevatorMasterTalon.getClosedLoopError(0)));
-        }
 	}
 
-	private boolean movingUpwards(TalonSRXOutput output) {
-		//Negative is upwards
-		if((output.getControlMode() == ControlMode.PercentOutput || output.getControlMode() == ControlMode.Velocity) && output.getSetpoint() < Constants.kElevatorHoldVoltage) {
-			return true;
-		} else if(output.getControlMode() == ControlMode.MotionMagic || output.getControlMode() == ControlMode.Position) {
-			if(mElevator.isCalibrated()) {
-				if(output.getSetpoint() > mElevator.getElevatorTopPosition().get()) {
-					return true;
-				}
-			}
-		} else if(output.getControlMode() == ControlMode.Current) {
-			return true;
-		}
-		return false;
-	}
 	private void updateClimber() {
 		ClimberSignal signal = mClimber.getSignal();
 		HardwareAdapter.getInstance().getClimber().climberVictor.set(ControlMode.PercentOutput, signal.velocity);

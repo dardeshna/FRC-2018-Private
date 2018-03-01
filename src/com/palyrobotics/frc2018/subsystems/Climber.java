@@ -2,7 +2,6 @@ package com.palyrobotics.frc2018.subsystems;
 
 import com.palyrobotics.frc2018.config.Commands;
 import com.palyrobotics.frc2018.config.RobotState;
-import com.palyrobotics.frc2018.robot.Robot;
 import com.palyrobotics.frc2018.util.ClimberSignal;
 
 public class Climber extends Subsystem {
@@ -18,6 +17,8 @@ public class Climber extends Subsystem {
 	private MotionSubstate mMotionStatus;
 	private LockState mLock;
 	private ClimberSignal mSignal = ClimberSignal.getNeutralSignal();
+	private double mClimberPositionEstimate = 0;
+
 
 	private static Climber instance = new Climber();
 
@@ -41,7 +42,8 @@ public class Climber extends Subsystem {
 		boolean lock;
 
 		if(this.mMotionStatus == MotionSubstate.MOVING) {
-			motorOutput = Robot.getRobotState().climberStickInput.getY();
+			mClimberPositionEstimate -= robotState.climberStickInput.getY();
+			motorOutput = robotState.climberStickInput.getY();
 			brake = false;
 		} else {
 			motorOutput = 0;
@@ -55,6 +57,16 @@ public class Climber extends Subsystem {
 		}
 
 		mSignal = new ClimberSignal(motorOutput, brake, lock);
+	}
+
+	@Override
+	public void stop() {
+		mClimberPositionEstimate = 0;
+		mSignal = ClimberSignal.getNeutralSignal();
+	}
+
+	public double getClimberPositionEstimate() {
+		return mClimberPositionEstimate;
 	}
 
 	public ClimberSignal getSignal() {

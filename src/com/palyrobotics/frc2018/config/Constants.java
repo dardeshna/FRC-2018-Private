@@ -75,7 +75,7 @@ public class Constants {
 	public static double kElevatorTopScalingConstant;
 	public static double kElevatorBottomScalingConstant;
 	public static double kElevatorUncalibratedManualPower;
-	public static double kElevatorClosedLoopManualControlPositionSensitivity = 250;
+	public static double kElevatorClosedLoopManualControlPositionSensitivity = 500;//250;
 
 	/*
 	 * Control loop constants for both robots
@@ -120,6 +120,11 @@ public class Constants {
 	//TODO: Tune distance for ultrasound, determine variability
 	public static final double kIntakeCloseSensorThreshold = 0.0;
 	public static final double kIntakeFarSensorThreshold = 1.0;
+
+	//Climber
+
+	//Weird units, it's in sum of joystick inputs. 50 updates/sec, add 1.0 at max power every cycle, so this is half a second of max power
+	public static final double kClimberUpPositionEstimateThreshold = 25;
 
 	/*
 	 * !!! End of editable Constants! !!!
