@@ -113,7 +113,7 @@ public class Elevator extends Subsystem {
 					double distInchesFromTop = Math.abs((getElevatorTopPosition().get() - mRobotState.elevatorPosition)/Constants.kElevatorTicksPerInch);
 
 					//close to bottom
-					if(commands.disableElevatorScaling) {
+					if(commands.disableElevatorScaling || mRobotState.hasElevatorStickyFaults) {
 						mOutput.setPercentOutput(mRobotState.operatorStickInput.getY());
 					} else {
 						if(distInchesFromBottom < Constants.kElevatorBottomScalingMarginInches) {
@@ -188,11 +188,14 @@ public class Elevator extends Subsystem {
 	 *            the commands used to get the wanted state
 	 */
 	private void handleState(Commands commands) {
-		if(commands.wantedElevatorState == ElevatorState.CALIBRATING) {
+		if(mRobotState.hasElevatorStickyFaults && mRobotState.gamePeriod == RobotState.GamePeriod.AUTO) {
+			mState = ElevatorState.IDLE;
+		} else if(mRobotState.hasElevatorStickyFaults && mRobotState.gamePeriod == RobotState.GamePeriod.TELEOP) {
+			mState = ElevatorState.MANUAL_POSITIONING;
+		} else if(commands.wantedElevatorState == ElevatorState.CALIBRATING) {
 			if(!isCalibrated()) {
 				mState = ElevatorState.CALIBRATING;
-			} else {
-				//If already calibrated, ignore it and hold next cycle
+			}  else {
 				commands.wantedElevatorState = ElevatorState.HOLD;
 			}
 		} else if(commands.wantedElevatorState == ElevatorState.HOLD) {

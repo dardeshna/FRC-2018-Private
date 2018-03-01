@@ -54,6 +54,7 @@ public class RobotState {
 	public double elevatorVelocity = 0;
 	public boolean elevatorTopHFX = false;
 	public boolean elevatorBottomHFX = false;
+	public boolean hasElevatorStickyFaults = false;
 
 	//Robot position
 	public final int kObservationBufferSize = 100;
