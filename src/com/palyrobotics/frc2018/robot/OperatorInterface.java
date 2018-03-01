@@ -94,26 +94,29 @@ public class OperatorInterface {
 		 */
 		if(Math.abs(ChezyMath.handleDeadband(mClimberStick.getY(), Constants.kDeadband)) > 0.0) {
 			newCommands.wantedClimbMovement = Climber.MotionSubstate.MOVING;
-//			newCommands.addWantedRoutine(new SequentialRoutine(new ArrayList<Routine>() {{
-//				new IntakeCloseRoutine();
-//				new IntakeUpRoutine();
-//			}}));
+
+			ArrayList<Routine> stowIntakeRoutine = new ArrayList<Routine>();
+			stowIntakeRoutine.add(new IntakeCloseRoutine());
+			stowIntakeRoutine.add(new IntakeUpRoutine());
+			newCommands.addWantedRoutine(new SequentialRoutine(stowIntakeRoutine));
 		} else {
 			newCommands.wantedClimbMovement = Climber.MotionSubstate.LOCKED;
 		}
 
 		if(mClimberStick.getTriggerPressed()) {
 			newCommands.wantedLockState = Climber.LockState.LOCKED;
-//			newCommands.addWantedRoutine(new SequentialRoutine(new ArrayList<Routine>() {{
-//				new IntakeCloseRoutine();
-//				new IntakeUpRoutine();
-//			}}));
+
+			ArrayList<Routine> stowIntakeRoutine = new ArrayList<Routine>();
+			stowIntakeRoutine.add(new IntakeCloseRoutine());
+			stowIntakeRoutine.add(new IntakeUpRoutine());
+			newCommands.addWantedRoutine(new SequentialRoutine(stowIntakeRoutine));
 		} else if(mClimberStick.getButtonPressed(2)) {
 			newCommands.wantedLockState = Climber.LockState.UNLOCKED;
-//			newCommands.addWantedRoutine(new SequentialRoutine(new ArrayList<Routine>() {{
-//				new IntakeCloseRoutine();
-//				new IntakeUpRoutine();
-//			}}));
+
+			ArrayList<Routine> stowIntakeRoutine = new ArrayList<Routine>();
+			stowIntakeRoutine.add(new IntakeCloseRoutine());
+			stowIntakeRoutine.add(new IntakeUpRoutine());
+			newCommands.addWantedRoutine(new SequentialRoutine(stowIntakeRoutine));
 		}
 
 		/**
