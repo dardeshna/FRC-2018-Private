@@ -31,51 +31,6 @@ public class RightStartLeftMultiScaleAutoMode extends AutoModeBase {
         return "Right Start Left Multi Scale Auto Mode";
     }
 
-
-    public Routine driveToScaleAndScore() {
-        List<Path.Waypoint> path = new ArrayList<>();
-        path.add(new Path.Waypoint(new Translation2d(0.0, 0.0), 72.0));
-        if(mAlliance == Alliance.BLUE) {
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueScaleSwitchMidlineX - Constants.kRobotLengthInches/2.0,
-                    -Constants.kRobotWidthInches/2.0 - AutoDistances.kBlueRightCornerOffset + AutoDistances.kBlueRightSwitchY/2.0), 72.0));
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueScaleSwitchMidlineX - Constants.kRobotLengthInches/2.0,
-                    AutoDistances.kFieldWidth - Constants.kRobotWidthInches/2.0 - AutoDistances.kBlueRightCornerOffset
-                            - AutoDistances.kBlueLeftScaleY - Constants.kPlateWidth/2.0), 72.0));
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueLeftScaleX - Constants.kRobotLengthInches,
-                    AutoDistances.kFieldWidth - Constants.kRobotWidthInches/2.0 - AutoDistances.kBlueRightCornerOffset
-                            - AutoDistances.kBlueLeftScaleY - Constants.kPlateWidth/2.0), 0.0));
-        } else {
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedScaleSwitchMidlineX - Constants.kRobotLengthInches/2.0,
-                    -Constants.kRobotWidthInches/2.0 - AutoDistances.kRedRightCornerOffset + AutoDistances.kRedRightSwitchY/2.0), 72.0));
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedScaleSwitchMidlineX - Constants.kRobotLengthInches/2.0,
-                    AutoDistances.kFieldWidth - Constants.kRobotWidthInches/2.0 - AutoDistances.kRedRightCornerOffset
-                            - AutoDistances.kRedLeftScaleY - Constants.kPlateWidth/2.0), 72.0));
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedLeftScaleX - Constants.kRobotLengthInches,
-                    AutoDistances.kFieldWidth - Constants.kRobotWidthInches/2.0 - AutoDistances.kRedRightCornerOffset
-                            - AutoDistances.kRedLeftScaleY - Constants.kPlateWidth/2.0), 0.0));
-        }
-
-        ArrayList<Routine> routines = new ArrayList<Routine>();
-
-        //Reset sensors before
-        routines.add(new DriveSensorResetRoutine());
-
-        //Drive path while moving elevator up and moving intake down
-        ArrayList<Routine> inTransitRoutines = new ArrayList<>();
-        inTransitRoutines.add(new DrivePathRoutine(new Path(path), false));
-        inTransitRoutines.add(new SequentialRoutine(new ArrayList<Routine>() {{
-            new TimeoutRoutine(3); // wait 3 seconds before lifting the elevator
-            new ElevatorCustomPositioningRoutine(Constants.kElevatorTopBottomDifferenceInches, 15);
-        }}));
-        inTransitRoutines.add(new IntakeDownRoutine());
-        routines.add(new ParallelRoutine(inTransitRoutines));
-
-        //Open when everything is done to score
-        routines.add(new IntakeOpenRoutine());
-
-        return new SequentialRoutine(routines);
-    }
-
     @Override
     public void prestart() {
 
@@ -93,8 +48,8 @@ public class RightStartLeftMultiScaleAutoMode extends AutoModeBase {
     @Override
     public Routine getRoutine() {
         ArrayList<Routine> routines = new ArrayList<>();
+        routines.add(new RightStartLeftScaleAutoMode(this.mAlliance).getRoutine());
 
-        routines.add(driveToScaleAndScore());
         //        routines.add(new CascadingTurnAngle(Math.PI));
         routines.add(new ParallelRoutine(new ArrayList<Routine>() {{
             getPathToCubeOrBack();

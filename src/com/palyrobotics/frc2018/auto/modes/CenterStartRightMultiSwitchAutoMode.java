@@ -42,35 +42,8 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
 
     @Override
     public Routine getRoutine() {
-        List<Waypoint> path = new ArrayList<>();
-        path.add(new Waypoint(new Translation2d(0, 0), 72.0));
-        if(mAlliance == Alliance.BLUE) {
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueScaleSwitchMidlineX - Constants.kRobotLengthInches/2.0,
-                    Constants.kRobotWidthInches/2.0 + AutoDistances.kBlueLeftCornerOffset - AutoDistances.kBlueLeftSwitchY/2.0), 72.0));
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueLeftSwitchX + Constants.kPlateLength + Constants.kRobotLengthInches/2.0
-                    + Constants.kSquareCubeLength, -AutoDistances.kFieldWidth + Constants.kRobotWidthInches/2.0 + AutoDistances.kBlueLeftCornerOffset
-                    + AutoDistances.kBlueRightSwitchY + Constants.kPlateWidth/2.0), 0.0));
-        } else {
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedScaleSwitchMidlineX - Constants.kRobotLengthInches/2.0,
-                    Constants.kRobotWidthInches/2.0 + AutoDistances.kRedLeftCornerOffset - AutoDistances.kRedLeftSwitchY/2.0), 72.0));
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedLeftSwitchX + Constants.kPlateLength + Constants.kRobotLengthInches/2.0
-                    + Constants.kSquareCubeLength, -AutoDistances.kFieldWidth + Constants.kRobotWidthInches/2.0 + AutoDistances.kRedLeftCornerOffset
-                    + AutoDistances.kRedRightSwitchY + Constants.kPlateWidth/2.0), 0.0));
-        }
-
         ArrayList<Routine> routines = new ArrayList<>();
-
-        routines.add(new DriveSensorResetRoutine());
-
-        //Drive path while moving elevator up and moving intake down
-        ArrayList<Routine> inTransitRoutines = new ArrayList<>();
-        inTransitRoutines.add(new DrivePathRoutine(new Path(path), false));
-        inTransitRoutines.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorSwitchPositionInches, 15));
-        inTransitRoutines.add(new IntakeDownRoutine());
-        routines.add(new ParallelRoutine(inTransitRoutines));
-
-        //Open when everything is done to score
-        routines.add(getExpelDrop());
+        routines.add(new CenterStartRightSwitchAutoMode(this.mAlliance).getRoutine());
 
         ArrayList<Routine> secondCube = new ArrayList<>();
         secondCube.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorBottomPositionInches, 15));

@@ -42,37 +42,8 @@ public class CenterStartLeftMultiSwitchAutoMode extends AutoModeBase {
 
     @Override
     public Routine getRoutine() {
-        List<Waypoint> path = new ArrayList<>();
-        path.add(new Waypoint(new Translation2d(0, 0), 72.0));
-        if (mAlliance == Alliance.BLUE) {
-            path.add(new Waypoint(new Translation2d(2.0 * Constants.kRobotLengthInches,
-                    AutoDistances.kBlueLeftToCenterY + Constants.kRobotWidthInches
-                            - AutoDistances.kBlueLeftSwitchY - Constants.kPlateWidth/2.0), 72.0));
-            path.add(new Waypoint(new Translation2d(AutoDistances.kBlueLeftSwitchX - Constants.kRobotLengthInches,
-                    AutoDistances.kBlueLeftToCenterY + Constants.kRobotWidthInches
-                            - AutoDistances.kBlueLeftSwitchY - Constants.kPlateWidth/2.0), 0.0));
-        } else {
-            path.add(new Waypoint(new Translation2d(2.0 * Constants.kRobotLengthInches,
-                    AutoDistances.kRedLeftToCenterY + Constants.kRobotWidthInches
-                            - AutoDistances.kRedLeftSwitchY - Constants.kPlateWidth/2.0), 72.0));
-            path.add(new Waypoint(new Translation2d(AutoDistances.kRedLeftSwitchX - Constants.kRobotLengthInches,
-                    AutoDistances.kRedLeftToCenterY + Constants.kRobotWidthInches
-                            - AutoDistances.kRedLeftSwitchY - Constants.kPlateWidth/2.0), 0.0));
-        }
-
         ArrayList<Routine> routines = new ArrayList<>();
-
-        routines.add(new DriveSensorResetRoutine());
-
-        //Drive path while moving elevator up and moving intake down
-        ArrayList<Routine> inTransitRoutines = new ArrayList<>();
-        inTransitRoutines.add(new DrivePathRoutine(new Path(path), false));
-        inTransitRoutines.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorSwitchPositionInches, 15));
-        inTransitRoutines.add(new IntakeDownRoutine());
-        routines.add(new ParallelRoutine(inTransitRoutines));
-
-        //Open when everything is done to score
-        routines.add(getExpelDrop());
+        routines.add(new CenterStartLeftSwitchAutoMode(this.mAlliance).getRoutine());
 
         ArrayList<Routine> secondCube = new ArrayList<>();
         secondCube.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorBottomPositionInches, 15));
