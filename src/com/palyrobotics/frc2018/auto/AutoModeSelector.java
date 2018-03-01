@@ -92,7 +92,6 @@ public class AutoModeSelector {
 	public AutoModeBase getAutoMode() {
 		return getAutoMode(AutoModeBase.mAlliance, AutoModeBase.mStartingPosition, AutoModeBase.mScaleDecision,
 				AutoModeBase.mSwitchDecision, AutoModeBase.mPriority);
-		//return new TestAutoMode();
 	}
 
 	/**

@@ -74,11 +74,17 @@ public class Elevator extends Subsystem {
 
 		//Update for use in handleState()
 		mRobotState = robotState;
-		if(mState != ElevatorState.CUSTOM_POSITIONING && mState != ElevatorState.HOLD || !isCalibrated()) {
+
+		//Checks calibration if not calibrated and not in custom/hold state (checks in manual, idle, calibrating)
+		//Exception: in hold but bottomed out, so applying 0 power anyway
+		if(mState != ElevatorState.CUSTOM_POSITIONING && (mState != ElevatorState.HOLD
+				|| (mState == ElevatorState.HOLD && mRobotState.elevatorBottomHFX)) && !isCalibrated()) {
 			checkCalibration();
 		}
+
 		handleState(commands);
-		checkTopBottom(robotState);
+		checkTopBottom(mRobotState);
+
 		//Execute update loop based on the current state
 		//Does not switch between states, only performs actions
 		switch(mState) {
@@ -88,7 +94,7 @@ public class Elevator extends Subsystem {
 				break;
 			case HOLD:
 				//If at the bottom, supply no power
-				if(mRobotState.elevatorBottomHFX) {
+				if(isAtBottom) {
 					mOutput.setPercentOutput(0.0);
 				} else {
 					//Control loop to hold position otherwise
@@ -133,8 +139,6 @@ public class Elevator extends Subsystem {
 						}
 					}
 				} else {
-					checkCalibration();
-
 					//if not calibrated, limit speed
 					mOutput.setPercentOutput(Constants.kElevatorUncalibratedManualPower * mRobotState.operatorStickInput.getY());
 				}
@@ -234,21 +238,33 @@ public class Elevator extends Subsystem {
 	}
 
 	public boolean movingUpwards() {
-		//Negative is upwards
-		if((mOutput.getControlMode() == ControlMode.PercentOutput || mOutput.getControlMode() == ControlMode.Velocity) && mOutput.getSetpoint() < Constants.kElevatorHoldVoltage) {
+		//
+		if((mOutput.getControlMode() == ControlMode.PercentOutput || mOutput.getControlMode() == ControlMode.Velocity) && mOutput.getSetpoint() > Constants.kElevatorHoldVoltage) {
 			return true;
 		} else if(mOutput.getControlMode() == ControlMode.MotionMagic || mOutput.getControlMode() == ControlMode.Position) {
+
+			//Check calibration. If not calibrated, assume the worst and return true.
 			if(isCalibrated()) {
+				//If the desired setpoint is above the top position, assume it's moving up
 				if(mOutput.getSetpoint() > getElevatorTopPosition().get()) {
 					return true;
 				}
-			}
+			} else return true;
 		} else if(mOutput.getControlMode() == ControlMode.Current) {
+			if(mOutput.getSetpoint() == 0) {
+				return false;
+			}
 			return true;
 		}
 		return false;
 	}
 
+	/**
+	 * Checks whether or not the elevator has topped/bottomed out.
+	 * Uses both HFX and encoders as redundant checks.
+	 *
+	 * @param state the robot state, used to obtain encoder values
+	 */
 	private void checkTopBottom(RobotState state) {
 		if(state.elevatorTopHFX || (isCalibrated() && state.elevatorPosition > kElevatorTopPosition.get())) {
 			isAtTop = true;
@@ -264,7 +280,7 @@ public class Elevator extends Subsystem {
 	/**
 	 * Calibrates the bottom or top position values depending on which HFX is triggered. If the other position is not already set, set that as well.
 	 */
-	public void checkCalibration() {
+	private void checkCalibration() {
 
 		if(!isCalibrated()) {
 			if(mRobotState.elevatorBottomHFX) {

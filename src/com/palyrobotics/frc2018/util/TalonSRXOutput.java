@@ -15,7 +15,8 @@ public class TalonSRXOutput {
 	 * Prevent null pointer exceptions
 	 */
 	private ControlMode controlMode;
-	//PercentVBus, Speed, Current, Voltage, not Follower, MotionProfile, MotionMagic
+
+	//Velocity, Position, MotionMagic, PercentOutput, Current, Disabled, MotionProfile
 	private double setpoint; //Encoder ticks
 	public int profile;
 	public Gains gains;
@@ -73,19 +74,19 @@ public class TalonSRXOutput {
 	}
 
 	/**
-	 * Sets Talon to TalonControlMode.Speed, velocity target control loop
+	 * Sets Talon to ControlMode.Velocity, velocity target control loop
 	 * 
 	 * @param speed,
 	 *            target velocity (from -1023019 to 10230?)
 	 */
-	public void setSpeed(double speed, Gains gains) {
+	public void setVelocity(double speed, Gains gains) {
 		controlMode = ControlMode.Velocity;
 		setpoint = speed;
 		this.gains = gains;
 	}
 
 	/**
-	 * Sets Talon to TalonControlMode.Position
+	 * Sets Talon to ControlMode.Position
 	 * 
 	 * @param setpoint,
 	 *            target distance in native units
@@ -107,7 +108,7 @@ public class TalonSRXOutput {
 	}
 
 	/**
-	 * Sets Talon to TalonControlMode.Current
+	 * Sets Talon to ControlMode.Current
 	 * 
 	 * @param current
 	 *            in amps
@@ -137,7 +138,7 @@ public class TalonSRXOutput {
 	}
 
 	/**
-	 * Sets Talon to TalonControlMode.Disabled
+	 * Sets Talon to ControlMode.Disabled
 	 */
 	public void setDisabled() {
 		this.controlMode = ControlMode.Disabled;
@@ -162,9 +163,4 @@ public class TalonSRXOutput {
 		return ((TalonSRXOutput) other).getSetpoint() == this.getSetpoint() && ((TalonSRXOutput) other).controlMode == this.controlMode
 				&& ((TalonSRXOutput) other).gains.equals(this.gains);
 	}
-
-	/*
-	 * Should not be used as talon's should be set to slave mode when initialized public void setSlave(int masterDeviceID) { controlMode =
-	 * CANTalon.TalonControlMode.Follower; this.masterDeviceID = masterDeviceID; }
-	 */
 }
