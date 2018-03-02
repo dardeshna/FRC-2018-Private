@@ -27,11 +27,13 @@ public class HardwareAdapter {
 		public final WPI_TalonSRX leftMasterTalon;
 		public final WPI_VictorSPX leftSlave1Victor;
 		public final WPI_VictorSPX leftSlave2Victor;
-		public final WPI_TalonSRX rightMasterTalon;
+        public final WPI_VictorSPX leftSlave3Victor;
+        public final WPI_TalonSRX rightMasterTalon;
 		public final WPI_VictorSPX rightSlave1Victor;
 		public final WPI_VictorSPX rightSlave2Victor;
+        public final WPI_VictorSPX rightSlave3Victor;
 
-		public final PigeonIMU gyro;
+        public final PigeonIMU gyro;
 
 		public static void resetSensors() {
 			instance.gyro.setYaw(0, 0);
@@ -43,11 +45,14 @@ public class HardwareAdapter {
 
 		protected DrivetrainHardware() {
 			leftMasterTalon = new WPI_TalonSRX(Constants.kForsetiLeftDriveMasterDeviceID);
-			leftSlave1Victor = new WPI_VictorSPX(Constants.kForsetiLeftDriveSlaveDeviceID);
-			leftSlave2Victor = new WPI_VictorSPX(Constants.kForsetiLeftDriveOtherSlaveDeviceID);
-			rightMasterTalon = new WPI_TalonSRX(Constants.kForsetiRightDriveMasterDeviceID);
-			rightSlave1Victor = new WPI_VictorSPX(Constants.kForsetiRightDriveSlaveDeviceID);
-			rightSlave2Victor = new WPI_VictorSPX(Constants.kForsetiRightDriveOtherSlaveDeviceID);
+			leftSlave1Victor = new WPI_VictorSPX(Constants.kForsetiLeftDriveSlave1DeviceID);
+			leftSlave2Victor = new WPI_VictorSPX(Constants.kForsetiLeftDriveSlave2DeviceID);
+            leftSlave3Victor = new WPI_VictorSPX(Constants.kForsetiLeftDriveSlave3DeviceID);
+            rightMasterTalon = new WPI_TalonSRX(Constants.kForsetiRightDriveMasterDeviceID);
+			rightSlave1Victor = new WPI_VictorSPX(Constants.kForsetiLeftDriveSlave1DeviceID);
+			rightSlave2Victor = new WPI_VictorSPX(Constants.kForsetiLeftDriveSlave2DeviceID);
+            rightSlave3Victor = new WPI_VictorSPX(Constants.kForsetiLeftDriveSlave3DeviceID);
+
 			//Gyro is currently attached to elevator talon as an... emergency provision
 
 			//HAL
