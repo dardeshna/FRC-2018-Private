@@ -1,10 +1,7 @@
 package com.palyrobotics.frc2018.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.palyrobotics.frc2018.config.Commands;
-import com.palyrobotics.frc2018.config.Constants;
-import com.palyrobotics.frc2018.config.MockCommands;
-import com.palyrobotics.frc2018.config.MockRobotState;
+import com.palyrobotics.frc2018.config.*;
 import com.palyrobotics.frc2018.robot.MockRobot;
 import com.palyrobotics.frc2018.subsystems.Elevator.ElevatorState;
 import org.junit.Before;
@@ -183,10 +180,29 @@ public class ElevatorTest {
 		for (int i = 0; i < 100; i++) {
 			commands.wantedElevatorState = ElevatorState.MANUAL_POSITIONING;
 			robotState.operatorStickInput.setY(1.0);
-			System.out.println("Meme" + robotState.operatorStickInput.getY());
 			elevator.update(commands, robotState);
 			System.out.println(elevator.getElevatorWantedPosition().orElse(-1.0));
 		}
+	}
+
+	@Test
+	public void testStickyFaultsReaction() {
+		robotState.hasElevatorStickyFaults = true;
+		robotState.gamePeriod = RobotState.GamePeriod.TELEOP;
+		commands.wantedElevatorState = ElevatorState.CUSTOM_POSITIONING;
+		elevator.update(commands, robotState);
+		assertThat("Didn't prevent closed loop control with sticky faults in teleop!", elevator.getState(), equalTo(ElevatorState.MANUAL_POSITIONING));
+		robotState.gamePeriod = RobotState.GamePeriod.AUTO;
+		elevator.update(commands, robotState);
+		assertThat("Didn't prevent closed loop control with sticky faults in auto!", elevator.getState(), equalTo(ElevatorState.IDLE));
+
+		robotState.gamePeriod = RobotState.GamePeriod.TELEOP;
+		commands.wantedElevatorState = ElevatorState.HOLD;
+		elevator.update(commands, robotState);
+		assertThat("Didn't prevent hold with sticky faults in teleop!", elevator.getState(), equalTo(ElevatorState.MANUAL_POSITIONING));
+		robotState.gamePeriod = RobotState.GamePeriod.AUTO;
+		elevator.update(commands, robotState);
+		assertThat("Didn't prevent hold with sticky faults in auto!", elevator.getState(), equalTo(ElevatorState.IDLE));
 	}
 
 	@Before
