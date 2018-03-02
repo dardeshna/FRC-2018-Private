@@ -109,30 +109,23 @@ public class Elevator extends Subsystem {
 
 				//If calibrated, run limiting code for top & bottom
 				if(isCalibrated()) {
-					double distInchesFromBottom = (mRobotState.elevatorPosition - getElevatorBottomPosition().get())/Constants.kElevatorTicksPerInch;
-					double distInchesFromTop = (getElevatorTopPosition().get() - mRobotState.elevatorPosition)/Constants.kElevatorTicksPerInch;
+					double distInchesFromBottom = Math.abs((mRobotState.elevatorPosition - getElevatorBottomPosition().get())/Constants.kElevatorTicksPerInch);
+					double distInchesFromTop = Math.abs((getElevatorTopPosition().get() - mRobotState.elevatorPosition)/Constants.kElevatorTicksPerInch);
 
 					//close to bottom
 					if(commands.disableElevatorScaling) {
 						mOutput.setPercentOutput(mRobotState.operatorStickInput.getY());
 					} else {
-						if (distInchesFromBottom < Constants.kElevatorBottomScalingMarginInches) {
-							//going up is fine
-							if (mRobotState.operatorStickInput.getY() > 0) {
-								mOutput.setPercentOutput(mRobotState.operatorStickInput.getY());
-							} else {
-								//linearly scale with distance remaining
-								mOutput.setPercentOutput(Constants.kElevatorBottomScalingConstant * distInchesFromBottom / Constants.kElevatorBottomScalingMarginInches * mRobotState.operatorStickInput.getY());
-							}
-						} else if (distInchesFromTop < Constants.kElevatorTopScalingMarginInches) {
-							//close to top
-
-							//going down is fine
-							if (mRobotState.operatorStickInput.getY() < 0) {
-								mOutput.setPercentOutput(mRobotState.operatorStickInput.getY());
-							} else {
-								mOutput.setPercentOutput(Constants.kElevatorTopScalingConstant * distInchesFromTop / Constants.kElevatorTopScalingMarginInches * mRobotState.operatorStickInput.getY());
-							}
+						if(distInchesFromBottom < Constants.kElevatorBottomScalingMarginInches) {
+							//Near bottom scales max allowed speed
+							//Going down is negative
+							mOutput.setPercentOutput(Math.max(-Constants.kElevatorBottomScalingConstant * distInchesFromBottom
+									/ Constants.kElevatorBottomScalingMarginInches, mRobotState.operatorStickInput.getY()));
+						} else if(distInchesFromTop < Constants.kElevatorTopScalingMarginInches) {
+							//Near top scales max allowed speed
+							//Going up is positive
+							mOutput.setPercentOutput(Math.min(Constants.kElevatorTopScalingConstant * distInchesFromTop
+									/ Constants.kElevatorTopScalingMarginInches + Constants.kElevatorHoldVoltage, mRobotState.operatorStickInput.getY() + Constants.kElevatorHoldVoltage));
 						} else {
 							//in middle
 							mOutput.setPercentOutput(mRobotState.operatorStickInput.getY());
