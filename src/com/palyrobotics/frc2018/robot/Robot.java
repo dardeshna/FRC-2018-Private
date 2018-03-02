@@ -146,7 +146,6 @@ public class Robot extends TimedRobot {
 		Logger.getInstance().logRobotThread(Level.INFO, "Start teleopInit()");
 
 		robotState.gamePeriod = RobotState.GamePeriod.TELEOP;
-		mHardwareUpdater.configureHardware();
 		mHardwareUpdater.updateState(robotState);
 		mHardwareUpdater.updateHardware();
 		mRoutineManager.reset(commands);
@@ -188,7 +187,6 @@ public class Robot extends TimedRobot {
 
 		//Stop controllers
 		mDrive.setNeutral();
-		mHardwareUpdater.configureHardware();
 		mHardwareUpdater.disableTalons();
 		DashboardManager.getInstance().toggleCANTable(false);
 

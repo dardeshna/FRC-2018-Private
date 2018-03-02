@@ -307,8 +307,6 @@ public class Elevator extends Subsystem {
 
 	@Override
 	public void stop() {
-		kElevatorBottomPosition = Optional.empty();
-		kElevatorTopPosition = Optional.empty();
 		mElevatorWantedPosition = Optional.empty();
 	}
 

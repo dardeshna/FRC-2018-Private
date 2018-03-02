@@ -115,7 +115,6 @@ class HardwareUpdater {
 		rightSlave1Victor.configForwardSoftLimitEnable(false, 0);
 		rightSlave1Victor.configReverseSoftLimitEnable(false, 0);
 
-		//Allow max voltage for closed loop control
 		leftMasterTalon.configPeakOutputForward(Constants.kDriveMaxClosedLoopOutput, 0);
 		leftMasterTalon.configPeakOutputReverse(-Constants.kDriveMaxClosedLoopOutput, 0);
 		leftSlave1Victor.configPeakOutputForward(Constants.kDriveMaxClosedLoopOutput, 0);
