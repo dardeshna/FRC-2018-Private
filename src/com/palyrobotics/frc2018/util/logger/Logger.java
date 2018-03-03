@@ -11,7 +11,10 @@ import java.io.StringWriter;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.ConcurrentModificationException;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.logging.Level;
 
 /**
@@ -35,10 +38,10 @@ public class Logger {
 
 	private boolean isEnabled = false;
 
-	private ArrayList<TimestampedString> mData;
+	private ArrayList<LeveledString> mData;
 	//Separates to prevent concurrent modification exception
-	private ArrayList<TimestampedString> mSubsystemThreadLogs = new ArrayList<>();
-	private ArrayList<TimestampedString> mRobotThreadLogs = new ArrayList<>();
+	private ArrayList<LeveledString> mSubsystemThreadLogs = new ArrayList<>();
+	private ArrayList<LeveledString> mRobotThreadLogs = new ArrayList<>();
 
 	//synchronized lock for writing out the latest data
 	private final Object writingLock = new Object();
@@ -141,13 +144,9 @@ public class Logger {
 	 *            Object used for input; stores .toString() value
 	 */
 	public void logSubsystemThread(Level l, Object value) {
+		Optional<Object> v = Optional.ofNullable(value);
 		try {
-			if(LoggerConstants.writeStackTrace && value instanceof Throwable && l.intValue() >= LoggerConstants.traceLevel.intValue()) {
-				((Throwable) value).printStackTrace(pw);
-				mSubsystemThreadLogs.add(new LeveledString(l, pw.toString()));
-			} else {
-				mSubsystemThreadLogs.add(new LeveledString(l, value.toString()));
-			}
+			mSubsystemThreadLogs.add(new LeveledString(l, checkStackTrace(l, v.orElse("NULL VALUE"))));
 		} catch(ConcurrentModificationException e) {
 			System.err.println("Attempted concurrent modification on subsystem logger");
 		}
@@ -165,13 +164,10 @@ public class Logger {
 	 *            Object used for input; stores .toString() value
 	 */
 	public void logSubsystemThread(Level l, String key, Object value) {
+		Optional<Object> v = Optional.ofNullable(value);
+		Optional<String> k = Optional.ofNullable(key);
 		try {
-			if(LoggerConstants.writeStackTrace && value instanceof Throwable && l.intValue() >= LoggerConstants.traceLevel.intValue()) {
-				((Throwable) value).printStackTrace(pw);
-				mSubsystemThreadLogs.add(new LeveledString(l, key + ": " + pw.toString()));
-			} else {
-				mSubsystemThreadLogs.add(new LeveledString(l, key + ": " + value.toString()));
-			}
+			mSubsystemThreadLogs.add(new LeveledString(l, k.orElse("NULL KEY") + ": " + checkStackTrace(l, v.orElse("NULL VALUE"))));
 		} catch(ConcurrentModificationException e) {
 			System.err.println("Attempted concurrent modification on subsystem logger");
 		}
@@ -187,13 +183,9 @@ public class Logger {
 	 *            Object used for input; stores .toString() value
 	 */
 	public void logRobotThread(Level l, Object value) {
+		Optional<Object> v = Optional.ofNullable(value);
 		try {
-			if(LoggerConstants.writeStackTrace && value instanceof Throwable && l.intValue() <= LoggerConstants.traceLevel.intValue()) {
-				((Throwable) value).printStackTrace(pw);
-				mRobotThreadLogs.add(new LeveledString(l, pw.toString()));
-			} else {
-				mRobotThreadLogs.add(new LeveledString(l, value.toString()));
-			}
+			mRobotThreadLogs.add(new LeveledString(l, checkStackTrace(l, v.orElse("NULL VALUE"))));
 		} catch(ConcurrentModificationException e) {
 			System.err.println("Attempted concurrent modification on robot logger");
 		}
@@ -211,17 +203,30 @@ public class Logger {
 	 *            Object used for input; stores .toString() value
 	 */
 	public void logRobotThread(Level l, String key, Object value) {
+		Optional<Object> v = Optional.ofNullable(value);
+		Optional<String> k = Optional.ofNullable(key);
 		try {
-			if(LoggerConstants.writeStackTrace && value instanceof Throwable && l.intValue() <= LoggerConstants.traceLevel.intValue()) {
-				((Throwable) value).printStackTrace(pw);
-				mRobotThreadLogs.add(new LeveledString(l, key + ": " + pw.toString()));
-			} else {
-				mRobotThreadLogs.add(new LeveledString(l, key + ": " + value.toString()));
-			}
+			mRobotThreadLogs.add(new LeveledString(l, k.orElse("NULL KEY") + ": " + checkStackTrace(l, v.orElse("NULL VALUE"))));
 		} catch(ConcurrentModificationException e) {
 			System.err.println("Attempted concurrent modification on robot logger");
 		}
 		pw.flush();
+	}
+	
+	/**
+	 * Checks if object passed needs to be converted into a stack trace
+	 * @param l Level
+	 * @param value Value to be checked
+	 * @return String
+	 */
+	private String checkStackTrace(Level l, Object value) {
+		if(LoggerConstants.writeStackTrace && value instanceof Throwable && l.intValue() <= LoggerConstants.traceLevel.intValue()) {
+			((Throwable) value).printStackTrace(pw);
+			return pw.toString();
+		}
+		else {
+			return value.toString();
+		}
 	}
 
 	public synchronized void cleanup() {
@@ -257,13 +262,19 @@ public class Logger {
 				writeLimit = 0;
 				mData = new ArrayList<>(mRobotThreadLogs);
 				mData.addAll(mSubsystemThreadLogs);
-				mData.sort(TimestampedString::compareTo);
-				mData.forEach((TimestampedString c) -> {
+				try {
+					mData.removeIf(Objects::isNull);
+				}
+				catch(UnsupportedOperationException e) {
+					e.printStackTrace();
+				}
+				mData.sort(LeveledString::compareTo);
+				mData.forEach((LeveledString c) -> {
 					try {
-						if(c instanceof LeveledString && ((LeveledString) c).getLevel().intValue() >= LoggerConstants.writeLevel.intValue()) {
+						if(c.getLevel().intValue() >= LoggerConstants.writeLevel.intValue()) {
 							Files.append(((LeveledString) c).getLeveledString(), mainLog, Charsets.UTF_8);
 							if(((LeveledString) c).getLevel().intValue() >= LoggerConstants.displayLevel.intValue() && writeLimit <= LoggerConstants.writeLimit) {
-								System.out.println(c.toString());
+								System.out.println(c.getLeveledString());
 								writeLimit++;
 							}
 						}
