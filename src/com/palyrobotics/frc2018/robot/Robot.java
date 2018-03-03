@@ -187,7 +187,7 @@ public class Robot extends TimedRobot {
 
 		//Stop controllers
 		mDrive.setNeutral();
-		mHardwareUpdater.disableTalons();
+//		mHardwareUpdater.disableTalons();
 		DashboardManager.getInstance().toggleCANTable(false);
 
 		stopSubsystems();

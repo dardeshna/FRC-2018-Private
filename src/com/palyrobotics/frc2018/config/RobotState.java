@@ -39,7 +39,9 @@ public class RobotState {
 	public double rightSetpoint = 0;
 
 	//Intake
-	public double cubeDistance = 0;
+	public boolean hasCube = true;
+//	public double cubeDistance = 0;
+
 
 	//Tracks total voltage from kPDP
 	public double totalVoltageDraw = 0;

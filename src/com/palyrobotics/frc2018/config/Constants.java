@@ -117,9 +117,12 @@ public class Constants {
 	public static final double kIntakingMotorVelocity = 0.75;
 	public static final double kExpellingMotorVelocity = -0.35;
 	public static final double kExpelToScoreTime = 0.5;
-	//TODO: Tune distance for ultrasound, determine variability
-	public static final double kIntakeCloseSensorThreshold = 0.0;
-	public static final double kIntakeFarSensorThreshold = 1.0;
+	public static final double kIntakeStallCurrent = 70;
+	public static final double kIntakeIdleCurrent = 0.125;
+	public static final double kIntakeExpelCurrent = 5;
+	public static final double kIntakeIntakeCurrent = 6;
+	public static final int kIntakeStallCounterThreshold = 2;
+	public static final int kIntakeFreeCounterThreshold = 1;
 
 	//Climber
 

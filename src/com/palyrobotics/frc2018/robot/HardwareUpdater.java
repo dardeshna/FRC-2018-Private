@@ -33,6 +33,11 @@ class HardwareUpdater {
 	private Elevator mElevator;
 	private Intake mIntake;
 
+	private int intakeStallCounter = 10;
+	private int intakeFreeSpinCounter = 0;
+
+
+
 	/**
 	 * Hardware Updater for Forseti
 	 */
@@ -238,8 +243,6 @@ class HardwareUpdater {
 		WPI_TalonSRX leftMasterTalon = HardwareAdapter.getInstance().getDrivetrain().leftMasterTalon;
 		WPI_TalonSRX rightMasterTalon = HardwareAdapter.getInstance().getDrivetrain().rightMasterTalon;
 
-//		AnalogInput intakeDistanceSensor = HardwareAdapter.getInstance().getIntake().distanceSensor;
-
 		robotState.leftControlMode = leftMasterTalon.getControlMode();
 		robotState.rightControlMode = rightMasterTalon.getControlMode();
 
@@ -247,10 +250,6 @@ class HardwareUpdater {
 		robotState.rightStickInput.update(HardwareAdapter.getInstance().getJoysticks().turnStick);
 		robotState.climberStickInput.update(HardwareAdapter.getInstance().getJoysticks().climberStick);
 		robotState.operatorStickInput.update(HardwareAdapter.getInstance().getJoysticks().operatorStick);
-
-		//Currently represents the voltage returned from the distance sensor, but the actual sensor is undetermined so
-		//we do not know the conversion.
-//		robotState.cubeDistance = intakeDistanceSensor.getValue();
 
 		switch(robotState.leftControlMode) {
 			//Fall through
@@ -329,6 +328,32 @@ class HardwareUpdater {
 			robotState.drivePose.rightMotionMagicVel = Optional.empty();
 		}
 
+		if(HardwareAdapter.getInstance().getIntake().masterTalon.getOutputCurrent() >= Constants.kIntakeStallCurrent
+				&& HardwareAdapter.getInstance().getIntake().slaveTalon.getOutputCurrent() >= Constants.kIntakeStallCurrent
+				&& mIntake.getWheelState() == Intake.WheelState.INTAKING) {
+			intakeStallCounter++;
+		} else {
+			intakeStallCounter = 0;
+		}
+
+		if(HardwareAdapter.getInstance().getIntake().masterTalon.getOutputCurrent() > Constants.kIntakeIdleCurrent
+				&& HardwareAdapter.getInstance().getIntake().masterTalon.getOutputCurrent() <= Constants.kIntakeExpelCurrent
+				&& mIntake.getWheelState() == Intake.WheelState.EXPELLING) {
+			intakeFreeSpinCounter++;
+		} else if(HardwareAdapter.getInstance().getIntake().masterTalon.getOutputCurrent() > Constants.kIntakeIdleCurrent
+				&& HardwareAdapter.getInstance().getIntake().masterTalon.getOutputCurrent() <= Constants.kIntakeIntakeCurrent
+				&& mIntake.getWheelState() == Intake.WheelState.INTAKING) {
+			intakeFreeSpinCounter++;
+		} else {
+			intakeFreeSpinCounter = 0;
+		}
+
+		if(intakeStallCounter >= Constants.kIntakeStallCounterThreshold) {
+			robotState.hasCube = true;
+		} else if(mIntake.getOpenCloseState() == Intake.OpenCloseState.OPEN || intakeFreeSpinCounter >= Constants.kIntakeFreeCounterThreshold){
+			robotState.hasCube = false;
+		}
+
 		robotState.drivePose.leftError = Optional.of(leftMasterTalon.getClosedLoopError(0));
 		robotState.drivePose.rightError = Optional.of(rightMasterTalon.getClosedLoopError(0));
 
@@ -400,6 +425,7 @@ class HardwareUpdater {
 	 * Updates the intake
 	 */
 	private void updateIntake() {
+//		System.out.println("current: " + HardwareAdapter.getInstance().getIntake().masterTalon.getOutputCurrent());
 		updateTalonSRX(HardwareAdapter.getInstance().getIntake().masterTalon, mIntake.getTalonOutput());
 		HardwareAdapter.getInstance().getIntake().openCloseSolenoid.set(mIntake.getOpenCloseOutput()[0]);
 		HardwareAdapter.getInstance().getIntake().openCloseOtherSolenoid.set(mIntake.getOpenCloseOutput()[1]);

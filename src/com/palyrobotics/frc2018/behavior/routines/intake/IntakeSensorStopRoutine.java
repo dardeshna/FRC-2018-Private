@@ -2,8 +2,6 @@ package com.palyrobotics.frc2018.behavior.routines.intake;
 
 import com.palyrobotics.frc2018.behavior.Routine;
 import com.palyrobotics.frc2018.config.Commands;
-import com.palyrobotics.frc2018.config.Constants;
-import com.palyrobotics.frc2018.config.RobotState;
 import com.palyrobotics.frc2018.subsystems.Intake;
 import com.palyrobotics.frc2018.subsystems.Subsystem;
 import com.palyrobotics.frc2018.util.logger.Logger;
@@ -16,18 +14,15 @@ import java.util.logging.Level;
 public class IntakeSensorStopRoutine extends Routine {
 	
     private Intake.WheelState wantedWheelState;
-    
-    private RobotState mRobotState = null;
-    
+
     //How long the wheels spin for (seconds)
   	private double mTimeout;
   	
   	private long mStartTime;
 
-    public IntakeSensorStopRoutine(Intake.WheelState wantedWheelState, double timeout, RobotState state) {
+    public IntakeSensorStopRoutine(Intake.WheelState wantedWheelState, double timeout) {
         this.wantedWheelState = wantedWheelState;
         mTimeout = timeout;
-        mRobotState = state;
     }
 
     @Override
@@ -53,11 +48,11 @@ public class IntakeSensorStopRoutine extends Routine {
 
     @Override
     public boolean finished() {
-    	if(wantedWheelState == Intake.WheelState.INTAKING && mRobotState.cubeDistance <= Constants.kIntakeCloseSensorThreshold) {
-    		Logger.getInstance().logRobotThread(Level.INFO, "IntakeSensorStopRoutine finishing intake with cube at distance", mRobotState.cubeDistance);
+    	if(wantedWheelState == Intake.WheelState.INTAKING && robotState.hasCube) {
+    		Logger.getInstance().logRobotThread(Level.INFO, "IntakeSensorStopRoutine finishing intake with cube");
     		return true;
-    	} else if(wantedWheelState == Intake.WheelState.EXPELLING && mRobotState.cubeDistance >= Constants.kIntakeFarSensorThreshold) {
-    		Logger.getInstance().logRobotThread(Level.INFO, "IntakeSensorStopRoutine finishing expel with cube at distance", mRobotState.cubeDistance);
+    	} else if(wantedWheelState == Intake.WheelState.EXPELLING && !robotState.hasCube) {
+    		Logger.getInstance().logRobotThread(Level.INFO, "IntakeSensorStopRoutine finishing expel with cube");
     		return true;
     	} else if(System.currentTimeMillis() - mStartTime > mTimeout * 1000) {
     		Logger.getInstance().logRobotThread(Level.INFO, "IntakeSensorStopRoutine timeout", System.currentTimeMillis() - mStartTime);
@@ -71,7 +66,8 @@ public class IntakeSensorStopRoutine extends Routine {
     public Subsystem[] getRequiredSubsystems() {
         return new Subsystem[] { intake };
     }
-	@Override
+
+    @Override
 	public String getName() {
         return "IntakeSensorStopRoutine";
 	}
