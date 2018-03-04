@@ -35,9 +35,15 @@ public class TestTrajectoryAutoMode extends AutoModeBase {
 		List<Waypoint> path = new ArrayList<>();
 
 		//Path 1: Forward and left
-		path.add(new Waypoint(new Translation2d(0, 0), 6.0));
-		path.add(new Waypoint(new Translation2d(40, 0), 6.0));
-		path.add(new Waypoint(new Translation2d(40, 40), 0.0));
+		path.add(new Waypoint(new Translation2d(0, 0), 72.0));
+		path.add(new Waypoint(new Translation2d(110, 0), 72.0));
+		path.add(new Waypoint(new Translation2d(110, 80), 0.0));
+//		path.add(new Waypoint(new Translation2d(70, -70), 72.0));
+//		path.add(new Waypoint(new Translation2d(140, 0), 72.0));
+//		path.add(new Waypoint(new Translation2d(70, 70), 72.0));
+//		path.add(new Waypoint(new Translation2d(0, 0), 0.0));
+//		path.add(new Waypoint(new Translation2d(110, 80), 0.0));
+//		path.add(new Waypoint(new Translation2d(40, 80), 0.0));
 
 		//Path 2: Lollipop
 		/*
@@ -47,7 +53,7 @@ public class TestTrajectoryAutoMode extends AutoModeBase {
 		 */
 
 		ArrayList<Routine> routines = new ArrayList<>();
-		routines.add(new DriveSensorResetRoutine());
+//		routines.add(new DriveSensorResetRoutine());
 		routines.add(new DrivePathRoutine(new Path(path), false));
 
 		return new SequentialRoutine(routines);

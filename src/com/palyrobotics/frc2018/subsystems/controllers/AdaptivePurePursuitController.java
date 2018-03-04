@@ -61,11 +61,11 @@ public class AdaptivePurePursuitController implements Drive.DriveController {
 		if(mReversed) {
 			pose = new RigidTransform2d(robot_pose.getTranslation(), robot_pose.getRotation().rotateBy(Rotation2d.fromRadians(Math.PI)));
 		}
-		System.out.println("Current point = " + robot_pose.getTranslation());
+		
 		double distance_from_path = mPath.update(robot_pose.getTranslation());
 
 		PathSegment.Sample lookahead_point = mPath.getLookaheadPoint(robot_pose.getTranslation(), distance_from_path + mFixedLookahead);
-		System.out.println("Lookahead point = " + lookahead_point.translation);
+//		System.out.println("Current point = " + robot_pose.getTranslation() + " " + "Lookahead point = " + lookahead_point.translation);
 
 		Optional<Circle> circle = joinPath(pose, lookahead_point.translation);
 
@@ -81,16 +81,16 @@ public class AdaptivePurePursuitController implements Drive.DriveController {
 			mLastCommand = new RigidTransform2d.Delta(0, 0, 0);
 			dt = mDt;
 		}
-		System.out.println("Last command = " + mLastCommand.dx);
+		//System.out.println("Last command = " + mLastCommand.dx);
 		double accel = (speed - mLastCommand.dx) / dt;
-		System.out.println("Spood = " + speed);
-		System.out.println("Accel = " + accel);
+		//System.out.println("Spood = " + speed);
+		//System.out.println("Accel = " + accel);
 		if(accel < -mMaxAccel) {
 			speed = mLastCommand.dx - mMaxAccel * dt;
 		} else if(accel > mMaxAccel) {
 			speed = mLastCommand.dx + mMaxAccel * dt;
 		}
-		System.out.println("Scaled spood = " + speed);
+		//System.out.println("Scaled spood = " + speed);
 
 		//Ensure we slow down in time to stop
 		//vf^2 = v^2 + 2*a*d
@@ -197,21 +197,22 @@ public class AdaptivePurePursuitController implements Drive.DriveController {
 		RigidTransform2d.Delta command = this.update(robot_pose, Timer.getFPGATimestamp());
 		Kinematics.DriveVelocity setpoint = Kinematics.inverseKinematics(command);
 		setpoint = new Kinematics.DriveVelocity(setpoint.left, setpoint.right);
-		System.out.println("Left setpoint = " + setpoint.left);
-		System.out.println("Right setpoint = " + setpoint.right);
+		//System.out.println("Left setpoint = " + setpoint.left);
+		//System.out.println("Right setpoint = " + setpoint.right);
 		//Scale the command to respect the max velocity limits
 		double max_vel = 0.0;
 		max_vel = Math.max(max_vel, Math.abs(setpoint.left));
 		max_vel = Math.max(max_vel, Math.abs(setpoint.right));
 		//Logger.getInstance().logSubsystemThread(Level.INFO, "APP", "max_vel = " + max_vel);
 		if(max_vel > Constants.kPathFollowingMaxVel) {
-			System.out.println("This thing is too damn fast");
+			//System.out.println("This thing is too damn fast");
 			double scaling = Constants.kPathFollowingMaxVel / max_vel;
 			setpoint = new Kinematics.DriveVelocity(setpoint.left * scaling, setpoint.right * scaling);
 		}
 
 		final TalonSRXOutput left = new TalonSRXOutput(ControlMode.Velocity, Gains.forsetiVelocity, setpoint.left * Constants.kDriveSpeedUnitConversion),
 				right = new TalonSRXOutput(ControlMode.Velocity, Gains.forsetiVelocity, setpoint.right * Constants.kDriveSpeedUnitConversion);
+//		System.out.println("Left output = " + left + " " + "Right output = " + right);
 		return new DriveSignal(left, right);
 	}
 
@@ -228,6 +229,7 @@ public class AdaptivePurePursuitController implements Drive.DriveController {
 		 * RigidTransform2d pose = RobotPosition.getInstance().getLatestFieldToVehicle().getValue(); if (pose.getTranslation().getX() > 40) return true;
 		 */
 		double remainingLength = mPath.getRemainingLength();
+		//System.out.println("remaining length = " + remainingLength);
 		return remainingLength <= mPathCompletionTolerance;
 	}
 

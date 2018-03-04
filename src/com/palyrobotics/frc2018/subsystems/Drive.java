@@ -238,8 +238,10 @@ public class Drive extends Subsystem {
 	 * @param inverted Boolean to invert path
 	 */
 	public void setTrajectoryController(Path path, boolean inverted) {
+		/*mController = new AdaptivePurePursuitController(Constants.kPathFollowingLookahead, Constants.kPathFollowingMaxAccel, Constants.kNormalLoopsDt, path,
+				inverted, Constants.kPathFollowingTolerance);*/
 		mController = new AdaptivePurePursuitController(Constants.kPathFollowingLookahead, Constants.kPathFollowingMaxAccel, Constants.kNormalLoopsDt, path,
-				inverted, Constants.kPathFollowingTolerance);
+				inverted, 0);
 		mController.update(mCachedRobotState);
 		newController = true;
 	}

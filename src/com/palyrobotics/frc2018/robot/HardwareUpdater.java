@@ -16,6 +16,7 @@ import com.palyrobotics.frc2018.util.logger.Logger;
 import com.palyrobotics.frc2018.util.trajectory.Kinematics;
 import com.palyrobotics.frc2018.util.trajectory.RigidTransform2d;
 import com.palyrobotics.frc2018.util.trajectory.Rotation2d;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Timer;
 
@@ -87,6 +88,8 @@ class HardwareUpdater {
 		configureClimberHardware();
 		configureElevatorHardware();
 		configureIntakeHardware();
+		Compressor c = new Compressor();
+		c.stop();
 	}
 
 	void configureDriveHardware() {
@@ -401,17 +404,28 @@ class HardwareUpdater {
 		robotState.drivePose.rightError = Optional.of(rightMasterTalon.getClosedLoopError(0));
 
 		double time = Timer.getFPGATimestamp();
-		double left_distance = robotState.drivePose.leftEnc / Constants.kDriveTicksPerInch;
-		double right_distance = robotState.drivePose.rightEnc / Constants.kDriveTicksPerInch;
 
 		//Rotation2d gyro_angle = Rotation2d.fromRadians((right_distance - left_distance) * Constants.kTrackScrubFactor
 		///Constants.kTrackEffectiveDiameter);
 		Rotation2d gyro_angle = Rotation2d.fromDegrees(robotState.drivePose.heading);
+		Rotation2d gyro_velocity = Rotation2d.fromDegrees(robotState.drivePose.headingVelocity);
+
 		RigidTransform2d odometry = robotState.generateOdometryFromSensors((robotState.drivePose.leftEnc - robotState.drivePose.lastLeftEnc) / Constants.kDriveTicksPerInch,
 				(robotState.drivePose.rightEnc - robotState.drivePose.lastRightEnc) / Constants.kDriveTicksPerInch, gyro_angle);
-		RigidTransform2d.Delta velocity = Kinematics.forwardKinematics(robotState.drivePose.leftEncVelocity / Constants.kDriveSpeedUnitConversion, robotState.drivePose.rightEncVelocity / Constants.kDriveSpeedUnitConversion);
+		RigidTransform2d.Delta velocity = Kinematics.forwardKinematics(robotState.drivePose.leftEncVelocity / Constants.kDriveSpeedUnitConversion,
+				robotState.drivePose.rightEncVelocity / Constants.kDriveSpeedUnitConversion, gyro_velocity.getRadians());
 
 		robotState.addObservations(time, odometry, velocity);
+
+		System.out.println("x: " + odometry.getTranslation().getX());
+		System.out.println("y: " + odometry.getTranslation().getY());
+		System.out.println("angle: " + odometry.getRotation().getDegrees());
+		
+		//System.out.println("Odometry = " + odometry.getTranslation().getX());
+		//System.out.println("Velocity = " + velocity.dx);
+		//System.out.println("Gyro angle = " + robotState.drivePose.heading);
+		/*System.out.println("Latest field to vehicle = " + robotState.getLatestFieldToVehicle().toString());
+		System.out.println("Encoder estimate = " + left_distance);*/
 
 		//Update elevator sensors
 		robotState.elevatorPosition = HardwareAdapter.getInstance().getElevator().elevatorMasterTalon.getSelectedSensorPosition(0);

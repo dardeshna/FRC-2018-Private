@@ -197,9 +197,9 @@ public class Constants {
 	public static final double kTrackLengthInches = 8.5;
 	public static final double kTrackWidthInches = 24.0;
 	public static final double kTrackEffectiveDiameter = (kTrackWidthInches * kTrackWidthInches + kTrackLengthInches * kTrackLengthInches) / kTrackWidthInches;
-	public static final double kTrackScrubFactor = 5.0;
+	public static final double kTrackScrubFactor = 0.5;
 	public static final double kPathFollowingLookahead = 20.0;
-	public static final double kPathFollowingMaxAccel = 100.0;
+	public static final double kPathFollowingMaxAccel = 72.0;
 	public static final double kPathFollowingMaxVel = 72.0;
 	//public static final double kPathFollowingMaxVel = 5 * kPathFollowingMaxAccel;
 	public static final double kPathFollowingTolerance = 0.20;

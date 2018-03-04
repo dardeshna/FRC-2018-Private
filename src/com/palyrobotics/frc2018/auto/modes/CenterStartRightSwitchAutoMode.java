@@ -41,12 +41,16 @@ public class CenterStartRightSwitchAutoMode extends AutoModeBase {
         List<Waypoint> path = new ArrayList<>();
         path.add(new Waypoint(new Translation2d(0, 0), 72.0));
         if (mAlliance == Alliance.BLUE) {
-            path.add(new Waypoint(new Translation2d(2.0 * Constants.kRobotLengthInches, -(AutoDistances.kFieldWidth
-					- AutoDistances.kBlueLeftToCenterY - Constants.kRobotWidthInches/2.0) + AutoDistances.kBlueRightSwitchY
-					+ Constants.kPlateWidth/2.0), 72.0));
-			path.add(new Waypoint(new Translation2d(AutoDistances.kBlueRightSwitchX - Constants.kRobotLengthInches,
-					-(AutoDistances.kFieldWidth - AutoDistances.kBlueLeftToCenterY - Constants.kRobotWidthInches/2.0)
-							+ AutoDistances.kBlueRightSwitchY + Constants.kPlateWidth/2.0), 0.0));
+
+        	path.add(new Waypoint(new Translation2d(100, 0), 0.0));
+
+//        	path.add(new Waypoint(new Translation2d(1.2 * Constants.kRobotLengthInches, 0), 72.0));
+//            path.add(new Waypoint(new Translation2d(1.2 * Constants.kRobotLengthInches, -(AutoDistances.kFieldWidth
+//					- AutoDistances.kBlueLeftToCenterY - Constants.kRobotWidthInches/2.0) + AutoDistances.kBlueRightSwitchY
+//					+ Constants.kPlateWidth/2.0), 72.0));
+//			path.add(new Waypoint(new Translation2d(AutoDistances.kBlueRightSwitchX - Constants.kRobotLengthInches,
+//					-(AutoDistances.kFieldWidth - AutoDistances.kBlueLeftToCenterY - Constants.kRobotWidthInches/2.0)
+//							+ AutoDistances.kBlueRightSwitchY + Constants.kPlateWidth/2.0), 0.0));
         } else {
             path.add(new Waypoint(new Translation2d(2.0 * Constants.kRobotLengthInches, -(AutoDistances.kFieldWidth
 					- AutoDistances.kRedLeftToCenterY - Constants.kRobotWidthInches/2.0) + AutoDistances.kRedRightSwitchY
@@ -63,8 +67,8 @@ public class CenterStartRightSwitchAutoMode extends AutoModeBase {
 		//Drive path while moving elevator up and moving intake down
 		ArrayList<Routine> inTransitRoutines = new ArrayList<>();
 		inTransitRoutines.add(new DrivePathRoutine(new Path(path), false));
-		inTransitRoutines.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorSwitchPositionInches, 15));
-		inTransitRoutines.add(new IntakeDownRoutine());
+		//inTransitRoutines.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorSwitchPositionInches, 15));
+		//inTransitRoutines.add(new IntakeDownRoutine());
 		routines.add(new ParallelRoutine(inTransitRoutines));
 
 		//Open when everything is done to score

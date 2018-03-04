@@ -14,8 +14,8 @@ public class Gains {
 	public static double kForsetiRightTrajectorykV_0 = 0.0946;
 	public static double kForsetiTrajectorykA = 0.025;
 
-	public static final double kForsetiDriveVelocitykP = .8;//6.0 / 2;
-	public static final double kForsetiDriveVelocitykI = 0.002 / 2;
+	public static final double kForsetiDriveVelocitykP = 1.2;//6.0 / 2;
+	public static final double kForsetiDriveVelocitykI = 0.001;
 	public static final double kForsetiDriveVelocitykD = 12.4;//85 / 2;
 	public static final double kForsetiDriveVelocitykF = 0.246537885;//2.624 / 2;
 	public static final int kForsetiDriveVelocitykIzone = 0;//800 / 2;

@@ -85,7 +85,7 @@ public class RoutineManager {
 		//Update all running routines
 		for(Routine routine : runningRoutines) {
 			if(routine.finished()) {
-				Logger.getInstance().logRobotThread(Level.INFO, "Routine", routine.getName() + " finished, canceled");
+				System.out.println("Routine: " + routine.getName() + " finished, canceled");
 				output = routine.cancel(output);
 				routinesToRemove.add(routine);
 			} else {

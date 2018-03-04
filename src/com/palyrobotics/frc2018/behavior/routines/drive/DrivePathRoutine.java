@@ -23,6 +23,9 @@ public class DrivePathRoutine extends Routine {
 	public DrivePathRoutine(Path path, boolean inverted) {
 		this.mPath = path;
 		this.mInverted = inverted;
+		for (Path.Waypoint point : path.getmWaypoints()) {
+        	System.out.println(point.position.toString());
+        }
 	}
 
 	@Override
