@@ -90,9 +90,9 @@ public class AutoModeSelector {
 	 * @return AutoMode currently selected
 	 */
 	public AutoModeBase getAutoMode() {
-		/*return getAutoMode(AutoModeBase.mAlliance, AutoModeBase.mStartingPosition, AutoModeBase.mScaleDecision,
-				AutoModeBase.mSwitchDecision, AutoModeBase.mPriority);*/
-		return new TestTrajectoryAutoMode();
+		return getAutoMode(AutoModeBase.mAlliance, AutoModeBase.mStartingPosition, AutoModeBase.mScaleDecision,
+				AutoModeBase.mSwitchDecision, AutoModeBase.mPriority);
+		// return new TestTrajectoryAutoMode();
 	}
 
 	/**

@@ -67,7 +67,7 @@ public class Constants {
 	public static final double kNominalUpwardsOutput = 0.1;
 	public static final double kElevatorTopBottomDifferenceInches = 83.4192803716;
 	public static final double kElevatorHFXAcceptableError = 0.01;
-	public static final double kElevatorSwitchPositionInches = 30;
+	public static final double kElevatorSwitchPositionInches = 32.5;
 	public static final double kElevatorBottomPositionInches = 0;
 	public static final double kElevatorHoldVoltage = 0.11;
 
@@ -99,6 +99,7 @@ public class Constants {
 	 */
 	public static final double kRobotWidthInches = 34.0;
 	public static final double kRobotLengthInches = 38.0;
+	public static final double kCenterOfRotationOffsetFromFrontInches = 13.0;
 
 	/**
 	 * Tolerances
@@ -122,6 +123,7 @@ public class Constants {
 	public static final double kIntakeIdleCurrent = 0.125;
 	public static final double kIntakeExpelCurrent = 5;
 	public static final double kIntakeIntakeCurrent = 6;
+	public static final double kSwitchAutoWaitBeforeElevatorRaiseTimeSeconds = 1.0;
 	public static final int kIntakeStallCounterThreshold = 2;
 	public static final int kIntakeFreeCounterThreshold = 1;
 
@@ -198,7 +200,7 @@ public class Constants {
 	public static final double kTrackWidthInches = 24.0;
 	public static final double kTrackEffectiveDiameter = (kTrackWidthInches * kTrackWidthInches + kTrackLengthInches * kTrackLengthInches) / kTrackWidthInches;
 	public static final double kTrackScrubFactor = 0.5;
-	public static final double kPathFollowingLookahead = 20.0;
+	public static final double kPathFollowingLookahead = 35.0;
 	public static final double kPathFollowingMaxAccel = 72.0;
 	public static final double kPathFollowingMaxVel = 72.0;
 	//public static final double kPathFollowingMaxVel = 5 * kPathFollowingMaxAccel;

@@ -88,8 +88,6 @@ class HardwareUpdater {
 		configureClimberHardware();
 		configureElevatorHardware();
 		configureIntakeHardware();
-		Compressor c = new Compressor();
-		c.stop();
 	}
 
 	void configureDriveHardware() {

@@ -4,13 +4,17 @@ import com.palyrobotics.frc2018.auto.AutoModeBase;
 import com.palyrobotics.frc2018.behavior.ParallelRoutine;
 import com.palyrobotics.frc2018.behavior.Routine;
 import com.palyrobotics.frc2018.behavior.SequentialRoutine;
+import com.palyrobotics.frc2018.behavior.routines.TimeoutRoutine;
 import com.palyrobotics.frc2018.behavior.routines.drive.DrivePathRoutine;
 import com.palyrobotics.frc2018.behavior.routines.drive.DriveSensorResetRoutine;
 import com.palyrobotics.frc2018.behavior.routines.elevator.ElevatorCustomPositioningRoutine;
 import com.palyrobotics.frc2018.behavior.routines.intake.IntakeDownRoutine;
 import com.palyrobotics.frc2018.behavior.routines.intake.IntakeOpenRoutine;
+import com.palyrobotics.frc2018.behavior.routines.intake.IntakeUpRoutine;
+import com.palyrobotics.frc2018.behavior.routines.intake.IntakeWheelRoutine;
 import com.palyrobotics.frc2018.config.AutoDistances;
 import com.palyrobotics.frc2018.config.Constants;
+import com.palyrobotics.frc2018.subsystems.Intake;
 import com.palyrobotics.frc2018.util.trajectory.Path;
 import com.palyrobotics.frc2018.util.trajectory.Path.Waypoint;
 import com.palyrobotics.frc2018.util.trajectory.Translation2d;
@@ -41,16 +45,13 @@ public class CenterStartRightSwitchAutoMode extends AutoModeBase {
         List<Waypoint> path = new ArrayList<>();
         path.add(new Waypoint(new Translation2d(0, 0), 72.0));
         if (mAlliance == Alliance.BLUE) {
-
-        	path.add(new Waypoint(new Translation2d(100, 0), 0.0));
-
-//        	path.add(new Waypoint(new Translation2d(1.2 * Constants.kRobotLengthInches, 0), 72.0));
-//            path.add(new Waypoint(new Translation2d(1.2 * Constants.kRobotLengthInches, -(AutoDistances.kFieldWidth
-//					- AutoDistances.kBlueLeftToCenterY - Constants.kRobotWidthInches/2.0) + AutoDistances.kBlueRightSwitchY
-//					+ Constants.kPlateWidth/2.0), 72.0));
-//			path.add(new Waypoint(new Translation2d(AutoDistances.kBlueRightSwitchX - Constants.kRobotLengthInches,
-//					-(AutoDistances.kFieldWidth - AutoDistances.kBlueLeftToCenterY - Constants.kRobotWidthInches/2.0)
-//							+ AutoDistances.kBlueRightSwitchY + Constants.kPlateWidth/2.0), 0.0));
+        	path.add(new Waypoint(new Translation2d(1.2 * Constants.kRobotLengthInches - Constants.kCenterOfRotationOffsetFromFrontInches, 0), 72.0));
+            path.add(new Waypoint(new Translation2d(1.2 * Constants.kRobotLengthInches - Constants.kCenterOfRotationOffsetFromFrontInches, -(AutoDistances.kFieldWidth
+					- AutoDistances.kBlueLeftToCenterY - Constants.kRobotWidthInches/2.0) + AutoDistances.kBlueRightSwitchY
+					+ Constants.kPlateWidth/2.0), 72.0));
+			path.add(new Waypoint(new Translation2d(AutoDistances.kBlueRightSwitchX - Constants.kRobotLengthInches,
+					-(AutoDistances.kFieldWidth - AutoDistances.kBlueLeftToCenterY - Constants.kRobotWidthInches/2.0)
+							+ AutoDistances.kBlueRightSwitchY + Constants.kPlateWidth/2.0), 0.0));
         } else {
             path.add(new Waypoint(new Translation2d(2.0 * Constants.kRobotLengthInches, -(AutoDistances.kFieldWidth
 					- AutoDistances.kRedLeftToCenterY - Constants.kRobotWidthInches/2.0) + AutoDistances.kRedRightSwitchY
@@ -64,15 +65,19 @@ public class CenterStartRightSwitchAutoMode extends AutoModeBase {
 
         routines.add(new DriveSensorResetRoutine());
 
-		//Drive path while moving elevator up and moving intake down
 		ArrayList<Routine> inTransitRoutines = new ArrayList<>();
 		inTransitRoutines.add(new DrivePathRoutine(new Path(path), false));
-		//inTransitRoutines.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorSwitchPositionInches, 15));
-		//inTransitRoutines.add(new IntakeDownRoutine());
+
+		ArrayList<Routine> scoreRoutines = new ArrayList<>();
+		scoreRoutines.add(new IntakeDownRoutine());
+		scoreRoutines.add(new TimeoutRoutine(Constants.kSwitchAutoWaitBeforeElevatorRaiseTimeSeconds));
+	 	scoreRoutines.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorSwitchPositionInches, 3.0));
+		inTransitRoutines.add(new SequentialRoutine(scoreRoutines));
+
 		routines.add(new ParallelRoutine(inTransitRoutines));
 
 		//Open when everything is done to score
-		routines.add(new IntakeOpenRoutine());
+		routines.add(new IntakeWheelRoutine(Intake.WheelState.EXPELLING, 3.0));
 
 		return new SequentialRoutine(routines);
 	}
