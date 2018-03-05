@@ -4,13 +4,16 @@ import com.palyrobotics.frc2018.auto.AutoModeBase;
 import com.palyrobotics.frc2018.behavior.ParallelRoutine;
 import com.palyrobotics.frc2018.behavior.Routine;
 import com.palyrobotics.frc2018.behavior.SequentialRoutine;
+import com.palyrobotics.frc2018.behavior.routines.TimeoutRoutine;
 import com.palyrobotics.frc2018.behavior.routines.drive.DrivePathRoutine;
 import com.palyrobotics.frc2018.behavior.routines.drive.DriveSensorResetRoutine;
 import com.palyrobotics.frc2018.behavior.routines.elevator.ElevatorCustomPositioningRoutine;
 import com.palyrobotics.frc2018.behavior.routines.intake.IntakeDownRoutine;
 import com.palyrobotics.frc2018.behavior.routines.intake.IntakeOpenRoutine;
+import com.palyrobotics.frc2018.behavior.routines.intake.IntakeWheelRoutine;
 import com.palyrobotics.frc2018.config.AutoDistances;
 import com.palyrobotics.frc2018.config.Constants;
+import com.palyrobotics.frc2018.subsystems.Intake;
 import com.palyrobotics.frc2018.util.trajectory.Path;
 import com.palyrobotics.frc2018.util.trajectory.Translation2d;
 
@@ -43,7 +46,7 @@ public class CenterStartRightScaleAutoMode extends AutoModeBase {
             path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueRightSwitchX - Constants.kRobotLengthInches,
                     -(AutoDistances.kFieldWidth - AutoDistances.kBlueLeftToCenterY - Constants.kRobotWidthInches)
                             + AutoDistances.kBlueRightSwitchY/2.0), 72.0));
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueRightSwitchX + Constants.kRobotLengthInches,
+            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueRightScaleX - 2.0 * Constants.kRobotLengthInches,
                     -(AutoDistances.kFieldWidth - AutoDistances.kBlueLeftToCenterY - Constants.kRobotWidthInches)
                             + AutoDistances.kBlueRightSwitchY/2.0), 72.0));
             path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueRightScaleX - 2.0 * Constants.kRobotLengthInches,
@@ -71,17 +74,21 @@ public class CenterStartRightScaleAutoMode extends AutoModeBase {
 
         routines.add(new DriveSensorResetRoutine());
 
-        //Drive path while moving elevator up and moving intake down
-        ArrayList<Routine> inTransitRoutines = new ArrayList<>();
-        inTransitRoutines.add(new DrivePathRoutine(new Path(path), false));
-        inTransitRoutines.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorTopBottomDifferenceInches, 15));
-        inTransitRoutines.add(new IntakeDownRoutine());
-        routines.add(new ParallelRoutine(inTransitRoutines));
+		ArrayList<Routine> inTransitRoutines = new ArrayList<>();
+		inTransitRoutines.add(new DrivePathRoutine(new Path(path), false));
 
-        //Open when everything is done to score
-        routines.add(new IntakeOpenRoutine());
+		/*ArrayList<Routine> scoreRoutines = new ArrayList<>();
+		scoreRoutines.add(new IntakeDownRoutine());
+		scoreRoutines.add(new TimeoutRoutine(Constants.kScaleAutoWaitBeforeElevatorRaiseTimeSeconds));
+	 	scoreRoutines.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorTopBottomDifferenceInches, 3.0));
+		inTransitRoutines.add(new SequentialRoutine(scoreRoutines));*/
 
-        return new SequentialRoutine(routines);
+		routines.add(new ParallelRoutine(inTransitRoutines));
+
+		//Expel when everything is done to score
+		//routines.add(new IntakeWheelRoutine(Intake.WheelState.EXPELLING, 3.0));
+
+		return new SequentialRoutine(routines);
     }
 
 	@Override

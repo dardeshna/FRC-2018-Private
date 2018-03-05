@@ -37,8 +37,8 @@ public abstract class AutoModeBase {
 	public static Alliance mAlliance = Alliance.BLUE;
 	public static StartingPosition mStartingPosition = StartingPosition.CENTER;
 	public static Decision mScaleDecision = Decision.RIGHT;
-	public static Decision mSwitchDecision = Decision.LEFT;
-	public static Priority mPriority = Priority.SWITCH;
+	public static Decision mSwitchDecision = Decision.RIGHT;
+	public static Priority mPriority = Priority.SCALE;
 
 	public abstract Routine getRoutine();
 
