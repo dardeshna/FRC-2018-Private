@@ -112,10 +112,10 @@ public class Elevator extends Subsystem {
 					double distInchesFromBottom = Math.abs((mRobotState.elevatorPosition - getElevatorBottomPosition().get())/Constants.kElevatorTicksPerInch);
 					double distInchesFromTop = Math.abs((getElevatorTopPosition().get() - mRobotState.elevatorPosition)/Constants.kElevatorTicksPerInch);
 
-					//close to bottom
 					if(commands.disableElevatorScaling || mRobotState.hasElevatorStickyFaults) {
-						mOutput.setPercentOutput(mRobotState.operatorStickInput.getY());
+						mOutput.setPercentOutput(Constants.kElevatorUncalibratedManualPower * mRobotState.operatorStickInput.getY());
 					} else {
+						//close to bottom
 						if(distInchesFromBottom < Constants.kElevatorBottomScalingMarginInches) {
 							//Near bottom scales max allowed speed
 							//Going down is negative
@@ -189,8 +189,14 @@ public class Elevator extends Subsystem {
 	 */
 	private void handleState(Commands commands) {
 		if(mRobotState.hasElevatorStickyFaults && mRobotState.gamePeriod == RobotState.GamePeriod.AUTO) {
+			kElevatorBottomPosition = Optional.empty();
+			kElevatorTopPosition = Optional.empty();
+			mElevatorWantedPosition = Optional.empty();
 			mState = ElevatorState.IDLE;
 		} else if(mRobotState.hasElevatorStickyFaults && mRobotState.gamePeriod == RobotState.GamePeriod.TELEOP) {
+			kElevatorBottomPosition = Optional.empty();
+			kElevatorTopPosition = Optional.empty();
+			mElevatorWantedPosition = Optional.empty();
 			mState = ElevatorState.MANUAL_POSITIONING;
 		} else if(commands.wantedElevatorState == ElevatorState.CALIBRATING) {
 			if(!isCalibrated()) {
@@ -347,7 +353,7 @@ public class Elevator extends Subsystem {
 	 *         </p>
 	 */
 	public boolean onTarget() {
-		if(mState != ElevatorState.CUSTOM_POSITIONING) {
+		if(mState != ElevatorState.CUSTOM_POSITIONING || mRobotState.hasElevatorStickyFaults) {
 			return false;
 		}
 

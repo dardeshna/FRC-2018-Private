@@ -376,6 +376,7 @@ class HardwareUpdater {
 		robotState.elevatorBottomHFX = HardwareAdapter.getInstance().getDrivetrain().rightMasterTalon.getSensorCollection().isRevLimitSwitchClosed();
 		robotState.elevatorTopHFX = HardwareAdapter.getInstance().getDrivetrain().rightMasterTalon.getSensorCollection().isFwdLimitSwitchClosed();
 		StickyFaults elevatorStickyFaults = new StickyFaults();
+		HardwareAdapter.getInstance().getElevator().elevatorMasterTalon.clearStickyFaults(0);
 		HardwareAdapter.getInstance().getElevator().elevatorMasterTalon.getStickyFaults(elevatorStickyFaults);
 		robotState.hasElevatorStickyFaults = elevatorStickyFaults.hasAnyFault();
 	}
