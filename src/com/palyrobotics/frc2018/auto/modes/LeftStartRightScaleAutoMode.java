@@ -38,6 +38,8 @@ public class LeftStartRightScaleAutoMode extends AutoModeBase {
     @Override
     public Routine getRoutine() {
         List<Path.Waypoint> path = new ArrayList<>();
+        List<Path.Waypoint> lastSegment = new ArrayList<>();
+
         path.add(new Path.Waypoint(new Translation2d(0.0, 0.0), 72.0));
         if(mAlliance == Alliance.BLUE) {
             path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueScaleSwitchMidlineX - Constants.kRobotLengthInches/2.0,
@@ -45,7 +47,8 @@ public class LeftStartRightScaleAutoMode extends AutoModeBase {
             path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueScaleSwitchMidlineX - Constants.kRobotLengthInches/2.0,
                     -AutoDistances.kFieldWidth + Constants.kRobotWidthInches/2.0 + AutoDistances.kBlueLeftCornerOffset
                             + AutoDistances.kBlueRightScaleY + Constants.kPlateWidth/2.0), 72.0));
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueRightScaleX - Constants.kRobotLengthInches,
+            lastSegment.add(new Path.Waypoint(new Translation2d(0.0, 0.0), 72.0));
+            lastSegment.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueRightScaleX - Constants.kRobotLengthInches,
                     -AutoDistances.kFieldWidth + Constants.kRobotWidthInches/2.0 + AutoDistances.kBlueLeftCornerOffset
                             + AutoDistances.kBlueRightScaleY + Constants.kPlateWidth/2.0), 0.0));
         } else {
@@ -54,7 +57,8 @@ public class LeftStartRightScaleAutoMode extends AutoModeBase {
             path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedScaleSwitchMidlineX - Constants.kRobotLengthInches/2.0,
                     -AutoDistances.kFieldWidth + Constants.kRobotWidthInches/2.0 + AutoDistances.kRedLeftCornerOffset
                             + AutoDistances.kRedRightScaleY + Constants.kPlateWidth/2.0), 72.0));
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedRightScaleX - Constants.kRobotLengthInches,
+            lastSegment.add(new Path.Waypoint(new Translation2d(0.0, 0.0), 72.0));
+            lastSegment.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedRightScaleX - Constants.kRobotLengthInches,
                     -AutoDistances.kFieldWidth + Constants.kRobotWidthInches/2.0 + AutoDistances.kRedLeftCornerOffset
                             + AutoDistances.kRedRightScaleY + Constants.kPlateWidth/2.0), 0.0));
         }
@@ -67,9 +71,13 @@ public class LeftStartRightScaleAutoMode extends AutoModeBase {
         //Drive path while moving elevator up and moving intake down
         ArrayList<Routine> inTransitRoutines = new ArrayList<>();
         inTransitRoutines.add(new DrivePathRoutine(new Path(path), false));
-        inTransitRoutines.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorTopBottomDifferenceInches, 15));
         inTransitRoutines.add(new IntakeDownRoutine());
         routines.add(new ParallelRoutine(inTransitRoutines));
+
+        ArrayList<Routine> lastSegmentElevator = new ArrayList<>();
+        lastSegmentElevator.add(new DrivePathRoutine(new Path(lastSegment), false));
+        lastSegmentElevator.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorTopBottomDifferenceInches, 15));
+        routines.add(new ParallelRoutine(lastSegmentElevator));
 
         //Open when everything is done to score
         routines.add(new IntakeOpenRoutine());
