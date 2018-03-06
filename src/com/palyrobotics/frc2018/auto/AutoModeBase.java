@@ -39,6 +39,7 @@ public abstract class AutoModeBase {
 	public static Decision mScaleDecision = Decision.BOTH;
 	public static Decision mSwitchDecision = Decision.NEVER;
 	public static Priority mPriority = Priority.SCALE;
+	public static boolean mMultiCube = true;
 
 	public abstract Routine getRoutine();
 

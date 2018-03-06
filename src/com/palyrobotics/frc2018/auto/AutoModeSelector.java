@@ -1,10 +1,7 @@
 package com.palyrobotics.frc2018.auto;
 
 import com.palyrobotics.frc2018.auto.AutoFMS.Side;
-import com.palyrobotics.frc2018.auto.AutoModeBase.Alliance;
-import com.palyrobotics.frc2018.auto.AutoModeBase.Decision;
-import com.palyrobotics.frc2018.auto.AutoModeBase.Priority;
-import com.palyrobotics.frc2018.auto.AutoModeBase.StartingPosition;
+import com.palyrobotics.frc2018.auto.AutoModeBase.*;
 import com.palyrobotics.frc2018.auto.modes.*;
 import com.palyrobotics.frc2018.util.logger.Logger;
 import org.json.simple.JSONArray;
@@ -71,6 +68,23 @@ public class AutoModeSelector {
 		/* 24 */ registerAutonomous(new RightStartRightScaleAutoMode(Alliance.BLUE), 24);
 		/* 25 */ registerAutonomous(new RightStartRightScaleAutoMode(Alliance.RED), 25);
 
+		/* 26 */ registerAutonomous(new CenterStartLeftMultiSwitchAutoMode(Alliance.BLUE), 26);
+		/* 27 */ registerAutonomous(new CenterStartLeftMultiSwitchAutoMode(Alliance.RED), 27);
+
+		/* 28 */ registerAutonomous(new CenterStartRightMultiSwitchAutoMode(Alliance.BLUE), 28);
+		/* 29 */ registerAutonomous(new CenterStartRightMultiSwitchAutoMode(Alliance.RED), 29);
+
+		/* 30 */ registerAutonomous(new LeftStartLeftMultiScaleAutoMode(Alliance.BLUE), 30);
+		/* 31 */ registerAutonomous(new LeftStartLeftMultiScaleAutoMode(Alliance.RED), 31);
+
+		/* 32 */ registerAutonomous(new LeftStartRightMultiScaleAutoMode(Alliance.BLUE), 32);
+		/* 33 */ registerAutonomous(new LeftStartRightMultiScaleAutoMode(Alliance.RED), 33);
+
+		/* 34 */ registerAutonomous(new RightStartLeftMultiScaleAutoMode(Alliance.BLUE), 34);
+		/* 35 */ registerAutonomous(new RightStartLeftMultiScaleAutoMode(Alliance.RED), 35);
+
+		/* 36 */ registerAutonomous(new RightStartRightMultiScaleAutoMode(Alliance.BLUE), 36);
+		/* 37 */ registerAutonomous(new RightStartRightMultiScaleAutoMode(Alliance.RED), 37);
 	}
 
 	/**
@@ -91,10 +105,7 @@ public class AutoModeSelector {
 	 */
 	public AutoModeBase getAutoMode() {
 		return getAutoMode(AutoModeBase.mAlliance, AutoModeBase.mStartingPosition, AutoModeBase.mScaleDecision,
-				AutoModeBase.mSwitchDecision, AutoModeBase.mPriority);
-//		return new CenterStartRightMultiSwitchAutoMode(Alliance.BLUE);
-//		return new TestAutoMode();
-		// return new TestTrajectoryAutoMode();
+				AutoModeBase.mSwitchDecision, AutoModeBase.mPriority, AutoModeBase.mMultiCube);
 	}
 
 	/**
@@ -103,7 +114,7 @@ public class AutoModeSelector {
 	 * @return AutoMode at specified index
 	 */
 
-	public AutoModeBase getAutoMode(Alliance alliance, StartingPosition startingPosition, Decision scaleDecision, Decision switchDecision, Priority priority) {
+	public AutoModeBase getAutoMode(Alliance alliance, StartingPosition startingPosition, Decision scaleDecision, Decision switchDecision, Priority priority, boolean multiCube) {
 		//Final index
 		int selectedIndex;
 
@@ -117,7 +128,12 @@ public class AutoModeSelector {
 		//Find ideal scale auto, or the auto it would execute if it had to score on the scale
 		if(scaleDecision != Decision.NEVER) {
 			if(scaleDecision == Decision.BOTH || (scaleDecision == Decision.LEFT && scaleSide == Side.LEFT) || scaleDecision == Decision.RIGHT && scaleSide == Side.RIGHT) {
-				String key = alliance + " " + startingPosition + " SCALE " + scaleSide;
+				String key;
+				if(multiCube && startingPosition != StartingPosition.CENTER) {
+					key = alliance + " MULTI " + startingPosition + " SCALE " + scaleSide;
+				} else {
+					key = alliance + " " + startingPosition + " SCALE " + scaleSide;
+				}
 				scaleIndex = mAutoMap.get(key);
 				Logger.getInstance().logRobotThread(Level.INFO, "Attempted to find scale auto mode with this key: " + key);
 			}
@@ -126,7 +142,12 @@ public class AutoModeSelector {
 		//Find ideal switch auto, or the auto it would execute if it had to score on the switch
 		if(switchDecision != Decision.NEVER) {
 			if(switchDecision == Decision.BOTH || (switchDecision == Decision.LEFT && switchSide == Side.LEFT) || switchDecision == Decision.RIGHT && switchSide == Side.RIGHT) {
-				String key = alliance + " " + startingPosition + " SWITCH " + switchSide;
+				String key;
+				if(multiCube && startingPosition == StartingPosition.CENTER) {
+					key = alliance + " MULTI " + startingPosition + " SWITCH " + switchSide;
+				} else {
+					key = alliance + " " + startingPosition + " SWITCH " + switchSide;
+				}
 				switchIndex = mAutoMap.get(key);
 				Logger.getInstance().logRobotThread(Level.INFO, "Attempted to find switch auto mode with this key: " + key);
 			}

@@ -67,4 +67,9 @@ public class LeftStartLeftMultiScaleAutoMode extends AutoModeBase {
 
         return new SequentialRoutine(routines);
     }
+
+    @Override
+    public String getKey() {
+        return mAlliance + " MULTI LEFT SCALE LEFT";
+    }
 }

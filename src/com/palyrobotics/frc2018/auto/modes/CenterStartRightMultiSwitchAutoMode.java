@@ -145,7 +145,7 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
 
     @Override
     public String getKey() {
-        return mAlliance + " Center Switch Left";
+        return mAlliance + " MULTI CENTER SWITCH RIGHT";
     }
 
 }
