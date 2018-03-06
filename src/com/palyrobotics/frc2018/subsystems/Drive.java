@@ -246,6 +246,15 @@ public class Drive extends Subsystem {
 		newController = true;
 	}
 
+	public void setTrajectoryController(Path path, double lookahead, boolean inverted) {
+		/*mController = new AdaptivePurePursuitController(Constants.kPathFollowingLookahead, Constants.kPathFollowingMaxAccel, Constants.kNormalLoopsDt, path,
+				inverted, Constants.kPathFollowingTolerance);*/
+		mController = new AdaptivePurePursuitController(lookahead, Constants.kPathFollowingMaxAccel, Constants.kNormalLoopsDt, path,
+				inverted, 0);
+		mController.update(mCachedRobotState);
+		newController = true;
+	}
+
 	public void setDriveStraight(double distance) {
 		mController = new DriveStraightController(mCachedPose, distance);
 		newController = true;

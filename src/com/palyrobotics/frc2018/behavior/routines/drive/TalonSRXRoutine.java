@@ -103,6 +103,7 @@ public class TalonSRXRoutine extends Routine {
 		}
 		if(!drive.hasController() || (drive.getController().getClass() == TalonSRXDriveController.class && drive.controllerOnTarget())) {
 		}
+
 		return !drive.hasController() || System.currentTimeMillis() > this.timeout + startTime
 				|| (drive.getController().getClass() == TalonSRXDriveController.class && drive.controllerOnTarget());
 	}

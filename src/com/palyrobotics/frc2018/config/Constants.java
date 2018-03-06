@@ -67,7 +67,8 @@ public class Constants {
 	public static final double kNominalUpwardsOutput = 0.1;
 	public static final double kElevatorTopBottomDifferenceInches = 83.4192803716;
 	public static final double kElevatorHFXAcceptableError = 0.01;
-	public static final double kElevatorSwitchPositionInches = 36.5;
+	public static final double kElevatorSwitchPositionInches = 40.0;
+	public static final double kElevatorCubeInTransitPositionInches = 5.0;
 	public static final double kElevatorBottomPositionInches = 0;
 	public static final double kElevatorHoldVoltage = 0.11;
 
@@ -123,7 +124,7 @@ public class Constants {
 	public static final double kIntakeIdleCurrent = 0.125;
 	public static final double kIntakeExpelCurrent = 5;
 	public static final double kIntakeIntakeCurrent = 6;
-	public static final double kSwitchAutoWaitBeforeElevatorRaiseTimeSeconds = 1.0;
+	public static final double kSwitchAutoWaitBeforeElevatorRaiseTimeSeconds = 1.5;
 	public static final double kScaleAutoWaitBeforeElevatorRaiseTimeSeconds = 1.0;
 	public static final int kIntakeStallCounterThreshold = 2;
 	public static final int kIntakeFreeCounterThreshold = 1;
@@ -191,6 +192,7 @@ public class Constants {
 	public static final double kPlateWidth = 36.0;
 	public static final double kPlateLength = 49.0;
 	public static final double kSquareCubeLength = 13.0;
+	public static final double kPyramidSquareSideLength = 47.0;
 
 	//!!! Loop rate of normal Looper
 	public static final double kNormalLoopsDt = 0.02;

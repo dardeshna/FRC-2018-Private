@@ -41,8 +41,11 @@ public class TalonSRXDriveController implements Drive.DriveController {
 
 		Pose drivePose = Robot.getRobotState().drivePose;
 
-		System.out.println(drivePose.leftEncVelocity/ Constants.kDriveSpeedUnitConversion);
-		System.out.println(drivePose.rightEncVelocity/ Constants.kDriveSpeedUnitConversion);
+//		System.out.println(drivePose.leftEncVelocity/ Constants.kDriveSpeedUnitConversion);
+//		System.out.println(drivePose.rightEncVelocity/ Constants.kDriveSpeedUnitConversion);
+
+		System.out.println("left set" + getSetpoint().leftEncVelocity);
+		System.out.println("right set" + getSetpoint().rightEncVelocity);
 
 		DashboardManager.getInstance().updateCANTable("dt_left_dist",
 				Integer.toString((drivePose.leftMotionMagicPos.isPresent()) ? drivePose.leftMotionMagicPos.get() : 0));

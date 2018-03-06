@@ -92,6 +92,8 @@ public class AutoModeSelector {
 	public AutoModeBase getAutoMode() {
 		return getAutoMode(AutoModeBase.mAlliance, AutoModeBase.mStartingPosition, AutoModeBase.mScaleDecision,
 				AutoModeBase.mSwitchDecision, AutoModeBase.mPriority);
+//		return new CenterStartRightMultiSwitchAutoMode(Alliance.BLUE);
+//		return new TestAutoMode();
 		// return new TestTrajectoryAutoMode();
 	}
 
@@ -155,6 +157,10 @@ public class AutoModeSelector {
 		}
 
 		AutoModeBase selectedAuto = mAutoModes.get(selectedIndex);
+		System.out.println("Running Auto: " + selectedAuto);
+		System.out.println("Running Auto: " + selectedAuto);
+		System.out.println("Running Auto: " + selectedAuto);
+		System.out.println("Running Auto: " + selectedAuto);
 		Logger.getInstance().logRobotThread(Level.INFO, "Selected " + selectedAuto);
 		return selectedAuto;
 	}

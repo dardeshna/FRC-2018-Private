@@ -25,8 +25,8 @@ public class AutoDistances {
 	public static double kBlueLeftSwitchX;
 	public static double kBlueLeftSwitchY;
 
-    public static double pyramidStackX;
-	public static double pyramidStackY;
+    public static double kBluePyramidFromRightY;
+	public static double kRedPyramidFromRightY;
 
 	//Scales
 	public static double kBlueLeftScaleX;
@@ -106,6 +106,8 @@ public class AutoDistances {
 		kRedLeftSwitchY = getDoubleValue("kRedLeftSwitchY");
 		kBlueLeftSwitchX = getDoubleValue("kBlueLeftSwitchX");
 		kBlueLeftSwitchY = getDoubleValue("kBlueLeftSwitchY");
+		kBluePyramidFromRightY = getDoubleValue("kBluePyramidFromRightY");
+		kRedPyramidFromRightY = getDoubleValue("kRedPyramidFromRightY");
 		kBlueLeftScaleX = getDoubleValue("kBlueLeftScaleX");
 		kBlueLeftScaleY = getDoubleValue("kBlueLeftScaleY");
 		kBlueRightScaleX = getDoubleValue("kBlueRightScaleX");

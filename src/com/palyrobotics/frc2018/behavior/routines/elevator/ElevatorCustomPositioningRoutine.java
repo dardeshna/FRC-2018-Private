@@ -60,6 +60,14 @@ public class ElevatorCustomPositioningRoutine extends Routine {
 			Logger.getInstance().logRobotThread(Level.WARNING, "Elevator custom positioning routine timed out!");
 			return true;
 		}
+
+		if(elevator.getElevatorBottomPosition().isPresent() && elevator.getElevatorWantedPosition().isPresent()) {
+			if(elevator.getElevatorWantedPosition().get() == elevator.getElevatorBottomPosition().get() && robotState.elevatorBottomHFX) {
+				Logger.getInstance().logRobotThread(Level.INFO, "Elevator custom positioning routine finished due to bottom HFX");
+				return true;
+			}
+		}
+
 		return elevator.onTarget();
 	}
 

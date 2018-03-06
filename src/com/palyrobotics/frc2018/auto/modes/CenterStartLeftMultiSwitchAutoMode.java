@@ -44,31 +44,6 @@ public class CenterStartLeftMultiSwitchAutoMode extends AutoModeBase {
     public Routine getRoutine() {
         ArrayList<Routine> routines = new ArrayList<>();
         routines.add(new CenterStartLeftSwitchAutoMode(this.mAlliance).getRoutine());
-
-        ArrayList<Routine> secondCube = new ArrayList<>();
-        secondCube.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorBottomPositionInches, 15));
-        // back up to the right
-        secondCube.add(getBackupToSwitch());
-        routines.add(new ParallelRoutine(secondCube));
-
-        ArrayList<Routine> driveIntake = new ArrayList<>();
-        driveIntake.add(new IntakeWheelRoutine(Intake.WheelState.INTAKING, 1));
-        driveIntake.add(getDriveForward());
-        routines.add(new ParallelRoutine(driveIntake));
-
-        ArrayList<Routine> driveBack = new ArrayList<>();
-        driveBack.add(new IntakeWheelRoutine(Intake.WheelState.IDLE, 1));
-        driveBack.add(getBackupToSwitch());
-
-        routines.add(new ParallelRoutine(driveBack));
-
-        ArrayList<Routine> prepareForDrop = new ArrayList<>();
-        prepareForDrop.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorSwitchPositionInches, 15));
-        prepareForDrop.add(goBackToSwitch());
-
-        routines.add(new ParallelRoutine(prepareForDrop));
-        routines.add(getExpelDrop());
-
         return new SequentialRoutine(routines);
     }
 
@@ -77,48 +52,6 @@ public class CenterStartLeftMultiSwitchAutoMode extends AutoModeBase {
             new IntakeOpenRoutine();
             new IntakeWheelRoutine(Intake.WheelState.EXPELLING, 1);
         }});
-    }
-
-    /**
-     * Distance:
-     * - [(field width)/2 - distance from side to switch + pyramid stack width /2]
-     * - [pyramid stack width + some arbitrary constant to not hit the switch]
-     *
-     * @return
-     */
-    public DrivePathRoutine getBackupToSwitch() {
-        List<Waypoint> path = new ArrayList<>();
-        path.add(new Waypoint(new Translation2d(0, 0), 72.0));
-        if (mAlliance == Alliance.BLUE) {
-            path.add(new Waypoint(new Translation2d(-AutoDistances.pyramidStackX - Constants.kRobotLengthInches/2,
-                    -AutoDistances.kFieldWidth/2 + AutoDistances.kBlueLeftScaleY - Constants.kRobotWidthInches), 0.0));
-        } else {
-            path.add(new Waypoint(new Translation2d(-AutoDistances.pyramidStackX - Constants.kRobotLengthInches/2,
-                    -AutoDistances.kFieldWidth/2 + AutoDistances.kRedLeftScaleY - Constants.kRobotWidthInches), 0.0));
-        }
-
-        return new DrivePathRoutine(new Path(path), false);
-    }
-
-    /**
-     * Distance:
-     * - [(field width)/2 - distance from side to switch + pyramid stack width /2]
-     * - [pyramid stack width + some arbitrary constant to not hit the switch]
-     *
-     * @return
-     */
-    public DrivePathRoutine goBackToSwitch() {
-        List<Waypoint> path = new ArrayList<>();
-        path.add(new Waypoint(new Translation2d(0, 0), 72.0));
-        if (mAlliance == Alliance.BLUE) {
-            path.add(new Waypoint(new Translation2d(AutoDistances.pyramidStackX + Constants.kRobotLengthInches/2,
-                    AutoDistances.kFieldWidth/2 - AutoDistances.kBlueLeftScaleY + Constants.kRobotWidthInches), 0.0));
-        } else {
-            path.add(new Waypoint(new Translation2d(AutoDistances.pyramidStackX + Constants.kRobotLengthInches/2,
-                    AutoDistances.kFieldWidth/2 - AutoDistances.kRedLeftScaleY + Constants.kRobotWidthInches), 0.0));
-        }
-
-        return new DrivePathRoutine(new Path(path), false);
     }
 
     public DrivePathRoutine getDriveForward() {

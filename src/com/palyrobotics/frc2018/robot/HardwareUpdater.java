@@ -16,7 +16,6 @@ import com.palyrobotics.frc2018.util.logger.Logger;
 import com.palyrobotics.frc2018.util.trajectory.Kinematics;
 import com.palyrobotics.frc2018.util.trajectory.RigidTransform2d;
 import com.palyrobotics.frc2018.util.trajectory.Rotation2d;
-import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Timer;
 
@@ -195,6 +194,7 @@ class HardwareUpdater {
 		rightMasterTalon.setInverted(true);
 		rightSlave1Victor.setInverted(true);
 		rightSlave2Victor.setInverted(true);
+		rightSlave3Victor.setInverted(true);
 
 		//Set slave victors to follower mode
 		leftSlave1Victor.follow(leftMasterTalon);
@@ -230,6 +230,8 @@ class HardwareUpdater {
 		masterTalon.configPeakOutputReverse(-1, 0);
 		slaveTalon.configPeakOutputForward(1, 0);
 		slaveTalon.configPeakOutputReverse(-1, 0);
+
+		masterTalon.configClosedloopRamp(1.0, 0);
 
 		masterTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
 		masterTalon.setSensorPhase(true);
@@ -410,20 +412,17 @@ class HardwareUpdater {
 
 		RigidTransform2d odometry = robotState.generateOdometryFromSensors((robotState.drivePose.leftEnc - robotState.drivePose.lastLeftEnc) / Constants.kDriveTicksPerInch,
 				(robotState.drivePose.rightEnc - robotState.drivePose.lastRightEnc) / Constants.kDriveTicksPerInch, gyro_angle);
+
 		RigidTransform2d.Delta velocity = Kinematics.forwardKinematics(robotState.drivePose.leftEncVelocity / Constants.kDriveSpeedUnitConversion,
 				robotState.drivePose.rightEncVelocity / Constants.kDriveSpeedUnitConversion, gyro_velocity.getRadians());
 
 		robotState.addObservations(time, odometry, velocity);
 
-		System.out.println("x: " + odometry.getTranslation().getX());
-		System.out.println("y: " + odometry.getTranslation().getY());
-		System.out.println("angle: " + odometry.getRotation().getDegrees());
-		
 		//System.out.println("Odometry = " + odometry.getTranslation().getX());
 		//System.out.println("Velocity = " + velocity.dx);
-		//System.out.println("Gyro angle = " + robotState.drivePose.heading);
-		/*System.out.println("Latest field to vehicle = " + robotState.getLatestFieldToVehicle().toString());
-		System.out.println("Encoder estimate = " + left_distance);*/
+//		System.out.println("Gyro angle = " + robotState.drivePose.heading);
+//		System.out.println("Latest field to vehicle = " + robotState.getLatestFieldToVehicle().toString());
+//		System.out.println("Encoder estimate = " + left_distance);
 
 		//Update elevator sensors
 		robotState.elevatorPosition = HardwareAdapter.getInstance().getElevator().elevatorMasterTalon.getSelectedSensorPosition(0);

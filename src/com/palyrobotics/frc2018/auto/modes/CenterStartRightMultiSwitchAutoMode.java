@@ -1,16 +1,16 @@
 package com.palyrobotics.frc2018.auto.modes;
 
 import com.palyrobotics.frc2018.auto.AutoModeBase;
-import com.palyrobotics.frc2018.auto.AutoModeBase.Alliance;
 import com.palyrobotics.frc2018.behavior.ParallelRoutine;
 import com.palyrobotics.frc2018.behavior.Routine;
 import com.palyrobotics.frc2018.behavior.SequentialRoutine;
+import com.palyrobotics.frc2018.behavior.routines.TimeoutRoutine;
 import com.palyrobotics.frc2018.behavior.routines.drive.DrivePathRoutine;
 import com.palyrobotics.frc2018.behavior.routines.drive.DriveSensorResetRoutine;
+import com.palyrobotics.frc2018.behavior.routines.drive.DriveUntilHasCubeRoutine;
 import com.palyrobotics.frc2018.behavior.routines.elevator.ElevatorCustomPositioningRoutine;
 import com.palyrobotics.frc2018.behavior.routines.intake.IntakeDownRoutine;
-import com.palyrobotics.frc2018.behavior.routines.intake.IntakeOpenRoutine;
-import com.palyrobotics.frc2018.behavior.routines.intake.IntakeWheelRoutine;
+import com.palyrobotics.frc2018.behavior.routines.intake.IntakeSensorStopRoutine;
 import com.palyrobotics.frc2018.config.AutoDistances;
 import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.subsystems.Intake;
@@ -29,6 +29,8 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
         this.mAlliance = alliance;
     }
 
+    //Point in between getting second cube and switch, used as a vertex to curve off of
+    private Waypoint middleTransitPoint = new Waypoint(new Translation2d(-50.0, 24.0), 0.0);
 
     @Override
     public String toString() {
@@ -43,97 +45,102 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
     @Override
     public Routine getRoutine() {
         ArrayList<Routine> routines = new ArrayList<>();
+
+        //Initial cube score
         routines.add(new CenterStartRightSwitchAutoMode(this.mAlliance).getRoutine());
 
-        ArrayList<Routine> secondCube = new ArrayList<>();
-        secondCube.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorBottomPositionInches, 15));
-        // back up to the right
-        secondCube.add(getBackupToSwitch());
-        routines.add(new ParallelRoutine(secondCube));
+        ArrayList<Routine> prepareForSecondCube = new ArrayList<>();
 
-        ArrayList<Routine> driveIntake = new ArrayList<>();
-        driveIntake.add(new IntakeWheelRoutine(Intake.WheelState.INTAKING, 1));
-        driveIntake.add(getDriveForward());
-        routines.add(new ParallelRoutine(driveIntake));
+        prepareForSecondCube.add(getPrepareForIntaking());
+        prepareForSecondCube.add(getBackUpFromSwitch());
 
-        ArrayList<Routine> driveBack = new ArrayList<>();
-        driveBack.add(new IntakeWheelRoutine(Intake.WheelState.IDLE, 1));
-        driveBack.add(getBackupToSwitch());
+        //Back up and move elevator down
+        routines.add(new ParallelRoutine(prepareForSecondCube));
 
-        routines.add(new ParallelRoutine(driveBack));
+        //Drive to and intake cube
+        routines.add(getDriveToAndIntakeCube());
 
-        ArrayList<Routine> prepareForDrop = new ArrayList<>();
-        prepareForDrop.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorSwitchPositionInches, 15));
-        prepareForDrop.add(goBackToSwitch());
+        routines.add(getReturnToSwitchPt1());
 
-        routines.add(new ParallelRoutine(prepareForDrop));
-        routines.add(getExpelDrop());
+        routines.add(getReturnToSwitchPt2());
+
+        routines.add(new IntakeSensorStopRoutine(Intake.WheelState.EXPELLING, 1.0));
 
         return new SequentialRoutine(routines);
     }
 
-    public ParallelRoutine getExpelDrop() {
-        return new ParallelRoutine(new ArrayList<Routine>() {{
-            new IntakeOpenRoutine();
-            new IntakeWheelRoutine(Intake.WheelState.EXPELLING, 1);
-        }});
+    public Routine getBackUpFromSwitch() {
+        ArrayList<Routine> backUp = new ArrayList<>();
+
+        //zero drive sensors
+        backUp.add(new DriveSensorResetRoutine());
+
+        List<Waypoint> path = new ArrayList<>();
+
+        path.add(new Waypoint(new Translation2d(0.0, 0.0), 72.0));
+        path.add(new Waypoint(new Translation2d(-20.0, 0.0), 72.0));
+        path.add(middleTransitPoint);
+        backUp.add(new DrivePathRoutine(new Path(path), true));
+
+        return new SequentialRoutine(backUp);
+    }
+
+    public Routine getDriveToAndIntakeCube() {
+
+        ArrayList<Waypoint> path = new ArrayList<>();
+
+        path.add(new Waypoint(new Translation2d(-Constants.kPyramidSquareSideLength + Constants.kCenterOfRotationOffsetFromFrontInches,
+                AutoDistances.kBlueRightSwitchY - AutoDistances.kBluePyramidFromRightY - Constants.kPyramidSquareSideLength/2.0), 0.0));
+
+        return new DriveUntilHasCubeRoutine(new DrivePathRoutine(path, true, false));
     }
 
     /**
-     * Distance:
-     * - [(field width)/2 - distance from side to switch + pyramid stack width /2]
-     * - [pyramid stack width + some arbitrary constant to not hit the switch]
+     * Bring elevator and intake down
      *
      * @return
      */
-    public DrivePathRoutine getBackupToSwitch() {
-        List<Waypoint> path = new ArrayList<>();
-        path.add(new Waypoint(new Translation2d(0, 0), 72.0));
-        if (mAlliance == Alliance.BLUE) {
-            path.add(new Waypoint(new Translation2d(-AutoDistances.pyramidStackX - Constants.kRobotLengthInches/2,
-                    AutoDistances.kFieldWidth/2 - AutoDistances.kBlueLeftScaleY + Constants.kRobotWidthInches), 0.0));
-        } else {
-            path.add(new Waypoint(new Translation2d(-AutoDistances.pyramidStackX - Constants.kRobotLengthInches/2,
-                    AutoDistances.kFieldWidth/2 - AutoDistances.kRedLeftScaleY + Constants.kRobotWidthInches), 0.0));
-        }
-
-        return new DrivePathRoutine(new Path(path), false);
+    public Routine getPrepareForIntaking() {
+        //Use this in parallel with backing up
+        ArrayList<Routine> prepareForIntakingArrayList = new ArrayList<>();
+        prepareForIntakingArrayList.add(new TimeoutRoutine(1));
+        prepareForIntakingArrayList.add(new IntakeDownRoutine());
+        prepareForIntakingArrayList.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorBottomPositionInches, 1.5));
+        Routine prepareForIntakingRoutine = new SequentialRoutine(prepareForIntakingArrayList);
+        return prepareForIntakingRoutine;
     }
 
     /**
-     * Distance:
-     * - [(field width)/2 - distance from side to switch + pyramid stack width /2]
-     * - [pyramid stack width + some arbitrary constant to not hit the switch]
+     * Back up to get in position to drive in
      *
      * @return
      */
-    public DrivePathRoutine goBackToSwitch() {
-        List<Waypoint> path = new ArrayList<>();
-        path.add(new Waypoint(new Translation2d(0, 0), 72.0));
-        if (mAlliance == Alliance.BLUE) {
-            path.add(new Waypoint(new Translation2d(AutoDistances.pyramidStackX + Constants.kRobotLengthInches/2,
-                    -AutoDistances.kFieldWidth/2 + AutoDistances.kBlueLeftScaleY - Constants.kRobotWidthInches), 0.0));
-        } else {
-            path.add(new Waypoint(new Translation2d(AutoDistances.pyramidStackX + Constants.kRobotLengthInches/2,
-                    -AutoDistances.kFieldWidth/2 + AutoDistances.kRedLeftScaleY - Constants.kRobotWidthInches), 0.0));
-        }
+    public Routine getReturnToSwitchPt1() {
+        ArrayList<Routine> returnToSwitchPt1ArrayList = new ArrayList<>();
+        returnToSwitchPt1ArrayList.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorCubeInTransitPositionInches, 1.0));
 
-        return new DrivePathRoutine(new Path(path), false);
+        List<Waypoint> path = new ArrayList<>();
+        path.add(middleTransitPoint);
+        returnToSwitchPt1ArrayList.add(new DrivePathRoutine(new Path(path), true, 72.0,  true));
+
+        return new ParallelRoutine(returnToSwitchPt1ArrayList);
     }
 
-    public DrivePathRoutine getDriveForward() {
-        List<Waypoint> path = new ArrayList<>();
-        path.add(new Waypoint(new Translation2d(0, 0), 72.0));
-        path.add(new Waypoint(new Translation2d(12,0), 0));
-        return new DrivePathRoutine(new Path(path), false);
-    }
+    /**
+     * Drive into switch
+     *
+     * @return
+     */
+    public Routine getReturnToSwitchPt2() {
+        ArrayList<Routine> returnToSwitchPt2ArrayList = new ArrayList<>();
 
+        returnToSwitchPt2ArrayList.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorSwitchPositionInches, 1.5));
 
-    public DrivePathRoutine getDriveBack() {
         List<Waypoint> path = new ArrayList<>();
-        path.add(new Waypoint(new Translation2d(0, 0), 72.0));
-        path.add(new Waypoint(new Translation2d(12,0), 0));
-        return new DrivePathRoutine(new Path(path), false);
+        path.add(new Waypoint(new Translation2d(0.0, 0.0), 0.0));
+        returnToSwitchPt2ArrayList.add(new DrivePathRoutine(new Path(path), 20.0, true, 72.0, false));
+
+        return new ParallelRoutine(returnToSwitchPt2ArrayList);
     }
 
     @Override

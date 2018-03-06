@@ -9,6 +9,8 @@
     "kRedLeftSwitchY": 0,
     "kBlueLeftSwitchX": 0,
     "kBlueLeftSwitchY": 0,
+    "kBluePyramidFromRightY": 0,
+    "kRedPyramidFromRightY": 0,
     "kBlueLeftScaleX": 0,
     "kBlueLeftScaleY": 0,
     "kBlueRightScaleX": 0,

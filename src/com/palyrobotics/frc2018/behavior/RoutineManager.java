@@ -89,6 +89,7 @@ public class RoutineManager {
 				output = routine.cancel(output);
 				routinesToRemove.add(routine);
 			} else {
+//				System.out.println("Running Routine: " + routine.getName());
 				output = routine.update(output);
 			}
 		}

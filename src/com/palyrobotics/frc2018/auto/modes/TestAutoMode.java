@@ -22,7 +22,9 @@ public class TestAutoMode extends AutoModeBase {
 
 	@Override
 	public Routine getRoutine() {
-		return getDrive();
+
+		return testF();
+//		return getDrive();
 	}
 
 	@Override
@@ -33,6 +35,17 @@ public class TestAutoMode extends AutoModeBase {
 	@Override
 	public void prestart() {
 		Logger.getInstance().logRobotThread(Level.FINE, "Starting TestAutoMode");
+	}
+
+	private Routine testF() {
+		double power = 0.1;
+		DriveSignal signal = DriveSignal.getNeutralSignal();
+		signal.leftMotor.setVelocity(20 * Constants.kDriveSpeedUnitConversion, Gains.forsetiVelocity);
+		signal.rightMotor.setVelocity(20 * Constants.kDriveSpeedUnitConversion, Gains.forsetiVelocity);
+
+//		signal.leftMotor.setPercentOutput(0.4);
+//		signal.rightMotor.setPercentOutput(0.4);
+		return new TalonSRXRoutine(signal, false);
 	}
 
 	private SequentialRoutine getDrive() {

@@ -46,7 +46,8 @@ public class Path {
 			mSegments.add(new PathSegment(waypoints.get(i).position, waypoints.get(i + 1).position, waypoints.get(i).speed));
 		}
 		//The first waypoint is already complete
-		if(mWaypoints.size() > 0) {
+		//If 1, assume sticking a point before this and this point needs to stay
+		if(mWaypoints.size() > 1) {
 			Waypoint first_waypoint = mWaypoints.get(0);
 			if(first_waypoint.marker.isPresent()) {
 				mMarkersCrossed.add(first_waypoint.marker.get());
@@ -201,7 +202,7 @@ public class Path {
 		}
 	}
 
-	public List<Waypoint> getmWaypoints() {
+	public List<Waypoint> getWaypoints() {
 		return this.mWaypoints;
 	}
 }
