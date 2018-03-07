@@ -13,7 +13,7 @@ public class DriverProfiles {
 			case ERIC:
 				Constants.kDeadband = 0.02;
 
-				Constants.kDriveSensitivity = .7;
+				Constants.kDriveSensitivity = 1.0;
 
 				Constants.kQuickTurnSensitivity = 0.675;//0.8;
 				Constants.kPreciseQuickTurnSensitivity = 0.35;

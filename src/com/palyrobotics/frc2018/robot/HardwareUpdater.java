@@ -16,6 +16,7 @@ import com.palyrobotics.frc2018.util.logger.Logger;
 import com.palyrobotics.frc2018.util.trajectory.Kinematics;
 import com.palyrobotics.frc2018.util.trajectory.RigidTransform2d;
 import com.palyrobotics.frc2018.util.trajectory.Rotation2d;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Timer;
 
@@ -35,8 +36,6 @@ class HardwareUpdater {
 
 	private int intakeStallCounter = 10;
 	private int intakeFreeSpinCounter = 0;
-
-
 
 	/**
 	 * Hardware Updater for Forseti
@@ -193,8 +192,8 @@ class HardwareUpdater {
 		leftMasterTalon.configClosedloopRamp(0.2, 0);
 		rightMasterTalon.configClosedloopRamp(0.2, 0);
 
-		leftMasterTalon.configOpenloopRamp(0.1, 0);
-		rightMasterTalon.configOpenloopRamp(0.1, 0);
+		leftMasterTalon.configOpenloopRamp(0.15, 0);
+		rightMasterTalon.configOpenloopRamp(0.15, 0);
 
 		//Reverse right side
 		rightMasterTalon.setInverted(true);
@@ -209,6 +208,8 @@ class HardwareUpdater {
         rightSlave1Victor.follow(rightMasterTalon);
         rightSlave2Victor.follow(rightMasterTalon);
         rightSlave3Victor.follow(rightMasterTalon);
+
+		Compressor c = new Compressor();
     }
 
 	void configureElevatorHardware() {
@@ -237,7 +238,8 @@ class HardwareUpdater {
 		slaveTalon.configPeakOutputForward(1, 0);
 		slaveTalon.configPeakOutputReverse(-1, 0);
 
-		masterTalon.configClosedloopRamp(1.0, 0);
+		masterTalon.configClosedloopRamp(0.4, 0);
+		masterTalon.configOpenloopRamp(0.4, 0);
 
 		masterTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
 		masterTalon.setSensorPhase(true);

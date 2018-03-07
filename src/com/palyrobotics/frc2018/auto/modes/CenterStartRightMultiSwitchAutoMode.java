@@ -31,7 +31,7 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
     }
 
     //Point in between getting second cube and switch, used as a vertex to curve off of
-    private Waypoint middleTransitPoint = new Waypoint(new Translation2d(-50.0, -24.0), 0.0);
+    private Waypoint middleTransitPoint = new Waypoint(new Translation2d(-60.0, -30.0), 0.0);
 
     @Override
     public String toString() {
@@ -65,8 +65,6 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
 
         routines.add(getReturnToSwitchPt2());
 
-//        routines.add(new IntakeSensorStopRoutine(Intake.WheelState.EXPELLING, 1.0));
-
         routines.add(new IntakeWheelRoutine(Intake.WheelState.EXPELLING, 2.0));
 
         return new SequentialRoutine(routines);
@@ -81,7 +79,7 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
         List<Waypoint> path = new ArrayList<>();
 
         path.add(new Waypoint(new Translation2d(0.0, 0.0), 72.0));
-        path.add(new Waypoint(new Translation2d(-20.0, 0.0), 72.0));
+        path.add(new Waypoint(new Translation2d(-40.0, 0.0), 72.0));
         path.add(middleTransitPoint);
         backUp.add(new DrivePathRoutine(new Path(path), true));
 
@@ -92,10 +90,10 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
 
         ArrayList<Waypoint> path = new ArrayList<>();
 
-        path.add(new Waypoint(new Translation2d(-Constants.kPyramidSquareSideLength + Constants.kCenterOfRotationOffsetFromFrontInches,
-                -(AutoDistances.kBlueRightSwitchY - AutoDistances.kBluePyramidFromRightY - Constants.kPyramidSquareSideLength/2.0)), 0.0));
+        path.add(new Waypoint(new Translation2d(-Constants.kPyramidSquareSideLength + Constants.kCenterOfRotationOffsetFromFrontInches + Constants.kSquareCubeLength/2.0,
+                -(AutoDistances.kBlueRightSwitchY - AutoDistances.kBluePyramidFromRightY - Constants.kPyramidSquareSideLength/2.0 - Constants.kPlateWidth/2.0)), 0.0));
 
-        return new DriveUntilHasCubeRoutine(new DrivePathRoutine(path, false, 72.0,  true, 25.0, 2.0));
+        return new DriveUntilHasCubeRoutine(new DrivePathRoutine(path, false, 50.0,  true, 20.0, 2.0));
     }
 
     /**

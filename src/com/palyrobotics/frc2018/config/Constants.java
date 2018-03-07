@@ -126,8 +126,8 @@ public class Constants {
 	public static final double kIntakeIntakeCurrent = 6;
 	public static final double kSwitchAutoWaitBeforeElevatorRaiseTimeSeconds = 1.5;
 	public static final double kScaleAutoWaitBeforeElevatorRaiseTimeSeconds = 1.0;
-	public static final int kIntakeStallCounterThreshold = 2;
-	public static final int kIntakeFreeCounterThreshold = 1;
+	public static final int kIntakeStallCounterThreshold = 3;
+	public static final int kIntakeFreeCounterThreshold = 3;
 
 	//Climber
 
