@@ -21,6 +21,7 @@ public class DrivePathRoutine extends Routine {
 	private boolean mAddCurrentPosition;
 	private double mStartSpeed;
 	private boolean mInverted;
+	private double mTolerance;
 
 	/**
 	 *
@@ -34,6 +35,7 @@ public class DrivePathRoutine extends Routine {
 		this.mAddCurrentPosition = false;
 		this.mStartSpeed = 72.0;
 		this.mInverted = inverted;
+		this.mTolerance = 0.0;
 	}
 
 	/**
@@ -42,64 +44,61 @@ public class DrivePathRoutine extends Routine {
 	 * @param lookAhead the lookahead distance desired
 	 * @param inverted whether or not to drive backwards
 	 */
-	public DrivePathRoutine(Path path, double lookAhead, boolean inverted) {
+	public DrivePathRoutine(Path path, boolean inverted, double lookAhead) {
 		this.mPath = path;
 		this.mLookAhead = lookAhead;
 		this.mAddCurrentPosition = false;
 		this.mStartSpeed = 0;
 		this.mInverted = inverted;
+		this.mTolerance = 0.0;
+
 	}
 
-	/**
-	 *
-	 * @param path the path to follow
-	 * @param lookAhead the lookahead distance desired
-	 * @param addCurrentPosition whether or not to add your current point to the start of the path
-	 * @param startSpeed your starting speed
-	 * @param inverted whether or not to drive backwards
-	 */
-	public DrivePathRoutine(Path path, double lookAhead, boolean addCurrentPosition, double startSpeed, boolean inverted) {
-		this.mPath = path;
-		this.mLookAhead = lookAhead;
-		this.mAddCurrentPosition = addCurrentPosition;
+	public DrivePathRoutine(ArrayList<Path.Waypoint> pathList, boolean inverted, double startSpeed, boolean addCurrentPosition) {
+		this.mPath = new Path(pathList);
+	    this.pathList = pathList;
+		this.mInverted = inverted;
 		this.mStartSpeed = startSpeed;
-		this.mInverted = inverted;
-	}
-
-	/**
-	 *
-	 * @param path the path to follow
-	 * @param addCurrentPosition whether or not to add your current point to the start of the path
-	 * @param currentSpeed your start speed
-	 * @param inverted whether or not to drive backwards
-	 */
-	public DrivePathRoutine(Path path, boolean addCurrentPosition, double currentSpeed, boolean inverted) {
-		this.mPath = path;
 		this.mAddCurrentPosition = addCurrentPosition;
-		this.mStartSpeed = currentSpeed;
-		this.mInverted = inverted;
+		this.mTolerance = 0.0;
 	}
 
-	public DrivePathRoutine(ArrayList<Path.Waypoint> pathList, boolean inverted, boolean addCurrentPosition) {
+	public DrivePathRoutine(ArrayList<Path.Waypoint> pathList, boolean inverted, double startSpeed, boolean addCurrentPosition, double lookahead) {
+		this.mPath = new Path(pathList);
 		this.pathList = pathList;
 		this.mInverted = inverted;
+		this.mStartSpeed = startSpeed;
+		this.mLookAhead = lookahead;
 		this.mAddCurrentPosition = addCurrentPosition;
+		this.mTolerance = 0.0;
+	}
+
+	public DrivePathRoutine(ArrayList<Path.Waypoint> pathList, boolean inverted, double startSpeed, boolean addCurrentPosition, double lookahead, double tolerance) {
+		this.mPath = new Path(pathList);
+		this.pathList = pathList;
+		this.mInverted = inverted;
+		this.mStartSpeed = startSpeed;
+		this.mLookAhead = lookahead;
+		this.mAddCurrentPosition = addCurrentPosition;
+		this.mTolerance = tolerance;
 	}
 
 	@Override
 	public void start() {
 		if(mAddCurrentPosition) {
 			pathList.add(0, new Path.Waypoint(robotState.getLatestFieldToVehicle().getValue().getTranslation(), mStartSpeed));
+
+			System.out.println("-------------------");
+			for (Path.Waypoint point : pathList) {
+				System.out.println("pos: " + point.position.toString());
+				System.out.println("speed: " + point.speed);
+			}
+			System.out.println("-------------------");
+
 			mPath = new Path(pathList);
 		}
 
-		System.out.println("AFTER");
-		for (Path.Waypoint point : mPath.getWaypoints()) {
-			System.out.println("pos: " + point.position.toString());
-			System.out.println("speed: " + point.speed);
-		}
-
-		drive.setTrajectoryController(mPath, mLookAhead, mInverted);
+		drive.setTrajectoryController(mPath, mLookAhead, mInverted, mTolerance);
 	}
 
 	@Override

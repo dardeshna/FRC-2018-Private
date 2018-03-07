@@ -36,6 +36,9 @@ public class IntakeSensorStopRoutine extends Routine {
      * Requires tuning to determine thresholds, relationship to max values.
      */
     public Commands update(Commands commands) {
+        if(wantedWheelState == Intake.WheelState.INTAKING) {
+            commands.wantedIntakeOpenCloseState = Intake.OpenCloseState.NEUTRAL;
+        }
         commands.wantedIntakingState = wantedWheelState;
         return commands;
     }
@@ -43,6 +46,9 @@ public class IntakeSensorStopRoutine extends Routine {
     @Override
     public Commands cancel(Commands commands) {
     	commands.wantedIntakingState = Intake.WheelState.IDLE;
+    	if(wantedWheelState == Intake.WheelState.INTAKING) {
+    	    commands.wantedIntakeOpenCloseState = Intake.OpenCloseState.CLOSED;
+        }
         return commands;
     }
 

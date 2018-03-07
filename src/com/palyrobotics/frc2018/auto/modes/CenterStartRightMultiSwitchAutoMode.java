@@ -11,6 +11,7 @@ import com.palyrobotics.frc2018.behavior.routines.drive.DriveUntilHasCubeRoutine
 import com.palyrobotics.frc2018.behavior.routines.elevator.ElevatorCustomPositioningRoutine;
 import com.palyrobotics.frc2018.behavior.routines.intake.IntakeDownRoutine;
 import com.palyrobotics.frc2018.behavior.routines.intake.IntakeSensorStopRoutine;
+import com.palyrobotics.frc2018.behavior.routines.intake.IntakeWheelRoutine;
 import com.palyrobotics.frc2018.config.AutoDistances;
 import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.subsystems.Intake;
@@ -30,7 +31,7 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
     }
 
     //Point in between getting second cube and switch, used as a vertex to curve off of
-    private Waypoint middleTransitPoint = new Waypoint(new Translation2d(-50.0, 24.0), 0.0);
+    private Waypoint middleTransitPoint = new Waypoint(new Translation2d(-50.0, -24.0), 0.0);
 
     @Override
     public String toString() {
@@ -64,7 +65,9 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
 
         routines.add(getReturnToSwitchPt2());
 
-        routines.add(new IntakeSensorStopRoutine(Intake.WheelState.EXPELLING, 1.0));
+//        routines.add(new IntakeSensorStopRoutine(Intake.WheelState.EXPELLING, 1.0));
+
+        routines.add(new IntakeWheelRoutine(Intake.WheelState.EXPELLING, 2.0));
 
         return new SequentialRoutine(routines);
     }
@@ -90,9 +93,9 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
         ArrayList<Waypoint> path = new ArrayList<>();
 
         path.add(new Waypoint(new Translation2d(-Constants.kPyramidSquareSideLength + Constants.kCenterOfRotationOffsetFromFrontInches,
-                AutoDistances.kBlueRightSwitchY - AutoDistances.kBluePyramidFromRightY - Constants.kPyramidSquareSideLength/2.0), 0.0));
+                -(AutoDistances.kBlueRightSwitchY - AutoDistances.kBluePyramidFromRightY - Constants.kPyramidSquareSideLength/2.0)), 0.0));
 
-        return new DriveUntilHasCubeRoutine(new DrivePathRoutine(path, true, false));
+        return new DriveUntilHasCubeRoutine(new DrivePathRoutine(path, false, 72.0,  true, 25.0, 2.0));
     }
 
     /**
@@ -119,9 +122,9 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
         ArrayList<Routine> returnToSwitchPt1ArrayList = new ArrayList<>();
         returnToSwitchPt1ArrayList.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorCubeInTransitPositionInches, 1.0));
 
-        List<Waypoint> path = new ArrayList<>();
+        ArrayList<Waypoint> path = new ArrayList<>();
         path.add(middleTransitPoint);
-        returnToSwitchPt1ArrayList.add(new DrivePathRoutine(new Path(path), true, 72.0,  true));
+        returnToSwitchPt1ArrayList.add(new DrivePathRoutine(path, true, 72.0,  true, Constants.kPathFollowingLookahead, 2.0));
 
         return new ParallelRoutine(returnToSwitchPt1ArrayList);
     }
@@ -136,9 +139,9 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
 
         returnToSwitchPt2ArrayList.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorSwitchPositionInches, 1.5));
 
-        List<Waypoint> path = new ArrayList<>();
+        ArrayList<Waypoint> path = new ArrayList<>();
         path.add(new Waypoint(new Translation2d(0.0, 0.0), 0.0));
-        returnToSwitchPt2ArrayList.add(new DrivePathRoutine(new Path(path), 20.0, true, 72.0, false));
+        returnToSwitchPt2ArrayList.add(new DrivePathRoutine(path,  false, 72.0, true, Constants.kPathFollowingLookahead, 2.0));
 
         return new ParallelRoutine(returnToSwitchPt2ArrayList);
     }

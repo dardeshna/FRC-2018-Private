@@ -8,10 +8,7 @@ import com.palyrobotics.frc2018.behavior.routines.TimeoutRoutine;
 import com.palyrobotics.frc2018.behavior.routines.drive.DrivePathRoutine;
 import com.palyrobotics.frc2018.behavior.routines.drive.DriveSensorResetRoutine;
 import com.palyrobotics.frc2018.behavior.routines.elevator.ElevatorCustomPositioningRoutine;
-import com.palyrobotics.frc2018.behavior.routines.intake.IntakeDownRoutine;
-import com.palyrobotics.frc2018.behavior.routines.intake.IntakeOpenRoutine;
-import com.palyrobotics.frc2018.behavior.routines.intake.IntakeUpRoutine;
-import com.palyrobotics.frc2018.behavior.routines.intake.IntakeWheelRoutine;
+import com.palyrobotics.frc2018.behavior.routines.intake.*;
 import com.palyrobotics.frc2018.config.AutoDistances;
 import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.subsystems.Intake;
@@ -77,7 +74,7 @@ public class CenterStartRightSwitchAutoMode extends AutoModeBase {
 		routines.add(new ParallelRoutine(inTransitRoutines));
 
 		//Expel when everything is done to score
-		routines.add(new IntakeWheelRoutine(Intake.WheelState.EXPELLING, 3.0));
+		routines.add(new IntakeSensorStopRoutine(Intake.WheelState.EXPELLING, 1.5));
 
 		return new SequentialRoutine(routines);
 	}

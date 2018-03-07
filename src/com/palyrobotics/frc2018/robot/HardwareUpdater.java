@@ -190,6 +190,12 @@ class HardwareUpdater {
 		leftMasterTalon.setSelectedSensorPosition(0, 0, 0);
 		rightMasterTalon.setSelectedSensorPosition(0, 0, 0);
 
+		leftMasterTalon.configClosedloopRamp(0.2, 0);
+		rightMasterTalon.configClosedloopRamp(0.2, 0);
+
+		leftMasterTalon.configOpenloopRamp(0.1, 0);
+		rightMasterTalon.configOpenloopRamp(0.1, 0);
+
 		//Reverse right side
 		rightMasterTalon.setInverted(true);
 		rightSlave1Victor.setInverted(true);
@@ -418,7 +424,6 @@ class HardwareUpdater {
 
 		robotState.addObservations(time, odometry, velocity);
 
-		//System.out.println("Odometry = " + odometry.getTranslation().getX());
 		//System.out.println("Velocity = " + velocity.dx);
 //		System.out.println("Gyro angle = " + robotState.drivePose.heading);
 //		System.out.println("Latest field to vehicle = " + robotState.getLatestFieldToVehicle().toString());
