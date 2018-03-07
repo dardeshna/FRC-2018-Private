@@ -149,6 +149,28 @@ public class HardwareAdapter {
 		}
 	}
 
+    /**
+     * Miscellaneous Hardware - Compressor sensor(Analog Input), Compressor, PDP
+     */
+	public static class MiscellaneousHardware {
+	    private static MiscellaneousHardware instance = new MiscellaneousHardware();
+
+	    private static MiscellaneousHardware getInstance() {
+	        return instance;
+        }
+
+        public final Compressor compressor;
+        public final AnalogInput compressorSensor;
+        public final PowerDistributionPanel pdp;
+
+        protected MiscellaneousHardware() {
+            compressor = new Compressor();
+            compressorSensor = new AnalogInput(Constants.kForsetiCompressorSensorDeviceID);
+            pdp = new PowerDistributionPanel();
+        }
+
+    }
+
 	//Wrappers to access hardware groups
 	public DrivetrainHardware getDrivetrain() {
 		return DrivetrainHardware.getInstance();
@@ -169,6 +191,10 @@ public class HardwareAdapter {
 	public Joysticks getJoysticks() {
 		return Joysticks.getInstance();
 	}
+
+	public MiscellaneousHardware getMiscellaneousHardware() {
+	    return MiscellaneousHardware.getInstance();
+    }
 
 	//Singleton set up
 	private static final HardwareAdapter instance = new HardwareAdapter();

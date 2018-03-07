@@ -18,7 +18,10 @@ import com.palyrobotics.frc2018.util.trajectory.RigidTransform2d;
 import com.palyrobotics.frc2018.util.trajectory.Rotation2d;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 import java.util.Optional;
 import java.util.logging.Level;
@@ -289,6 +292,11 @@ class HardwareUpdater {
         slaveTalon.follow(masterTalon);
 	}
 
+	void configureMiscellaneousHardware() {
+		PowerDistributionPanel pdp = HardwareAdapter.getInstance().getMiscellaneousHardware().pdp;
+		LiveWindow.disableTelemetry(pdp);
+	}
+
 	/**
 	 * Updates all the sensor data taken from the hardware
 	 */
@@ -426,10 +434,18 @@ class HardwareUpdater {
 
 		robotState.addObservations(time, odometry, velocity);
 
+		//System.out.println("Odometry = " + odometry.getTranslation().getX());
 		//System.out.println("Velocity = " + velocity.dx);
 //		System.out.println("Gyro angle = " + robotState.drivePose.heading);
 //		System.out.println("Latest field to vehicle = " + robotState.getLatestFieldToVehicle().toString());
 //		System.out.println("Encoder estimate = " + left_distance);
+
+//        //Update compressor pressure
+//        robotState.compressorPressure = HardwareAdapter.getInstance().getMiscellaneousHardware().compressorSensor.getVoltage() * Constants.kForsetiCompressorVoltageToPSI; //TODO: Implement the constant!
+//
+//        //Update battery voltage
+//        PowerDistributionPanel pdp = HardwareAdapter.getInstance().getMiscellaneousHardware().pdp;
+//        robotState.totalCurrentDraw = pdp.getTotalCurrent() - pdp.getCurrent(Constants.kForsetiCompressorDeviceID); //TODO: Implement this!
 
 		//Update elevator sensors
 		robotState.elevatorPosition = HardwareAdapter.getInstance().getElevator().elevatorMasterTalon.getSelectedSensorPosition(0);
@@ -450,6 +466,7 @@ class HardwareUpdater {
 		updateClimber();
 		updateElevator();
 		updateIntake();
+		updateMiscellaneousHardware();
 	}
 
 	/**
@@ -459,6 +476,29 @@ class HardwareUpdater {
 		updateTalonSRX(HardwareAdapter.getInstance().getDrivetrain().leftMasterTalon, mDrive.getDriveSignal().leftMotor);
 		updateTalonSRX(HardwareAdapter.getInstance().getDrivetrain().rightMasterTalon, mDrive.getDriveSignal().rightMotor);
 	}
+
+
+    /**
+     * Checks if the compressor should compress and updates it accordingly
+     */
+	private void updateMiscellaneousHardware() {
+	    if(shouldCompress()) {
+	        HardwareAdapter.getInstance().getMiscellaneousHardware().compressor.start();
+        } else {
+            HardwareAdapter.getInstance().getMiscellaneousHardware().compressor.stop();
+        }
+    }
+
+    /**
+     * Runs the compressor only when the pressure too low or the current draw is
+     * low enough
+     */
+    private boolean shouldCompress() {
+//        double currentDraw = RobotState.getInstance().totalCurrentDraw;
+//        double pressure = RobotState.getInstance().compressorPressure;
+//        return currentDraw * pressure < Constants.kForsetiPressureCurrentProductThreshold; //TODO: Implement this!
+    	return !(RobotState.getInstance().gamePeriod == RobotState.GamePeriod.AUTO);
+    }
 
 	/**
 	 * Updates the elevator

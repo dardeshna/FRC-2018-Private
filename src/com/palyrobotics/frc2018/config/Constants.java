@@ -146,6 +146,13 @@ public class Constants {
 	//PDP
 	public static final int kForsetiPDPDeviceID = 0;
 
+	//Compressor
+    public static final int kForsetiCompressorSensorDeviceID = 0;
+    public static final int kForsetiCompressorDeviceID = 0;
+    public static final int kForsetiCompressorVoltageToPSI = 0;
+    public static final int kForsetiPressureCurrentProductThreshold = 0;
+    public static final int kForsetiCompressorMaxPSI = 120;
+
 	//DRIVETRAIN
 	//PDP slots for drivetrain 0, 1, 2, 3, 12, 13
 	public static final int kForsetiLeftDriveMasterDeviceID = 1;

@@ -43,8 +43,11 @@ public class RobotState {
 //	public double cubeDistance = 0;
 
 
-	//Tracks total voltage from kPDP
-	public double totalVoltageDraw = 0;
+	//Tracks total current from kPDP
+	public double totalCurrentDraw = 0;
+
+	//Tracks pressure in compressor
+    public double compressorPressure = 0;
 
 	//Pose stores drivetrain sensor data
 	public Pose drivePose = new Pose(0, 0, 0, 0, 0, 0, 0, 0);
