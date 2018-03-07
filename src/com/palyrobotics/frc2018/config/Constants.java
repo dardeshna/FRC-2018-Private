@@ -22,7 +22,7 @@ public class Constants {
 	public static final RobotName kRobotName = RobotName.FORSETI;
 	public static final DriverName kDriverName = DriverName.ERIC;
 	public static final OperatorName kOperatorName = OperatorName.JACOB;
-	public static final FieldName kFieldName = FieldName.TEAM_8;
+	public static final FieldName kFieldName = FieldName.AZN_PRACTICE;
 
 	//Android app information
 	public static final String kPackageName = "com.frc8.team8vision.visionapp2018";
@@ -43,6 +43,7 @@ public class Constants {
 	 */
 	//Deadband for joysticks
 	public static double kDeadband;
+	public static double kMaxAccelRate;
 	//Threshold for quickturn sensitivity change
 	public static double kQuickTurnSensitivityThreshold;
 	//Sensitivities for how fast non-quickturn turning is
@@ -120,10 +121,14 @@ public class Constants {
 	public static final double kIntakingMotorVelocity = 0.75;
 	public static final double kExpellingMotorVelocity = -0.35;
 	public static final double kExpelToScoreTime = 0.5;
-	public static final double kIntakeStallCurrent = 70;
-	public static final double kIntakeIdleCurrent = 0.125;
-	public static final double kIntakeExpelCurrent = 5;
-	public static final double kIntakeIntakeCurrent = 6;
+	public static final double kIntakeMasterStallCurrent = 70;
+	public static final double kIntakeMasterIdleCurrent = 0.125;
+	public static final double kIntakeMasterExpelCurrent = 5;
+	public static final double kIntakeMasterIntakingCurrent = 6;
+	public static final double kIntakeSlaveStallCurrent = 70;
+	public static final double kIntakeSlaveIdleCurrent = 0.125;
+	public static final double kIntakeSlaveExpelCurrent = 5;
+	public static final double kIntakeSlaveIntakingCurrent = 6;
 	public static final double kSwitchAutoWaitBeforeElevatorRaiseTimeSeconds = 1.5;
 	public static final double kScaleAutoWaitBeforeElevatorRaiseTimeSeconds = 1.0;
 	public static final int kIntakeStallCounterThreshold = 3;

@@ -18,7 +18,6 @@ import com.palyrobotics.frc2018.util.trajectory.RigidTransform2d;
 import com.palyrobotics.frc2018.util.trajectory.Rotation2d;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -390,20 +389,24 @@ class HardwareUpdater {
 			robotState.drivePose.rightMotionMagicVel = Optional.empty();
 		}
 
-		if(HardwareAdapter.getInstance().getIntake().masterTalon.getOutputCurrent() >= Constants.kIntakeStallCurrent
-				&& HardwareAdapter.getInstance().getIntake().slaveTalon.getOutputCurrent() >= Constants.kIntakeStallCurrent
+		if(HardwareAdapter.getInstance().getIntake().masterTalon.getOutputCurrent() >= Constants.kIntakeMasterStallCurrent
+				&& HardwareAdapter.getInstance().getIntake().slaveTalon.getOutputCurrent() >= Constants.kIntakeSlaveStallCurrent
 				&& mIntake.getWheelState() == Intake.WheelState.INTAKING) {
 			intakeStallCounter++;
 		} else {
 			intakeStallCounter = 0;
 		}
 
-		if(HardwareAdapter.getInstance().getIntake().masterTalon.getOutputCurrent() > Constants.kIntakeIdleCurrent
-				&& HardwareAdapter.getInstance().getIntake().masterTalon.getOutputCurrent() <= Constants.kIntakeExpelCurrent
+		if(HardwareAdapter.getInstance().getIntake().masterTalon.getOutputCurrent() > Constants.kIntakeMasterIdleCurrent
+				&& HardwareAdapter.getInstance().getIntake().masterTalon.getOutputCurrent() <= Constants.kIntakeMasterExpelCurrent
+				&& HardwareAdapter.getInstance().getIntake().slaveTalon.getOutputCurrent() > Constants.kIntakeSlaveIdleCurrent
+				&& HardwareAdapter.getInstance().getIntake().slaveTalon.getOutputCurrent() <= Constants.kIntakeSlaveExpelCurrent
 				&& mIntake.getWheelState() == Intake.WheelState.EXPELLING) {
 			intakeFreeSpinCounter++;
-		} else if(HardwareAdapter.getInstance().getIntake().masterTalon.getOutputCurrent() > Constants.kIntakeIdleCurrent
-				&& HardwareAdapter.getInstance().getIntake().masterTalon.getOutputCurrent() <= Constants.kIntakeIntakeCurrent
+		} else if(HardwareAdapter.getInstance().getIntake().masterTalon.getOutputCurrent() > Constants.kIntakeMasterIdleCurrent
+				&& HardwareAdapter.getInstance().getIntake().masterTalon.getOutputCurrent() <= Constants.kIntakeMasterIntakingCurrent
+				&& HardwareAdapter.getInstance().getIntake().slaveTalon.getOutputCurrent() > Constants.kIntakeSlaveIdleCurrent
+				&& HardwareAdapter.getInstance().getIntake().slaveTalon.getOutputCurrent() <= Constants.kIntakeSlaveIntakingCurrent
 				&& mIntake.getWheelState() == Intake.WheelState.INTAKING) {
 			intakeFreeSpinCounter++;
 		} else {

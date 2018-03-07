@@ -10,7 +10,7 @@ import com.palyrobotics.frc2018.config.RobotState;
 public class CheesyDriveHelper {
 	private double mOldWheel, mQuickStopAccumulator;
 	private boolean mInitialBrake;
-	private double mOldThrottle, mBrakeRate;
+	private double mOldThrottle = 0.0, mBrakeRate;
 
 	public DriveSignal cheesyDrive(Commands commands, RobotState robotState) {
 		double throttle = -robotState.leftStickInput.getY();
@@ -37,12 +37,13 @@ public class CheesyDriveHelper {
 		wheel = Math.sin(Math.PI / 2.0 * wheelNonLinearity * wheel) / Math.sin(Math.PI / 2.0 * wheelNonLinearity);
 		wheel = Math.sin(Math.PI / 2.0 * wheelNonLinearity * wheel) / Math.sin(Math.PI / 2.0 * wheelNonLinearity);
 
-		double leftPwm, rightPwm, overPower;
+		double leftPower, rightPower, overPower;
 		double sensitivity;
 
 		double angularPower;
+
+		//linear power is what's actually sent to motor, throttle is input
 		double linearPower = remapThrottle(throttle);
-		;
 
 		//Negative inertia
 		double negInertiaAccumulator = 0.0;
@@ -120,28 +121,28 @@ public class CheesyDriveHelper {
 			}
 		}
 
-		rightPwm = leftPwm = linearPower;
-		leftPwm += angularPower;
-		rightPwm -= angularPower;
+		rightPower = leftPower = mOldThrottle = linearPower;
+		leftPower += angularPower;
+		rightPower -= angularPower;
 
-		if(leftPwm > 1.0) {
-			rightPwm -= overPower * (leftPwm - 1.0);
-			leftPwm = 1.0;
-		} else if(rightPwm > 1.0) {
-			leftPwm -= overPower * (rightPwm - 1.0);
-			rightPwm = 1.0;
-		} else if(leftPwm < -1.0) {
-			rightPwm += overPower * (-1.0 - leftPwm);
-			leftPwm = -1.0;
-		} else if(rightPwm < -1.0) {
-			leftPwm += overPower * (-1.0 - rightPwm);
-			rightPwm = -1.0;
+		if(leftPower > 1.0) {
+			rightPower -= overPower * (leftPower - 1.0);
+			leftPower = 1.0;
+		} else if(rightPower > 1.0) {
+			leftPower -= overPower * (rightPower - 1.0);
+			rightPower = 1.0;
+		} else if(leftPower < -1.0) {
+			rightPower += overPower * (-1.0 - leftPower);
+			leftPower = -1.0;
+		} else if(rightPower < -1.0) {
+			leftPower += overPower * (-1.0 - rightPower);
+			rightPower = -1.0;
 		}
 
 		DriveSignal mSignal = DriveSignal.getNeutralSignal();
 
-		mSignal.leftMotor.setPercentOutput(leftPwm);
-		mSignal.rightMotor.setPercentOutput(rightPwm);
+		mSignal.leftMotor.setPercentOutput(leftPower);
+		mSignal.rightMotor.setPercentOutput(rightPower);
 		return mSignal;
 	}
 
@@ -152,7 +153,14 @@ public class CheesyDriveHelper {
 		double x = Math.abs(initialThrottle);
 		switch(Constants.kDriverName) {
 			case ERIC:
-				x = Math.signum(initialThrottle) * x;
+				//Increase in magnitude, deceleration is fine. This misses rapid direction switches, but that's up to driver
+				if(x > Math.abs(mOldThrottle)) {
+					x = Math.signum(initialThrottle) * (mOldThrottle + Constants.kMaxAccelRate);
+				} else {
+					x = initialThrottle;
+				}
+
+//				x = initialThrottle;
 				break;
 		}
 		return x;

@@ -90,7 +90,7 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
 
         ArrayList<Waypoint> path = new ArrayList<>();
 
-        path.add(new Waypoint(new Translation2d(-42.0/**Constants.kPyramidSquareSideLength*/ + Constants.kCenterOfRotationOffsetFromFrontInches + Constants.kSquareCubeLength/2.0,
+        path.add(new Waypoint(new Translation2d(-Constants.kPyramidSquareSideLength + Constants.kCenterOfRotationOffsetFromFrontInches + Constants.kSquareCubeLength/2.0,
                 AutoDistances.kBluePyramidFromRightY - AutoDistances.kBlueRightSwitchY - Constants.kPlateWidth/2.0 + Constants.kPyramidSquareSideLength/2.0), 0.0));
 
         return new DriveUntilHasCubeRoutine(new DrivePathRoutine(path, false, 50.0,  true, 27.5, 2.0));
