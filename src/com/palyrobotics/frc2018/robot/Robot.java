@@ -104,8 +104,6 @@ public class Robot extends TimedRobot {
 		mRoutineManager.reset(commands);
 		robotState.reset(0, new RigidTransform2d());
 
-		System.out.println("robot: " + robotState.hashCode());
-		
 		AutoDistances.updateAutoDistances();
 
 		startSubsystems();

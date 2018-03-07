@@ -90,8 +90,8 @@ public class CenterStartLeftMultiSwitchAutoMode extends AutoModeBase {
 
         ArrayList<Waypoint> path = new ArrayList<>();
 
-        path.add(new Waypoint(new Translation2d(-Constants.kPyramidSquareSideLength + Constants.kCenterOfRotationOffsetFromFrontInches + Constants.kSquareCubeLength/2.0,
-                -(AutoDistances.kBluePyramidFromRightY - AutoDistances.kBlueRightSwitchY + Constants.kPyramidSquareSideLength/2.0 - Constants.kPlateWidth/2.0)), 0.0));
+        path.add(new Waypoint(new Translation2d(-42.0/**Constants.kPyramidSquareSideLength*/ + Constants.kCenterOfRotationOffsetFromFrontInches + Constants.kSquareCubeLength/2.0,
+                -((AutoDistances.kFieldWidth - AutoDistances.kBluePyramidFromRightY) - AutoDistances.kBlueLeftSwitchY) + Constants.kPyramidSquareSideLength/2.0 + Constants.kPlateWidth/2.0), 0.0));
 
         return new DriveUntilHasCubeRoutine(new DrivePathRoutine(path, false, 50.0,  true, 20.0, 2.0));
     }
@@ -139,7 +139,7 @@ public class CenterStartLeftMultiSwitchAutoMode extends AutoModeBase {
 
         ArrayList<Waypoint> path = new ArrayList<>();
         path.add(new Waypoint(new Translation2d(0.0, 0.0), 0.0));
-        returnToSwitchPt2ArrayList.add(new DrivePathRoutine(path,  false, 72.0, true, Constants.kPathFollowingLookahead, 2.0));
+        returnToSwitchPt2ArrayList.add(new DrivePathRoutine(path,  false, 72.0, true, 30.0, 2.0));
 
         return new ParallelRoutine(returnToSwitchPt2ArrayList);
     }
