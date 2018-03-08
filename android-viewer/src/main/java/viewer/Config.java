@@ -1,5 +1,9 @@
 package viewer;
 
+/**
+ * Data class that contains information about how to run the viewer.
+ * This is serialized via JSON to a file at the path {@link ViewerMain#RELATIVE_CONFIG_PATH}.
+ */
 public class Config {
 
     private static final boolean DEFAULT_DEBUGGING = false;
@@ -12,17 +16,13 @@ public class Config {
     public final double previewScale;
     public final boolean debugMode;
 
+    /**
+     * Default config, used if no config file is found or is broken.
+     */
     public Config() {
         address = DEFAULT_IP;
         port = DEFAULT_PORT;
         previewScale = DEFAULT_PREVIEW_SCALE;
         debugMode = DEFAULT_DEBUGGING;
-    }
-
-    public Config(final String address, final int port, final double previewScale, final boolean debugMode) {
-        this.address = address;
-        this.port = port;
-        this.previewScale = previewScale;
-        this.debugMode = debugMode;
     }
 }

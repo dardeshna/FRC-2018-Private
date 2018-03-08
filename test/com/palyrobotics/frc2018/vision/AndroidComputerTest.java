@@ -3,8 +3,6 @@ package com.palyrobotics.frc2018.vision;
 import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.util.logger.Logger;
 
-import java.io.File;
-
 public class AndroidComputerTest {
 
     public static void main(String[] args) {
