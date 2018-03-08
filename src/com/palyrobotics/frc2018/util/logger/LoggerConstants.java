@@ -10,15 +10,30 @@ import java.util.logging.Level;
  *         changes
  */
 public class LoggerConstants {
-	/*
-	 * Explanation of logger levels: SEVERE: Errors which will cause a major part of the program to stop working (1000) WARNING: Errors which will cause a minor
-	 * failure or indicate a risk of serious failure (900) INFO: Information on the normal functioning of the robot; Expect this level and above to be printed
-	 * to console (800) CONFIG: Static configuration information (700) FINE: Basic tracing information (500) FINER: More detailed tracing information (400)
-	 * FINEST: Most detailed tracing information, highest volume (300) ALL: Not actually a level, used to display information from all levels
-	 * (Integer.MIN_VALUE)
+	/**
+	 * Explanation of logger levels: <p>
+	 * SEVERE: Errors which will cause a major part of the program to stop working (1000) <p>
+	 * WARNING: Errors which will cause a minorfailure or indicate a risk of serious failure (900) <p>
+	 * INFO: Information on the normal functioning of the robot; Expect this level and above to be printed to console (800) <p>
+	 * CONFIG: Static configuration information (700) <p>
+	 * FINE: Basic tracing information (500) <p>
+	 * FINER: More detailed tracing information (400) <p>
+	 * FINEST: Most detailed tracing information, highest volume (300) <p>
+	 * ALL: Not actually a level, used to display information from all levels (Integer.MIN_VALUE)
 	 */
 	public static Level displayLevel = Level.INFO;
-	public static Level writeLevel = Level.CONFIG;
+	/**
+	 * Explanation of logger levels: <p>
+	 * SEVERE: Errors which will cause a major part of the program to stop working (1000) <p>
+	 * WARNING: Errors which will cause a minorfailure or indicate a risk of serious failure (900) <p>
+	 * INFO: Information on the normal functioning of the robot; Expect this level and above to be printed to console (800) <p>
+	 * CONFIG: Static configuration information (700) <p>
+	 * FINE: Basic tracing information (500) <p>
+	 * FINER: More detailed tracing information (400) <p>
+	 * FINEST: Most detailed tracing information, highest volume (300) <p>
+	 * ALL: Not actually a level, used to display information from all levels (Integer.MIN_VALUE)
+	 */
+	public static Level writeLevel = Level.FINER;
 
 	//Prevents the logger from printing too many messages to the console
 	public static int writeLimit = 10;
