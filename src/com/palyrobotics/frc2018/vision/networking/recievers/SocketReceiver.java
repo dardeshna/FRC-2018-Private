@@ -41,18 +41,18 @@ public abstract class SocketReceiver extends AbstractVisionServer {
 	 */
 	protected byte[] extractDataBytes() {
 		try {
-            final DataInputStream inputStream = new DataInputStream(m_Client.getInputStream());
             try {
-				final int length = inputStream.readInt();
+				final int length = m_ClientInputStream.readInt();
 				final byte[] data = new byte[length];
-				inputStream.readFully(data, 0, length);
+                m_ClientInputStream.readFully(data, 0, length);
 				return data;
 			} catch (final EOFException eofe) {
 				log(Level.FINEST, eofe.toString());
+				closeServer();
 			}
 		} catch (final IOException ioe) {
 			log(Level.FINEST, ioe.toString());
-			closeClient();
+			closeServer();
 		}
 		return null;
 	}

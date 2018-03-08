@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage;
  */
 public class ViewerPanel extends JPanel {
 
-    private static final int IMAGE_WIDTH = 300, IMAGE_HEIGHT = 400;
+    private static final int IMAGE_WIDTH = 150, IMAGE_HEIGHT = 200;
 
     private final double fm_Scale;
     private BufferedImage m_CurrentImage;

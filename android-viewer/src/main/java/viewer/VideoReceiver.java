@@ -21,6 +21,7 @@ public class VideoReceiver implements Runnable {
 
     private final ViewerPanel fm_ViewerPanel;
     private Socket m_Socket = new Socket();
+    private DataInputStream m_SocketInputStream;
     private int m_Port;
     private String m_Ip;
     private boolean m_Debugging, m_Running;
@@ -70,6 +71,7 @@ public class VideoReceiver implements Runnable {
     private void retryConnection() {
         try {
             m_Socket = new Socket(m_Ip, m_Port);
+            m_SocketInputStream = new DataInputStream(m_Socket.getInputStream());
             if (m_Debugging) System.out.println(String.format("Connected on port: %d", m_Socket.getPort()));
             m_State = VideoReceiverState.OPEN;
         } catch (final IOException e) {
@@ -119,20 +121,33 @@ public class VideoReceiver implements Runnable {
      */
     private byte[] tryReceiveVideo() {
         try {
-            final DataInputStream inputStream = new DataInputStream(m_Socket.getInputStream());
             try {
-                final int length = inputStream.readInt();
+                final int length = m_SocketInputStream.readInt();
                 final byte[] data = new byte[length];
-                inputStream.readFully(data, 0, length);
+                m_SocketInputStream.readFully(data, 0, length);
                 return data;
             } catch (final EOFException eofe) {
                 eofe.printStackTrace();
+                closeSocket();
             }
         } catch (final IOException ioe) {
             if (m_Debugging) ioe.printStackTrace();
-            m_State = VideoReceiverState.ATTEMPTING_CONNECTION;
+            closeSocket();
         }
         return null;
+    }
+
+    /**
+     * Close the connection to the robot
+     */
+    private void closeSocket() {
+        try {
+            m_Socket.close();
+            m_SocketInputStream = null;
+            m_State = VideoReceiverState.ATTEMPTING_CONNECTION;
+        } catch (final IOException ioe) {
+            ioe.printStackTrace();
+        }
     }
 
     /**

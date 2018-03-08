@@ -1,18 +1,13 @@
 package com.palyrobotics.frc2018.vision.networking;
 
-import com.palyrobotics.frc2018.config.Constants;
-import com.palyrobotics.frc2018.util.logger.Logger;
 import com.palyrobotics.frc2018.vision.VisionData;
 import com.palyrobotics.frc2018.vision.networking.recievers.SocketReceiver;
-import com.palyrobotics.frc2018.vision.util.AbstractVisionServer;
 
-import java.io.IOException;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.logging.Level;
 
 public class VisionDataReceiver extends SocketReceiver {
 
-	private static final int MAX_FRAME_QUEUE_SIZE = 3;
+	private static final int MAX_FRAME_QUEUE_SIZE = 2;
 
 	public VisionDataReceiver() {
 		super("Video Receiver");

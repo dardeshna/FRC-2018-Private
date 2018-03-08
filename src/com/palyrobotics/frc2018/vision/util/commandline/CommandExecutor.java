@@ -4,6 +4,7 @@ import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.util.logger.Logger;
 import org.spectrum3847.RIOdroid.RIOdroid;
 
+import java.util.Arrays;
 import java.util.logging.Level;
 
 public class CommandExecutor {
@@ -12,7 +13,7 @@ public class CommandExecutor {
 	private static boolean s_IsFlashOn = false;
 
 	public static String startVisionApp() {
-		return exec(String.format("adb shell am start -n %s/%s.%s", Constants.kPackageName, Constants.kPackageName, Constants.kActivityName));
+		return exec(String.format("adb shell monkey -p %s 1", Constants.kPackageName));
 	}
 
 	public static void setTesting(boolean testing) {
@@ -46,16 +47,19 @@ public class CommandExecutor {
 	 * @return Whether or not a nexus device is connected
 	 */
 	public static DeviceStatus getNexusStatus() {
-		final String devicesOutput = exec("adb devices");
-		if (devicesOutput.contains("DEVICE")) {
-			return DeviceStatus.DEVICE;
-		} else if (devicesOutput.contains("offline")) {
-			return DeviceStatus.OFFLINE;
-		} else if (devicesOutput.contains("unauthorized")) {
-			return DeviceStatus.UNAUTHORIZED;
-		} else {
-			return DeviceStatus.NOT_FOUND;
+		final String allDeviceOutputs = exec("adb devices");
+		final String[] deviceOutputs = allDeviceOutputs.split("\\n");
+		if (deviceOutputs.length > 1) {
+			final String firstDeviceOutput = deviceOutputs[1];
+			if (firstDeviceOutput.contains("device")) {
+				return DeviceStatus.DEVICE;
+			} else if (firstDeviceOutput.contains("offline")) {
+				return DeviceStatus.OFFLINE;
+			} else if (firstDeviceOutput.contains("unauthorized")) {
+				return DeviceStatus.UNAUTHORIZED;
+			}
 		}
+		return DeviceStatus.NOT_FOUND;
 	}
 
 	public static void restartADBServer() {

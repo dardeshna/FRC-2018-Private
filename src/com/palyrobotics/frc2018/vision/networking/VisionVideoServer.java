@@ -1,11 +1,8 @@
 package com.palyrobotics.frc2018.vision.networking;
 
-import com.palyrobotics.frc2018.util.logger.Logger;
 import com.palyrobotics.frc2018.vision.VisionData;
 import com.palyrobotics.frc2018.vision.util.AbstractVisionServer;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
@@ -16,7 +13,6 @@ import java.util.logging.Level;
  * @author Quintin Dwight
  */
 public class VisionVideoServer extends AbstractVisionServer {
-
 
 	public VisionVideoServer() {
 		super("Video Server");
@@ -29,12 +25,11 @@ public class VisionVideoServer extends AbstractVisionServer {
 	 */
 	private void writeImageToServer(final byte[] data) {
 		try {
-			final DataOutputStream outputStream = new DataOutputStream(m_Client.getOutputStream());
-			outputStream.writeInt(data.length);
-			outputStream.write(data);
+			m_ClientOutputStream.writeInt(data.length);
+			m_ClientOutputStream.write(data);
 		} catch (final IOException ioe) {
 			log(Level.FINEST, ioe.toString());
-			closeClient();
+			closeServer();
 		}
 	}
 

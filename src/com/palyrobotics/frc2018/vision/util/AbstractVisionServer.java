@@ -1,11 +1,10 @@
 package com.palyrobotics.frc2018.vision.util;
 
-import com.palyrobotics.frc2018.util.logger.Logger;
-
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Arrays;
 import java.util.logging.Level;
 
 /**
@@ -23,6 +22,8 @@ public abstract class AbstractVisionServer extends AbstractVisionThread {
 	protected boolean m_LogConnectionStatus;
 	protected ServerSocket m_Server;
 	protected Socket m_Client = new Socket();
+	protected DataInputStream m_ClientInputStream;
+	protected DataOutputStream m_ClientOutputStream;
 	protected ServerState m_ServerState = ServerState.PRE_INIT;
 
 	protected AbstractVisionServer(final String k_threadName) {
@@ -90,11 +91,13 @@ public abstract class AbstractVisionServer extends AbstractVisionThread {
 		try {
 			if (m_Server != null)
 				m_Server.close();
-			m_Server = new ServerSocket(m_Port);
+ 			m_Server = new ServerSocket(m_Port);
 			m_Server.setReuseAddress(true);
 			// Pause thread until we accept from the client
 			log(Level.INFO, String.format("Listening for connection on port %d", m_Port));
 			m_Client = m_Server.accept();
+			m_ClientOutputStream = new DataOutputStream(m_Client.getOutputStream());
+			m_ClientInputStream = new DataInputStream(m_Client.getInputStream());
 			log(Level.INFO, String.format("Connected to client on port %d", m_Port));
 			return ServerState.OPEN;
 		} catch (final IOException ioe) {
@@ -103,9 +106,13 @@ public abstract class AbstractVisionServer extends AbstractVisionThread {
 		}
 	}
 
-	protected void closeClient() {
+	protected void closeServer() {
 		try {
+			log(Level.FINEST, "Closing client!");
+			m_ClientOutputStream = null;
+			m_ClientInputStream = null;
 			m_Client.close();
+			m_Server.close();
 		} catch (final IOException ioe) {
 			log(Level.FINEST, ioe.toString());
 		}
@@ -141,12 +148,12 @@ public abstract class AbstractVisionServer extends AbstractVisionThread {
 
 	@Override
 	protected void onPause() {
-		closeClient();
+		closeServer();
 	}
 
 	@Override
 	protected void onStop() {
-		closeClient();
+		closeServer();
 	}
 
 	@Override protected void onResume() { }

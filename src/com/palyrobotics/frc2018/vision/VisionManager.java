@@ -32,7 +32,7 @@ public class VisionManager extends AbstractVisionThread {
 	}
 
 	public enum State {
-        PRE_INITIALIZE, STARTING_SUB_PROCESSES, INITIALIZE_CMD_ENV, FINDING_DEVICE, STARTING_VISION_APP, STREAMING, GIVEN_UP
+        PRE_INITIALIZE, INITIALIZE_CMD_ENV, STARTING_SUB_PROCESSES, FINDING_DEVICE, STARTING_VISION_APP, STREAMING, GIVEN_UP
 	}
 
 	private State m_State = State.PRE_INITIALIZE;
@@ -67,7 +67,7 @@ public class VisionManager extends AbstractVisionThread {
 	public void init() {
 		if (m_State != State.PRE_INITIALIZE)
 			log(Level.WARNING, "Thread has been already initialized in initialization mode!");
-		setState(State.STARTING_SUB_PROCESSES);
+		setState(State.INITIALIZE_CMD_ENV);
 	}
 
     /**
@@ -78,12 +78,12 @@ public class VisionManager extends AbstractVisionThread {
 	private State startSubProcesses() {
 		m_Receiver.start(Constants.kVisionVideoReceiverUpdateRate, Constants.kVisionVideoReceiverSocketPort, true);
 		new VisionVideoServer().start(Constants.kVisionVideoServerUpdateRate, Constants.kVisionVideoSocketPort, true);
-		return State.INITIALIZE_CMD_ENV;
+		return State.FINDING_DEVICE;
 	}
 
 	/**
 	 * Try to find the android device via the adb server.
-     * If the device can not be found, try restarting the ADB server with an increasing timeout.
+     * If the device can not be found, try restarting  the ADB server with an increasing timeout.
 	 * 
 	 * @return The state after execution
 	 */
@@ -127,7 +127,7 @@ public class VisionManager extends AbstractVisionThread {
             return State.GIVEN_UP;
         }
         log(Level.INFO, "ADB server started!");
-        return State.FINDING_DEVICE;
+        return State.STARTING_SUB_PROCESSES;
     }
 
 	/**
@@ -138,7 +138,7 @@ public class VisionManager extends AbstractVisionThread {
 	private State startVisionApp() {
 		try {
 			CommandExecutor.startVisionApp();
-			return State.STARTING_SUB_PROCESSES;
+			return State.STREAMING;
 		} catch (final Exception e) {
 			log(Level.FINEST, e.toString());
 			return State.GIVEN_UP;
@@ -159,15 +159,15 @@ public class VisionManager extends AbstractVisionThread {
 
 	@Override
 	public void update() {
-		switch(m_State) {
+		switch (m_State) {
 			case PRE_INITIALIZE:
+				break;
+			case INITIALIZE_CMD_ENV:
+				setState(initializeCmdEnv());
 				break;
 			case STARTING_SUB_PROCESSES:
 				setState(startSubProcesses());
 				break;
-            case INITIALIZE_CMD_ENV:
-                setState(initializeCmdEnv());
-                break;
 			case FINDING_DEVICE:
 				setState(findDevice());
 				break;
