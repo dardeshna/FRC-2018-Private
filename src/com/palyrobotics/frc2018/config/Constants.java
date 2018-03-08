@@ -125,10 +125,12 @@ public class Constants {
 	public static final double kIntakeMasterStallCurrent = 70;
 	public static final double kIntakeMasterIdleCurrent = 0.125;
 	public static final double kIntakeMasterExpelCurrent = 5;
+	public static final double kIntakeMasterVaultExpelCurrent = 5;
 	public static final double kIntakeMasterIntakingCurrent = 6;
 	public static final double kIntakeSlaveStallCurrent = 70;
 	public static final double kIntakeSlaveIdleCurrent = 0.125;
 	public static final double kIntakeSlaveExpelCurrent = 5;
+	public static final double kIntakeSlaveVaultExpelCurrent = 6;
 	public static final double kIntakeSlaveIntakingCurrent = 6;
 	public static final double kSwitchAutoWaitBeforeElevatorRaiseTimeSeconds = 1.5;
 	public static final double kScaleAutoWaitBeforeElevatorRaiseTimeSeconds = 1.0;

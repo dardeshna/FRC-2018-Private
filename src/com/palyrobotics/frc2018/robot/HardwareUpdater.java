@@ -387,24 +387,33 @@ class HardwareUpdater {
 			robotState.drivePose.rightMotionMagicVel = Optional.empty();
 		}
 
-		if(HardwareAdapter.getInstance().getIntake().masterTalon.getOutputCurrent() >= Constants.kIntakeMasterStallCurrent
-				&& HardwareAdapter.getInstance().getIntake().slaveTalon.getOutputCurrent() >= Constants.kIntakeSlaveStallCurrent
+		double masterCurrent = HardwareAdapter.getInstance().getIntake().masterTalon.getOutputCurrent();
+		double slaveCurrent = HardwareAdapter.getInstance().getIntake().slaveTalon.getOutputCurrent();
+
+		if(masterCurrent >= Constants.kIntakeMasterStallCurrent
+				&& slaveCurrent >= Constants.kIntakeSlaveStallCurrent
 				&& mIntake.getWheelState() == Intake.WheelState.INTAKING) {
 			intakeStallCounter++;
 		} else {
 			intakeStallCounter = 0;
 		}
 
-		if(HardwareAdapter.getInstance().getIntake().masterTalon.getOutputCurrent() > Constants.kIntakeMasterIdleCurrent
-				&& HardwareAdapter.getInstance().getIntake().masterTalon.getOutputCurrent() <= Constants.kIntakeMasterExpelCurrent
-				&& HardwareAdapter.getInstance().getIntake().slaveTalon.getOutputCurrent() > Constants.kIntakeSlaveIdleCurrent
-				&& HardwareAdapter.getInstance().getIntake().slaveTalon.getOutputCurrent() <= Constants.kIntakeSlaveExpelCurrent
+		if(masterCurrent > Constants.kIntakeMasterIdleCurrent
+				&& masterCurrent <= Constants.kIntakeMasterExpelCurrent
+				&& slaveCurrent > Constants.kIntakeSlaveIdleCurrent
+				&& slaveCurrent <= Constants.kIntakeSlaveExpelCurrent
 				&& mIntake.getWheelState() == Intake.WheelState.EXPELLING) {
 			intakeFreeSpinCounter++;
-		} else if(HardwareAdapter.getInstance().getIntake().masterTalon.getOutputCurrent() > Constants.kIntakeMasterIdleCurrent
-				&& HardwareAdapter.getInstance().getIntake().masterTalon.getOutputCurrent() <= Constants.kIntakeMasterIntakingCurrent
-				&& HardwareAdapter.getInstance().getIntake().slaveTalon.getOutputCurrent() > Constants.kIntakeSlaveIdleCurrent
-				&& HardwareAdapter.getInstance().getIntake().slaveTalon.getOutputCurrent() <= Constants.kIntakeSlaveIntakingCurrent
+		} else if(masterCurrent > Constants.kIntakeMasterIdleCurrent
+				&& masterCurrent <= Constants.kIntakeMasterVaultExpelCurrent
+				&& slaveCurrent > Constants.kIntakeSlaveIdleCurrent
+				&& slaveCurrent <= Constants.kIntakeSlaveVaultExpelCurrent
+				&& mIntake.getWheelState() == Intake.WheelState.VAULT_EXPELLING) {
+			intakeFreeSpinCounter++;
+		} else if(masterCurrent > Constants.kIntakeMasterIdleCurrent
+				&& masterCurrent <= Constants.kIntakeMasterIntakingCurrent
+				&& slaveCurrent > Constants.kIntakeSlaveIdleCurrent
+				&& slaveCurrent <= Constants.kIntakeSlaveIntakingCurrent
 				&& mIntake.getWheelState() == Intake.WheelState.INTAKING) {
 			intakeFreeSpinCounter++;
 		} else {
@@ -531,7 +540,6 @@ class HardwareUpdater {
 	 * Updates the intake
 	 */
 	private void updateIntake() {
-//		System.out.println("current: " + HardwareAdapter.getInstance().getIntake().masterTalon.getOutputCurrent());
 		updateTalonSRX(HardwareAdapter.getInstance().getIntake().masterTalon, mIntake.getTalonOutput());
 		HardwareAdapter.getInstance().getIntake().openCloseSolenoid.set(mIntake.getOpenCloseOutput()[0]);
 		HardwareAdapter.getInstance().getIntake().openCloseOtherSolenoid.set(mIntake.getOpenCloseOutput()[1]);

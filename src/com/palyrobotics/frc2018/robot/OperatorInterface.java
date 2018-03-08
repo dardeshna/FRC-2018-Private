@@ -155,7 +155,7 @@ public class OperatorInterface {
 			newCommands.wantedIntakingState = Intake.WheelState.EXPELLING;
 		} else if(mOperatorStick.getButtonPressed(2)) {
 			newCommands.wantedIntakingState = Intake.WheelState.INTAKING;
-		} else if(mOperatorStick.getButtonPressed(12)) {
+		} else if(mOperatorStick.getButtonPressed(10)) {
 			newCommands.wantedIntakingState = Intake.WheelState.VAULT_EXPELLING;
 		} else {
 			newCommands.wantedIntakingState = Intake.WheelState.IDLE;
