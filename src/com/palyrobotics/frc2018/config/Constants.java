@@ -120,6 +120,7 @@ public class Constants {
 	//Intake
 	public static final double kIntakingMotorVelocity = 0.75;
 	public static final double kExpellingMotorVelocity = -0.35;
+	public static final double kVaultExpellingMotorVelocity = -0.70;
 	public static final double kExpelToScoreTime = 0.5;
 	public static final double kIntakeMasterStallCurrent = 70;
 	public static final double kIntakeMasterIdleCurrent = 0.125;
