@@ -41,6 +41,12 @@ public class AutoDistances {
 	public static double kRedRightScaleX;
 	public static double kRedRightScaleY;
 
+	public static double kBluePyramidWidth;
+	public static double kBluePyramidLength;
+
+	public static double kRedPyramidWidth;
+	public static double kRedPyramidLength;
+
 	//Offsets
 	public static double kRedLeftCornerOffset;
 	public static double kRedRightCornerOffset;
@@ -116,6 +122,10 @@ public class AutoDistances {
 		kRedLeftScaleY = getDoubleValue("kRedLeftScaleY");
 		kRedRightScaleX = getDoubleValue("kRedRightScaleX");
 		kRedRightScaleY = getDoubleValue("kRedRightScaleY");
+		kBluePyramidWidth = getDoubleValue("kBluePyramidWidth");
+		kBluePyramidLength = getDoubleValue("kBluePyramidLength");
+		kRedPyramidWidth = getDoubleValue("kRedPyramidWidth");
+		kRedPyramidLength = getDoubleValue("kRedPyramidLength");
 		kRedLeftCornerOffset = getDoubleValue("kRedLeftCornerOffset");
 		kRedRightCornerOffset = getDoubleValue("kRedRightCornerOffset");
 		kBlueLeftCornerOffset = getDoubleValue("kBlueLeftCornerOffset");

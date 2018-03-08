@@ -168,10 +168,6 @@ public class OperatorInterface {
 			newCommands.wantedIntakingState = Intake.WheelState.EXPELLING;
 		}
 
-		if(mTurnStick.getButtonPressed(11)) {
-		 	newCommands.addWantedRoutine(new IntakeCurrentRoutine());
-		}
-
 		if(mTurnStick.getButtonPressed(5)) {
 			newCommands.addWantedRoutine(new IntakeCloseRoutine());
 		} else if(mTurnStick.getButtonPressed(6)) {

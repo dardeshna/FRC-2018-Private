@@ -6,10 +6,12 @@ import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.robot.Robot;
 import com.palyrobotics.frc2018.subsystems.Drive;
 import com.palyrobotics.frc2018.subsystems.Subsystem;
+import com.palyrobotics.frc2018.util.logger.Logger;
 import com.palyrobotics.frc2018.util.trajectory.Path;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 /**
  * Created by Nihar on 4/5/17.
@@ -35,7 +37,7 @@ public class DrivePathRoutine extends Routine {
 		this.mAddCurrentPosition = false;
 		this.mStartSpeed = 72.0;
 		this.mInverted = inverted;
-		this.mTolerance = 0.0;
+		this.mTolerance = Constants.kPathFollowingTolerance;
 	}
 
 	/**
@@ -50,7 +52,7 @@ public class DrivePathRoutine extends Routine {
 		this.mAddCurrentPosition = false;
 		this.mStartSpeed = 0;
 		this.mInverted = inverted;
-		this.mTolerance = 0.0;
+		this.mTolerance = Constants.kPathFollowingTolerance;
 
 	}
 
@@ -60,7 +62,7 @@ public class DrivePathRoutine extends Routine {
 		this.mInverted = inverted;
 		this.mStartSpeed = startSpeed;
 		this.mAddCurrentPosition = addCurrentPosition;
-		this.mTolerance = 0.0;
+		this.mTolerance = Constants.kPathFollowingTolerance;
 	}
 
 	public DrivePathRoutine(ArrayList<Path.Waypoint> pathList, boolean inverted, double startSpeed, boolean addCurrentPosition, double lookahead) {
@@ -70,7 +72,7 @@ public class DrivePathRoutine extends Routine {
 		this.mStartSpeed = startSpeed;
 		this.mLookAhead = lookahead;
 		this.mAddCurrentPosition = addCurrentPosition;
-		this.mTolerance = 0.0;
+		this.mTolerance = Constants.kPathFollowingTolerance;
 	}
 
 	public DrivePathRoutine(ArrayList<Path.Waypoint> pathList, boolean inverted, double startSpeed, boolean addCurrentPosition, double lookahead, double tolerance) {
@@ -88,12 +90,10 @@ public class DrivePathRoutine extends Routine {
 		if(mAddCurrentPosition) {
 			pathList.add(0, new Path.Waypoint(robotState.getLatestFieldToVehicle().getValue().getTranslation(), mStartSpeed));
 
-			System.out.println("-------------------");
 			for (Path.Waypoint point : pathList) {
-				System.out.println("pos: " + point.position.toString());
-				System.out.println("speed: " + point.speed);
+				Logger.getInstance().logSubsystemThread(Level.INFO, "Position: " + point.position.toString());
+				Logger.getInstance().logSubsystemThread(Level.INFO, "Speed: " + point.speed);
 			}
-			System.out.println("-------------------");
 
 			mPath = new Path(pathList);
 		}
@@ -116,7 +116,6 @@ public class DrivePathRoutine extends Routine {
 
 	@Override
 	public boolean finished() {
-		System.out.println(drive.controllerOnTarget());
 		return drive.controllerOnTarget();
 	}
 

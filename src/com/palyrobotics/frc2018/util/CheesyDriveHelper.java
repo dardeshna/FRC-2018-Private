@@ -153,9 +153,15 @@ public class CheesyDriveHelper {
 		double x = Math.abs(initialThrottle);
 		switch(Constants.kDriverName) {
 			case ERIC:
+				//Reversal of directions
+				//Stick a 0 cycle in between
+				if(initialThrottle * mOldThrottle < 0) {
+					return 0.0;
+				}
+
 				//Increase in magnitude, deceleration is fine. This misses rapid direction switches, but that's up to driver
 				if(x > Math.abs(mOldThrottle)) {
-					x = Math.signum(initialThrottle) * (mOldThrottle + Constants.kMaxAccelRate);
+					x = mOldThrottle + Math.signum(initialThrottle) * Constants.kMaxAccelRate;
 				} else {
 					x = initialThrottle;
 				}

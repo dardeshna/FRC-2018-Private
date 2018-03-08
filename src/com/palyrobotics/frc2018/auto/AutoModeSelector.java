@@ -178,10 +178,6 @@ public class AutoModeSelector {
 		}
 
 		AutoModeBase selectedAuto = mAutoModes.get(selectedIndex);
-		System.out.println("Running Auto: " + selectedAuto);
-		System.out.println("Running Auto: " + selectedAuto);
-		System.out.println("Running Auto: " + selectedAuto);
-		System.out.println("Running Auto: " + selectedAuto);
 		Logger.getInstance().logRobotThread(Level.INFO, "Selected " + selectedAuto);
 		return selectedAuto;
 	}

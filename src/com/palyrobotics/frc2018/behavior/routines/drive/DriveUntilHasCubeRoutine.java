@@ -1,9 +1,7 @@
 package com.palyrobotics.frc2018.behavior.routines.drive;
 
 import com.palyrobotics.frc2018.behavior.Routine;
-import com.palyrobotics.frc2018.behavior.routines.intake.IntakeCurrentRoutine;
 import com.palyrobotics.frc2018.behavior.routines.intake.IntakeSensorStopRoutine;
-import com.palyrobotics.frc2018.behavior.routines.intake.IntakeWheelRoutine;
 import com.palyrobotics.frc2018.config.Commands;
 import com.palyrobotics.frc2018.subsystems.Intake;
 import com.palyrobotics.frc2018.subsystems.Subsystem;
@@ -33,7 +31,6 @@ public class DriveUntilHasCubeRoutine extends Routine {
 
     @Override
     public Commands cancel(Commands commands) {
-        System.out.println("finished drive until has cube");
         drivePathRoutine.cancel(commands);
         intakeRoutine.cancel(commands);
         return commands;
@@ -42,7 +39,6 @@ public class DriveUntilHasCubeRoutine extends Routine {
     @Override
     public boolean finished() {
         return intakeRoutine.finished();
-//        return drivePathRoutine.finished();
     }
 
     @Override

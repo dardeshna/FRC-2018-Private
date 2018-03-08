@@ -59,7 +59,7 @@ public class CenterStartLeftMultiSwitchAutoMode extends AutoModeBase {
         routines.add(new ParallelRoutine(prepareForSecondCube));
 
         //Drive to and intake cube
-        routines.add(getDriveToAndIntakeCube());
+        routines.add(getDriveToAndIntakeCube(this.mAlliance));
 
         routines.add(getReturnToSwitchPt1());
 
@@ -86,12 +86,17 @@ public class CenterStartLeftMultiSwitchAutoMode extends AutoModeBase {
         return new SequentialRoutine(backUp);
     }
 
-    public Routine getDriveToAndIntakeCube() {
+    public Routine getDriveToAndIntakeCube(Alliance alliance) {
 
         ArrayList<Waypoint> path = new ArrayList<>();
 
-        path.add(new Waypoint(new Translation2d(-Constants.kPyramidSquareSideLength + Constants.kCenterOfRotationOffsetFromFrontInches + Constants.kSquareCubeLength/2.0,
-                -((AutoDistances.kFieldWidth - AutoDistances.kBluePyramidFromRightY) - AutoDistances.kBlueLeftSwitchY) + Constants.kPyramidSquareSideLength/2.0 + Constants.kPlateWidth/2.0), 0.0));
+        if(alliance == Alliance.BLUE) {
+            path.add(new Waypoint(new Translation2d(-AutoDistances.kBluePyramidLength + Constants.kCenterOfRotationOffsetFromFrontInches + Constants.kSquareCubeLength/2.0,
+                    -((AutoDistances.kFieldWidth - AutoDistances.kBluePyramidFromRightY) - AutoDistances.kBlueLeftSwitchY) + AutoDistances.kBluePyramidWidth/2.0 + Constants.kPlateWidth/2.0), 0.0));
+        } else if(alliance == Alliance.RED) {
+            path.add(new Waypoint(new Translation2d(-AutoDistances.kRedPyramidLength + Constants.kCenterOfRotationOffsetFromFrontInches + Constants.kSquareCubeLength/2.0,
+                    -((AutoDistances.kFieldWidth - AutoDistances.kRedPyramidFromRightY) - AutoDistances.kRedLeftSwitchY) + AutoDistances.kRedPyramidWidth/2.0 + Constants.kPlateWidth/2.0), 0.0));
+        }
 
         return new DriveUntilHasCubeRoutine(new DrivePathRoutine(path, false, 50.0,  true, 20.0, 2.0));
     }

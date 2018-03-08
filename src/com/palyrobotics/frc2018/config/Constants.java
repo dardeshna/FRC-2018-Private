@@ -192,7 +192,6 @@ public class Constants {
 	//INTAKE
 	public static final int kForsetiIntakeMasterDeviceID = 9;
 	public static final int kForsetiIntakeSlaveDeviceID = 10;
-	public static final int kForsetiIntakeDistanceSensorID = 0;
 	//PCM 0
 	public static final int kForsetiIntakeUpDownSolenoidForwardID = 2;
 	public static final int kForsetiIntakeUpDownSolenoidReverseID = 5;
@@ -202,9 +201,8 @@ public class Constants {
 
 	//!!! Physical constants
 	public static final double kPlateWidth = 36.0;
-	public static final double kPlateLength = 49.0;
+	public static final double kPlateLength = 48.0;
 	public static final double kSquareCubeLength = 13.0;
-	public static final double kPyramidSquareSideLength = 47.0;
 
 	//!!! Loop rate of normal Looper
 	public static final double kNormalLoopsDt = 0.02;
