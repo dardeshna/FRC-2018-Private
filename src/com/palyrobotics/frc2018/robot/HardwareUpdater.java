@@ -210,8 +210,6 @@ class HardwareUpdater {
         rightSlave1Victor.follow(rightMasterTalon);
         rightSlave2Victor.follow(rightMasterTalon);
         rightSlave3Victor.follow(rightMasterTalon);
-
-		Compressor c = new Compressor();
     }
 
 	void configureElevatorHardware() {
