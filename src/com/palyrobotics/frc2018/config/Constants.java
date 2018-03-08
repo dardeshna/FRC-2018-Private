@@ -22,7 +22,7 @@ public class Constants {
 	public static final RobotName kRobotName = RobotName.FORSETI;
 	public static final DriverName kDriverName = DriverName.ERIC;
 	public static final OperatorName kOperatorName = OperatorName.JACOB;
-	public static final FieldName kFieldName = FieldName.AZN_PRACTICE;
+	public static final FieldName kFieldName = FieldName.AZN;
 
 	//Android app information
 	public static final String kPackageName = "com.frc8.team8vision.visionapp2018";
@@ -203,8 +203,6 @@ public class Constants {
 	public static final int kForsetiIntakeOpenCloseSolenoidID = 5;
 
 	//!!! Physical constants
-	public static final double kPlateWidth = 36.0;
-	public static final double kPlateLength = 48.0;
 	public static final double kSquareCubeLength = 13.0;
 
 	//!!! Loop rate of normal Looper

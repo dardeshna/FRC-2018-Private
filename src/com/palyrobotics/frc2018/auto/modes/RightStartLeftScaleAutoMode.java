@@ -47,19 +47,19 @@ public class RightStartLeftScaleAutoMode extends AutoModeBase {
                     -Constants.kRobotWidthInches/2.0 - AutoDistances.kBlueRightCornerOffset + AutoDistances.kBlueRightSwitchY/2.0), 72.0));
             path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueScaleSwitchMidlineX - Constants.kRobotLengthInches/2.0,
                     AutoDistances.kFieldWidth - Constants.kRobotWidthInches/2.0 - AutoDistances.kBlueRightCornerOffset
-                    - AutoDistances.kBlueLeftScaleY - Constants.kPlateWidth/2.0), 72.0));
+                    - AutoDistances.kBlueLeftScaleY - AutoDistances.kScalePlateWidth/2.0), 72.0));
             lastSegment.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueLeftScaleX - Constants.kRobotLengthInches,
                     AutoDistances.kFieldWidth - Constants.kRobotWidthInches/2.0 - AutoDistances.kBlueRightCornerOffset
-                            - AutoDistances.kBlueLeftScaleY - Constants.kPlateWidth/2.0), 0.0));
+                            - AutoDistances.kBlueLeftScaleY - AutoDistances.kScalePlateWidth/2.0), 0.0));
         } else {
             path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedScaleSwitchMidlineX - Constants.kRobotLengthInches/2.0,
                     -Constants.kRobotWidthInches/2.0 - AutoDistances.kRedRightCornerOffset + AutoDistances.kRedRightSwitchY/2.0), 72.0));
             path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedScaleSwitchMidlineX - Constants.kRobotLengthInches/2.0,
                     AutoDistances.kFieldWidth - Constants.kRobotWidthInches/2.0 - AutoDistances.kRedRightCornerOffset
-                    - AutoDistances.kRedLeftScaleY - Constants.kPlateWidth/2.0), 72.0));
+                    - AutoDistances.kRedLeftScaleY - AutoDistances.kScalePlateWidth/2.0), 72.0));
             lastSegment.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedLeftScaleX - Constants.kRobotLengthInches,
                     AutoDistances.kFieldWidth - Constants.kRobotWidthInches/2.0 - AutoDistances.kRedRightCornerOffset
-                            - AutoDistances.kRedLeftScaleY - Constants.kPlateWidth/2.0), 0.0));
+                            - AutoDistances.kRedLeftScaleY - AutoDistances.kScalePlateWidth/2.0), 0.0));
         }
 
         ArrayList<Routine> routines = new ArrayList<Routine>();

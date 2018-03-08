@@ -98,7 +98,7 @@ public class Intake extends Subsystem {
 			case NEUTRAL:
 				mOpenCloseOutput[0] = false;
 				mOpenCloseOutput[1] = false;
-				
+				break;
 		}
 	}
 

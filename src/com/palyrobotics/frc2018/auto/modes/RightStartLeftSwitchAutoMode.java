@@ -42,15 +42,15 @@ public class RightStartLeftSwitchAutoMode extends AutoModeBase {
         if(mAlliance == Alliance.BLUE) {
             path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueScaleSwitchMidlineX - Constants.kRobotLengthInches/2.0,
                     -Constants.kRobotWidthInches/2.0 - AutoDistances.kBlueRightCornerOffset + AutoDistances.kBlueRightSwitchY/2.0), 72.0));
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueLeftSwitchX + Constants.kPlateLength + Constants.kRobotLengthInches/2.0
+            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueLeftSwitchX + AutoDistances.kSwitchPlateLength + Constants.kRobotLengthInches/2.0
                     + Constants.kSquareCubeLength, AutoDistances.kFieldWidth - Constants.kRobotWidthInches/2.0 - AutoDistances.kBlueRightCornerOffset
-                    - AutoDistances.kBlueLeftSwitchY - Constants.kPlateWidth/2.0), 0.0));
+                    - AutoDistances.kBlueLeftSwitchY - AutoDistances.kSwitchPlateWidth/2.0), 0.0));
         } else {
             path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedScaleSwitchMidlineX - Constants.kRobotLengthInches/2.0,
                     -Constants.kRobotWidthInches/2.0 - AutoDistances.kRedRightCornerOffset + AutoDistances.kRedRightSwitchY/2.0), 72.0));
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedLeftSwitchX + Constants.kPlateLength + Constants.kRobotLengthInches/2.0
+            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedLeftSwitchX + AutoDistances.kSwitchPlateLength + Constants.kRobotLengthInches/2.0
                     + Constants.kSquareCubeLength, AutoDistances.kFieldWidth - Constants.kRobotWidthInches/2.0 - AutoDistances.kRedRightCornerOffset
-                    - AutoDistances.kRedLeftSwitchY - Constants.kPlateWidth/2.0), 0.0));
+                    - AutoDistances.kRedLeftSwitchY - AutoDistances.kSwitchPlateWidth/2.0), 0.0));
         }
         ArrayList<Routine> routines = new ArrayList<>();
         routines.add(new DriveSensorResetRoutine());

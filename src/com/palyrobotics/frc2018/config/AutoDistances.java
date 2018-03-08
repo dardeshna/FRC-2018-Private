@@ -56,6 +56,10 @@ public class AutoDistances {
 
 	//Self explanatory
 	public static double kFieldWidth;
+	public static double kSwitchPlateWidth;
+	public static double kSwitchPlateLength;
+	public static double kScalePlateWidth;
+	public static double kScalePlateLength;
 
 	//Length from left field wall to right edge of the exchange zone
 	public static double kBlueLeftToCenterY;
@@ -74,30 +78,30 @@ public class AutoDistances {
 	
 	private static void loadField() { // Make sure to ant deploy constants to roboRIO
 		switch (Constants.kFieldName) {
-		case AZN:
-			field = JSONFormatter.loadFileDirectory("constants/fields", "AZNField.json");
-			break;
-		case AZN_PRACTICE:
-			field = JSONFormatter.loadFileDirectory("constants/fields", "AZNPracticeField.json");
-			break;
-		case CMP:
-			field = JSONFormatter.loadFileDirectory("constants/fields", "CMPField.json");
-			break;
-		case CMP_PRACTICE:
-			field = JSONFormatter.loadFileDirectory("constants/fields", "CMPPracticeField.json");
-			break;
-		case SVR:
-			field = JSONFormatter.loadFileDirectory("constants/fields", "SVRField.json");
-			break;
-		case SVR_PRACTICE:
-			field = JSONFormatter.loadFileDirectory("constants/fields", "SVRPracticeField.json");
-			break;
-		case TEAM_254:
-			field = JSONFormatter.loadFileDirectory("constants/fields", "Team254Field.json");
-			break;
-		case TEAM_8:
-			field = JSONFormatter.loadFileDirectory("constants/fields", "Team8Field.json");
-			break;
+			case AZN:
+				field = JSONFormatter.loadFileDirectory("constants/fields", "AZNField.json");
+				break;
+			case AZN_PRACTICE:
+				field = JSONFormatter.loadFileDirectory("constants/fields", "AZNPracticeField.json");
+				break;
+			case CMP:
+				field = JSONFormatter.loadFileDirectory("constants/fields", "CMPField.json");
+				break;
+			case CMP_PRACTICE:
+				field = JSONFormatter.loadFileDirectory("constants/fields", "CMPPracticeField.json");
+				break;
+			case SVR:
+				field = JSONFormatter.loadFileDirectory("constants/fields", "SVRField.json");
+				break;
+			case SVR_PRACTICE:
+				field = JSONFormatter.loadFileDirectory("constants/fields", "SVRPracticeField.json");
+				break;
+			case TEAM_254:
+				field = JSONFormatter.loadFileDirectory("constants/fields", "Team254Field.json");
+				break;
+			case TEAM_8:
+				field = JSONFormatter.loadFileDirectory("constants/fields", "Team8Field.json");
+				break;
 		}
 	}
 	
@@ -135,6 +139,10 @@ public class AutoDistances {
 		kRedLeftToCenterY = getDoubleValue("kRedLeftToCenterY");
 		kBlueScaleSwitchMidlineX = getDoubleValue("kBlueScaleSwitchMidlineX");
 		kRedScaleSwitchMidlineX = getDoubleValue("kRedScaleSwitchMidlineX");
+		kSwitchPlateWidth = getDoubleValue("kSwitchPlateWidth");
+		kSwitchPlateLength = getDoubleValue("kSwitchPlateLength");
+		kScalePlateWidth = getDoubleValue("kScalePlateWidth");
+		kScalePlateLength = getDoubleValue("kScalePlateLength");
 	}
 	
 	/**

@@ -44,15 +44,15 @@ public class LeftStartRightSwitchAutoMode extends AutoModeBase {
         if(mAlliance == Alliance.BLUE) {
             path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueScaleSwitchMidlineX - Constants.kRobotLengthInches/2.0,
                     Constants.kRobotWidthInches/2.0 + AutoDistances.kBlueLeftCornerOffset - AutoDistances.kBlueLeftSwitchY/2.0), 72.0));
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueLeftSwitchX + Constants.kPlateLength + Constants.kRobotLengthInches/2.0
+            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueLeftSwitchX + AutoDistances.kSwitchPlateLength + Constants.kRobotLengthInches/2.0
                     + Constants.kSquareCubeLength, -AutoDistances.kFieldWidth + Constants.kRobotWidthInches/2.0 + AutoDistances.kBlueLeftCornerOffset
-                            + AutoDistances.kBlueRightSwitchY + Constants.kPlateWidth/2.0), 0.0));
+                            + AutoDistances.kBlueRightSwitchY + AutoDistances.kSwitchPlateWidth/2.0), 0.0));
         } else {
             path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedScaleSwitchMidlineX - Constants.kRobotLengthInches/2.0,
                     Constants.kRobotWidthInches/2.0 + AutoDistances.kRedLeftCornerOffset - AutoDistances.kRedLeftSwitchY/2.0), 72.0));
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedLeftSwitchX + Constants.kPlateLength + Constants.kRobotLengthInches/2.0
+            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedLeftSwitchX + AutoDistances.kSwitchPlateLength + Constants.kRobotLengthInches/2.0
                     + Constants.kSquareCubeLength, -AutoDistances.kFieldWidth + Constants.kRobotWidthInches/2.0 + AutoDistances.kRedLeftCornerOffset
-                            + AutoDistances.kRedRightSwitchY + Constants.kPlateWidth/2.0), 0.0));
+                            + AutoDistances.kRedRightSwitchY + AutoDistances.kSwitchPlateWidth/2.0), 0.0));
         }
 
         ArrayList<Routine> routines = new ArrayList<Routine>();

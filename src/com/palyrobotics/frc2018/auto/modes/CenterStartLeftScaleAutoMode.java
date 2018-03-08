@@ -47,10 +47,10 @@ public class CenterStartLeftScaleAutoMode extends AutoModeBase {
                     AutoDistances.kBlueLeftToCenterY + Constants.kRobotWidthInches/2.0 - AutoDistances.kBlueLeftSwitchY/2.0), 72.0));
             path.add(new Waypoint(new Translation2d(AutoDistances.kBlueLeftScaleX - 2.0 * Constants.kRobotLengthInches,
                     AutoDistances.kBlueLeftToCenterY + Constants.kRobotWidthInches/2.0 - AutoDistances.kBlueLeftScaleY
-                            - Constants.kPlateWidth/2.0), 72.0));
+                            - AutoDistances.kScalePlateWidth/2.0), 72.0));
             path.add(new Waypoint(new Translation2d(AutoDistances.kBlueLeftScaleX - Constants.kRobotLengthInches,
                     AutoDistances.kBlueLeftToCenterY + Constants.kRobotWidthInches/2.0 - AutoDistances.kBlueLeftScaleY
-                            - Constants.kPlateWidth/2.0), 0.0));
+                            - AutoDistances.kScalePlateWidth/2.0), 0.0));
         } else {
             path.add(new Waypoint(new Translation2d(AutoDistances.kRedLeftSwitchX - Constants.kRobotLengthInches,
                     AutoDistances.kRedLeftToCenterY + Constants.kRobotWidthInches/2.0 - AutoDistances.kRedLeftSwitchY/2.0), 72.0));
@@ -58,10 +58,10 @@ public class CenterStartLeftScaleAutoMode extends AutoModeBase {
                     AutoDistances.kRedLeftToCenterY + Constants.kRobotWidthInches/2.0 - AutoDistances.kRedLeftSwitchY/2.0), 72.0));
             path.add(new Waypoint(new Translation2d(AutoDistances.kRedLeftScaleX - 2.0 * Constants.kRobotLengthInches,
                     AutoDistances.kRedLeftToCenterY + Constants.kRobotWidthInches/2.0 - AutoDistances.kRedLeftScaleY
-                            - Constants.kPlateWidth/2.0), 72.0));
+                            - AutoDistances.kScalePlateWidth/2.0), 72.0));
             path.add(new Waypoint(new Translation2d(AutoDistances.kRedLeftScaleX - Constants.kRobotLengthInches,
                     AutoDistances.kRedLeftToCenterY + Constants.kRobotWidthInches/2.0 - AutoDistances.kRedLeftScaleY
-                            - Constants.kPlateWidth/2.0), 0.0));
+                            - AutoDistances.kScalePlateWidth/2.0), 0.0));
         }
 
         ArrayList<Routine> routines = new ArrayList<>();

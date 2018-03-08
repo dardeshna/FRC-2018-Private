@@ -92,10 +92,10 @@ public class CenterStartLeftMultiSwitchAutoMode extends AutoModeBase {
 
         if(alliance == Alliance.BLUE) {
             path.add(new Waypoint(new Translation2d(-AutoDistances.kBluePyramidLength + Constants.kCenterOfRotationOffsetFromFrontInches + Constants.kSquareCubeLength/2.0,
-                    -((AutoDistances.kFieldWidth - AutoDistances.kBluePyramidFromRightY) - AutoDistances.kBlueLeftSwitchY) + AutoDistances.kBluePyramidWidth/2.0 + Constants.kPlateWidth/2.0), 0.0));
+                    -((AutoDistances.kFieldWidth - AutoDistances.kBluePyramidFromRightY) - AutoDistances.kBlueLeftSwitchY) + AutoDistances.kBluePyramidWidth/2.0 + AutoDistances.kSwitchPlateWidth/2.0), 0.0));
         } else if(alliance == Alliance.RED) {
             path.add(new Waypoint(new Translation2d(-AutoDistances.kRedPyramidLength + Constants.kCenterOfRotationOffsetFromFrontInches + Constants.kSquareCubeLength/2.0,
-                    -((AutoDistances.kFieldWidth - AutoDistances.kRedPyramidFromRightY) - AutoDistances.kRedLeftSwitchY) + AutoDistances.kRedPyramidWidth/2.0 + Constants.kPlateWidth/2.0), 0.0));
+                    -((AutoDistances.kFieldWidth - AutoDistances.kRedPyramidFromRightY) - AutoDistances.kRedLeftSwitchY) + AutoDistances.kRedPyramidWidth/2.0 + AutoDistances.kSwitchPlateWidth/2.0), 0.0));
         }
 
         return new DriveUntilHasCubeRoutine(new DrivePathRoutine(path, false, 50.0,  true, 20.0, 2.0));
