@@ -154,6 +154,7 @@ public class Robot extends TimedRobot {
 		commands = operatorInterface.updateCommands(commands);
 		startSubsystems();
 		robotState.reset(0, new RigidTransform2d());
+		VisionManager.getInstance().verifyVisionAppIsRunning();
 
 		Logger.getInstance().logRobotThread(Level.INFO, "End teleopInit()");
 	}

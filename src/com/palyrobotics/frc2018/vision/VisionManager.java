@@ -1,6 +1,7 @@
 package com.palyrobotics.frc2018.vision;
 
 import com.palyrobotics.frc2018.config.Constants;
+import com.palyrobotics.frc2018.util.logger.Logger;
 import com.palyrobotics.frc2018.vision.networking.VisionDataReceiver;
 import com.palyrobotics.frc2018.vision.networking.VisionVideoServer;
 import com.palyrobotics.frc2018.vision.util.AbstractVisionThread;
@@ -145,17 +146,15 @@ public class VisionManager extends AbstractVisionThread {
 		}
 	}
 
+	public void verifyVisionAppIsRunning() {
+		CommandExecutor.startVisionApp();
+	}
+
 	@Override protected void onPause() { }
 
 	@Override protected void onResume() { }
 
 	@Override protected void onStop() { }
-
-	private boolean isAppStarted() {
-		final String pid = CommandExecutor.getAppPID();
-		// TODO proper checking
-		return pid != null && !pid.isEmpty();
-	}
 
 	@Override
 	public void update() {
