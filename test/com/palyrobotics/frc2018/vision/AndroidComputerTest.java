@@ -10,9 +10,6 @@ public class AndroidComputerTest {
     public static void main(String[] args) {
         Logger.getInstance().setFileName("Android Test");
         Logger.getInstance().start();
-	    System.out.print(new File("src/com/palyrobotics/frc2018/vision/util/default.jpeg").getAbsolutePath());
-	    System.out.print(new File("src/com/palyrobotics/frc2018/vision/util/default.jpeg").exists());
-
         VisionManager.getInstance().start(Constants.kVisionManagerUpdateRate, true);
     }
 }

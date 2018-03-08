@@ -15,11 +15,6 @@ public class ViewerMain {
     private static final File CONFIG_FILE = new File(RELATIVE_CONFIG_PATH);
 
     public static void main(String[] args) {
-        try {
-            System.out.println(CONFIG_FILE.getCanonicalPath());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         Config config = DEFAULT_CONFIG;
         try {
             final FileReader fileReader = new FileReader(CONFIG_FILE);

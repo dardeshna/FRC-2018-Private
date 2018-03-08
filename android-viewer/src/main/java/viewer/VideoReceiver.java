@@ -46,6 +46,7 @@ public class VideoReceiver implements Runnable {
             final Image icon = ImageIO.read(new File("res/logo.png"));
             frame.setIconImage(icon);
         } catch (IOException e) {
+            System.err.println("Could not find/load window logo!");
             if (m_Debugging) e.printStackTrace();
         }
         frame.add(fm_ViewerPanel);
