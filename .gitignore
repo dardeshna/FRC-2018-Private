@@ -2,6 +2,9 @@ bin/
 dist/
 build/
 
+# Android Viewer Config
+android-viewer/config/config.json
+
 # Eclipse
 */.settings/
 .settings

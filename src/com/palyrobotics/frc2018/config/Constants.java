@@ -34,6 +34,7 @@ public class Constants {
 	public static final int kVisionVideoSocketPort = 1180;
 	public static final boolean kVisionUseTimeout = true;
 	public static final int kVisionMaxTimeoutWait = 5000;
+	public static final long kServerReconnectWait = 1000;
 
 	/**
 	 * Cheesy Drive Constants Set by DriverProfiles

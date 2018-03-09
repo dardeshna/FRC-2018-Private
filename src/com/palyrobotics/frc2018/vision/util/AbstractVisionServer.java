@@ -1,8 +1,11 @@
 package com.palyrobotics.frc2018.vision.util;
 
+import com.palyrobotics.frc2018.config.Constants;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.BindException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
@@ -89,8 +92,13 @@ public abstract class AbstractVisionServer extends AbstractVisionThread {
 	 */
 	private ServerState acceptConnection() {
 		try {
-			if (m_Server != null)
-				m_Server.close();
+			closeServer();
+			// Wait a second before trying to reconnect
+			try {
+				Thread.sleep(Constants.kServerReconnectWait);
+			} catch (final InterruptedException ie) {
+				log(Level.SEVERE, "Interrupted while waiting to reconnect to connection");
+			}
  			m_Server = new ServerSocket(m_Port);
 			m_Server.setReuseAddress(true);
 			// Pause thread until we accept from the client
@@ -102,17 +110,20 @@ public abstract class AbstractVisionServer extends AbstractVisionThread {
 			return ServerState.OPEN;
 		} catch (final IOException ioe) {
 			log(m_LogConnectionStatus ? Level.INFO:Level.FINEST, ioe.toString());
+			closeServer();
 			return ServerState.ATTEMPTING_CONNECTION;
 		}
 	}
 
 	protected void closeServer() {
 		try {
-			log(Level.FINEST, "Closing client!");
+			log(Level.INFO, "Closing server and client . . .");
 			m_ClientOutputStream = null;
 			m_ClientInputStream = null;
-			m_Client.close();
-			m_Server.close();
+			if (m_Client != null)
+				m_Client.close();
+			if (m_Server != null)
+				m_Server.close();
 		} catch (final IOException ioe) {
 			log(Level.FINEST, ioe.toString());
 		}
