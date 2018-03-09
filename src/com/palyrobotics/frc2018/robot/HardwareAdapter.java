@@ -59,7 +59,8 @@ public class HardwareAdapter {
 //			gyro = new PigeonIMU(new WPI_TalonSRX(Constants.kForsetiElevatorSlaveTalonID));
 
 			//Forseti
-			gyro = new PigeonIMU(new WPI_TalonSRX(Constants.kForsetiElevatorSlaveTalonID));
+			gyro = new PigeonIMU(new WPI_TalonSRX(Constants.kForsetiIntakeSlaveDeviceID));
+//			gyro = new PigeonIMU(new WPI_TalonSRX(11));
 		}
 	}
 

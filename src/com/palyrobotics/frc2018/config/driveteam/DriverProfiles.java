@@ -15,7 +15,7 @@ public class DriverProfiles {
 
 				Constants.kMaxAccelRate = 0.025;
 
-				Constants.kDriveSensitivity = 1.0;
+				Constants.kDriveSensitivity = 0.75;
 
 				Constants.kQuickTurnSensitivity = 0.675;//0.8;
 				Constants.kPreciseQuickTurnSensitivity = 0.25;//0.35;

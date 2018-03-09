@@ -60,19 +60,19 @@ public class Robot extends TimedRobot {
 		Logger.getInstance().logRobotThread(Level.INFO, "Start robotInit() for " + Constants.kRobotName.toString());
 
 		DashboardManager.getInstance().robotInit();
-		VisionManager.getInstance().start(Constants.kVisionManagerUpdateRate, false);
+//		VisionManager.getInstance().start(Constants.kVisionManagerUpdateRate, false);
 
 		Logger.getInstance().logRobotThread(Level.CONFIG, "Startup successful");
 		Logger.getInstance().logRobotThread(Level.CONFIG, "Robot name: " + Constants.kRobotName);
 		Logger.getInstance().logRobotThread(Level.CONFIG, "Alliance: " + DriverStation.getInstance().getAlliance());
 		Logger.getInstance().logRobotThread(Level.CONFIG, "FMS connected: " + DriverStation.getInstance().isFMSAttached());
 		Logger.getInstance().logRobotThread(Level.CONFIG, "Alliance station: " + DriverStation.getInstance().getLocation());
-		try {
-			Logger.getInstance().logRobotThread((VisionManager.getInstance().isADBServerStarted()) ? Level.CONFIG : Level.WARNING,
-					(VisionManager.getInstance().isADBServerStarted()) ? "Nexus streaming" : "Nexus not streaming");
-		} catch(NullPointerException e) {
-			Logger.getInstance().logRobotThread(Level.SEVERE, "Auto", e);
-		}
+//		try {
+//			Logger.getInstance().logRobotThread((VisionManager.getInstance().isADBServerStarted()) ? Level.CONFIG : Level.WARNING,
+//					(VisionManager.getInstance().isADBServerStarted()) ? "Nexus streaming" : "Nexus not streaming");
+//		} catch(NullPointerException e) {
+//			Logger.getInstance().logRobotThread(Level.SEVERE, "Auto", e);
+//		}
 
 		mHardwareUpdater.initHardware();
 
@@ -152,7 +152,7 @@ public class Robot extends TimedRobot {
 		commands = operatorInterface.updateCommands(commands);
 		startSubsystems();
 		robotState.reset(0, new RigidTransform2d());
-		VisionManager.getInstance().verifyVisionAppIsRunning();
+//		VisionManager.getInstance().verifyVisionAppIsRunning();
 
 		Logger.getInstance().logRobotThread(Level.INFO, "End teleopInit()");
 	}

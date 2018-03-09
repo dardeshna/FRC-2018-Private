@@ -11,6 +11,7 @@ import com.palyrobotics.frc2018.behavior.routines.elevator.ElevatorCustomPositio
 import com.palyrobotics.frc2018.behavior.routines.intake.IntakeDownRoutine;
 import com.palyrobotics.frc2018.behavior.routines.intake.IntakeOpenRoutine;
 import com.palyrobotics.frc2018.behavior.routines.intake.IntakeSensorStopRoutine;
+import com.palyrobotics.frc2018.behavior.routines.intake.IntakeWheelRoutine;
 import com.palyrobotics.frc2018.config.AutoDistances;
 import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.subsystems.Intake;

@@ -272,6 +272,9 @@ class HardwareUpdater {
 		masterTalon.setNeutralMode(NeutralMode.Brake);
 		slaveTalon.setNeutralMode(NeutralMode.Brake);
 
+		masterTalon.configOpenloopRamp(0.09, 0);
+		slaveTalon.configOpenloopRamp(0.09, 0);
+
 		masterTalon.enableVoltageCompensation(true);
 		slaveTalon.enableVoltageCompensation(true);
 
@@ -285,7 +288,7 @@ class HardwareUpdater {
 		slaveTalon.configReverseSoftLimitEnable(false, 0);
 
 		//Reverse right side
-		masterTalon.setInverted(false);
+		masterTalon.setInverted(true);
 		slaveTalon.setInverted(false);
 
 		//Set slave talons to follower mode
@@ -385,8 +388,17 @@ class HardwareUpdater {
 			robotState.drivePose.rightMotionMagicVel = Optional.empty();
 		}
 
+//		System.out.println("bot: " + robotState.elevatorBottomHFX);
+//		System.out.println("left: " + robotState.drivePose.leftEnc);
+//		System.out.println("right: " + robotState.drivePose.rightEnc);
+//		System.out.println("gyro : " + robotState.drivePose.heading);
+
 		double masterCurrent = HardwareAdapter.getInstance().getIntake().masterTalon.getOutputCurrent();
 		double slaveCurrent = HardwareAdapter.getInstance().getIntake().slaveTalon.getOutputCurrent();
+
+//		System.out.println("master current: " + masterCurrent);
+//		System.out.println("slave current: " + slaveCurrent);
+//		System.out.println("has cube: " + robotState.hasCube);
 
 		if(masterCurrent >= Constants.kIntakeMasterStallCurrent
 				&& slaveCurrent >= Constants.kIntakeSlaveStallCurrent
@@ -418,15 +430,16 @@ class HardwareUpdater {
 			intakeFreeSpinCounter = 0;
 		}
 
+
 		if(intakeStallCounter >= Constants.kIntakeStallCounterThreshold) {
 			robotState.hasCube = true;
 		} else if(mIntake.getOpenCloseState() == Intake.OpenCloseState.OPEN || intakeFreeSpinCounter >= Constants.kIntakeFreeCounterThreshold){
 			robotState.hasCube = false;
 		}
 
-		System.out.println("elevator: " + robotState.elevatorPosition);
-        System.out.println("left: " + robotState.drivePose.leftEnc);
-        System.out.println("right: " + robotState.drivePose.rightEnc);
+//		System.out.println("elevator: " + robotState.elevatorPosition);
+//        System.out.println("left: " + robotState.drivePose.leftEnc);
+//        System.out.println("right: " + robotState.drivePose.rightEnc);
 
 		robotState.drivePose.leftError = Optional.of(leftMasterTalon.getClosedLoopError(0));
 		robotState.drivePose.rightError = Optional.of(rightMasterTalon.getClosedLoopError(0));
@@ -463,8 +476,7 @@ class HardwareUpdater {
 		robotState.elevatorPosition = HardwareAdapter.getInstance().getElevator().elevatorMasterTalon.getSelectedSensorPosition(0);
 		robotState.elevatorVelocity = HardwareAdapter.getInstance().getElevator().elevatorMasterTalon.getSelectedSensorVelocity(0);
 		robotState.elevatorBottomHFX = HardwareAdapter.getInstance().getDrivetrain().rightMasterTalon.getSensorCollection().isRevLimitSwitchClosed();
-		robotState.elevatorTopHFX = false;
-//		robotState.elevatorTopHFX = HardwareAdapter.getInstance().getDrivetrain().rightMasterTalon.getSensorCollection().isFwdLimitSwitchClosed();
+		robotState.elevatorTopHFX = HardwareAdapter.getInstance().getDrivetrain().rightMasterTalon.getSensorCollection().isFwdLimitSwitchClosed();
 		StickyFaults elevatorStickyFaults = new StickyFaults();
 		HardwareAdapter.getInstance().getElevator().elevatorMasterTalon.clearStickyFaults(0);
 		HardwareAdapter.getInstance().getElevator().elevatorMasterTalon.getStickyFaults(elevatorStickyFaults);
@@ -526,6 +538,7 @@ class HardwareUpdater {
 				TalonSRXOutput elevatorHoldOutput = new TalonSRXOutput();
 				elevatorHoldOutput.setPercentOutput(Constants.kElevatorHoldVoltage);
 				updateTalonSRX(HardwareAdapter.getInstance().getElevator().elevatorMasterTalon, elevatorHoldOutput);
+				System.out.println("thinks at top");
 			} else {
 				updateTalonSRX(HardwareAdapter.getInstance().getElevator().elevatorMasterTalon, mElevator.getOutput());
 			}

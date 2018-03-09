@@ -77,6 +77,7 @@ public class LeftStartRightSwitchAutoMode extends AutoModeBase {
         //Spit out the cube at some speed to get it in the switch past the cube on the ground
         routines.add(new IntakeWheelRoutine(Intake.WheelState.EXPELLING, Constants.kExpelToScoreTime));
 
+
         return new SequentialRoutine(routines);
     }
 

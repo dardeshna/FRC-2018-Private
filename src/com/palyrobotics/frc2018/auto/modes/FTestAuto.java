@@ -23,7 +23,8 @@ public class FTestAuto extends AutoModeBase {
 
     @Override
     public Routine getRoutine() {
-        return getDrive();
+        return new TimedDriveRoutine(0.2, 6.5);
+//        return getDrive();
     }
 
     @Override

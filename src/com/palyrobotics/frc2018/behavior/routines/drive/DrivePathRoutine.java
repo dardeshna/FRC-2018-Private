@@ -90,11 +90,6 @@ public class DrivePathRoutine extends Routine {
 		if(mAddCurrentPosition) {
 			pathList.add(0, new Path.Waypoint(robotState.getLatestFieldToVehicle().getValue().getTranslation(), mStartSpeed));
 
-			for (Path.Waypoint point : pathList) {
-				Logger.getInstance().logSubsystemThread(Level.INFO, "Position: " + point.position.toString());
-				Logger.getInstance().logSubsystemThread(Level.INFO, "Speed: " + point.speed);
-			}
-
 			mPath = new Path(pathList);
 		}
 

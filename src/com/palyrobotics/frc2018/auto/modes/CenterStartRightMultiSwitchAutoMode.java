@@ -71,6 +71,7 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
     }
 
     public Routine getBackUpFromSwitch() {
+
         ArrayList<Routine> backUp = new ArrayList<>();
 
         //zero drive sensors

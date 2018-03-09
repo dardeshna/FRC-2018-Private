@@ -58,7 +58,8 @@ public class OperatorInterface {
 	}
 
 	private double handleLooseOperatorStick(double y) {
-		if(y > -0.066471 && y < 0.00782) {
+		System.out.println(y);
+		if(y > -0.3/**0.066471*/ && y < 0.00782) {
 			return 0;
 		} else return y;
 	}
@@ -87,7 +88,7 @@ public class OperatorInterface {
 		/**
 		 * Elevator controls
 		 */
-		if(Math.abs(handleLooseOperatorStick(mOperatorStick.getY())) > 0.0) {
+		if(Math.abs(ChezyMath.handleDeadband(mOperatorStick.getY(), 0.1)) > 0.0) {
 		    newCommands.wantedElevatorState = Elevator.ElevatorState.MANUAL_POSITIONING;
 		} else {
 			newCommands.wantedElevatorState = Elevator.ElevatorState.HOLD;
