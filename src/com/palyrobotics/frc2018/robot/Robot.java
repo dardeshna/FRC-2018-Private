@@ -70,7 +70,6 @@ public class Robot extends TimedRobot {
 		try {
 			Logger.getInstance().logRobotThread((VisionManager.getInstance().isADBServerStarted()) ? Level.CONFIG : Level.WARNING,
 					(VisionManager.getInstance().isADBServerStarted()) ? "Nexus streaming" : "Nexus not streaming");
-			Logger.getInstance().logRobotThread(Level.INFO, "Auto", AutoModeSelector.getInstance().getAutoMode().toString());
 		} catch(NullPointerException e) {
 			Logger.getInstance().logRobotThread(Level.SEVERE, "Auto", e);
 		}
@@ -79,7 +78,6 @@ public class Robot extends TimedRobot {
 
 		DriveTeam.configConstants();
 		
-		Logger.getInstance().logRobotThread(Level.INFO, "Auto" + AutoModeSelector.getInstance().getAutoMode().toString());
 		Logger.getInstance().logRobotThread(Level.INFO, "End robotInit()");
 	}
 

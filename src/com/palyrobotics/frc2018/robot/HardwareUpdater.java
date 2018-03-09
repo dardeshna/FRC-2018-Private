@@ -173,9 +173,10 @@ class HardwareUpdater {
 		leftMasterTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
 		rightMasterTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
 
-		leftMasterTalon.setSensorPhase(true);
-		rightMasterTalon.setSensorPhase(true);
+		leftMasterTalon.setSensorPhase(false);
+		rightMasterTalon.setSensorPhase(false);
 
+		leftMasterTalon.overrideLimitSwitchesEnable(false);
 		rightMasterTalon.overrideLimitSwitchesEnable(false);
 
 		leftMasterTalon.setStatusFramePeriod(0, 5, 0);
@@ -194,14 +195,16 @@ class HardwareUpdater {
 		leftMasterTalon.configClosedloopRamp(0.2, 0);
 		rightMasterTalon.configClosedloopRamp(0.2, 0);
 
-		leftMasterTalon.configOpenloopRamp(0.15, 0);
-		rightMasterTalon.configOpenloopRamp(0.15, 0);
-
 		//Reverse right side
-		rightMasterTalon.setInverted(true);
-		rightSlave1Victor.setInverted(true);
-		rightSlave2Victor.setInverted(true);
-		rightSlave3Victor.setInverted(true);
+		leftMasterTalon.setInverted(true);
+		leftSlave1Victor.setInverted(true);
+		leftSlave2Victor.setInverted(true);
+		leftSlave3Victor.setInverted(true);
+
+		rightMasterTalon.setInverted(false);
+		rightSlave1Victor.setInverted(false);
+		rightSlave2Victor.setInverted(false);
+		rightSlave3Victor.setInverted(false);
 
 		//Set slave victors to follower mode
 		leftSlave1Victor.follow(leftMasterTalon);
@@ -287,11 +290,6 @@ class HardwareUpdater {
 
 		//Set slave talons to follower mode
         slaveTalon.follow(masterTalon);
-	}
-
-	void configureMiscellaneousHardware() {
-		PowerDistributionPanel pdp = HardwareAdapter.getInstance().getMiscellaneousHardware().pdp;
-		LiveWindow.disableTelemetry(pdp);
 	}
 
 	/**
@@ -425,6 +423,10 @@ class HardwareUpdater {
 		} else if(mIntake.getOpenCloseState() == Intake.OpenCloseState.OPEN || intakeFreeSpinCounter >= Constants.kIntakeFreeCounterThreshold){
 			robotState.hasCube = false;
 		}
+
+		System.out.println("elevator: " + robotState.elevatorPosition);
+        System.out.println("left: " + robotState.drivePose.leftEnc);
+        System.out.println("right: " + robotState.drivePose.rightEnc);
 
 		robotState.drivePose.leftError = Optional.of(leftMasterTalon.getClosedLoopError(0));
 		robotState.drivePose.rightError = Optional.of(rightMasterTalon.getClosedLoopError(0));

@@ -24,8 +24,10 @@ public class CheesyDriveHelper {
 
 		double wheelNonLinearity;
 
-		wheel = ChezyMath.handleDeadband(wheel, Constants.kDeadband);
-		throttle = ChezyMath.handleDeadband(throttle, Constants.kDeadband);
+//		wheel = ChezyMath.handleDeadband(wheel, Constants.kDeadband);
+//		throttle = ChezyMath.handleDeadband(throttle, Constants.kDeadband);
+		wheel = handleLooseTurnStick(wheel);
+		throttle = handleLooseDriveStick(throttle);
 
 		double negInertia = wheel - mOldWheel;
 		mOldWheel = wheel;
@@ -43,7 +45,7 @@ public class CheesyDriveHelper {
 		double angularPower;
 
 		//linear power is what's actually sent to motor, throttle is input
-		double linearPower = remapThrottle(throttle);
+		double linearPower = throttle;//remapThrottle(throttle);
 
 		//Negative inertia
 		double negInertiaAccumulator = 0.0;
@@ -170,6 +172,18 @@ public class CheesyDriveHelper {
 				break;
 		}
 		return x;
+	}
+
+	private double handleLooseDriveStick(double throttle) {
+		if(throttle < 0.031281 && throttle > -0.043011) {
+			return 0.0;
+		} else return throttle;
+	}
+
+	private double handleLooseTurnStick(double wheel) {
+		if(wheel > -0.074291 && wheel < 0.00782) {
+			return 0.0;
+		} else return wheel;
 	}
 
 	/**

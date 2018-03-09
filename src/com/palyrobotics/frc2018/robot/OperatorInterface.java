@@ -57,6 +57,12 @@ public class OperatorInterface {
 		return true;
 	}
 
+	private double handleLooseOperatorStick(double y) {
+		if(y > -0.066471 && y < 0.00782) {
+			return 0;
+		} else return y;
+	}
+
 	/**
 	 * Returns modified commands
 	 * 
@@ -81,7 +87,7 @@ public class OperatorInterface {
 		/**
 		 * Elevator controls
 		 */
-		if(Math.abs(ChezyMath.handleDeadband(mOperatorStick.getY(), 0.05)) > 0.0) {
+		if(Math.abs(handleLooseOperatorStick(mOperatorStick.getY())) > 0.0) {
 		    newCommands.wantedElevatorState = Elevator.ElevatorState.MANUAL_POSITIONING;
 		} else {
 			newCommands.wantedElevatorState = Elevator.ElevatorState.HOLD;
@@ -94,7 +100,7 @@ public class OperatorInterface {
 		/**
 		 * Climber controls
 		 */
-		if(Math.abs(ChezyMath.handleDeadband(mClimberStick.getY(), 0.05)) > 0.0) {
+		if(Math.abs(ChezyMath.handleDeadband(mClimberStick.getY(), 0.2)) > 0.0) {
 			newCommands.wantedClimbMovement = Climber.MotionSubstate.MOVING;
 
 			ArrayList<Routine> stowIntakeRoutine = new ArrayList<Routine>();
