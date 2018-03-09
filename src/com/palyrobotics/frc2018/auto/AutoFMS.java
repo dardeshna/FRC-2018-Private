@@ -85,7 +85,7 @@ public class AutoFMS {
     }
 
     public static boolean isFMSDataAvailable() {
-        return AutoFMS.getInstance().getScaleSide() != AutoFMS.Side.NONE;
+        return AutoFMS.getInstance().getScaleSide() != Side.NONE && AutoFMS.getInstance().getSwitchSide() != Side.NONE;
     }
 }
 
