@@ -124,7 +124,7 @@ public class AutoModeSelector {
 
 		AutoFMS.Side scaleSide = autoFMS.getScaleSide();
 		AutoFMS.Side switchSide = autoFMS.getSwitchSide();
-
+		
 		//Find ideal scale auto, or the auto it would execute if it had to score on the scale
 		if(scaleDecision != Decision.NEVER) {
 			if(scaleDecision == Decision.BOTH || (scaleDecision == Decision.LEFT && scaleSide == Side.LEFT) || scaleDecision == Decision.RIGHT && scaleSide == Side.RIGHT) {
@@ -134,7 +134,14 @@ public class AutoModeSelector {
 				} else {
 					key = alliance + " " + startingPosition + " SCALE " + scaleSide;
 				}
-				scaleIndex = mAutoMap.get(key);
+
+				try {
+					scaleIndex = mAutoMap.get(key);
+				} catch (Exception e) {
+					scaleIndex = 0;
+					Logger.getInstance().logSubsystemThread(Level.WARNING, "Error in selecting auto, defaulting to baseline");
+				}
+
 				Logger.getInstance().logRobotThread(Level.INFO, "Attempted to find scale auto mode with this key: " + key);
 			}
 		}
@@ -148,7 +155,14 @@ public class AutoModeSelector {
 				} else {
 					key = alliance + " " + startingPosition + " SWITCH " + switchSide;
 				}
-				switchIndex = mAutoMap.get(key);
+
+				try {
+					switchIndex = mAutoMap.get(key);
+				} catch (Exception e) {
+					switchIndex = 0;
+					Logger.getInstance().logSubsystemThread(Level.WARNING, "Error in selecting auto, defaulting to baseline");
+				}
+
 				Logger.getInstance().logRobotThread(Level.INFO, "Attempted to find switch auto mode with this key: " + key);
 			}
 		}
@@ -178,7 +192,7 @@ public class AutoModeSelector {
 		}
 
 		AutoModeBase selectedAuto = mAutoModes.get(selectedIndex);
-		Logger.getInstance().logRobotThread(Level.INFO, "Selected " + selectedAuto);
+		Logger.getInstance().logRobotThread(Level.INFO, "Selected", selectedAuto);
 		return selectedAuto;
 	}
 
