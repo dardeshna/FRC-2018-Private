@@ -66,7 +66,7 @@ public abstract class AbstractVisionServer extends AbstractVisionThread {
 		if (closed)       log(m_LogConnectionStatus ? Level.INFO:Level.FINEST, String.format("Connection was closed on port: %d", m_Port));
 		if (shouldRetry) {
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(Constants.kServerReconnectWait);
 			} catch (final InterruptedException ie) {
 				ie.printStackTrace();
 			}
@@ -93,12 +93,6 @@ public abstract class AbstractVisionServer extends AbstractVisionThread {
 	private ServerState acceptConnection() {
 		try {
 			closeServer();
-			// Wait a second before trying to reconnect
-			try {
-				Thread.sleep(Constants.kServerReconnectWait);
-			} catch (final InterruptedException ie) {
-				log(Level.SEVERE, "Interrupted while waiting to reconnect to connection");
-			}
  			m_Server = new ServerSocket(m_Port);
 			m_Server.setReuseAddress(true);
 			// Pause thread until we accept from the client

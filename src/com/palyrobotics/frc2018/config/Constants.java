@@ -31,7 +31,7 @@ public class Constants {
 	public static final int kVisionVideoServerUpdateRate = 10;
 	public static final int kVisionDataPort = 8009;
 	public static final int kVisionVideoReceiverSocketPort = 8008;
-	public static final int kVisionVideoSocketPort = 1180;
+	public static final int kVisionVideoSocketPort = 5800;
 	public static final boolean kVisionUseTimeout = true;
 	public static final int kVisionMaxTimeoutWait = 5000;
 	public static final long kServerReconnectWait = 1000;

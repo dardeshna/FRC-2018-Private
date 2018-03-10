@@ -7,9 +7,9 @@ package viewer;
 public class Config {
 
     private static final boolean DEFAULT_DEBUGGING = false;
-    private static final int DEFAULT_PORT = 1180;
+    private static final int DEFAULT_PORT = 5800;
     private static final String DEFAULT_IP = "localhost";
-    private static final double DEFAULT_PREVIEW_SCALE = 2.25d;
+    private static final double DEFAULT_PREVIEW_SCALE = 2.0d;
 
     public final String address;
     public final int port;
