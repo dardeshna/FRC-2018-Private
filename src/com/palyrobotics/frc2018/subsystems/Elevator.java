@@ -153,10 +153,8 @@ public class Elevator extends Subsystem {
 			case CUSTOM_POSITIONING:
 				//Control loop
 				if(movingDown) {
-					System.out.println("Custom positioning down");
 					mOutput.setPosition(mElevatorWantedPosition.get(), Gains.elevatorDownwardsPosition);
 				} else {
-					System.out.println("Custom positioning up");
 					mOutput.setPosition(mElevatorWantedPosition.get(), Gains.elevatorPosition);
 				}
 
@@ -231,10 +229,8 @@ public class Elevator extends Subsystem {
 				if(!mElevatorWantedPosition.equals(Optional.of(kElevatorBottomPosition.get() + commands.robotSetpoints.elevatorPositionSetpoint.get() * Constants.kElevatorTicksPerInch))) {
 					mElevatorWantedPosition = Optional.of(kElevatorBottomPosition.get() + commands.robotSetpoints.elevatorPositionSetpoint.get() * Constants.kElevatorTicksPerInch);
 					if(mElevatorWantedPosition.get() >= mRobotState.elevatorPosition) {
-						System.out.println("Detected desired calibrated up");
 						movingDown = false;
 					} else {
-						System.out.println("Detected desired calibrated down");
 						movingDown = true;
 					}
 				}
@@ -243,10 +239,8 @@ public class Elevator extends Subsystem {
                 if(!mElevatorWantedPosition.equals(Optional.of(commands.robotSetpoints.elevatorPositionSetpoint.get() * Constants.kElevatorTicksPerInch))) {
                     mElevatorWantedPosition = Optional.of(commands.robotSetpoints.elevatorPositionSetpoint.get() * Constants.kElevatorTicksPerInch);
 					if(mElevatorWantedPosition.get() >= mRobotState.elevatorPosition) {
-						System.out.println("Detected desired uncalibrated up");
 						movingDown = false;
 					} else {
-						System.out.println("Detected desired uncalibrated down");
 						movingDown = true;
 					}
                 }

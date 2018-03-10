@@ -29,6 +29,7 @@ public class OperatorInterface {
 	}
 
 	private boolean operatorButtonFourPressable = true;
+	private boolean operatorButtonTwoPressable = true;
 
 	protected OperatorInterface() {
 	}
@@ -160,11 +161,26 @@ public class OperatorInterface {
 		//Intake wheel logic block
 		if(mOperatorStick.getTriggerPressed()) {
 			newCommands.wantedIntakingState = Intake.WheelState.EXPELLING;
+			newCommands.cancelCurrentRoutines = true;
 		} else if(mOperatorStick.getButtonPressed(2)) {
-			newCommands.wantedIntakingState = Intake.WheelState.INTAKING;
+		 	if(operatorButtonTwoPressable) {
+				ArrayList<Routine> intakeThenUp = new ArrayList<>();
+				intakeThenUp.add(new IntakeSensorStopRoutine(Intake.WheelState.INTAKING, 115.0));
+				intakeThenUp.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorCubeInTransitPositionInches, 0.5));
+				newCommands.cancelCurrentRoutines = true;
+				newCommands.addWantedRoutine(new SequentialRoutine(intakeThenUp));
+			}
+			newCommands.cancelCurrentRoutines = false;
+			operatorButtonTwoPressable = false;
 		} else if(mOperatorStick.getButtonPressed(10)) {
 			newCommands.wantedIntakingState = Intake.WheelState.VAULT_EXPELLING;
+			newCommands.cancelCurrentRoutines = true;
+		} else if (mOperatorStick.getButtonPressed(9)) {
+		 	newCommands.wantedIntakingState = Intake.WheelState.INTAKING;
+		 	newCommands.cancelCurrentRoutines = true;
 		} else {
+		 	newCommands.cancelCurrentRoutines = false;
+		 	operatorButtonTwoPressable = true;
 			newCommands.wantedIntakingState = Intake.WheelState.IDLE;
 		}
 
@@ -173,8 +189,10 @@ public class OperatorInterface {
 		//Default idle state is in above logic block
 		if(mTurnStick.getButtonPressed(3)) {
 			newCommands.wantedIntakingState = Intake.WheelState.INTAKING;
+			newCommands.cancelCurrentRoutines = true;
 		} else if(mTurnStick.getButtonPressed(4)) {
 			newCommands.wantedIntakingState = Intake.WheelState.VAULT_EXPELLING;
+			newCommands.cancelCurrentRoutines = true;
 		}
 
 		return newCommands;

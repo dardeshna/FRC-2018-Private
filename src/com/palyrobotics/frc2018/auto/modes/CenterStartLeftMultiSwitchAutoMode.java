@@ -31,7 +31,7 @@ public class CenterStartLeftMultiSwitchAutoMode extends AutoModeBase {
     }
 
     //Point in between getting second cube and switch, used as a vertex to curve off of
-    private Waypoint middleTransitPoint = new Waypoint(new Translation2d(-60.0, 30.0), 0.0);
+    private Waypoint middleTransitPoint = new Waypoint(new Translation2d(-65.0, 30.0), 0.0);
 
     @Override
     public String toString() {
