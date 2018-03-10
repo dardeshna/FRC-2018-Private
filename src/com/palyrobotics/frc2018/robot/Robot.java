@@ -101,6 +101,7 @@ public class Robot extends TimedRobot {
 		mHardwareUpdater.updateState(robotState);
 		mRoutineManager.reset(commands);
 		robotState.reset(0, new RigidTransform2d());
+//		commands.wantedIntakeUpDownState = Intake.UpDownState.UP;
 
 		AutoDistances.updateAutoDistances();
 
@@ -150,6 +151,7 @@ public class Robot extends TimedRobot {
 		DashboardManager.getInstance().toggleCANTable(true);
 		commands.wantedDriveState = Drive.DriveState.CHEZY; //switch to chezy after auto ends
 		commands = operatorInterface.updateCommands(commands);
+//		commands.wantedIntakeUpDownState = Intake.UpDownState.DOWN;
 		startSubsystems();
 		robotState.reset(0, new RigidTransform2d());
 //		VisionManager.getInstance().verifyVisionAppIsRunning();
@@ -173,7 +175,6 @@ public class Robot extends TimedRobot {
 		mAutoStarted = false;
 		Logger.getInstance().start();
 
-		robotState.gamePeriod = RobotState.GamePeriod.DISABLED;
 
 		robotState.reset(0, new RigidTransform2d());
 
@@ -183,6 +184,13 @@ public class Robot extends TimedRobot {
 		//Creates a new Commands instance in place of the old one
 		Commands.reset();
 		commands = Commands.getInstance();
+		if(robotState.gamePeriod == RobotState.GamePeriod.AUTO) {
+			commands.wantedIntakeUpDownState = Intake.UpDownState.DOWN;
+		} else {
+			commands.wantedIntakeUpDownState = Intake.UpDownState.UP;
+		}
+
+		robotState.gamePeriod = RobotState.GamePeriod.DISABLED;
 
 		//Stop controllers
 		mDrive.setNeutral();
