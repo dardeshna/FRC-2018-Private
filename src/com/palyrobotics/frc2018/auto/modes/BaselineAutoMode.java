@@ -43,7 +43,7 @@ public class BaselineAutoMode extends AutoModeBase {
 			path.add(new Waypoint(new Translation2d(AutoDistances.kRedBaseLineDistanceInches  - Constants.kRobotLengthInches, 0.0), 0.0));
 		}
 		ArrayList<Routine> routines = new ArrayList<>();
-		routines.add(new DriveSensorResetRoutine());
+		routines.add(new DriveSensorResetRoutine(1.0));
 		routines.add(new DrivePathRoutine(new Path(path), false));
 
 		return new SequentialRoutine(routines);

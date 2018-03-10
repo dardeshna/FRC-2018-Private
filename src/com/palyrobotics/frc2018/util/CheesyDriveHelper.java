@@ -45,7 +45,7 @@ public class CheesyDriveHelper {
 		double angularPower;
 
 		//linear power is what's actually sent to motor, throttle is input
-		double linearPower = throttle;//remapThrottle(throttle);
+		double linearPower = remapThrottle(throttle);
 
 		//Negative inertia
 		double negInertiaAccumulator = 0.0;

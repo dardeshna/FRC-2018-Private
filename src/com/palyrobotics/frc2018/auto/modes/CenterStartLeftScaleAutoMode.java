@@ -66,7 +66,7 @@ public class CenterStartLeftScaleAutoMode extends AutoModeBase {
 
         ArrayList<Routine> routines = new ArrayList<>();
 
-        routines.add(new DriveSensorResetRoutine());
+        routines.add(new DriveSensorResetRoutine(1.0));
 
         //Drive path while moving elevator up and moving intake down
         ArrayList<Routine> inTransitRoutines = new ArrayList<>();

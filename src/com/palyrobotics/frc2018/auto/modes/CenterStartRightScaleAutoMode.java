@@ -72,7 +72,7 @@ public class CenterStartRightScaleAutoMode extends AutoModeBase {
 
         ArrayList<Routine> routines = new ArrayList<>();
 
-        routines.add(new DriveSensorResetRoutine());
+        routines.add(new DriveSensorResetRoutine(1.0));
 
 		ArrayList<Routine> inTransitRoutines = new ArrayList<>();
 		inTransitRoutines.add(new DrivePathRoutine(new Path(path), false));

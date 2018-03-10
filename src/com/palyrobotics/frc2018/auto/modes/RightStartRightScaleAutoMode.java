@@ -69,7 +69,7 @@ public class RightStartRightScaleAutoMode extends AutoModeBase {
         ArrayList<Routine> routines = new ArrayList<Routine>();
 
         //Reset sensors before
-        routines.add(new DriveSensorResetRoutine());
+        routines.add(new DriveSensorResetRoutine(1.0));
 
         //Drive path while moving elevator up and moving intake down
         ArrayList<Routine> inTransitRoutines = new ArrayList<>();
@@ -82,14 +82,14 @@ public class RightStartRightScaleAutoMode extends AutoModeBase {
         lastSegmentElevator.add(new DrivePathRoutine(new Path(lastSegment), false));
         lastSegmentElevator.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorTopBottomDifferenceInches, 2.6));
         routines.add(new ParallelRoutine(lastSegmentElevator));
-        routines.add(new DriveSensorResetRoutine());
+        routines.add(new DriveSensorResetRoutine(1.0));
 
         ArrayList<Routine> parallelDrop = new ArrayList<>();
         parallelDrop.add(getForward());
         //Open when everything is done to score
         parallelDrop.add(new IntakeWheelRoutine(Intake.WheelState.EXPELLING,1));
         routines.add(new ParallelRoutine(parallelDrop));
-        routines.add(new DriveSensorResetRoutine());
+        routines.add(new DriveSensorResetRoutine(0.5));
         routines.add(getBackward());
         routines.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorBottomPositionInches,3));
 
@@ -100,7 +100,7 @@ public class RightStartRightScaleAutoMode extends AutoModeBase {
         ArrayList<Routine> backUp = new ArrayList<>();
 
         //zero drive sensors
-        backUp.add(new DriveSensorResetRoutine());
+        backUp.add(new DriveSensorResetRoutine(0.5));
 
         List<Path.Waypoint> path = new ArrayList<>();
 
@@ -115,7 +115,7 @@ public class RightStartRightScaleAutoMode extends AutoModeBase {
         ArrayList<Routine> backUp = new ArrayList<>();
 
         //zero drive sensors
-        backUp.add(new DriveSensorResetRoutine());
+        backUp.add(new DriveSensorResetRoutine(1.0));
 
         List<Path.Waypoint> path = new ArrayList<>();
 

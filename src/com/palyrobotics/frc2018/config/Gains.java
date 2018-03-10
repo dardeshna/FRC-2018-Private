@@ -76,9 +76,9 @@ public class Gains {
 	public static final Gains forsetiTurnMotionMagicGains = new Gains(kForsetiTurnMotionMagickP, kForsetiTurnMotionMagickI, kForsetiTurnMotionMagickD,
 			kForsetiTurnMotionMagickF, kForsetiTurnMotionMagickIzone, kForsetiTurnMotionMagickRampRate);
 
-	public static final double kForsetiElevatorDownPositionkP = 0.5;
+	public static final double kForsetiElevatorDownPositionkP = 0.45;
 	public static final double kForsetiElevatorDownPositionkI = 0.0;
-	public static final double kForsetiElevatorDownPositionkD = 0.70;
+	public static final double kForsetiElevatorDownPositionkD = 50;
 	public static final double kForsetiElevatorDownPositionkF = 0.0;
 	public static final int kForsetiElevatorDownPositionkIzone = 0;
 	public static final double kForsetiElevatorDownPositionkRampRate = 0.0;

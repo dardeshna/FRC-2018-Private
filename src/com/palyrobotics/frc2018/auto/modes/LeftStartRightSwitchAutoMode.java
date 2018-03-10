@@ -58,7 +58,7 @@ public class LeftStartRightSwitchAutoMode extends AutoModeBase {
         ArrayList<Routine> routines = new ArrayList<Routine>();
 
         //Reset sensors before
-        routines.add(new DriveSensorResetRoutine());
+        routines.add(new DriveSensorResetRoutine(1.0));
 
         ArrayList<Routine> inTransitRoutines = new ArrayList<>();
         ArrayList<Routine> driveRoutines = new ArrayList<>();

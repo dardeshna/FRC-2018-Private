@@ -64,7 +64,7 @@ public class CommandExecutor {
 
 	public static void restartADBServer() {
 		Logger.getInstance().logRobotThread(Level.INFO, "Restarting server...");
-		final String restartOut = exec("adb kill-server") + startADBServer();
+		final String restartOut = exec("adb kill-server && adb start-server");
 		Logger.getInstance().logRobotThread(Level.INFO, String.format("Restarted with output: %s", restartOut));
 	}
 

@@ -92,8 +92,8 @@ public class VisionManager extends AbstractVisionThread {
 		if (CommandExecutor.getNexusStatus() != DeviceStatus.DEVICE) {
             // Device was not found. Try restarting adb server continually with timeout.
             if (Constants.kVisionUseTimeout) {
-            	final long wait = Math.min(m_InitAdbRetryCount * 100, Constants.kVisionMaxTimeoutWait);
-            	log(Level.INFO, String.format("Device could not be found. Retrying in %d ms", wait));
+            	final long wait = Math.min(m_InitAdbRetryCount * 200, Constants.kVisionMaxTimeoutWait);
+            	log(Level.INFO, String.format("Device could not be found. It was in status: %s. Retrying in %d ms", CommandExecutor.getNexusStatus().toString(), wait));
                 try {
                     Thread.sleep(wait);
                     CommandExecutor.restartADBServer();

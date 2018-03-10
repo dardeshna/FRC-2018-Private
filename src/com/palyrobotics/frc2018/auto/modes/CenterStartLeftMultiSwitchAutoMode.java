@@ -74,7 +74,7 @@ public class CenterStartLeftMultiSwitchAutoMode extends AutoModeBase {
         ArrayList<Routine> backUp = new ArrayList<>();
 
         //zero drive sensors
-        backUp.add(new DriveSensorResetRoutine());
+        backUp.add(new DriveSensorResetRoutine(1.0));
 
         List<Waypoint> path = new ArrayList<>();
 

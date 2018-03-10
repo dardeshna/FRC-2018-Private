@@ -6,19 +6,31 @@ import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.config.RobotState;
 import com.palyrobotics.frc2018.robot.HardwareAdapter;
 import com.palyrobotics.frc2018.subsystems.Subsystem;
+import com.palyrobotics.frc2018.util.logger.Logger;
 import com.palyrobotics.frc2018.util.trajectory.RigidTransform2d;
 import edu.wpi.first.wpilibj.Timer;
+
+import java.util.logging.Level;
 
 /**
  * Created by EricLiu on 4/13/17.
  */
 public class DriveSensorResetRoutine extends Routine {
 
-	public DriveSensorResetRoutine() {
+	private double mTimeout;
+	private long mStartTime;
+
+	/**
+	 *
+	 * @param timeout seconds
+	 */
+	public DriveSensorResetRoutine(double timeout) {
+		mTimeout = timeout;
 	}
 
 	@Override
 	public void start() {
+		this.mStartTime = System.currentTimeMillis();
 	}
 
 	@Override
@@ -37,6 +49,11 @@ public class DriveSensorResetRoutine extends Routine {
 
 	@Override
 	public boolean finished() {
+		if(System.currentTimeMillis() - mStartTime > mTimeout * 1000) {
+			Logger.getInstance().logRobotThread(Level.WARNING, "Drive sensor reset routine timed out!");
+			return true;
+		}
+
 		if(Math.abs(drive.getPose().leftEnc) <= Constants.kAcceptableEncoderZeroError
 				&& Math.abs(drive.getPose().rightEnc) <= Constants.kAcceptableEncoderZeroError
 				&& Math.abs(drive.getPose().heading) <= Constants.kAcceptableGyroZeroError) {
