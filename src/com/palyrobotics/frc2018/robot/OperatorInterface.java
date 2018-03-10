@@ -174,13 +174,7 @@ public class OperatorInterface {
 		if(mTurnStick.getButtonPressed(3)) {
 			newCommands.wantedIntakingState = Intake.WheelState.INTAKING;
 		} else if(mTurnStick.getButtonPressed(4)) {
-			newCommands.wantedIntakingState = Intake.WheelState.EXPELLING;
-		}
-
-		if(mTurnStick.getButtonPressed(5)) {
-			newCommands.addWantedRoutine(new IntakeCloseRoutine());
-		} else if(mTurnStick.getButtonPressed(6)) {
-			newCommands.addWantedRoutine(new IntakeNeutralRoutine());
+			newCommands.wantedIntakingState = Intake.WheelState.VAULT_EXPELLING;
 		}
 
 		return newCommands;

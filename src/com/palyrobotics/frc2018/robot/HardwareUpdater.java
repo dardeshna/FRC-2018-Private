@@ -433,7 +433,6 @@ class HardwareUpdater {
 			intakeFreeSpinCounter = 0;
 		}
 
-
 		if(intakeStallCounter >= Constants.kIntakeStallCounterThreshold) {
 			robotState.hasCube = true;
 		} else if(mIntake.getOpenCloseState() == Intake.OpenCloseState.OPEN || intakeFreeSpinCounter >= Constants.kIntakeFreeCounterThreshold){
@@ -479,7 +478,7 @@ class HardwareUpdater {
 		robotState.elevatorPosition = HardwareAdapter.getInstance().getElevator().elevatorMasterTalon.getSelectedSensorPosition(0);
 		robotState.elevatorVelocity = HardwareAdapter.getInstance().getElevator().elevatorMasterTalon.getSelectedSensorVelocity(0);
 		robotState.elevatorBottomHFX = HardwareAdapter.getInstance().getDrivetrain().rightMasterTalon.getSensorCollection().isRevLimitSwitchClosed();
-		robotState.elevatorTopHFX = false;//HardwareAdapter.getInstance().getDrivetrain().rightMasterTalon.getSensorCollection().isFwdLimitSwitchClosed();
+		robotState.elevatorTopHFX = HardwareAdapter.getInstance().getDrivetrain().rightMasterTalon.getSensorCollection().isFwdLimitSwitchClosed();
 		StickyFaults elevatorStickyFaults = new StickyFaults();
 		HardwareAdapter.getInstance().getElevator().elevatorMasterTalon.clearStickyFaults(0);
 		HardwareAdapter.getInstance().getElevator().elevatorMasterTalon.getStickyFaults(elevatorStickyFaults);

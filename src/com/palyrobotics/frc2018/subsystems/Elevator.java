@@ -40,6 +40,8 @@ public class Elevator extends Subsystem {
 	private boolean isAtTop = false;
 	private boolean isAtBottom = true;
 
+	private boolean movingDown = false;
+
 	//Used for specifying where to hold/move to
 	private Optional<Double> mElevatorWantedPosition = Optional.empty();
 
@@ -150,7 +152,14 @@ public class Elevator extends Subsystem {
 				break;
 			case CUSTOM_POSITIONING:
 				//Control loop
-				mOutput.setPosition(mElevatorWantedPosition.get(), Gains.elevatorPosition);
+				if(movingDown) {
+					System.out.println("Custom positioning down");
+					mOutput.setPosition(mElevatorWantedPosition.get(), Gains.elevatorDownwardsPosition);
+				} else {
+					System.out.println("Custom positioning up");
+					mOutput.setPosition(mElevatorWantedPosition.get(), Gains.elevatorPosition);
+				}
+
 				break;
 			case IDLE:
 				//Clear any existing wanted positions
@@ -221,11 +230,25 @@ public class Elevator extends Subsystem {
 				//exists, replace it
 				if(!mElevatorWantedPosition.equals(Optional.of(kElevatorBottomPosition.get() + commands.robotSetpoints.elevatorPositionSetpoint.get() * Constants.kElevatorTicksPerInch))) {
 					mElevatorWantedPosition = Optional.of(kElevatorBottomPosition.get() + commands.robotSetpoints.elevatorPositionSetpoint.get() * Constants.kElevatorTicksPerInch);
+					if(mElevatorWantedPosition.get() >= mRobotState.elevatorPosition) {
+						System.out.println("Detected desired calibrated up");
+						movingDown = false;
+					} else {
+						System.out.println("Detected desired calibrated down");
+						movingDown = true;
+					}
 				}
 			} else {
 				//Assume bottom position is the bottom
                 if(!mElevatorWantedPosition.equals(Optional.of(commands.robotSetpoints.elevatorPositionSetpoint.get() * Constants.kElevatorTicksPerInch))) {
                     mElevatorWantedPosition = Optional.of(commands.robotSetpoints.elevatorPositionSetpoint.get() * Constants.kElevatorTicksPerInch);
+					if(mElevatorWantedPosition.get() >= mRobotState.elevatorPosition) {
+						System.out.println("Detected desired uncalibrated up");
+						movingDown = false;
+					} else {
+						System.out.println("Detected desired uncalibrated down");
+						movingDown = true;
+					}
                 }
             }
 			mState = ElevatorState.CUSTOM_POSITIONING;
