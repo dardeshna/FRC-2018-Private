@@ -93,6 +93,8 @@ public class DrivePathRoutine extends Routine {
 			mPath = new Path(pathList);
 		}
 
+		Logger.getInstance().logSubsystemThread(Level.INFO, "Starting Drive Path Routine");
+
 		drive.setTrajectoryController(mPath, mLookAhead, mInverted, mTolerance);
 	}
 
@@ -104,6 +106,7 @@ public class DrivePathRoutine extends Routine {
 
 	@Override
 	public Commands cancel(Commands commands) {
+		Logger.getInstance().logSubsystemThread(Level.INFO, "Drive Path Routine finished");
 		drive.setNeutral();
 		commands.wantedDriveState = Drive.DriveState.NEUTRAL;
 		return commands;

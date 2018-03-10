@@ -105,7 +105,7 @@ public class CheesyDriveHelper {
 
 			//Can be tuned
 			double alpha = Constants.kAlpha;
-			mQuickStopAccumulator = (1 - alpha) * mQuickStopAccumulator + alpha * angularPower * 5.5;
+			mQuickStopAccumulator = (1 - alpha) * mQuickStopAccumulator + alpha * angularPower * 6.5;
 
 			overPower = 1.0;
 		} else {

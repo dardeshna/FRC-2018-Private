@@ -195,6 +195,9 @@ class HardwareUpdater {
 		leftMasterTalon.configClosedloopRamp(0.2, 0);
 		rightMasterTalon.configClosedloopRamp(0.2, 0);
 
+		leftMasterTalon.configOpenloopRamp(0.0, 0);
+		rightMasterTalon.configOpenloopRamp(0.0, 0);
+
 		//Reverse right side
 		leftMasterTalon.setInverted(true);
 		leftSlave1Victor.setInverted(true);
@@ -538,7 +541,6 @@ class HardwareUpdater {
 				TalonSRXOutput elevatorHoldOutput = new TalonSRXOutput();
 				elevatorHoldOutput.setPercentOutput(Constants.kElevatorHoldVoltage);
 				updateTalonSRX(HardwareAdapter.getInstance().getElevator().elevatorMasterTalon, elevatorHoldOutput);
-				System.out.println("thinks at top");
 			} else {
 				updateTalonSRX(HardwareAdapter.getInstance().getElevator().elevatorMasterTalon, mElevator.getOutput());
 			}

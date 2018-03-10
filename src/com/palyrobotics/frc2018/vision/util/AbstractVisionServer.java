@@ -63,7 +63,7 @@ public abstract class AbstractVisionServer extends AbstractVisionThread {
 		if (closed)       log(m_LogConnectionStatus ? Level.INFO:Level.FINEST, String.format("Connection was closed on port: %d", m_Port));
 		if (shouldRetry) {
 			try {
-				Thread.sleep(200);
+				Thread.sleep(1000);
 			} catch (final InterruptedException ie) {
 				ie.printStackTrace();
 			}

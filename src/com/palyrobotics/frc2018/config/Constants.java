@@ -182,7 +182,7 @@ public class Constants {
 	public static final int kForsetiClimberLatchSolenoidForwardID = 6;
 	public static final int kForsetiClimberLatchSolenoidReverseID = 1;
 
-	public static final int kForsetiClimberBrakeSolenoidID = 6;
+	public static final int kForsetiClimberBrakeSolenoidID = 5;
 
 	//ELEVATOR
 	//PDP slots for elevator TBD (currently 7, 8, 9, 10)
@@ -197,7 +197,7 @@ public class Constants {
 	public static final int kForsetiIntakeUpDownSolenoidReverseID = 5;
 	//PCM 1
 	public static final int kForsetiIntakeOpenCloseOtherSolenoidID = 4;
-	public static final int kForsetiIntakeOpenCloseSolenoidID = 5;
+	public static final int kForsetiIntakeOpenCloseSolenoidID = 6;
 
 	//!!! Physical constants
 	public static final double kSquareCubeLength = 13.0;

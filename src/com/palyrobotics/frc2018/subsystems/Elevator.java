@@ -337,6 +337,22 @@ public class Elevator extends Subsystem {
 		return mElevatorWantedPosition;
 	}
 
+	public boolean tryingToBottom() {
+	    if(mElevatorWantedPosition.isPresent()) {
+	        if(isCalibrated()) {
+	            return mElevatorWantedPosition.get().equals(kElevatorBottomPosition.get());
+            } else return mElevatorWantedPosition.get().equals(0);
+        } else return false;
+    }
+
+	public boolean nearBottom() {
+		if(isCalibrated()) {
+			if(Math.abs(mRobotState.elevatorPosition - getElevatorBottomPosition().get()) < 3000) {
+				return true;
+			} else return false;
+		} else return false;
+	}
+
 	public boolean getIsAtTop() {
 		return isAtTop;
 	}

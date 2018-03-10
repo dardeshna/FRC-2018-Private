@@ -18,16 +18,16 @@ public class DriverProfiles {
 				Constants.kDriveSensitivity = 0.75;
 
 				Constants.kQuickTurnSensitivity = 0.675;//0.8;
-				Constants.kPreciseQuickTurnSensitivity = 0.25;//0.35;
+				Constants.kPreciseQuickTurnSensitivity = 0.30;//0.35;
 
-				Constants.kQuickTurnSensitivityThreshold = 0.90;
+				Constants.kQuickTurnSensitivityThreshold = 1.01;
 
-				Constants.kQuickStopAccumulatorDecreaseRate = 0.8;
+				Constants.kQuickStopAccumulatorDecreaseRate = 0.225;//0.8;
 
 				Constants.kQuickStopAccumulatorDecreaseThreshold = 1.1;//1.2;
 				Constants.kNegativeInertiaScalar = 5.0;
 
-				Constants.kAlpha = 0.55;//0.45;
+				Constants.kAlpha = 0.75;//0.55;//0.45;
 
 				Constants.kCyclesUntilStop = 50;
 
