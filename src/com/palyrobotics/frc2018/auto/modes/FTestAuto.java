@@ -5,15 +5,21 @@ import com.palyrobotics.frc2018.behavior.ParallelRoutine;
 import com.palyrobotics.frc2018.behavior.Routine;
 import com.palyrobotics.frc2018.behavior.SequentialRoutine;
 import com.palyrobotics.frc2018.behavior.routines.TimeoutRoutine;
+import com.palyrobotics.frc2018.behavior.routines.drive.DrivePathRoutine;
 import com.palyrobotics.frc2018.behavior.routines.drive.EncoderTurnAngleRoutine;
 import com.palyrobotics.frc2018.behavior.routines.drive.TalonSRXRoutine;
 import com.palyrobotics.frc2018.behavior.routines.drive.TimedDriveRoutine;
+import com.palyrobotics.frc2018.config.AutoDistances;
 import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.config.Gains;
 import com.palyrobotics.frc2018.util.DriveSignal;
+import com.palyrobotics.frc2018.util.TalonSRXOutput;
 import com.palyrobotics.frc2018.util.logger.Logger;
+import com.palyrobotics.frc2018.util.trajectory.Path;
+import com.palyrobotics.frc2018.util.trajectory.Translation2d;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 
 /**
@@ -23,7 +29,22 @@ public class FTestAuto extends AutoModeBase {
 
     @Override
     public Routine getRoutine() {
-        return new TimedDriveRoutine(0.2, 6.5);
+
+        List<Path.Waypoint> path = new ArrayList<>();
+        path.add(new Path.Waypoint(new Translation2d(0, 0), 72.0));
+        path.add(new Path.Waypoint(new Translation2d(20.0, 0.0), 72.0));
+        path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueLeftSwitchX - Constants.kRobotLengthInches,
+                AutoDistances.kBlueLeftToCenterY + Constants.kRobotWidthInches/2.0 - AutoDistances.kBlueLeftSwitchY/2.0), 72.0));
+        path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueLeftSwitchX + Constants.kRobotLengthInches,
+                AutoDistances.kBlueLeftToCenterY + Constants.kRobotWidthInches/2.0 - AutoDistances.kBlueLeftSwitchY/2.0), 0.0));
+        return new DrivePathRoutine(new Path(path), false);
+
+
+//        DriveSignal test = DriveSignal.getNeutralSignal();
+//        test.leftMotor.setPercentOutput(0.2);
+//        test.rightMotor.setPercentOutput(0.2);
+//        return new TalonSRXRoutine(test, true);
+//        return new TimedDriveRoutine(0.2, 6.5);
 //        return getDrive();
     }
 

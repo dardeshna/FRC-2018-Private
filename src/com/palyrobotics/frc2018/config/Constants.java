@@ -118,23 +118,23 @@ public class Constants {
 
 	//Intake
 	public static final double kIntakingMotorVelocity = 0.75;
-	public static final double kExpellingMotorVelocity = -0.35;
+	public static final double kExpellingMotorVelocity = -0.225;
 	public static final double kVaultExpellingMotorVelocity = -0.70;
 	public static final double kExpelToScoreTime = 0.5;
 	public static final double kIntakeMasterStallCurrent = 70;
 	public static final double kIntakeMasterIdleCurrent = 0.125;
-	public static final double kIntakeMasterExpelCurrent = 3.0;
+	public static final double kIntakeMasterExpelCurrent = 1.5;
 	public static final double kIntakeMasterVaultExpelCurrent = 6.0;
 	public static final double kIntakeMasterIntakingCurrent = 6;
 	public static final double kIntakeSlaveStallCurrent = 65;
 	public static final double kIntakeSlaveIdleCurrent = 0.125;
-	public static final double kIntakeSlaveExpelCurrent = 3.0;
+	public static final double kIntakeSlaveExpelCurrent = 1.5;
 	public static final double kIntakeSlaveVaultExpelCurrent = 6.0;
 	public static final double kIntakeSlaveIntakingCurrent = 6;
 	public static final double kSwitchAutoWaitBeforeElevatorRaiseTimeSeconds = 1.5;
 	public static final double kScaleAutoWaitBeforeElevatorRaiseTimeSeconds = 1.0;
 	public static final int kIntakeStallCounterThreshold = 2;
-	public static final int kIntakeFreeCounterThreshold = 2;
+	public static final int kIntakeFreeCounterThreshold = 1;
 
 	//Climber
 

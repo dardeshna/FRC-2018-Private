@@ -115,6 +115,7 @@ public class RoutineManager {
 		routinesToAdd.clear();
 
 		if(output.cancelCurrentRoutines) {
+			System.out.println("canceling");
 			Logger.getInstance().logRobotThread(Level.FINE, "Cancel routine button");
 			output = this.reset(output);
 		} else if(!output.wantedRoutines.isEmpty()) {

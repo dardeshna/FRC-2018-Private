@@ -20,10 +20,10 @@ public class Gains {
 //	public static final double kForsetiDriveVelocitykF = 0.246537885;//2.624 / 2;
 //	public static final int kForsetiDriveVelocitykIzone = 0;//800 / 2;
 //	public static final double kForsetiDriveVelocitykRampRate = 0.0;
-	public static final double kForsetiDriveVelocitykP = 0.1;//6.0 / 2;
+	public static final double kForsetiDriveVelocitykP = 0.125;//6.0 / 2;
 	public static final double kForsetiDriveVelocitykI = 0.0;//0.001;
 	public static final double kForsetiDriveVelocitykD = 0.0;//12.4;//85 / 2;
-	public static final double kForsetiDriveVelocitykF = 0.258987;//0.010516;//2.624 / 2;
+	public static final double kForsetiDriveVelocitykF = 0.199805;//0.258987;//0.010516;//2.624 / 2;
 	public static final int kForsetiDriveVelocitykIzone = 0;//800 / 2;
 	public static final double kForsetiDriveVelocitykRampRate = 0.0;
 	public static final Gains forsetiVelocity = new Gains(kForsetiDriveVelocitykP, kForsetiDriveVelocitykI, kForsetiDriveVelocitykD, kForsetiDriveVelocitykF,

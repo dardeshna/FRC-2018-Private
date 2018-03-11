@@ -104,6 +104,8 @@ public class AutoModeSelector {
 	 * @return AutoMode currently selected
 	 */
 	public AutoModeBase getAutoMode() {
+//		return new FTestAuto();
+
 		return getAutoMode(AutoModeBase.mAlliance, AutoModeBase.mStartingPosition, AutoModeBase.mScaleDecision,
 				AutoModeBase.mSwitchDecision, AutoModeBase.mPriority, AutoModeBase.mMultiCube);
 	}

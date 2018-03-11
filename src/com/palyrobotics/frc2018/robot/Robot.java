@@ -143,7 +143,7 @@ public class Robot extends TimedRobot {
 	public void teleopInit() {
 		Logger.getInstance().start();
 		Logger.getInstance().logRobotThread(Level.INFO, "Start teleopInit()");
-
+		commands.wantedIntakeUpDownState = Intake.UpDownState.DOWN;
 		robotState.gamePeriod = RobotState.GamePeriod.TELEOP;
 		mHardwareUpdater.updateState(robotState);
 		mHardwareUpdater.updateHardware();

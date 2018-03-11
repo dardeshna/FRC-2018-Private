@@ -75,9 +75,10 @@ public class CenterStartRightSwitchAutoMode extends AutoModeBase {
 		routines.add(new ParallelRoutine(inTransitRoutines));
 
 		//Expel when everything is done to score
-//		routines.add(new IntakeSensorStopRoutine(Intake.WheelState.EXPELLING, 1.5));
-		routines.add(new IntakeWheelRoutine(Intake.WheelState.EXPELLING, 1.0));
+		routines.add(new IntakeSensorStopRoutine(Intake.WheelState.EXPELLING, 1.5));
+//		routines.add(new IntakeWheelRoutine(Intake.WheelState.EXPELLING, 1.0));
 
+		routines.add(new DriveSensorResetRoutine(1.0));
 		return new SequentialRoutine(routines);
 	}
 

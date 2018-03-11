@@ -58,13 +58,6 @@ public class OperatorInterface {
 		return true;
 	}
 
-	private double handleLooseOperatorStick(double y) {
-		System.out.println(y);
-		if(y > -0.3/**0.066471*/ && y < 0.00782) {
-			return 0;
-		} else return y;
-	}
-
 	/**
 	 * Returns modified commands
 	 * 
@@ -89,7 +82,7 @@ public class OperatorInterface {
 		/**
 		 * Elevator controls
 		 */
-		if(Math.abs(ChezyMath.handleDeadband(mOperatorStick.getY(), 0.1)) > 0.0) {
+		if(Math.abs(ChezyMath.handleDeadband(mOperatorStick.getY(), 0.02)) > 0.0) {
 		    newCommands.wantedElevatorState = Elevator.ElevatorState.MANUAL_POSITIONING;
 		} else {
 			newCommands.wantedElevatorState = Elevator.ElevatorState.HOLD;
@@ -102,7 +95,7 @@ public class OperatorInterface {
 		/**
 		 * Climber controls
 		 */
-		if(Math.abs(ChezyMath.handleDeadband(mClimberStick.getY(), 0.2)) > 0.0) {
+		if(Math.abs(ChezyMath.handleDeadband(mClimberStick.getY(), 0.1)) > 0.0) {
 			newCommands.wantedClimbMovement = Climber.MotionSubstate.MOVING;
 
 			ArrayList<Routine> stowIntakeRoutine = new ArrayList<Routine>();
@@ -149,7 +142,7 @@ public class OperatorInterface {
 
 		//Close/Open block, cannot be executed along with up/down
 		else if(mOperatorStick.getButtonPressed(3)) {
-			 newCommands.addWantedRoutine(new IntakeNeutralRoutine());
+		 	newCommands.addWantedRoutine(new IntakeNeutralRoutine());
 		 } else if(mOperatorStick.getButtonPressed(5)) {
 			newCommands.addWantedRoutine(new IntakeCloseRoutine());
 		} else if(mOperatorStick.getButtonPressed(6)) {
@@ -179,7 +172,7 @@ public class OperatorInterface {
 		 	newCommands.wantedIntakingState = Intake.WheelState.INTAKING;
 		 	newCommands.cancelCurrentRoutines = true;
 		} else {
-		 	newCommands.cancelCurrentRoutines = false;
+			newCommands.cancelCurrentRoutines = false;
 		 	operatorButtonTwoPressable = true;
 			newCommands.wantedIntakingState = Intake.WheelState.IDLE;
 		}

@@ -22,30 +22,30 @@ public class DriveUntilHasCubeRoutine extends Routine {
     @Override
     public void start() {
         drivePathRoutine.start();
-//        intakeRoutine.start();
-        test.start();
+        intakeRoutine.start();
+//        test.start();
     }
 
     @Override
     public Commands update(Commands commands) {
         drivePathRoutine.update(commands);
-//        intakeRoutine.update(commands);
-        test.update(commands);
+        intakeRoutine.update(commands);
+//        test.update(commands);
         return commands;
     }
 
     @Override
     public Commands cancel(Commands commands) {
         drivePathRoutine.cancel(commands);
-//        intakeRoutine.cancel(commands);
-        test.cancel(commands);
+        intakeRoutine.cancel(commands);
+//        test.cancel(commands);
         return commands;
     }
 
     @Override
     public boolean finished() {
-        return drivePathRoutine.finished();
-//        return intakeRoutine.finished();
+//        return drivePathRoutine.finished();
+        return intakeRoutine.finished();
     }
 
     @Override
