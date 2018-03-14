@@ -2,7 +2,8 @@ package com.palyrobotics.frc2018.config;
 
 public class Constants {
 	public enum RobotName {
-		FORSETI
+		FORSETI,
+		HAL
 	}
 
 	public enum DriverName {
@@ -184,6 +185,8 @@ public class Constants {
 	public static final int kForsetiClimberLatchSolenoidReverseID = 1;
 
 	public static final int kForsetiClimberBrakeSolenoidID = 5;
+	public static final int kHALClimberBrakeSolenoidID = 6;
+
 
 	//ELEVATOR
 	//PDP slots for elevator TBD (currently 7, 8, 9, 10)
@@ -199,6 +202,8 @@ public class Constants {
 	//PCM 1
 	public static final int kForsetiIntakeOpenCloseOtherSolenoidID = 4;
 	public static final int kForsetiIntakeOpenCloseSolenoidID = 6;
+	public static final int kHALIntakeOpenCloseSolenoid = 5;
+
 
 	//!!! Physical constants
 	public static final double kSquareCubeLength = 13.0;

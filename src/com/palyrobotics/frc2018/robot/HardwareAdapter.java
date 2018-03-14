@@ -85,7 +85,13 @@ public class HardwareAdapter {
 
 			climberArmLock = new DoubleSolenoid(0, Constants.kForsetiClimberLatchSolenoidReverseID, Constants.kForsetiClimberLatchSolenoidForwardID);
 
-			climberBrake = new Solenoid(1, Constants.kForsetiClimberBrakeSolenoidID);
+			if (Constants.kRobotName == Constants.RobotName.FORSETI) {
+				climberBrake = new Solenoid(1, Constants.kForsetiClimberBrakeSolenoidID);
+			}
+			else {
+				climberBrake = new Solenoid(1, Constants.kHALClimberBrakeSolenoidID);
+
+			}
 		}
 	}
 
@@ -128,7 +134,13 @@ public class HardwareAdapter {
 			masterTalon = new WPI_TalonSRX(Constants.kForsetiIntakeMasterDeviceID);
 			slaveTalon = new WPI_TalonSRX(Constants.kForsetiIntakeSlaveDeviceID);
 			upDownSolenoid = new DoubleSolenoid(0, Constants.kForsetiIntakeUpDownSolenoidForwardID, Constants.kForsetiIntakeUpDownSolenoidReverseID);
-			openCloseSolenoid = new Solenoid(1, Constants.kForsetiIntakeOpenCloseSolenoidID);
+			if (Constants.kRobotName == Constants.RobotName.FORSETI) {
+				openCloseSolenoid = new Solenoid(1, Constants.kForsetiIntakeOpenCloseSolenoidID);
+			}
+			else {
+				openCloseSolenoid = new Solenoid(1, Constants.kHALIntakeOpenCloseSolenoid);
+
+			}
 			openCloseOtherSolenoid = new Solenoid(1, Constants.kForsetiIntakeOpenCloseOtherSolenoidID);
 		}
 	}

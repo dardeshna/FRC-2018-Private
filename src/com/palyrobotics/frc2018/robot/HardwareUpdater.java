@@ -291,7 +291,12 @@ class HardwareUpdater {
 		slaveTalon.configReverseSoftLimitEnable(false, 0);
 
 		//Reverse right side
-		masterTalon.setInverted(true);
+		if (Constants.kRobotName == Constants.RobotName.FORSETI) {
+			masterTalon.setInverted(true);
+		}
+		else {
+			masterTalon.setInverted(false);
+		}
 		slaveTalon.setInverted(false);
 
 		//Set slave talons to follower mode
