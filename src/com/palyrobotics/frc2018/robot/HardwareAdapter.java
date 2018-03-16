@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.palyrobotics.frc2018.config.Constants;
+import com.palyrobotics.frc2018.util.XboxController;
 import edu.wpi.first.wpilibj.*;
 
 /**
@@ -78,7 +79,7 @@ public class HardwareAdapter {
 
 		public final DoubleSolenoid climberArmLock;
 
-		public final Solenoid climberBrake;
+		final Solenoid climberBrake;
 
 		protected ClimberHardware() {
 			climberVictor = new WPI_VictorSPX(Constants.kForsetiClimberMotorDeviceID);
@@ -156,9 +157,15 @@ public class HardwareAdapter {
 		public final Joystick driveStick = new Joystick(0);
 		public final Joystick turnStick = new Joystick(1);
 		public final Joystick climberStick = new Joystick(2);
-		public final Joystick operatorStick = new Joystick(3);
+		public Joystick operatorJoystick = null;
+		public XboxController operatorXboxController = null;
 
 		protected Joysticks() {
+			if(Constants.operatorXBoxController) {
+				operatorXboxController = new XboxController(3, false);
+			} else {
+				operatorJoystick = new Joystick(3);
+			}
 		}
 	}
 

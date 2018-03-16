@@ -12,12 +12,13 @@ import com.palyrobotics.frc2018.subsystems.Elevator;
 import com.palyrobotics.frc2018.subsystems.Intake;
 import com.palyrobotics.frc2018.util.ChezyMath;
 import com.palyrobotics.frc2018.util.JoystickInput;
+import com.palyrobotics.frc2018.util.XboxInput;
 
 import java.util.ArrayList;
 
 /**
  * Used to produce Commands {@link Commands} from human input Singleton class. Should only be used in robot package.
- * 
+ *
  * @author Nihar
  *
  */
@@ -31,17 +32,23 @@ public class OperatorInterface {
 	private boolean operatorButtonFourPressable = true;
 	private boolean operatorButtonTwoPressable = true;
 
-	protected OperatorInterface() {
-	}
-
 	private JoystickInput mDriveStick = Robot.getRobotState().leftStickInput;
 	private JoystickInput mTurnStick = Robot.getRobotState().rightStickInput;
 	private JoystickInput mClimberStick = Robot.getRobotState().climberStickInput;
-	private JoystickInput mOperatorStick = Robot.getRobotState().operatorStickInput;
+	private JoystickInput mOperatorJoystick = null;
+	private XboxInput mOperatorXboxController = null;
+
+	protected OperatorInterface() {
+		if(Constants.operatorXBoxController) {
+			mOperatorXboxController = Robot.getRobotState().operatorXboxControllerInput;
+		} else {
+			mOperatorJoystick = Robot.getRobotState().operatorJoystickInput;
+		}
+	}
 
 	/**
 	 * Helper method to only add routines that aren't already in wantedRoutines
-	 * 
+	 *
 	 * @param commands
 	 *            Current set of commands being modified
 	 * @param wantedRoutine
@@ -60,10 +67,11 @@ public class OperatorInterface {
 
 	/**
 	 * Returns modified commands
-	 * 
+	 *
 	 * @param prevCommands
 	 */
 	public Commands updateCommands(Commands prevCommands) {
+
 		Commands newCommands = prevCommands.copy();
 
 		/**
@@ -79,18 +87,132 @@ public class OperatorInterface {
 			newCommands.wantedDriveState = Drive.DriveState.CHEZY;
 		}
 
-		/**
-		 * Elevator controls
-		 */
-		if(Math.abs(ChezyMath.handleDeadband(mOperatorStick.getY(), 0.02)) > 0.0) {
-		    newCommands.wantedElevatorState = Elevator.ElevatorState.MANUAL_POSITIONING;
-		} else {
-			newCommands.wantedElevatorState = Elevator.ElevatorState.HOLD;
-		}
-		if(mOperatorStick.getButtonPressed(11)) {
-			newCommands.disableElevatorScaling = true;
-		}
+		if(Constants.operatorXBoxController) {
+			/**
+			 * Elevator controls
+			 */
+			if(Math.abs(ChezyMath.handleDeadband(mOperatorXboxController.getRightY(), 0.02)) > 0.0) {
+				newCommands.wantedElevatorState = Elevator.ElevatorState.MANUAL_POSITIONING;
+			} else {
+				newCommands.wantedElevatorState = Elevator.ElevatorState.HOLD;
+			}
+			// Start button
+			if(mOperatorXboxController.getButtonPressed(8)) {
+				newCommands.disableElevatorScaling = true;
+			}
 
+			/**
+			 * Intake controls
+			 */
+
+			//Operator intake control
+			if(mOperatorXboxController.getdPadUp()) {
+				newCommands.addWantedRoutine(new IntakeUpRoutine());
+			} else if(mOperatorXboxController.getdPadRight()) {
+				newCommands.addWantedRoutine(new IntakeNeutralRoutine());
+			} else if(mOperatorXboxController.getdPadDown()) {
+				newCommands.addWantedRoutine(new IntakeDownRoutine());
+			} else if(mOperatorXboxController.getdPadLeft()) {
+				newCommands.addWantedRoutine(new IntakeCloseRoutine());
+			} else if(mOperatorXboxController.getRightBumper()) {
+				newCommands.addWantedRoutine(new IntakeOpenRoutine());
+			}
+
+			//Intake wheel logic block
+			if (mOperatorXboxController.getRightTriggerPressed()) {
+				newCommands.wantedIntakingState = Intake.WheelState.EXPELLING;
+				newCommands.cancelCurrentRoutines = true;
+
+			} else if (mOperatorXboxController.getLeftBumper()) {
+				if (operatorButtonTwoPressable) {
+					ArrayList<Routine> intakeThenUp = new ArrayList<>();
+					intakeThenUp.add(new IntakeSensorStopRoutine(Intake.WheelState.INTAKING, 115.0));
+					intakeThenUp.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorCubeInTransitPositionInches, 0.5));
+					newCommands.cancelCurrentRoutines = true;
+					newCommands.addWantedRoutine(new SequentialRoutine(intakeThenUp));
+				}
+				newCommands.cancelCurrentRoutines = false;
+				operatorButtonTwoPressable = false;
+			} else if (mOperatorXboxController.getButtonA()) {
+				newCommands.wantedIntakingState = Intake.WheelState.VAULT_EXPELLING;
+				newCommands.cancelCurrentRoutines = true;
+			} else if (mOperatorXboxController.getLeftTriggerPressed()) {
+				newCommands.wantedIntakingState = Intake.WheelState.INTAKING;
+				newCommands.cancelCurrentRoutines = true;
+			} else {
+				newCommands.cancelCurrentRoutines = false;
+				operatorButtonTwoPressable = true;
+				newCommands.wantedIntakingState = Intake.WheelState.IDLE;
+			}
+
+		} else {
+			/**
+			 * Elevator controls
+			 */
+			if (Math.abs(ChezyMath.handleDeadband(mOperatorJoystick.getY(), 0.02)) > 0.0) {
+				newCommands.wantedElevatorState = Elevator.ElevatorState.MANUAL_POSITIONING;
+			} else {
+				newCommands.wantedElevatorState = Elevator.ElevatorState.HOLD;
+			}
+			if (mOperatorJoystick.getButtonPressed(11)) {
+				newCommands.disableElevatorScaling = true;
+			}
+
+			/**
+			 * Intake controls
+			 */
+
+			//Operator intake control
+			//Up/Down block
+			if (mOperatorJoystick.getButtonPressed(4)) {
+				if (operatorButtonFourPressable) {
+					if (prevCommands.wantedIntakeUpDownState == Intake.UpDownState.DOWN) {
+						newCommands.addWantedRoutine(new IntakeUpRoutine());
+					} else {
+						newCommands.addWantedRoutine(new IntakeDownRoutine());
+					}
+				}
+
+				operatorButtonFourPressable = false;
+			}
+
+			//Close/Open block, cannot be executed along with up/down
+			else if (mOperatorJoystick.getButtonPressed(3)) {
+				newCommands.addWantedRoutine(new IntakeNeutralRoutine());
+			} else if (mOperatorJoystick.getButtonPressed(5)) {
+				newCommands.addWantedRoutine(new IntakeCloseRoutine());
+			} else if (mOperatorJoystick.getButtonPressed(6)) {
+				newCommands.addWantedRoutine(new IntakeOpenRoutine());
+			} else {
+				operatorButtonFourPressable = true;
+			}
+
+			//Intake wheel logic block
+			if (mOperatorJoystick.getTriggerPressed()) {
+				newCommands.wantedIntakingState = Intake.WheelState.EXPELLING;
+				newCommands.cancelCurrentRoutines = true;
+			} else if (mOperatorJoystick.getButtonPressed(2)) {
+				if (operatorButtonTwoPressable) {
+					ArrayList<Routine> intakeThenUp = new ArrayList<>();
+					intakeThenUp.add(new IntakeSensorStopRoutine(Intake.WheelState.INTAKING, 115.0));
+					intakeThenUp.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorCubeInTransitPositionInches, 0.5));
+					newCommands.cancelCurrentRoutines = true;
+					newCommands.addWantedRoutine(new SequentialRoutine(intakeThenUp));
+				}
+				newCommands.cancelCurrentRoutines = false;
+				operatorButtonTwoPressable = false;
+			} else if (mOperatorJoystick.getButtonPressed(10)) {
+				newCommands.wantedIntakingState = Intake.WheelState.VAULT_EXPELLING;
+				newCommands.cancelCurrentRoutines = true;
+			} else if (mOperatorJoystick.getButtonPressed(9)) {
+				newCommands.wantedIntakingState = Intake.WheelState.INTAKING;
+				newCommands.cancelCurrentRoutines = true;
+			} else {
+				newCommands.cancelCurrentRoutines = false;
+				operatorButtonTwoPressable = true;
+				newCommands.wantedIntakingState = Intake.WheelState.IDLE;
+			}
+		}
 
 		/**
 		 * Climber controls
@@ -106,75 +228,20 @@ public class OperatorInterface {
 			newCommands.wantedClimbMovement = Climber.MotionSubstate.LOCKED;
 		}
 
-		if(mClimberStick.getTriggerPressed()) {
+		if (mClimberStick.getTriggerPressed()) {
 			newCommands.wantedLockState = Climber.LockState.LOCKED;
 
 			ArrayList<Routine> stowIntakeRoutine = new ArrayList<Routine>();
 			stowIntakeRoutine.add(new IntakeCloseRoutine());
 			stowIntakeRoutine.add(new IntakeUpRoutine());
 			newCommands.addWantedRoutine(new SequentialRoutine(stowIntakeRoutine));
-		} else if(mClimberStick.getButtonPressed(2)) {
+		} else if (mClimberStick.getButtonPressed(2)) {
 			newCommands.wantedLockState = Climber.LockState.UNLOCKED;
 
 			ArrayList<Routine> stowIntakeRoutine = new ArrayList<Routine>();
 			stowIntakeRoutine.add(new IntakeCloseRoutine());
 			stowIntakeRoutine.add(new IntakeUpRoutine());
 			newCommands.addWantedRoutine(new SequentialRoutine(stowIntakeRoutine));
-		}
-
-		/**
-		 * Intake controls
-		 */
-
-		//Operator intake control
-		//Up/Down block
-		 if(mOperatorStick.getButtonPressed(4)) {
-		 	if(operatorButtonFourPressable) {
-				if(prevCommands.wantedIntakeUpDownState == Intake.UpDownState.DOWN) {
-					newCommands.addWantedRoutine(new IntakeUpRoutine());
-				} else {
-					newCommands.addWantedRoutine(new IntakeDownRoutine());
-				}
-			}
-
-			operatorButtonFourPressable = false;
-		}
-
-		//Close/Open block, cannot be executed along with up/down
-		else if(mOperatorStick.getButtonPressed(3)) {
-		 	newCommands.addWantedRoutine(new IntakeNeutralRoutine());
-		 } else if(mOperatorStick.getButtonPressed(5)) {
-			newCommands.addWantedRoutine(new IntakeCloseRoutine());
-		} else if(mOperatorStick.getButtonPressed(6)) {
-			newCommands.addWantedRoutine(new IntakeOpenRoutine());
-		} else {
-			operatorButtonFourPressable = true;
-		}
-
-		//Intake wheel logic block
-		if(mOperatorStick.getTriggerPressed()) {
-			newCommands.wantedIntakingState = Intake.WheelState.EXPELLING;
-			newCommands.cancelCurrentRoutines = true;
-		} else if(mOperatorStick.getButtonPressed(2)) {
-		 	if(operatorButtonTwoPressable) {
-				ArrayList<Routine> intakeThenUp = new ArrayList<>();
-				intakeThenUp.add(new IntakeSensorStopRoutine(Intake.WheelState.INTAKING, 115.0));
-				intakeThenUp.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorCubeInTransitPositionInches, 0.5));
-				newCommands.cancelCurrentRoutines = true;
-				newCommands.addWantedRoutine(new SequentialRoutine(intakeThenUp));
-			}
-			newCommands.cancelCurrentRoutines = false;
-			operatorButtonTwoPressable = false;
-		} else if(mOperatorStick.getButtonPressed(10)) {
-			newCommands.wantedIntakingState = Intake.WheelState.VAULT_EXPELLING;
-			newCommands.cancelCurrentRoutines = true;
-		} else if (mOperatorStick.getButtonPressed(9)) {
-		 	newCommands.wantedIntakingState = Intake.WheelState.INTAKING;
-		 	newCommands.cancelCurrentRoutines = true;
-		} else {
-			newCommands.cancelCurrentRoutines = false;
-		 	operatorButtonTwoPressable = true;
-			newCommands.wantedIntakingState = Intake.WheelState.IDLE;
 		}
 
 		//Driver intake control

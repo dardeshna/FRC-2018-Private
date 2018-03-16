@@ -7,7 +7,6 @@ import com.palyrobotics.frc2018.config.Gains;
 import com.palyrobotics.frc2018.config.RobotState;
 import com.palyrobotics.frc2018.util.TalonSRXOutput;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
 public class Elevator extends Subsystem {
@@ -104,6 +103,7 @@ public class Elevator extends Subsystem {
 				}
 				break;
 			case MANUAL_POSITIONING:
+
 				//Clear any existing wanted positions
 				if(mElevatorWantedPosition.isPresent()) {
 					mElevatorWantedPosition = Optional.empty();
@@ -115,27 +115,49 @@ public class Elevator extends Subsystem {
 					double distInchesFromTop = Math.abs((getElevatorTopPosition().get() - mRobotState.elevatorPosition)/Constants.kElevatorTicksPerInch);
 
 					if(commands.disableElevatorScaling || mRobotState.hasElevatorStickyFaults) {
-						mOutput.setPercentOutput(Constants.kElevatorUncalibratedManualPower * mRobotState.operatorStickInput.getY());
+						if(Constants.operatorXBoxController) {
+							mOutput.setPercentOutput(Constants.kElevatorUncalibratedManualPower * mRobotState.operatorXboxControllerInput.getRightY());
+						} else {
+							mOutput.setPercentOutput(Constants.kElevatorUncalibratedManualPower * mRobotState.operatorJoystickInput.getY());
+						}
 					} else {
 						//close to bottom
 						if(distInchesFromBottom < Constants.kElevatorBottomScalingMarginInches) {
 							//Near bottom scales max allowed speed
 							//Going down is negative
-							mOutput.setPercentOutput(Math.max(-Constants.kElevatorBottomScalingConstant * distInchesFromBottom
-									/ Constants.kElevatorBottomScalingMarginInches, mRobotState.operatorStickInput.getY()));
+							if(Constants.operatorXBoxController) {
+								mOutput.setPercentOutput(Math.max(-Constants.kElevatorBottomScalingConstant * distInchesFromBottom
+										/ Constants.kElevatorBottomScalingMarginInches, mRobotState.operatorXboxControllerInput.getRightY()));
+							} else {
+								mOutput.setPercentOutput(Math.max(-Constants.kElevatorBottomScalingConstant * distInchesFromBottom
+										/ Constants.kElevatorBottomScalingMarginInches, mRobotState.operatorJoystickInput.getY()));
+							}
 						} else if(distInchesFromTop < Constants.kElevatorTopScalingMarginInches) {
 							//Near top scales max allowed speed
 							//Going up is positive
-							mOutput.setPercentOutput(Math.min(Constants.kElevatorTopScalingConstant * distInchesFromTop
-									/ Constants.kElevatorTopScalingMarginInches + Constants.kElevatorHoldVoltage, mRobotState.operatorStickInput.getY() + Constants.kElevatorHoldVoltage));
+							if(Constants.operatorXBoxController) {
+								mOutput.setPercentOutput(Math.min(Constants.kElevatorTopScalingConstant * distInchesFromTop
+										/ Constants.kElevatorTopScalingMarginInches + Constants.kElevatorHoldVoltage, mRobotState.operatorXboxControllerInput.getRightY() + Constants.kElevatorHoldVoltage));
+							} else {
+								mOutput.setPercentOutput(Math.min(Constants.kElevatorTopScalingConstant * distInchesFromTop
+										/ Constants.kElevatorTopScalingMarginInches + Constants.kElevatorHoldVoltage, mRobotState.operatorJoystickInput.getY() + Constants.kElevatorHoldVoltage));
+							}
 						} else {
 							//in middle
-							mOutput.setPercentOutput(mRobotState.operatorStickInput.getY());
+							if(Constants.operatorXBoxController) {
+								mOutput.setPercentOutput(mRobotState.operatorXboxControllerInput.getRightY());
+							} else {
+								mOutput.setPercentOutput(mRobotState.operatorJoystickInput.getY());
+							}
 						}
 					}
 				} else {
 					//if not calibrated, limit speed
-					mOutput.setPercentOutput(Constants.kElevatorUncalibratedManualPower * mRobotState.operatorStickInput.getY());
+					if(Constants.operatorXBoxController) {
+						mOutput.setPercentOutput(Constants.kElevatorUncalibratedManualPower * mRobotState.operatorXboxControllerInput.getRightY());
+					} else {
+						mOutput.setPercentOutput(Constants.kElevatorUncalibratedManualPower * mRobotState.operatorJoystickInput.getY());
+					}
 				}
 
 				// Add to setpoint based on joystick

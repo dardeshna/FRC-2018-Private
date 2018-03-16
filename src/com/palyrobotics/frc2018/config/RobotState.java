@@ -3,6 +3,7 @@ package com.palyrobotics.frc2018.config;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.palyrobotics.frc2018.util.JoystickInput;
 import com.palyrobotics.frc2018.util.Pose;
+import com.palyrobotics.frc2018.util.XboxInput;
 import com.palyrobotics.frc2018.util.trajectory.*;
 
 import java.util.Map;
@@ -72,7 +73,8 @@ public class RobotState {
 	public JoystickInput leftStickInput = new JoystickInput();
 	public JoystickInput rightStickInput = new JoystickInput();
 	public JoystickInput climberStickInput = new JoystickInput();
-	public JoystickInput operatorStickInput = new JoystickInput();
+	public XboxInput operatorXboxControllerInput = new XboxInput();
+	public JoystickInput operatorJoystickInput = new JoystickInput();
 
 	public synchronized void reset(double start_time, RigidTransform2d initial_field_to_vehicle) {
 		field_to_vehicle_ = new InterpolatingTreeMap<>(kObservationBufferSize);

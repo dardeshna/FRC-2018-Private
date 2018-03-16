@@ -16,12 +16,8 @@ import com.palyrobotics.frc2018.util.logger.Logger;
 import com.palyrobotics.frc2018.util.trajectory.Kinematics;
 import com.palyrobotics.frc2018.util.trajectory.RigidTransform2d;
 import com.palyrobotics.frc2018.util.trajectory.Rotation2d;
-import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-
 import java.util.Optional;
 import java.util.logging.Level;
 
@@ -317,8 +313,11 @@ class HardwareUpdater {
 		robotState.leftStickInput.update(HardwareAdapter.getInstance().getJoysticks().driveStick);
 		robotState.rightStickInput.update(HardwareAdapter.getInstance().getJoysticks().turnStick);
 		robotState.climberStickInput.update(HardwareAdapter.getInstance().getJoysticks().climberStick);
-		robotState.operatorStickInput.update(HardwareAdapter.getInstance().getJoysticks().operatorStick);
-
+		if(Constants.operatorXBoxController) {
+			robotState.operatorXboxControllerInput.update(HardwareAdapter.getInstance().getJoysticks().operatorXboxController);
+		} else {
+			robotState.operatorJoystickInput.update(HardwareAdapter.getInstance().getJoysticks().operatorJoystick);
+		}
 		switch(robotState.leftControlMode) {
 			//Fall through
 			case Position:

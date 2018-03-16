@@ -20,7 +20,7 @@ public class Constants {
 	}
 
 	//Initialization constants
-	public static final RobotName kRobotName = RobotName.FORSETI;
+	public static final RobotName kRobotName = RobotName.HAL;
 	public static final DriverName kDriverName = DriverName.ERIC;
 	public static final OperatorName kOperatorName = OperatorName.JACOB;
 	public static final FieldName kFieldName = FieldName.AZN;
@@ -136,7 +136,7 @@ public class Constants {
 	public static final int kIntakeStallCounterThreshold = 2;
 	public static final int kIntakeFreeCounterThreshold = 1;
 
-	//Climber
+	public static boolean operatorXBoxController = true;
 
 	//Weird units, it's in sum of joystick inputs. 50 updates/sec, add 1.0 at max power every cycle, so this is half a second of max power
 	public static final double kClimberUpPositionEstimateThreshold = 25;

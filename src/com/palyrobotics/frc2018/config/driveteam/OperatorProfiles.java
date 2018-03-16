@@ -11,6 +11,7 @@ public class OperatorProfiles {
 				Constants.kElevatorTopScalingConstant = 0.75;
 				Constants.kElevatorBottomScalingConstant = 0.25;
 				Constants.kElevatorUncalibratedManualPower = 0.7;
+				Constants.operatorXBoxController = true;
 				break;
 		}
 	}
