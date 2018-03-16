@@ -82,7 +82,7 @@ public class HardwareAdapter {
 
 		public final DoubleSolenoid climberArmLock;
 
-		final Solenoid climberBrake;
+		public final Solenoid climberBrake;
 
 		protected ClimberHardware() {
 			climberVictor = new WPI_VictorSPX(Constants.kForsetiClimberMotorDeviceID);

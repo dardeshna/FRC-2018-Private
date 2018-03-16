@@ -1,7 +1,9 @@
 package com.palyrobotics.frc2018.config;
 
 import java.io.File;
+import java.util.logging.Level;
 
+import com.palyrobotics.frc2018.util.logger.Logger;
 import com.palyrobotics.frc2018.util.JSONFormatter;
 
 /**
@@ -9,66 +11,66 @@ import com.palyrobotics.frc2018.util.JSONFormatter;
  */
 public class AutoDistances {
 	//Base line
-	public static double kRedBaseLineDistanceInches;
-	public static double kBlueBaseLineDistanceInches;
-
+	public static double kRedBaseLineDistanceInches = 122.0;
+    public static double kBlueBaseLineDistanceInches = 122.125;
+    
 	//Switches
-	public static double kRedRightSwitchX;
-	public static double kRedRightSwitchY;
-	
-	public static double kBlueRightSwitchX;
-	public static double kBlueRightSwitchY;
-
-	public static double kRedLeftSwitchX;
-	public static double kRedLeftSwitchY;
-	
-	public static double kBlueLeftSwitchX;
-	public static double kBlueLeftSwitchY;
-
-    public static double kBluePyramidFromRightY;
-	public static double kRedPyramidFromRightY;
-
+    public static double kRedRightSwitchX = 140.0;
+    public static double kRedRightSwitchY = 84.5;
+    
+    public static double kBlueRightSwitchX = 140.0;
+    public static double kBlueRightSwitchY = 85.5;
+    
+    public static double kRedLeftSwitchX = 140.25;
+    public static double kRedLeftSwitchY = 85.75;
+    
+    public static double kBlueLeftSwitchX = 140.0;
+    public static double kBlueLeftSwitchY = 84.75;
+    
+    public static double kBluePyramidFromRightY = 139.25;
+    public static double kRedPyramidFromRightY = 139.5;
+    
 	//Scales
-	public static double kBlueLeftScaleX;
-	public static double kBlueLeftScaleY;
-
-	public static double kBlueRightScaleX;
-	public static double kBlueRightScaleY;
-
-	public static double kRedLeftScaleX;
-	public static double kRedLeftScaleY;
-
-	public static double kRedRightScaleX;
-	public static double kRedRightScaleY;
-
-	public static double kBluePyramidWidth;
-	public static double kBluePyramidLength;
-
-	public static double kRedPyramidWidth;
-	public static double kRedPyramidLength;
-
+    public static double kBlueLeftScaleX = 298.0;
+    public static double kBlueLeftScaleY = 73.0;
+    
+    public static double kBlueRightScaleX = 298.0;
+    public static double kBlueRightScaleY = 73.0;
+    
+    public static double kRedLeftScaleX = 299.0;
+    public static double kRedLeftScaleY = 73.0;
+    
+    public static double kRedRightScaleX = 299.0;
+    public static double kRedRightScaleY = 73.0;
+    
+    public static double kBluePyramidWidth = 45.0;
+    public static double kBluePyramidLength = 40.0;
+    
+    public static double kRedPyramidWidth = 44.75;
+    public static double kRedPyramidLength = 40.25;
+    
 	//Offsets
-	public static double kRedLeftCornerOffset;
-	public static double kRedRightCornerOffset;
-
-	public static double kBlueLeftCornerOffset;
-	public static double kBlueRightCornerOffset;
-
+    public static double kRedLeftCornerOffset = 29.0;
+    public static double kRedRightCornerOffset = 29.75;
+    
+    public static double kBlueLeftCornerOffset = 28.5;
+    public static double kBlueRightCornerOffset = 30.0;
+    
 	//Self explanatory
-	public static double kFieldWidth;
-	public static double kSwitchPlateWidth;
-	public static double kSwitchPlateLength;
-	public static double kScalePlateWidth;
-	public static double kScalePlateLength;
-
+    public static double kFieldWidth = 324.0;
+    public static double kSwitchPlateWidth = 41.75;
+    public static double kSwitchPlateLength = 56.0;
+    public static double kScalePlateWidth = 36.5;
+    public static double kScalePlateLength = 48.0;
+    
 	//Length from left field wall to right edge of the exchange zone
-	public static double kBlueLeftToCenterY;
-	public static double kRedLeftToCenterY;
-
+    public static double kBlueLeftToCenterY = 149.25;
+    public static double kRedLeftToCenterY = 151.125;
+    
 	//Distance to the somewhat arbitrary line between the scale and the switch along which the robot drives
-	public static double kBlueScaleSwitchMidlineX;
-	public static double kRedScaleSwitchMidlineX;
-	
+    public static double kBlueScaleSwitchMidlineX = 233.0;
+    public static double kRedScaleSwitchMidlineX = 233.0;
+
 	public static void updateAutoDistances() {
 		loadField();
 		setAutoDistances();
@@ -106,6 +108,11 @@ public class AutoDistances {
 	}
 	
 	private static void setAutoDistances() { // run after loading chosen field
+		if (field == null) { // If the field file doesn't exist, keep default values
+			Logger.getInstance().logRobotThread(Level.FINE, "Field json file not found");
+			return;
+		}
+		
 		kRedBaseLineDistanceInches = getDoubleValue("kRedBaseLineDistanceInches");
 		kBlueBaseLineDistanceInches = getDoubleValue("kBlueBaseLineDistanceInches");
 		kRedRightSwitchX = getDoubleValue("kRedRightSwitchX");
