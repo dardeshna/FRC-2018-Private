@@ -115,15 +115,17 @@ public class VisionManager extends AbstractVisionThread {
      */
 	private State initializeCmdEnv() {
         try {
+        	Thread.sleep(3000);
             CommandExecutor.setUpADB();
-            m_IsADBServerStarted = true;
+			log(Level.INFO, "Setting up ADB server...");
+			m_IsADBServerStarted = true;
         } catch (final Exception e) {
             log(Level.FINEST, e.toString());
             log(Level.WARNING, "Exception when starting ADB server!");
             // TODO timeout here maybe
             return State.GIVEN_UP;
         }
-        log(Level.INFO, "ADB server started!");
+        log(Level.INFO, "ADB server setup!");
         return State.STARTING_SUB_PROCESSES;
     }
 

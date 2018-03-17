@@ -14,7 +14,7 @@ public class CommandExecutor {
 	}
 
 	public static String setUpADB() {
-		String output = RuntimeExecutor.exec("adb start-server");
+		String output = RuntimeExecutor.exec("adb kill-server && adb start-server");
 		reversePorts();
 		return output;
 	}
