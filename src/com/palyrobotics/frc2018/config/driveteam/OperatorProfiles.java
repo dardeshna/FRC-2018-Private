@@ -7,9 +7,9 @@ public class OperatorProfiles {
 		switch(Constants.kOperatorName) {
 			case JACOB:
 				Constants.kElevatorTopScalingMarginInches = 11.0;
-				Constants.kElevatorBottomScalingMarginInches = 11.0;
+				Constants.kElevatorBottomScalingMarginInches = 18.0;
 				Constants.kElevatorTopScalingConstant = 0.75;
-				Constants.kElevatorBottomScalingConstant = 0.25;
+				Constants.kElevatorBottomScalingConstant = 0.1;
 				Constants.kElevatorUncalibratedManualPower = 0.7;
 				Constants.operatorXBoxController = true;
 				break;

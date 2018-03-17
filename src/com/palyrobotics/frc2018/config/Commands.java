@@ -42,6 +42,7 @@ public class Commands {
 	public Intake.UpDownState wantedIntakeUpDownState = Intake.UpDownState.UP;
 	public Intake.OpenCloseState wantedIntakeOpenCloseState = Intake.OpenCloseState.CLOSED;
 	public boolean disableElevatorScaling = false;
+	public boolean customIntakeSpeed = false;
 
 	public void addWantedRoutine(Routine wantedRoutine) {
 		for(Routine routine : wantedRoutines) {
@@ -96,6 +97,8 @@ public class Commands {
 		copy.wantedIntakeOpenCloseState = this.wantedIntakeOpenCloseState;
 		copy.disableElevatorScaling = this.disableElevatorScaling;
 		copy.cancelCurrentRoutines = this.cancelCurrentRoutines;
+		copy.disableElevatorScaling = this.disableElevatorScaling;
+		copy.customIntakeSpeed = this.customIntakeSpeed;
 
 		for(Routine r : this.wantedRoutines) {
 			copy.wantedRoutines.add(r);

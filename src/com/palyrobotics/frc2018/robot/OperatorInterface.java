@@ -119,11 +119,11 @@ public class OperatorInterface {
 			}
 
 			//Intake wheel logic block
-			if (mOperatorXboxController.getRightTriggerPressed()) {
+			if (mOperatorXboxController.getRightTrigger() > 0.0) {
 				newCommands.wantedIntakingState = Intake.WheelState.EXPELLING;
+				newCommands.customIntakeSpeed = true;
 				newCommands.cancelCurrentRoutines = true;
-
-			} else if (mOperatorXboxController.getLeftBumper()) {
+			} else if(mOperatorXboxController.getLeftBumper()) {
 				if (operatorButtonTwoPressable) {
 					ArrayList<Routine> intakeThenUp = new ArrayList<>();
 					intakeThenUp.add(new IntakeSensorStopRoutine(Intake.WheelState.INTAKING, 115.0));
@@ -133,13 +133,15 @@ public class OperatorInterface {
 				}
 				newCommands.cancelCurrentRoutines = false;
 				operatorButtonTwoPressable = false;
-			} else if (mOperatorXboxController.getButtonA()) {
+			} else if(mOperatorXboxController.getButtonA()) {
 				newCommands.wantedIntakingState = Intake.WheelState.VAULT_EXPELLING;
 				newCommands.cancelCurrentRoutines = true;
-			} else if (mOperatorXboxController.getLeftTriggerPressed()) {
+			} else if(mOperatorXboxController.getLeftTrigger() > 0.0) {
 				newCommands.wantedIntakingState = Intake.WheelState.INTAKING;
+				newCommands.customIntakeSpeed = true;
 				newCommands.cancelCurrentRoutines = true;
 			} else {
+				newCommands.customIntakeSpeed = false;
 				newCommands.cancelCurrentRoutines = false;
 				operatorButtonTwoPressable = true;
 				newCommands.wantedIntakingState = Intake.WheelState.IDLE;

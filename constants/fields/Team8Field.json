@@ -32,8 +32,8 @@
     "kRedLeftToCenterY": 139.0,
     "kBlueScaleSwitchMidlineX": 234.0,
     "kRedScaleSwitchMidlineX": 234.0,
-    "kSwitchPlateWidth": 0,
-    "kSwitchPlateLength": 0,
-    "kScalePlateWidth": 0,
-    "kScalePlateLength": 0
+    "kSwitchPlateWidth": 41.75,
+    "kSwitchPlateLength": 56.0,
+    "kScalePlateWidth": 36.5,
+    "kScalePlateLength": 48.0
 }

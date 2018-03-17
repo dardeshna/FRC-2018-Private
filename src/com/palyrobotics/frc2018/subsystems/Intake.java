@@ -64,13 +64,21 @@ public class Intake extends Subsystem {
 
 		switch(mWheelState) {
 			case INTAKING:
-				mTalonOutput.setPercentOutput(Constants.kIntakingMotorVelocity);
+				if(commands.customIntakeSpeed) {
+					mTalonOutput.setPercentOutput(robotState.operatorXboxControllerInput.leftTrigger);
+				} else {
+					mTalonOutput.setPercentOutput(Constants.kIntakingMotorVelocity);
+				}
 				break;
 			case IDLE:
 				mTalonOutput.setPercentOutput(0);
 				break;
 			case EXPELLING:
-				mTalonOutput.setPercentOutput(Constants.kExpellingMotorVelocity);
+				if(commands.customIntakeSpeed) {
+					mTalonOutput.setPercentOutput(-robotState.operatorXboxControllerInput.rightTrigger);
+				} else {
+					mTalonOutput.setPercentOutput(Constants.kExpellingMotorVelocity);
+				}
 				break;
 			case VAULT_EXPELLING:
 				mTalonOutput.setPercentOutput(Constants.kVaultExpellingMotorVelocity);
