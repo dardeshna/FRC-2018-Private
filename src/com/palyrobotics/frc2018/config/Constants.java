@@ -165,14 +165,14 @@ public class Constants {
 	public static final int kForsetiLeftDriveMasterDeviceID = 1;
 	public static final int kForsetiLeftDriveSlave1DeviceID = 2;
 	public static final int kForsetiLeftDriveSlave2DeviceID = 3;
-	public static final int kForsetiLeftDriveSlave3DeviceID = 0;
+	public static final int kForsetiLeftDriveSlave3DeviceID = 13;
 	public static final int kForsetiLeftDriveFrontMotorPDP = 0;
 	public static final int kForsetiLeftDriveBackMotorPDP = 0;
 	public static final int kForsetiLeftDriveThirdMotorPDP = 0;
 	public static final int kForsetiRightDriveMasterDeviceID = 4;
 	public static final int kForsetiRightDriveSlave1DeviceID = 5;
 	public static final int kForsetiRightDriveSlave2DeviceID = 6;
-    public static final int kForsetiRightDriveSlave3DeviceID = 6;
+    public static final int kForsetiRightDriveSlave3DeviceID = 14;
     public static final int kForsetiRightDriveFrontMotorPDP = 0;
 	public static final int kForsetiRightDriveBackMotorPDP = 0;
 	public static final int kForsetiRightDriveThirdMotorPDP = 0;

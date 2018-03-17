@@ -58,7 +58,7 @@ public class RightStartRightSwitchAutoMode extends AutoModeBase {
         
         ArrayList<Routine> routines = new ArrayList<>();
 
-        routines.add(new DriveSensorResetRoutine(1.0));
+        routines.add(new DriveSensorResetRoutine(.1));
 
 		ArrayList<Routine> inTransitRoutines = new ArrayList<>();
 		inTransitRoutines.add(new DrivePathRoutine(new Path(path), false, 25));

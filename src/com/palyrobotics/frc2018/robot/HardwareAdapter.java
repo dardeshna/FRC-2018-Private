@@ -50,9 +50,9 @@ public class HardwareAdapter {
 			leftSlave2Victor = new WPI_VictorSPX(Constants.kForsetiLeftDriveSlave2DeviceID);
             leftSlave3Victor = new WPI_VictorSPX(Constants.kForsetiLeftDriveSlave3DeviceID);
             rightMasterTalon = new WPI_TalonSRX(Constants.kForsetiRightDriveMasterDeviceID);
-			rightSlave1Victor = new WPI_VictorSPX(Constants.kForsetiLeftDriveSlave1DeviceID);
-			rightSlave2Victor = new WPI_VictorSPX(Constants.kForsetiLeftDriveSlave2DeviceID);
-            rightSlave3Victor = new WPI_VictorSPX(Constants.kForsetiLeftDriveSlave3DeviceID);
+			rightSlave1Victor = new WPI_VictorSPX(Constants.kForsetiRightDriveSlave1DeviceID);
+			rightSlave2Victor = new WPI_VictorSPX(Constants.kForsetiRightDriveSlave2DeviceID);
+            rightSlave3Victor = new WPI_VictorSPX(Constants.kForsetiRightDriveSlave3DeviceID);
 
 			//Gyro is currently attached to elevator talon as an... emergency provision
 
