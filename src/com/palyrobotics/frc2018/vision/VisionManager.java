@@ -1,7 +1,6 @@
 package com.palyrobotics.frc2018.vision;
 
 import com.palyrobotics.frc2018.config.Constants;
-import com.palyrobotics.frc2018.util.logger.Logger;
 import com.palyrobotics.frc2018.vision.networking.VisionDataReceiver;
 import com.palyrobotics.frc2018.vision.networking.VisionVideoServer;
 import com.palyrobotics.frc2018.vision.util.AbstractVisionThread;
@@ -61,7 +60,6 @@ public class VisionManager extends AbstractVisionThread {
 
 	public void start(final long updateRate, final boolean isTesting) {
 		super.start(updateRate);
-		CommandExecutor.setTesting(isTesting);
 	}
 
 	@Override
@@ -90,19 +88,17 @@ public class VisionManager extends AbstractVisionThread {
 	 */
 	private State findDevice() {
 		if (CommandExecutor.getNexusStatus() != DeviceStatus.DEVICE) {
-            // Device was not found. Try restarting adb server continually with timeout.
             if (Constants.kVisionUseTimeout) {
             	final long wait = Math.min(m_InitAdbRetryCount * 200, Constants.kVisionMaxTimeoutWait);
-            	log(Level.INFO, String.format("Device could not be found. It was in status: %s. Retrying in %d ms", CommandExecutor.getNexusStatus().toString(), wait));
+            	log(Level.INFO, String.format("Device could not be secured. Status: %s. Retrying in %d ms", CommandExecutor.getNexusStatus().toString(), wait));
                 try {
                     Thread.sleep(wait);
-                    CommandExecutor.restartADBServer();
                 } catch (final InterruptedException e) {
                     log(Level.FINEST, e.toString());
                     return State.GIVEN_UP;
                 }
-                m_InitAdbRetryCount++;
-            } else {
+				m_InitAdbRetryCount++;
+			} else {
                 return State.GIVEN_UP;
             }
             return State.FINDING_DEVICE;
@@ -119,7 +115,7 @@ public class VisionManager extends AbstractVisionThread {
      */
 	private State initializeCmdEnv() {
         try {
-            CommandExecutor.initializeADBServerFirstTime();
+            CommandExecutor.setUpADB();
             m_IsADBServerStarted = true;
         } catch (final Exception e) {
             log(Level.FINEST, e.toString());
