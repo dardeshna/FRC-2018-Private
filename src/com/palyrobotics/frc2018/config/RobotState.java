@@ -1,11 +1,13 @@
 package com.palyrobotics.frc2018.config;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.palyrobotics.frc2018.behavior.Routine;
 import com.palyrobotics.frc2018.util.JoystickInput;
 import com.palyrobotics.frc2018.util.Pose;
 import com.palyrobotics.frc2018.util.XboxInput;
 import com.palyrobotics.frc2018.util.trajectory.*;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -42,7 +44,6 @@ public class RobotState {
 	//Intake
 	public boolean hasCube = true;
 //	public double cubeDistance = 0;
-
 
 	//Tracks total current from kPDP
 	public double totalCurrentDraw = 0;

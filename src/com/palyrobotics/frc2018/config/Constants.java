@@ -133,8 +133,11 @@ public class Constants {
 	public static final double kIntakeSlaveIntakingCurrent = 6;
 	public static final double kSwitchAutoWaitBeforeElevatorRaiseTimeSeconds = 1.5;
 	public static final double kScaleAutoWaitBeforeElevatorRaiseTimeSeconds = 1.0;
-	public static final int kIntakeStallCounterThreshold = 2;
+	public static final int kIntakeStallCounterThreshold = 5;
 	public static final int kIntakeFreeCounterThreshold = 1;
+	public static final double kIntakeStallCoefficientA = 1.55;
+	public static final double kIntakeStallCoefficientB = 4.27;
+	public static final double kIntakeFreeSpinCurrent = 5;
 
 	public static boolean operatorXBoxController = true;
 

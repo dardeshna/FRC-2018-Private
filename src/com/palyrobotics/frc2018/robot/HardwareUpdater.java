@@ -4,6 +4,8 @@ import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.ctre.phoenix.sensors.PigeonIMU;
+import com.palyrobotics.frc2018.behavior.routines.intake.IntakeSensorStopRoutine;
+import com.palyrobotics.frc2018.behavior.routines.intake.IntakeWheelRoutine;
 import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.config.RobotState;
 import com.palyrobotics.frc2018.subsystems.Climber;
@@ -407,35 +409,38 @@ class HardwareUpdater {
 //		System.out.println("slave current: " + slaveCurrent);
 //		System.out.println("has cube: " + robotState.hasCube);
 
-		if(masterCurrent >= Constants.kIntakeMasterStallCurrent
-				&& slaveCurrent >= Constants.kIntakeSlaveStallCurrent
+		if (masterCurrent >= Constants.kIntakeStallCoefficientA * Math.pow(Math.E, Constants.kIntakeStallCoefficientB
+				* mIntake.getTalonOutput().getSetpoint())
+				&& slaveCurrent >= Constants.kIntakeStallCoefficientA * Math.pow(Math.E, Constants.kIntakeStallCoefficientB
+				* mIntake.getTalonOutput().getSetpoint())
 				&& mIntake.getWheelState() == Intake.WheelState.INTAKING) {
 			intakeStallCounter++;
 		} else {
 			intakeStallCounter = 0;
 		}
 
-		if(masterCurrent > Constants.kIntakeMasterIdleCurrent
-				&& masterCurrent <= Constants.kIntakeMasterExpelCurrent
+		if (masterCurrent > Constants.kIntakeMasterIdleCurrent
+				&& masterCurrent <= Constants.kIntakeFreeSpinCurrent * -mIntake.getTalonOutput().getSetpoint()
 				&& slaveCurrent > Constants.kIntakeSlaveIdleCurrent
-				&& slaveCurrent <= Constants.kIntakeSlaveExpelCurrent
+				&& slaveCurrent <= Constants.kIntakeFreeSpinCurrent * -mIntake.getTalonOutput().getSetpoint()
 				&& mIntake.getWheelState() == Intake.WheelState.EXPELLING) {
 			intakeFreeSpinCounter++;
-		} else if(masterCurrent > Constants.kIntakeMasterIdleCurrent
-				&& masterCurrent <= Constants.kIntakeMasterVaultExpelCurrent
+		} else if (masterCurrent > Constants.kIntakeMasterIdleCurrent
+				&& masterCurrent <= Constants.kIntakeFreeSpinCurrent * -mIntake.getTalonOutput().getSetpoint()
 				&& slaveCurrent > Constants.kIntakeSlaveIdleCurrent
-				&& slaveCurrent <= Constants.kIntakeSlaveVaultExpelCurrent
+				&& slaveCurrent <= Constants.kIntakeFreeSpinCurrent * -mIntake.getTalonOutput().getSetpoint()
 				&& mIntake.getWheelState() == Intake.WheelState.VAULT_EXPELLING) {
 			intakeFreeSpinCounter++;
-		} else if(masterCurrent > Constants.kIntakeMasterIdleCurrent
-				&& masterCurrent <= Constants.kIntakeMasterIntakingCurrent
+		} else if (masterCurrent > Constants.kIntakeMasterIdleCurrent
+				&& masterCurrent <= Constants.kIntakeFreeSpinCurrent * mIntake.getTalonOutput().getSetpoint()
 				&& slaveCurrent > Constants.kIntakeSlaveIdleCurrent
-				&& slaveCurrent <= Constants.kIntakeSlaveIntakingCurrent
+				&& slaveCurrent <= Constants.kIntakeFreeSpinCurrent * mIntake.getTalonOutput().getSetpoint()
 				&& mIntake.getWheelState() == Intake.WheelState.INTAKING) {
 			intakeFreeSpinCounter++;
 		} else {
 			intakeFreeSpinCounter = 0;
 		}
+		System.out.println(robotState.hasCube);
 
 		if(intakeStallCounter >= Constants.kIntakeStallCounterThreshold) {
 			robotState.hasCube = true;

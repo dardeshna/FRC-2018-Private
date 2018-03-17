@@ -122,7 +122,6 @@ public class Robot extends TimedRobot {
 
 			this.mAutoStarted = true;
 		}
-
 		if(this.mAutoStarted) {
 			commands = mRoutineManager.update(commands);
 			mHardwareUpdater.updateState(robotState);
