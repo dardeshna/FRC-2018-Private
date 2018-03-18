@@ -74,6 +74,8 @@ public class OperatorInterface {
 
 		Commands newCommands = prevCommands.copy();
 
+		newCommands.cancelCurrentRoutines = false;
+
 		/**
 		 * Drivetrain controls
 		 */
@@ -108,14 +110,19 @@ public class OperatorInterface {
 			//Operator intake control
 			if(mOperatorXboxController.getdPadUp()) {
 				newCommands.addWantedRoutine(new IntakeUpRoutine());
+				newCommands.cancelCurrentRoutines = true;
 			} else if(mOperatorXboxController.getdPadRight()) {
 				newCommands.addWantedRoutine(new IntakeNeutralRoutine());
+				newCommands.cancelCurrentRoutines = true;
 			} else if(mOperatorXboxController.getdPadDown()) {
 				newCommands.addWantedRoutine(new IntakeDownRoutine());
+				newCommands.cancelCurrentRoutines = true;
 			} else if(mOperatorXboxController.getdPadLeft()) {
 				newCommands.addWantedRoutine(new IntakeCloseRoutine());
+				newCommands.cancelCurrentRoutines = true;
 			} else if(mOperatorXboxController.getRightBumper()) {
 				newCommands.addWantedRoutine(new IntakeOpenRoutine());
+				newCommands.cancelCurrentRoutines = true;
 			}
 
 			//Intake wheel logic block
@@ -131,7 +138,6 @@ public class OperatorInterface {
 					newCommands.cancelCurrentRoutines = true;
 					newCommands.addWantedRoutine(new SequentialRoutine(intakeThenUp));
 				}
-				newCommands.cancelCurrentRoutines = false;
 				operatorButtonTwoPressable = false;
 			} else if(mOperatorXboxController.getButtonA()) {
 				newCommands.wantedIntakingState = Intake.WheelState.VAULT_EXPELLING;
@@ -142,7 +148,6 @@ public class OperatorInterface {
 				newCommands.cancelCurrentRoutines = true;
 			} else {
 				newCommands.customIntakeSpeed = false;
-				newCommands.cancelCurrentRoutines = false;
 				operatorButtonTwoPressable = true;
 				newCommands.wantedIntakingState = Intake.WheelState.IDLE;
 			}
@@ -170,8 +175,10 @@ public class OperatorInterface {
 				if (operatorButtonFourPressable) {
 					if (prevCommands.wantedIntakeUpDownState == Intake.UpDownState.DOWN) {
 						newCommands.addWantedRoutine(new IntakeUpRoutine());
+						newCommands.cancelCurrentRoutines = true;
 					} else {
 						newCommands.addWantedRoutine(new IntakeDownRoutine());
+						newCommands.cancelCurrentRoutines = true;
 					}
 				}
 
@@ -181,10 +188,13 @@ public class OperatorInterface {
 			//Close/Open block, cannot be executed along with up/down
 			else if (mOperatorJoystick.getButtonPressed(3)) {
 				newCommands.addWantedRoutine(new IntakeNeutralRoutine());
+				newCommands.cancelCurrentRoutines = true;
 			} else if (mOperatorJoystick.getButtonPressed(5)) {
 				newCommands.addWantedRoutine(new IntakeCloseRoutine());
+				newCommands.cancelCurrentRoutines = true;
 			} else if (mOperatorJoystick.getButtonPressed(6)) {
 				newCommands.addWantedRoutine(new IntakeOpenRoutine());
+				newCommands.cancelCurrentRoutines = true;
 			} else {
 				operatorButtonFourPressable = true;
 			}
@@ -201,7 +211,6 @@ public class OperatorInterface {
 					newCommands.cancelCurrentRoutines = true;
 					newCommands.addWantedRoutine(new SequentialRoutine(intakeThenUp));
 				}
-				newCommands.cancelCurrentRoutines = false;
 				operatorButtonTwoPressable = false;
 			} else if (mOperatorJoystick.getButtonPressed(10)) {
 				newCommands.wantedIntakingState = Intake.WheelState.VAULT_EXPELLING;
@@ -210,7 +219,6 @@ public class OperatorInterface {
 				newCommands.wantedIntakingState = Intake.WheelState.INTAKING;
 				newCommands.cancelCurrentRoutines = true;
 			} else {
-				newCommands.cancelCurrentRoutines = false;
 				operatorButtonTwoPressable = true;
 				newCommands.wantedIntakingState = Intake.WheelState.IDLE;
 			}
