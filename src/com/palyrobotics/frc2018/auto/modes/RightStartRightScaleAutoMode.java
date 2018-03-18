@@ -48,18 +48,18 @@ public class RightStartRightScaleAutoMode extends AutoModeBase {
         path.add(new Path.Waypoint(new Translation2d(0.0, 0.0), 72.0));
         if(mAlliance == Alliance.BLUE) {
             path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueRightSwitchX + Constants.kRobotLengthInches,
-                    -(Constants.kRobotWidthInches/2.0 + AutoDistances.kBlueRightCornerOffset) + AutoDistances.kBlueRightSwitchY/2.0), 72.0));
+                    0.0), 72.0));
             lastSegment.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueRightScaleX - 2.0 * Constants.kRobotLengthInches,
-                    -(Constants.kRobotWidthInches/2.0 + AutoDistances.kBlueRightCornerOffset)
+                    -(Constants.kRobotWidthInches + AutoDistances.kBlueRightCornerOffset)
                             + AutoDistances.kBlueRightScaleY + AutoDistances.kScalePlateWidth/2.0), 55));
             lastSegment.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueRightScaleX - Constants.kRobotLengthInches/2,
                     -(Constants.kRobotWidthInches/2.0 + AutoDistances.kBlueRightCornerOffset)
                     + AutoDistances.kBlueRightScaleY + AutoDistances.kScalePlateWidth/2.0), 0.0));
         } else {
             path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedRightSwitchX + Constants.kRobotLengthInches,
-                    -(Constants.kRobotWidthInches/2.0 + AutoDistances.kRedRightCornerOffset) + AutoDistances.kRedRightSwitchY/2.0), 72.0));
+                    -(0.0)), 72.0));
             lastSegment.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedRightScaleX - 2.0 * Constants.kRobotLengthInches,
-                    -(Constants.kRobotWidthInches/2.0 + AutoDistances.kRedRightCornerOffset)
+                    -(Constants.kRobotWidthInches + AutoDistances.kRedRightCornerOffset)
                             + AutoDistances.kRedRightScaleY + AutoDistances.kScalePlateWidth/2.0), 55));
             lastSegment.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedRightScaleX - Constants.kRobotLengthInches/2,
                     -(Constants.kRobotWidthInches/2.0 + AutoDistances.kRedRightCornerOffset)
@@ -80,7 +80,7 @@ public class RightStartRightScaleAutoMode extends AutoModeBase {
 
         ArrayList<Routine> lastSegmentElevator = new ArrayList<>();
         lastSegmentElevator.add(new DrivePathRoutine(new Path(lastSegment), false));
-        lastSegmentElevator.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorTopBottomDifferenceInches, 2.6));
+//        lastSegmentElevator.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorTopBottomDifferenceInches, 2.6));
         routines.add(new ParallelRoutine(lastSegmentElevator));
         routines.add(new DriveSensorResetRoutine(1.0));
 

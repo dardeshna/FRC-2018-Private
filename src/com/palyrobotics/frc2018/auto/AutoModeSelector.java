@@ -109,7 +109,7 @@ public class AutoModeSelector {
 //		return getAutoMode(AutoModeBase.mAlliance, AutoModeBase.mStartingPosition, AutoModeBase.mScaleDecision,
 //				AutoModeBase.mSwitchDecision, AutoModeBase.mPriority, AutoModeBase.mMultiCube);
 
-		return new RightStartRightSwitchAutoMode(Alliance.BLUE);
+		return new RightStartRightScaleAutoMode(Alliance.BLUE);
 	}
 
 	/**
