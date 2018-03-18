@@ -117,7 +117,11 @@ public class RoutineManager {
 		if(output.cancelCurrentRoutines) {
 			Logger.getInstance().logRobotThread(Level.FINE, "Cancel routine button");
 			output = this.reset(output);
-		} else if(!output.wantedRoutines.isEmpty()) {
+		}
+
+		//Add new routines this cycle.
+		//Intentionally runs even if cancelCurrentRoutines is true, as these are new routines requested on the same cycle.
+		if(!output.wantedRoutines.isEmpty()) {
 			//Routines requested by newly added routines
 			for(Routine routine : output.wantedRoutines) {
 				addNewRoutine(routine);

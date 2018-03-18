@@ -91,7 +91,7 @@ public class OperatorInterface {
 			/**
 			 * Elevator controls
 			 */
-			if(Math.abs(ChezyMath.handleDeadband(mOperatorXboxController.getRightY(), 0.02)) > 0.0) {
+			if(Math.abs(ChezyMath.handleDeadband(mOperatorXboxController.getRightY(), 0.05)) > 0.0) {
 				newCommands.wantedElevatorState = Elevator.ElevatorState.MANUAL_POSITIONING;
 			} else {
 				newCommands.wantedElevatorState = Elevator.ElevatorState.HOLD;
@@ -119,7 +119,7 @@ public class OperatorInterface {
 			}
 
 			//Intake wheel logic block
-			if (mOperatorXboxController.getRightTrigger() > 0.0) {
+			if(mOperatorXboxController.getRightTrigger() > 0.0) {
 				newCommands.wantedIntakingState = Intake.WheelState.EXPELLING;
 				newCommands.customIntakeSpeed = true;
 				newCommands.cancelCurrentRoutines = true;
