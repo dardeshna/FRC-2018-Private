@@ -60,7 +60,7 @@ public class Robot extends TimedRobot {
 		Logger.getInstance().logRobotThread(Level.INFO, "Start robotInit() for " + Constants.kRobotName.toString());
 
 		DashboardManager.getInstance().robotInit();
-		VisionManager.getInstance().start(Constants.kVisionManagerUpdateRate, false);
+//		VisionManager.getInstance().start(Constants.kVisionManagerUpdateRate, false);
 
 		Logger.getInstance().logRobotThread(Level.CONFIG, "Startup successful");
 		Logger.getInstance().logRobotThread(Level.CONFIG, "Robot name: " + Constants.kRobotName);
@@ -128,7 +128,7 @@ public class Robot extends TimedRobot {
 			updateSubsystems();
 			mHardwareUpdater.updateHardware();
 		}
-
+		System.out.println("Position: " + Robot.getRobotState().getLatestFieldToVehicle().getValue());
 		logPeriodic();
 	}
 
@@ -147,7 +147,7 @@ public class Robot extends TimedRobot {
 //		commands.wantedIntakeUpDownState = Intake.UpDownState.DOWN;
 		startSubsystems();
 		robotState.reset(0, new RigidTransform2d());
-		VisionManager.getInstance().verifyVisionAppIsRunning();
+//		VisionManager.getInstance().verifyVisionAppIsRunning();
 
 		Logger.getInstance().logRobotThread(Level.INFO, "End teleopInit()");
 	}

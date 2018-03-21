@@ -72,7 +72,7 @@ public class Elevator extends Subsystem {
 	 */
 	@Override
 	public void update(Commands commands, RobotState robotState) {
-
+		System.out.println(robotState.elevatorPosition);
 		//Update for use in handleState()
 		mRobotState = robotState;
 

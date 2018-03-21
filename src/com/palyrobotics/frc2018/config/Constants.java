@@ -133,6 +133,7 @@ public class Constants {
 	public static final double kIntakeSlaveIntakingCurrent = 6;
 	public static final double kSwitchAutoWaitBeforeElevatorRaiseTimeSeconds = 1.5;
 	public static final double kScaleAutoWaitBeforeElevatorRaiseTimeSeconds = 1.0;
+	public static final double kScaleOffset = 18;
 	public static final int kIntakeStallCounterThreshold = 5;
 	public static final int kIntakeFreeCounterThreshold = 1;
 	public static final double kIntakeStallCoefficientA = 1.55;
@@ -221,8 +222,8 @@ public class Constants {
 	public static final double kTrackEffectiveDiameter = (kTrackWidthInches * kTrackWidthInches + kTrackLengthInches * kTrackLengthInches) / kTrackWidthInches;
 	public static final double kTrackScrubFactor = 0.5;
 	public static final double kPathFollowingLookahead = 35.0;
-	public static final double kPathFollowingMaxAccel = 72.0;
-	public static final double kPathFollowingMaxVel = 72.0;
+	public static final double kPathFollowingMaxAccel = 90;
+	public static final double kPathFollowingMaxVel = 200.0;
 	//public static final double kPathFollowingMaxVel = 5 * kPathFollowingMaxAccel;
 	public static final double kPathFollowingTolerance = 0.20;
 
