@@ -4,9 +4,9 @@ import com.palyrobotics.frc2018.auto.AutoModeBase;
 import com.palyrobotics.frc2018.behavior.ParallelRoutine;
 import com.palyrobotics.frc2018.behavior.Routine;
 import com.palyrobotics.frc2018.behavior.SequentialRoutine;
-import com.palyrobotics.frc2018.behavior.routines.drive.EncoderTurnAngleRoutine;
-import com.palyrobotics.frc2018.behavior.routines.drive.TalonSRXRoutine;
-import com.palyrobotics.frc2018.behavior.routines.drive.TimedDriveRoutine;
+import com.palyrobotics.frc2018.behavior.routines.drive.*;
+import com.palyrobotics.frc2018.behavior.routines.intake.IntakeCloseRoutine;
+import com.palyrobotics.frc2018.behavior.routines.intake.IntakeDownRoutine;
 import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.config.Gains;
 import com.palyrobotics.frc2018.util.DriveSignal;
@@ -23,7 +23,7 @@ public class TestAutoMode extends AutoModeBase {
 	@Override
 	public Routine getRoutine() {
 
-		return testF();
+		return getDrive();
 //		return getDrive();
 	}
 
@@ -54,17 +54,20 @@ public class TestAutoMode extends AutoModeBase {
 	}
 
 	private SequentialRoutine getDrive() {
-		Gains mShortGains = Gains.forsetiShortDriveMotionMagicGains;
-		DriveSignal driveBackup = DriveSignal.getNeutralSignal();
-		double driveBackupSetpoint = 60 * Constants.kDriveTicksPerInch;
-		driveBackup.leftMotor.setMotionMagic(driveBackupSetpoint, mShortGains, (int) Gains.kForsetiShortDriveMotionMagicCruiseVelocity,
-				(int) Gains.kForsetiShortDriveMotionMagicMaxAcceleration);
-		driveBackup.rightMotor.setMotionMagic(driveBackupSetpoint, mShortGains, (int) Gains.kForsetiShortDriveMotionMagicCruiseVelocity,
-				(int) Gains.kForsetiShortDriveMotionMagicMaxAcceleration);
+//		Gains mShortGains = Gains.forsetiShortDriveMotionMagicGains;
+//		DriveSignal driveBackup = DriveSignal.getNeutralSignal();
+//		double driveBackupSetpoint = 60 * Constants.kDriveTicksPerInch;
+//		driveBackup.leftMotor.setMotionMagic(driveBackupSetpoint, mShortGains, (int) Gains.kForsetiShortDriveMotionMagicCruiseVelocity,
+//				(int) Gains.kForsetiShortDriveMotionMagicMaxAcceleration);
+//		driveBackup.rightMotor.setMotionMagic(driveBackupSetpoint, mShortGains, (int) Gains.kForsetiShortDriveMotionMagicCruiseVelocity,
+//				(int) Gains.kForsetiShortDriveMotionMagicMaxAcceleration);
 
 		ArrayList<Routine> sequence = new ArrayList<>();
 
-		sequence.add(new TalonSRXRoutine(driveBackup, true));
+//		sequence.add(new TalonSRXRoutine(driveBackup, true));
+	sequence.add(new DriveSensorResetRoutine(2));
+	sequence.add(new IntakeDownRoutine());
+		sequence.add(new IntakeCloseRoutine());
 
 		return new SequentialRoutine(sequence);
 	}

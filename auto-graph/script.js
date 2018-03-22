@@ -420,7 +420,7 @@ function importData() {
 				console.log(data)
 				var wp = undefined
 				if (blue) {
-					wp = new Waypoint(new Translation2d(parseFloat(data[0])+x, parseFloat(data[1])+y), data[2], 20, "No Comment");
+					wp = new Waypoint(new Translation2d(parseFloat(data[0])+x, parseFloat(data[1])+y), data[2], 0, "No Comment");
 				}
 				else {
 					var x_off_red = 652
