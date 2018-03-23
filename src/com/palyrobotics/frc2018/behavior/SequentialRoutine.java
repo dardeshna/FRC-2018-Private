@@ -4,6 +4,7 @@ import com.palyrobotics.frc2018.config.Commands;
 import com.palyrobotics.frc2018.subsystems.Subsystem;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by Nihar on 12/27/16.
@@ -12,11 +13,13 @@ public class SequentialRoutine extends Routine {
 	private ArrayList<Routine> mRoutines;
 	private int mRunningRoutineIndex = 0;
 	private boolean mIsDone = false;
-	private Subsystem[] mRequiredSubsystems;
 
 	public SequentialRoutine(ArrayList<Routine> routines) {
 		mRoutines = routines;
-		mRequiredSubsystems = RoutineManager.sharedSubsystems(mRoutines);
+	}
+
+	public SequentialRoutine(Routine... routines) {
+		mRoutines = new ArrayList<>(Arrays.asList(routines));
 	}
 
 	@Override
@@ -68,7 +71,7 @@ public class SequentialRoutine extends Routine {
 
 	@Override
 	public Subsystem[] getRequiredSubsystems() {
-		return mRequiredSubsystems;
+		return RoutineManager.sharedSubsystems(mRoutines);
 	}
 
 	@Override

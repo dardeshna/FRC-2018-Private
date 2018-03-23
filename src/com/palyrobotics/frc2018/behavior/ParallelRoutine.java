@@ -4,6 +4,7 @@ import com.palyrobotics.frc2018.config.Commands;
 import com.palyrobotics.frc2018.subsystems.Subsystem;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by Nihar on 12/27/16.
@@ -20,7 +21,11 @@ public class ParallelRoutine extends Routine {
 		this.mRoutines = routines;
 	}
 
-	@Override
+    public ParallelRoutine(Routine... routines) {
+	    mRoutines = new ArrayList<>(Arrays.asList(routines));
+    }
+
+    @Override
 	public void start() {
 		for(Routine routine : mRoutines) {
 			routine.start();

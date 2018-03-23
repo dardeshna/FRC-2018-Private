@@ -117,6 +117,10 @@ public class DrivePathRoutine extends Routine {
 		return commands;
 	}
 
+	public Path getPath() {
+		return mPath;
+	}
+
 	@Override
 	public boolean finished() {
 		return drive.controllerOnTarget();
