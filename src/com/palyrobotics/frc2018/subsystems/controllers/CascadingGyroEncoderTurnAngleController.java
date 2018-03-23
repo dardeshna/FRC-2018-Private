@@ -2,7 +2,6 @@ package com.palyrobotics.frc2018.subsystems.controllers;
 
 import java.util.logging.Level;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.config.Gains;
 import com.palyrobotics.frc2018.config.RobotState;
@@ -17,9 +16,9 @@ public class CascadingGyroEncoderTurnAngleController implements DriveController 
     private double mTargetHeading;
     private Pose mCachedPose;
     
-    private double mLeftTarget;
-    private double mRightTarget;
-    
+    private double mTarget;
+    private double mLastTarget;
+
     private TalonSRXOutput mLeftOutput;
     private TalonSRXOutput mRightOutput;
     
@@ -31,11 +30,14 @@ public class CascadingGyroEncoderTurnAngleController implements DriveController 
     public CascadingGyroEncoderTurnAngleController(Pose priorSetpoint, double angle) {
         mTargetHeading = priorSetpoint.heading + angle;
         mCachedPose = priorSetpoint;
-        
+
+        mLastTarget = 0;
+
         mLeftOutput = new TalonSRXOutput();
         mRightOutput = new TalonSRXOutput();
         
         mErrorIntegral = 0;
+
         mLastError = angle;
     }
 
@@ -48,21 +50,37 @@ public class CascadingGyroEncoderTurnAngleController implements DriveController 
         	Logger.getInstance().logSubsystemThread(Level.WARNING, "CascadingGyroEncoderTurnAngle", "Cached pose is null!");
         	return DriveSignal.getNeutralSignal();
         } else {
-        	 double currentHeading = mCachedPose.heading;
-             double error = mTargetHeading - currentHeading;
-             mErrorIntegral += error;
-             mErrorDerivative = (mLastError - error) * Constants.kNormalLoopsDt;
+            double currentHeading = mCachedPose.heading;
+            double error = mTargetHeading - currentHeading;
 
-             //Manually calculate PID output for velocity loop
-             mLeftTarget = -1 * (Gains.kForsetiCascadingTurnkP * error + Gains.kForsetiCascadingTurnkI * mErrorIntegral + Gains.kForsetiCascadingTurnkD * mErrorDerivative);
-             mRightTarget = 1 * (Gains.kForsetiCascadingTurnkP * error + Gains.kForsetiCascadingTurnkI * mErrorIntegral + Gains.kForsetiCascadingTurnkD * mErrorDerivative);
+            if(Math.abs(error) < Gains.kForsetiCascadingTurnIzone) {
+                mErrorIntegral += error;
+            } else {
+                mErrorIntegral = 0.0;
+            }
 
-             mLeftOutput.setVelocity(mLeftTarget, Gains.forsetiVelocity);
-             mRightOutput.setVelocity(mRightTarget, Gains.forsetiVelocity);
+            mErrorDerivative = (error - mLastError) / Constants.kNormalLoopsDt;
+
+//            Manually calculate PID output for velocity loop
+            mTarget = (Gains.kForsetiCascadingTurnkP * error + Gains.kForsetiCascadingTurnkI * mErrorIntegral + Gains.kForsetiCascadingTurnkD * mErrorDerivative);
+
+            if(Math.abs(mTarget) - Math.abs(mLastTarget) > 45 * Constants.kDriveSpeedUnitConversion) {
+                mTarget = mLastTarget + Math.signum(mTarget) * (45 * Constants.kDriveSpeedUnitConversion);
+            }
+
+            mLastTarget = mTarget;
+
+//            System.out.println("error: " + error);
+//            System.out.println("P: " + (Gains.kForsetiCascadingTurnkP * error));
+//            System.out.println("I: " + (Gains.kForsetiCascadingTurnkI * mErrorIntegral));
+//            System.out.println("D: " + (Gains.kForsetiCascadingTurnkD * mErrorDerivative));
+
+            mLeftOutput.setVelocity(-mTarget, Gains.forsetiVelocity);
+            mRightOutput.setVelocity(mTarget, Gains.forsetiVelocity);
              
-             mLastError = error;
-             
-             return new DriveSignal(mLeftOutput, mRightOutput);
+            mLastError = error;
+
+            return new DriveSignal(mLeftOutput, mRightOutput);
         }
     }
 

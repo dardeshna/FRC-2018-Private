@@ -440,7 +440,7 @@ class HardwareUpdater {
 		} else {
 			intakeFreeSpinCounter = 0;
 		}
-		System.out.println(robotState.hasCube);
+//		System.out.println(robotState.hasCube);
 
 		if(intakeStallCounter >= Constants.kIntakeStallCounterThreshold) {
 			robotState.hasCube = true;
