@@ -5,6 +5,7 @@ import java.util.logging.Level;
 import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.config.Gains;
 import com.palyrobotics.frc2018.config.RobotState;
+import com.palyrobotics.frc2018.config.dashboard.DashboardManager;
 import com.palyrobotics.frc2018.subsystems.Drive.DriveController;
 import com.palyrobotics.frc2018.util.DriveSignal;
 import com.palyrobotics.frc2018.util.Pose;
@@ -64,8 +65,10 @@ public class CascadingGyroEncoderTurnAngleController implements DriveController 
 //            Manually calculate PID output for velocity loop
             mTarget = (Gains.kForsetiCascadingTurnkP * error + Gains.kForsetiCascadingTurnkI * mErrorIntegral + Gains.kForsetiCascadingTurnkD * mErrorDerivative);
 
-            if(Math.abs(mTarget) - Math.abs(mLastTarget) > 45 * Constants.kDriveSpeedUnitConversion) {
-                mTarget = mLastTarget + Math.signum(mTarget) * (45 * Constants.kDriveSpeedUnitConversion);
+            if((Math.abs(mTarget) - Math.abs(mLastTarget))/Constants.kNormalLoopsDt > Constants.kPathFollowingMaxAccel * Constants.kDriveSpeedUnitConversion) {
+                System.out.println((Math.abs(mTarget) - Math.abs(mLastTarget))/Constants.kNormalLoopsDt);
+                System.out.println(Constants.kPathFollowingMaxAccel * Constants.kDriveSpeedUnitConversion);
+                mTarget = mLastTarget + Math.signum(mTarget) * (Constants.kPathFollowingMaxAccel * Constants.kDriveSpeedUnitConversion * Constants.kNormalLoopsDt);
             }
 
             mLastTarget = mTarget;
@@ -74,6 +77,8 @@ public class CascadingGyroEncoderTurnAngleController implements DriveController 
 //            System.out.println("P: " + (Gains.kForsetiCascadingTurnkP * error));
 //            System.out.println("I: " + (Gains.kForsetiCascadingTurnkI * mErrorIntegral));
 //            System.out.println("D: " + (Gains.kForsetiCascadingTurnkD * mErrorDerivative));
+
+            DashboardManager.getInstance().updateCANTable("angle", Double.toString(mTarget));
 
             mLeftOutput.setVelocity(-mTarget, Gains.forsetiVelocity);
             mRightOutput.setVelocity(mTarget, Gains.forsetiVelocity);

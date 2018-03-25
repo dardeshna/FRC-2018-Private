@@ -34,7 +34,7 @@ recording = False
 f = None
 
 # All of the keys to get data on
-KEYS = ["dt_error_left", "dt_error_right", "dt_velocity_left", "dt_velocity_right", "slider_pot", "dt_left_dist", "dt_right_dist", "elevator_hold_error"]
+KEYS = ["dt_error_left", "dt_error_right", "dt_velocity_left", "dt_velocity_right", "slider_pot", "dt_left_dist", "dt_right_dist", "elevator_hold_error", "angle"]
 
 time.sleep(1)
 print "Started Listening"

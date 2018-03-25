@@ -20,9 +20,9 @@ public class Gains {
 //	public static final double kForsetiDriveVelocitykF = 0.246537885;//2.624 / 2;
 //	public static final int kForsetiDriveVelocitykIzone = 0;//800 / 2;
 //	public static final double kForsetiDriveVelocitykRampRate = 0.0;
-	public static final double kForsetiDriveVelocitykP = 0.242;//6.0 / 2;
+	public static final double kForsetiDriveVelocitykP = 0.242*1.2;//6.0 / 2;
 	public static final double kForsetiDriveVelocitykI = 0.0;//0.001;
-    public static final double kForsetiDriveVelocitykD = 11.5;//12.4;//85 / 2;
+    public static final double kForsetiDriveVelocitykD = 11.5*1.2;//12.4;//85 / 2;
     public static final double kForsetiDriveVelocitykF = 0.152807;//0.258987;//0.010516;//2.624 / 2;
 	public static final int kForsetiDriveVelocitykIzone = 0;//800 / 2;
 	public static final double kForsetiDriveVelocitykRampRate = 0.0;
@@ -79,10 +79,10 @@ public class Gains {
 	//Drive cascading turn angle gains
 	public static final double kForsetiCascadingTurnkP = 25;
 	public static final double kForsetiCascadingTurnkI = 4.0;
-	public static final double kForsetiCascadingTurnkD = 0.25;
+	public static final double kForsetiCascadingTurnkD = 0.3;
 	public static final double kForsetiCascadingTurnIzone = 7.0;
 
-	public static final double kForsetiElevatorDownPositionkP = 0.45;
+	public static final double kForsetiElevatorDownPositionkP = 0.3;
 	public static final double kForsetiElevatorDownPositionkI = 0.0;
 	public static final double kForsetiElevatorDownPositionkD = 50;
 	public static final double kForsetiElevatorDownPositionkF = 0.0;
