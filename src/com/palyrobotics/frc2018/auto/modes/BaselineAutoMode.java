@@ -16,10 +16,8 @@ import java.util.List;
 
 public class BaselineAutoMode extends AutoModeBase {
 
-	private Alliance mAlliance;
-
 	public BaselineAutoMode(Alliance alliance) {
-		this.mAlliance = alliance;
+		super(alliance);
 	}
 	
 	@Override

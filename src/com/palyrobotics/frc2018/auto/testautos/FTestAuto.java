@@ -1,4 +1,4 @@
-package com.palyrobotics.frc2018.auto.modes;
+package com.palyrobotics.frc2018.auto.testautos;
 
 import com.palyrobotics.frc2018.auto.AutoModeBase;
 import com.palyrobotics.frc2018.behavior.ParallelRoutine;
@@ -46,6 +46,11 @@ public class FTestAuto extends AutoModeBase {
 //        return new TalonSRXRoutine(test, true);
 //        return new TimedDriveRoutine(0.2, 6.5);
 //        return getDrive();
+    }
+
+    @Override
+    public String getKey() {
+        return "FTestAuto";
     }
 
     @Override

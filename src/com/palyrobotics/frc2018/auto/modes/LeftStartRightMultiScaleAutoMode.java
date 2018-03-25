@@ -20,10 +20,8 @@ import java.util.List;
 
 public class LeftStartRightMultiScaleAutoMode extends AutoModeBase {
 
-    private Alliance mAlliance;
-
     public LeftStartRightMultiScaleAutoMode(Alliance alliance) {
-        this.mAlliance = alliance;
+        super(alliance);
     }
 
     @Override
@@ -69,6 +67,6 @@ public class LeftStartRightMultiScaleAutoMode extends AutoModeBase {
 
     @Override
     public String getKey() {
-        return mAlliance + " MULTI LEFT SCALE RIGHT";
+        return mAlliance + " LEFT SCALE RIGHT SCALE RIGHT";
     }
 }

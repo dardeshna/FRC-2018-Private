@@ -19,10 +19,8 @@ import java.util.List;
 
 public class LeftStartRightScaleAutoMode extends AutoModeBase {
 
-    private Alliance mAlliance;
-
     public LeftStartRightScaleAutoMode(Alliance alliance) {
-        this.mAlliance = alliance;
+        super(alliance);
     }
 
     @Override

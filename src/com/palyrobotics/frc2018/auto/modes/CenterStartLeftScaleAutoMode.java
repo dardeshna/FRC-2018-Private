@@ -20,10 +20,8 @@ import java.util.List;
 
 public class CenterStartLeftScaleAutoMode extends AutoModeBase {
 
-    private Alliance mAlliance;
-
     public CenterStartLeftScaleAutoMode(Alliance alliance) {
-        this.mAlliance = alliance;
+        super(alliance);
     }
 
     @Override

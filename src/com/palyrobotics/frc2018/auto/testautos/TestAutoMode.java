@@ -1,4 +1,4 @@
-package com.palyrobotics.frc2018.auto.modes;
+package com.palyrobotics.frc2018.auto.testautos;
 
 import com.palyrobotics.frc2018.auto.AutoModeBase;
 import com.palyrobotics.frc2018.behavior.ParallelRoutine;
@@ -25,6 +25,11 @@ public class TestAutoMode extends AutoModeBase {
 
 		return testF();
 //		return getDrive();
+	}
+
+	@Override
+	public String getKey() {
+		return "Test Auto Mode";
 	}
 
 	@Override

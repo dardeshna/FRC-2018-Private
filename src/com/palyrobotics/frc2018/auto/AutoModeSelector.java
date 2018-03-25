@@ -6,6 +6,9 @@ import com.palyrobotics.frc2018.auto.modes.*;
 import com.palyrobotics.frc2018.util.logger.Logger;
 import org.json.simple.JSONArray;
 
+import java.io.File;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -28,64 +31,25 @@ public class AutoModeSelector {
 	}
 
 	protected AutoModeSelector() {
-		// left to right, blue alliance to red alliance
-		/* 0 */ registerAutonomous(new BaselineAutoMode(Alliance.BLUE), 0);
-		/* 1 */ registerAutonomous(new BaselineAutoMode(Alliance.RED), 1);
+	    int index = 0;
+        File folder = new File("src/com/palyrobotics/frc2018/auto/modes");
+        for(File autoMode : folder.listFiles()) {
+            String name = autoMode.getName().substring(0, autoMode.getName().length()-5);
+            try {
+                Class<?> autoClass = ClassLoader.getSystemClassLoader().loadClass("com.palyrobotics.frc2018.auto.modes." + name);
+                Constructor<?> constructor = autoClass.getConstructor(Alliance.class);
+                AutoModeBase blueAuto = (AutoModeBase) constructor.newInstance(Alliance.BLUE);
+                registerAutonomous(blueAuto, index);
+                index++;
+                AutoModeBase redAuto = (AutoModeBase) constructor.newInstance(Alliance.RED);
+                registerAutonomous(redAuto, index);
+                index++;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
-		/* 2 */ registerAutonomous(new LeftStartLeftSwitchAutoMode(Alliance.BLUE), 2);
-		/* 3 */ registerAutonomous(new LeftStartLeftSwitchAutoMode(Alliance.RED), 3);
-
-		/* 4 */ registerAutonomous(new CenterStartLeftSwitchAutoMode(Alliance.BLUE), 4);
-		/* 5 */ registerAutonomous(new CenterStartLeftSwitchAutoMode(Alliance.RED), 5);
-
-		/* 6 */ registerAutonomous(new RightStartLeftSwitchAutoMode(Alliance.BLUE), 6);
-		/* 7 */ registerAutonomous(new RightStartLeftSwitchAutoMode(Alliance.RED), 7);
-
-		/* 8 */ registerAutonomous(new LeftStartRightSwitchAutoMode(Alliance.BLUE), 8);
-		/* 9 */ registerAutonomous(new LeftStartRightSwitchAutoMode(Alliance.RED), 9);
-
-		/* 10 */ registerAutonomous(new CenterStartRightSwitchAutoMode(Alliance.BLUE), 10);
-		/* 11 */ registerAutonomous(new CenterStartRightSwitchAutoMode(Alliance.RED), 11);
-
-		/* 12 */ registerAutonomous(new RightStartRightSwitchAutoMode(Alliance.BLUE), 12);
-		/* 13 */ registerAutonomous(new RightStartRightSwitchAutoMode(Alliance.RED), 13);
-
-		/* 14 */ registerAutonomous(new LeftStartLeftScaleAutoMode(Alliance.BLUE), 14);
-		/* 15 */ registerAutonomous(new LeftStartLeftScaleAutoMode(Alliance.RED), 15);
-
-		/* 16 */ registerAutonomous(new CenterStartLeftScaleAutoMode(Alliance.BLUE), 16);
-		/* 17 */ registerAutonomous(new CenterStartLeftScaleAutoMode(Alliance.RED), 17);
-
-		/* 18 */ registerAutonomous(new RightStartLeftScaleAutoMode(Alliance.BLUE), 18);
-		/* 19 */ registerAutonomous(new RightStartLeftScaleAutoMode(Alliance.RED), 19);
-
-		/* 20 */ registerAutonomous(new LeftStartRightScaleAutoMode(Alliance.BLUE), 20);
-		/* 21 */ registerAutonomous(new LeftStartRightScaleAutoMode(Alliance.RED), 21);
-
-		/* 22 */ registerAutonomous(new CenterStartRightScaleAutoMode(Alliance.BLUE), 22);
-		/* 23 */ registerAutonomous(new CenterStartRightScaleAutoMode(Alliance.RED), 23);
-
-		/* 24 */ registerAutonomous(new RightStartRightScaleAutoMode(Alliance.BLUE), 24);
-		/* 25 */ registerAutonomous(new RightStartRightScaleAutoMode(Alliance.RED), 25);
-
-		/* 26 */ registerAutonomous(new CenterStartLeftMultiSwitchAutoMode(Alliance.BLUE), 26);
-		/* 27 */ registerAutonomous(new CenterStartLeftMultiSwitchAutoMode(Alliance.RED), 27);
-
-		/* 28 */ registerAutonomous(new CenterStartRightMultiSwitchAutoMode(Alliance.BLUE), 28);
-		/* 29 */ registerAutonomous(new CenterStartRightMultiSwitchAutoMode(Alliance.RED), 29);
-
-		/* 30 */ registerAutonomous(new LeftStartLeftMultiScaleAutoMode(Alliance.BLUE), 30);
-		/* 31 */ registerAutonomous(new LeftStartLeftMultiScaleAutoMode(Alliance.RED), 31);
-
-		/* 32 */ registerAutonomous(new LeftStartRightMultiScaleAutoMode(Alliance.BLUE), 32);
-		/* 33 */ registerAutonomous(new LeftStartRightMultiScaleAutoMode(Alliance.RED), 33);
-
-		/* 34 */ registerAutonomous(new RightStartLeftMultiScaleAutoMode(Alliance.BLUE), 34);
-		/* 35 */ registerAutonomous(new RightStartLeftMultiScaleAutoMode(Alliance.RED), 35);
-
-		/* 36 */ registerAutonomous(new RightStartRightMultiScaleAutoMode(Alliance.BLUE), 36);
-		/* 37 */ registerAutonomous(new RightStartRightMultiScaleAutoMode(Alliance.RED), 37);
-	}
+    }
 
 	/**
 	 * Add an AutoMode to list to choose from
@@ -106,10 +70,11 @@ public class AutoModeSelector {
 	public AutoModeBase getAutoMode() {
 //		return new FTestAuto();
 
-//		return getAutoMode(AutoModeBase.mAlliance, AutoModeBase.mStartingPosition, AutoModeBase.mScaleDecision,
-//				AutoModeBase.mSwitchDecision, AutoModeBase.mPriority, AutoModeBase.mMultiCube);
+		return getAutoMode(AutoModeBase.mAlliance, AutoModeBase.mStartingPosition, AutoModeBase.mScaleDecision,
+                AutoModeBase.mSwitchDecision, AutoModeBase.mSecondScaleSideDecision, AutoModeBase.mSecondSwitchSideDecision,
+                AutoModeBase.mPriority, AutoModeBase.mSecondCubePriority, AutoModeBase.mMultiCube);
 
-		return new RightStartRightScaleAutoMode(Alliance.BLUE);
+//		return new RightStartRightScaleAutoMode(Alliance.BLUE);
 	}
 
 	/**
@@ -118,7 +83,7 @@ public class AutoModeSelector {
 	 * @return AutoMode at specified index
 	 */
 
-	public AutoModeBase getAutoMode(Alliance alliance, StartingPosition startingPosition, Decision scaleDecision, Decision switchDecision, Priority priority, boolean multiCube) {
+	public AutoModeBase getAutoMode(Alliance alliance, StartingPosition startingPosition, Decision scaleDecision, Decision switchDecision, SecondSideDecision secondScaleDecision, SecondSideDecision secondSwitchDecision, Priority priority, Priority secondPriority, boolean multiCube) {
 		//Final index
 		int selectedIndex;
 
@@ -134,42 +99,96 @@ public class AutoModeSelector {
 			if(scaleDecision == Decision.BOTH || (scaleDecision == Decision.LEFT && scaleSide == Side.LEFT) || scaleDecision == Decision.RIGHT && scaleSide == Side.RIGHT) {
 				String key;
 				if(multiCube && startingPosition != StartingPosition.CENTER) {
-					key = alliance + " MULTI " + startingPosition + " SCALE " + scaleSide;
+					key = alliance + " " + startingPosition + " SCALE " + scaleSide;
+					String secondPartScale = "";
+					String secondPartSwitch = "";
+					if(secondScaleDecision != SecondSideDecision.NEVER) {
+					    secondPartScale = " SCALE " + scaleSide;
+                    }
+                    if(secondSwitchDecision != SecondSideDecision.NEVER) {
+					    if(secondSwitchDecision == SecondSideDecision.BOTH || (secondSwitchDecision == SecondSideDecision.SAME && scaleSide == switchSide) ||
+                            (secondSwitchDecision == SecondSideDecision.OPPOSITE && scaleSide != switchSide)) {
+                                secondPartSwitch = " SWITCH " + switchSide;
+                        }
+                    }
+                    if(secondPriority == Priority.SWITCH) {
+					    if(!secondPartSwitch.equals("")) {
+					        key += secondPartSwitch;
+                        } else if(!secondPartScale.equals("")) {
+					        key += secondPartScale;
+                        } else {
+                            Logger.getInstance().logSubsystemThread(Level.WARNING, "Error in selecting auto, could not find a multi cube auto with the given specifications");
+                        }
+                    } else if(secondPriority == Priority.SCALE) {
+					    if(!secondPartScale.equals("")) {
+					        key += secondPartScale;
+                        } else if(!secondPartSwitch.equals("")) {
+					        key += secondPartSwitch;
+                        } else {
+                            Logger.getInstance().logSubsystemThread(Level.WARNING, "Error in selecting auto, could not find a multi cube auto with the given specifications");
+                        }
+                    }
 				} else {
 					key = alliance + " " + startingPosition + " SCALE " + scaleSide;
 				}
-
+                System.out.println("scale key: " + key);
 				try {
 					scaleIndex = mAutoMap.get(key);
 				} catch (Exception e) {
 					scaleIndex = 0;
 					Logger.getInstance().logSubsystemThread(Level.WARNING, "Error in selecting auto, defaulting to baseline");
 				}
-
 				Logger.getInstance().logRobotThread(Level.INFO, "Attempted to find scale auto mode with this key: " + key);
 			}
 		}
 
 		//Find ideal switch auto, or the auto it would execute if it had to score on the switch
 		if(switchDecision != Decision.NEVER) {
-			if(switchDecision == Decision.BOTH || (switchDecision == Decision.LEFT && switchSide == Side.LEFT) || switchDecision == Decision.RIGHT && switchSide == Side.RIGHT) {
-				String key;
-				if(multiCube && startingPosition == StartingPosition.CENTER) {
-					key = alliance + " MULTI " + startingPosition + " SWITCH " + switchSide;
-				} else {
-					key = alliance + " " + startingPosition + " SWITCH " + switchSide;
-				}
-
-				try {
-					switchIndex = mAutoMap.get(key);
-				} catch (Exception e) {
-					switchIndex = 0;
-					Logger.getInstance().logSubsystemThread(Level.WARNING, "Error in selecting auto, defaulting to baseline");
-				}
-
-				Logger.getInstance().logRobotThread(Level.INFO, "Attempted to find switch auto mode with this key: " + key);
-			}
-		}
+            if (switchDecision == Decision.BOTH || (switchDecision == Decision.LEFT && switchSide == Side.LEFT) || switchDecision == Decision.RIGHT && switchSide == Side.RIGHT) {
+                String key;
+                if (multiCube && startingPosition != StartingPosition.CENTER) {
+                    key = alliance + " " + startingPosition + " SWITCH " + switchSide;
+                    String secondPartScale = "";
+                    String secondPartSwitch = "";
+                    if (secondScaleDecision != SecondSideDecision.NEVER) {
+                        secondPartScale = " SCALE " + scaleSide;
+                    }
+                    if (secondSwitchDecision != SecondSideDecision.NEVER) {
+                        if (secondSwitchDecision == SecondSideDecision.BOTH || (secondSwitchDecision == SecondSideDecision.SAME && scaleSide == switchSide) ||
+                                (secondSwitchDecision == SecondSideDecision.OPPOSITE && scaleSide != switchSide)) {
+                            secondPartSwitch = " SWITCH " + switchSide;
+                        }
+                    }
+                    if (secondPriority == Priority.SWITCH) {
+                        if (!secondPartSwitch.equals("")) {
+                            key += secondPartSwitch;
+                        } else if (!secondPartScale.equals("")) {
+                            key += secondPartScale;
+                        } else {
+                            Logger.getInstance().logSubsystemThread(Level.WARNING, "Error in selecting auto, could not find a multi cube auto with the given specifications");
+                        }
+                    } else if (secondPriority == Priority.SCALE) {
+                        if (!secondPartScale.equals("")) {
+                            key += secondPartScale;
+                        } else if (!secondPartSwitch.equals("")) {
+                            key += secondPartSwitch;
+                        } else {
+                            Logger.getInstance().logSubsystemThread(Level.WARNING, "Error in selecting auto, could not find a multi cube auto with the given specifications");
+                        }
+                    } else {
+                        key = alliance + " " + startingPosition + " SWITCH " + switchSide;
+                    }
+                    System.out.println("switch key: " + key);
+                    try {
+                        switchIndex = mAutoMap.get(key);
+                    } catch (Exception e) {
+                        switchIndex = 0;
+                        Logger.getInstance().logSubsystemThread(Level.WARNING, "Error in selecting auto, defaulting to baseline");
+                    }
+                    Logger.getInstance().logRobotThread(Level.INFO, "Attempted to find switch auto mode with this key: " + key);
+                }
+            }
+        }
 
 		//Priority checking
 		if(priority == Priority.SCALE) {

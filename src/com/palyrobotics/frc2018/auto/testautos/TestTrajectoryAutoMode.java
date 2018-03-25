@@ -1,4 +1,4 @@
-package com.palyrobotics.frc2018.auto.modes;
+package com.palyrobotics.frc2018.auto.testautos;
 
 import com.palyrobotics.frc2018.auto.AutoModeBase;
 import com.palyrobotics.frc2018.behavior.Routine;
@@ -57,5 +57,10 @@ public class TestTrajectoryAutoMode extends AutoModeBase {
 		routines.add(new DrivePathRoutine(new Path(path), false));
 
 		return new SequentialRoutine(routines);
+	}
+
+	@Override
+	public String getKey() {
+		return "Test Trajectory Auto Mode";
 	}
 }

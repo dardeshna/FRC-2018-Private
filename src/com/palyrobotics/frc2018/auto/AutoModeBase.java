@@ -9,7 +9,14 @@ public abstract class AutoModeBase {
 
 	//Will be run before the routine is taken
 	public abstract void prestart();
-	
+
+	@Deprecated
+	public AutoModeBase() {}
+
+	public AutoModeBase(Alliance alliance) {
+	    mAlliance = alliance;
+    }
+
 	public enum Alliance {
 		RED,
 		BLUE
@@ -28,6 +35,13 @@ public abstract class AutoModeBase {
 		BOTH
 	}
 
+	public enum SecondSideDecision {
+	    NEVER,
+	    OPPOSITE,
+        SAME,
+        BOTH
+    }
+
 	public enum Priority {
 		SCALE,
 		SWITCH
@@ -38,7 +52,10 @@ public abstract class AutoModeBase {
 	public static StartingPosition mStartingPosition = StartingPosition.CENTER;
 	public static Decision mScaleDecision = Decision.NEVER;
 	public static Decision mSwitchDecision = Decision.BOTH;
+    public static SecondSideDecision mSecondScaleSideDecision = SecondSideDecision.NEVER;
+    public static SecondSideDecision mSecondSwitchSideDecision = SecondSideDecision.BOTH;
 	public static Priority mPriority = Priority.SWITCH;
+	public static Priority mSecondCubePriority = Priority.SWITCH;
 	public static boolean mMultiCube = true;
 
 	public abstract Routine getRoutine();
@@ -51,7 +68,5 @@ public abstract class AutoModeBase {
 		return active;
 	}
 	
-	public String getKey() {
-		return "";
-	}
+	public abstract String getKey();
 }
