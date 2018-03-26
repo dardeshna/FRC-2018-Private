@@ -44,9 +44,6 @@ public class RightStartRightScaleAutoMode extends AutoModeBase {
 
     @Override
     public Routine getRoutine() {
-        ArrayList<Routine> fullList = new ArrayList<>();
-        fullList.add(new DriveSensorResetRoutine(1.0));
-
         DrivePathRoutine toScaleDrivePath = getToScale();
         ArrayList<Routine> toScaleSubsystems = new ArrayList<>();
         toScaleSubsystems.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorSwitchPositionInches+16, 1.6));
@@ -56,15 +53,14 @@ public class RightStartRightScaleAutoMode extends AutoModeBase {
                 1.6), toScaleDrivePath, "p1"));
         ParallelRoutine toScale = new ParallelRoutine(toScaleDrivePath, new ParallelRoutine(toScaleSubsystems));
 
-        IntakeWheelRoutine drop = new IntakeWheelRoutine(Intake.WheelState.EXPELLING, 1);
+        ParallelRoutine dropAndReset = new ParallelRoutine(new IntakeWheelRoutine(Intake.WheelState.EXPELLING, 1),
+                new DriveSensorResetRoutine(1.0));
 
         DrivePathRoutine backUpPath = getBackward();
-        ArrayList<Routine> backUpSubsystems = new ArrayList<>();
-        backUpSubsystems.add(new WaypointTriggerRoutine(new ElevatorCustomPositioningRoutine(Constants.kElevatorBottomPositionInches
-                ,3), backUpPath, "p5"));
-        ParallelRoutine backUp = new ParallelRoutine(backUpPath, new ParallelRoutine(backUpSubsystems));
-        
-        return new SequentialRoutine(toScale, drop, backUp);
+        ParallelRoutine backUp = new ParallelRoutine(backUpPath, new WaypointTriggerRoutine(
+                new ElevatorCustomPositioningRoutine(Constants.kElevatorBottomPositionInches,3), backUpPath, "p5"));
+
+        return new SequentialRoutine(new DriveSensorResetRoutine(1.0), toScale, dropAndReset, backUp);
     }
 
     public DrivePathRoutine getToScale() {

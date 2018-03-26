@@ -51,15 +51,17 @@ public class DriveSensorResetRoutine extends Routine {
 	public boolean finished() {
 		if(System.currentTimeMillis() - mStartTime > mTimeout * 1000) {
 			Logger.getInstance().logRobotThread(Level.WARNING, "Drive sensor reset routine timed out!");
+//			System.out.println("Time: " + String.valueOf(System.currentTimeMillis() - mStartTime) + " timed out");
 			return true;
-		}
-
-		if(Math.abs(drive.getPose().leftEnc) <= Constants.kAcceptableEncoderZeroError
+		} else if(Math.abs(drive.getPose().leftEnc) <= Constants.kAcceptableEncoderZeroError
 				&& Math.abs(drive.getPose().rightEnc) <= Constants.kAcceptableEncoderZeroError
 				&& Math.abs(drive.getPose().heading) <= Constants.kAcceptableGyroZeroError) {
+//			System.out.println("Time: " + String.valueOf(System.currentTimeMillis() - mStartTime));
+//			System.out.println("Good error on drive sensors, finished");
 			return true;
-		} else
-			return false;
+		}
+//		System.out.println("just for shits and giggles");
+		return false;
 	}
 
 	@Override

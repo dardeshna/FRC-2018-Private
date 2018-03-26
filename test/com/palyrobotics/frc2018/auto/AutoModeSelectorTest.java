@@ -226,6 +226,6 @@ public class AutoModeSelectorTest {
 
 	@Test
 	public void ticksPerDegreeCalculation() {
-		System.out.println(Constants.kDriveInchesPerDegree * Constants.kDriveTicksPerInch);
+//		System.out.println(Constants.kDriveInchesPerDegree * Constants.kDriveTicksPerInch);
 	}
 }

@@ -34,30 +34,39 @@ public class ParallelRoutine extends Routine {
 
 	@Override
 	public Commands update(Commands commands) {
-		for(Routine routine : mRoutines) {
-			if(!routine.finished()) {
-				commands = routine.update(commands);
+		ArrayList<Routine> routinesToRemove = getFinishedAutos();
+		if(!routinesToRemove.isEmpty()) {
+			for (Routine routine : routinesToRemove) {
+				routine.cancel(commands);
+				routinesToRemove.remove(routine);
 			}
 		}
+
+		for(Routine routine : mRoutines) {
+			commands = routine.update(commands);
+		}
+
 		return commands;
 	}
 
 	@Override
 	public Commands cancel(Commands commands) {
-		for(Routine routine : mRoutines) {
-			commands = routine.cancel(commands);
-		}
 		return commands;
+	}
+
+	public ArrayList<Routine> getFinishedAutos() {
+		ArrayList<Routine> routinesToRemove = new ArrayList<>();
+		for(Routine routine : mRoutines) {
+			if(routine.finished()) {
+				routinesToRemove.add(routine);
+			}
+		}
+		return routinesToRemove;
 	}
 
 	@Override
 	public boolean finished() {
-		for(Routine routine : mRoutines) {
-			if(!routine.finished()) {
-				return false;
-			}
-		}
-		return true;
+		return mRoutines.size() == 0;
 	}
 
 	@Override
@@ -67,7 +76,7 @@ public class ParallelRoutine extends Routine {
 
 
 	@Override
-	public ArrayList<Routine> getEnclosingSequentialRoutine() {
+	public ArrayList<Routine> getEnclosingParallelRoutine() {
 		return this.mRoutines;
 	}
 

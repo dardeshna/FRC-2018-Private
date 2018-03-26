@@ -91,8 +91,8 @@ public class DrivePathRoutine extends Routine {
 			pathList.add(0, new Path.Waypoint(robotState.getLatestFieldToVehicle().getValue().getTranslation(), mStartSpeed));
 
 			for(Path.Waypoint point : pathList) {
-				System.out.println("Pos: " + point.position);
-				System.out.println("Speed: " + point.speed);
+//				System.out.println("Pos: " + point.position);
+//				System.out.println("Speed: " + point.speed);
 			}
 
 			mPath = new Path(pathList);
@@ -111,7 +111,7 @@ public class DrivePathRoutine extends Routine {
 
 	@Override
 	public Commands cancel(Commands commands) {
-		Logger.getInstance().logSubsystemThread(Level.INFO, "Drive Path Routine finished");
+//		Logger.getInstance().logSubsystemThread(Level.INFO, "Drive Path Routine finished");
 		drive.setNeutral();
 		commands.wantedDriveState = Drive.DriveState.NEUTRAL;
 		return commands;

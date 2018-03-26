@@ -66,10 +66,10 @@ public class ElevatorCustomPositioningRoutine extends Routine {
 	@Override
 	public Commands update(Commands commands) {
 	    if(mPath.isPresent()) {
-            System.out.println("Markers crossed: " + mPath.get().getMarkersCrossed());
+//            System.out.println("Markers crossed: " + mPath.get().getMarkersCrossed());
         }
         if(mPath.isPresent() && mPath.get().getMarkersCrossed().contains(mRoutineStartWayPoint.get())) {
-            System.out.println("in right case   ");
+//            System.out.println("in right case   ");
         }
 		if(!mPath.isPresent() || mRoutineStartWayPoint.isPresent() && mPath.get().getMarkersCrossed().contains(mRoutineStartWayPoint.get())) {
 	        if(mStartTime == -1) mStartTime = System.currentTimeMillis();
@@ -90,7 +90,7 @@ public class ElevatorCustomPositioningRoutine extends Routine {
 		//Terminate upon
         if(mStartTime != -1) {
             if (System.currentTimeMillis() - mStartTime > mTimeout * 1000) {
-                Logger.getInstance().logRobotThread(Level.WARNING, "Elevator custom positioning routine timed out!");
+//                Logger.getInstance().logRobotThread(Level.WARNING, "Elevator custom positioning routine timed out!");
                 return true;
             }
         }

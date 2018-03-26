@@ -38,7 +38,7 @@ public class TestRigidTransform2d {
 		rot1 = Rotation2d.fromDegrees(270);
 		assertEquals(0, rot1.cos(), kTestEpsilon);
 		assertEquals(-1, rot1.sin(), kTestEpsilon);
-		System.out.println(rot1.tan());
+//		System.out.println(rot1.tan());
 		assertTrue(-1 / kTestEpsilon > rot1.tan());
 		assertEquals(-90, rot1.getDegrees(), kTestEpsilon);
 		assertEquals(-Math.PI / 2, rot1.getRadians(), kTestEpsilon);

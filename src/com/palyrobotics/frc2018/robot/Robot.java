@@ -4,6 +4,7 @@ import com.palyrobotics.frc2018.auto.AutoFMS;
 import com.palyrobotics.frc2018.auto.AutoModeBase;
 import com.palyrobotics.frc2018.auto.AutoModeSelector;
 import com.palyrobotics.frc2018.behavior.RoutineManager;
+import com.palyrobotics.frc2018.behavior.routines.drive.DriveSensorResetRoutine;
 import com.palyrobotics.frc2018.config.AutoDistances;
 import com.palyrobotics.frc2018.config.Commands;
 import com.palyrobotics.frc2018.config.Constants;
@@ -85,12 +86,12 @@ public class Robot extends TimedRobot {
 		mHardwareUpdater.configureHardware();
 
 		//Wait for talons to update
-		try {
-			Logger.getInstance().logRobotThread(Level.FINEST, "Sleeping thread for 200 ms");
-			Thread.sleep(200);
-		} catch(InterruptedException e) {
-
-		}
+//		try {
+//			Logger.getInstance().logRobotThread(Level.FINEST, "Sleeping thread for 200 ms");
+//			Thread.sleep(200);
+//		} catch(InterruptedException e) {
+//
+//		}
 
 		mHardwareUpdater.updateState(robotState);
 		mRoutineManager.reset(commands);
@@ -128,7 +129,8 @@ public class Robot extends TimedRobot {
 			updateSubsystems();
 			mHardwareUpdater.updateHardware();
 		}
-		System.out.println("Position: " + Robot.getRobotState().getLatestFieldToVehicle().getValue());
+//		System.out.println(mRoutineManager.getCurrentRoutines().contains(new DriveSensorResetRoutine(1.0)));
+//		System.out.println("Position: " + Robot.getRobotState().getLatestFieldToVehicle().getValue());
 		logPeriodic();
 	}
 

@@ -40,8 +40,6 @@ public class RightStartLeftScaleAutoMode extends AutoModeBase {
 
     @Override
     public Routine getRoutine() {
-        ArrayList<Routine> fullList = new ArrayList<>();
-        fullList.add(new DriveSensorResetRoutine(1.0));
         DrivePathRoutine toScaleDrivePath = getToScale();
         ArrayList<Routine> toScaleSubsystems = new ArrayList<>();
         toScaleSubsystems.add(new IntakeDownRoutine());
@@ -50,7 +48,8 @@ public class RightStartLeftScaleAutoMode extends AutoModeBase {
                 1.6), toScaleDrivePath, "p5"));
         ParallelRoutine toScale = new ParallelRoutine(toScaleDrivePath, new ParallelRoutine(toScaleSubsystems));
 
-        IntakeWheelRoutine drop = new IntakeWheelRoutine(Intake.WheelState.EXPELLING, 1);
+        ParallelRoutine dropAndReset = new ParallelRoutine(new IntakeWheelRoutine(Intake.WheelState.EXPELLING, 1),
+                new DriveSensorResetRoutine(1.0));
 
         DrivePathRoutine backUpPath = getBackward();
         ArrayList<Routine> backUpSubsystems = new ArrayList<>();
@@ -58,7 +57,7 @@ public class RightStartLeftScaleAutoMode extends AutoModeBase {
                 3), backUpPath, "p8"));
         ParallelRoutine backUp = new ParallelRoutine(backUpPath, new ParallelRoutine(backUpSubsystems));
 
-        return new SequentialRoutine(toScale, drop, backUp);
+        return new SequentialRoutine(new DriveSensorResetRoutine(1.0), toScale, dropAndReset, backUp);
     }
 
     public DrivePathRoutine getToScale() {
@@ -103,17 +102,6 @@ public class RightStartLeftScaleAutoMode extends AutoModeBase {
         }
 
         return new DrivePathRoutine(new Path(path), false);
-    }
-
-    public Routine getForward() {
-        ArrayList<Routine> backUp = new ArrayList<>();
-        backUp.add(new DriveSensorResetRoutine(0.5));
-        List<Path.Waypoint> path = new ArrayList<>();
-        path.add(new Path.Waypoint(new Translation2d(0.0, 0.0), 72.0));
-        path.add(new Path.Waypoint(new Translation2d(9.0, 0.0), 0));
-        backUp.add(new DrivePathRoutine(new Path(path), false));
-
-        return new SequentialRoutine(backUp);
     }
 
     public DrivePathRoutine getBackward() {

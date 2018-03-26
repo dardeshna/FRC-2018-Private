@@ -47,6 +47,10 @@ public abstract class Routine {
 		return null;
 	}
 
+	public ArrayList<Routine> getEnclosingParallelRoutine() {
+		return null;
+	}
+
 	@Override
 	public String toString() {
 		return getName();

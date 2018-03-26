@@ -35,5 +35,9 @@
     "kSwitchPlateWidth": 41.75,
     "kSwitchPlateLength": 56.0,
     "kScalePlateWidth": 36.5,
-    "kScalePlateLength": 48.0
+    "kScalePlateLength": 48.0,
+    "kBlueLeftPlatformY": 0.0,
+    "kBlueRightPlatformY": 0.0,
+    "kRedLeftPlatformY": 0.0,
+    "kRedRightPlatformY": 0.0
 }

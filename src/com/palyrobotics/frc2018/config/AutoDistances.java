@@ -71,6 +71,11 @@ public class AutoDistances {
     public static double kBlueScaleSwitchMidlineX = 233.0;
     public static double kRedScaleSwitchMidlineX = 233.0;
 
+    public static double kBlueLeftPlatformY = 95.25;
+    public static double kBlueRightPlatformY = 95.25;
+    public static double kRedLeftPlatformY = 95.25;
+    public static double kRedRightPlatformY = 95.25;
+
 	public static void updateAutoDistances() {
 		loadField();
 		setAutoDistances();
@@ -150,6 +155,11 @@ public class AutoDistances {
 		kSwitchPlateLength = getDoubleValue("kSwitchPlateLength");
 		kScalePlateWidth = getDoubleValue("kScalePlateWidth");
 		kScalePlateLength = getDoubleValue("kScalePlateLength");
+		kBlueLeftPlatformY = getDoubleValue("kBlueLeftPlatformY");
+		kBlueRightPlatformY = getDoubleValue("kBlueRightPlatformY");
+		kBlueLeftPlatformY = getDoubleValue("kBlueLeftPlatformY");
+		kRedLeftPlatformY = getDoubleValue("kRedLeftPlatformY");
+		kRedRightPlatformY = getDoubleValue("kRedRightPlatformY");
 	}
 	
 	/**
