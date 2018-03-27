@@ -77,9 +77,9 @@ public class Gains {
 			kForsetiTurnMotionMagickF, kForsetiTurnMotionMagickIzone, kForsetiTurnMotionMagickRampRate);
 	
 	//Drive cascading turn angle gains
-	public static final double kForsetiCascadingTurnkP = 25;
-	public static final double kForsetiCascadingTurnkI = 4.0;
-	public static final double kForsetiCascadingTurnkD = 0.3;
+	public static final double kForsetiCascadingTurnkP = 55;
+	public static final double kForsetiCascadingTurnkI = 0;
+	public static final double kForsetiCascadingTurnkD = 5;
 	public static final double kForsetiCascadingTurnIzone = 7.0;
 
 	public static final double kForsetiElevatorDownPositionkP = 0.3;

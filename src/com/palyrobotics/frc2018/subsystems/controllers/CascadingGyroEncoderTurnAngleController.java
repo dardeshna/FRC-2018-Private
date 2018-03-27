@@ -65,10 +65,10 @@ public class CascadingGyroEncoderTurnAngleController implements DriveController 
 //            Manually calculate PID output for velocity loop
             mTarget = (Gains.kForsetiCascadingTurnkP * error + Gains.kForsetiCascadingTurnkI * mErrorIntegral + Gains.kForsetiCascadingTurnkD * mErrorDerivative);
 
-            if((Math.abs(mTarget) - Math.abs(mLastTarget))/Constants.kNormalLoopsDt > Constants.kPathFollowingMaxAccel * Constants.kDriveSpeedUnitConversion) {
+            if((Math.abs(mTarget) - Math.abs(mLastTarget))/Constants.kNormalLoopsDt > (Constants.kPathFollowingMaxAccel+25) * Constants.kDriveSpeedUnitConversion) {
                 System.out.println((Math.abs(mTarget) - Math.abs(mLastTarget))/Constants.kNormalLoopsDt);
                 System.out.println(Constants.kPathFollowingMaxAccel * Constants.kDriveSpeedUnitConversion);
-                mTarget = mLastTarget + Math.signum(mTarget) * (Constants.kPathFollowingMaxAccel * Constants.kDriveSpeedUnitConversion * Constants.kNormalLoopsDt);
+                mTarget = mLastTarget + Math.signum(mTarget) * ((Constants.kPathFollowingMaxAccel+25) * Constants.kDriveSpeedUnitConversion * Constants.kNormalLoopsDt);
             }
 
             mLastTarget = mTarget;

@@ -63,11 +63,9 @@ public class TestAutoMode extends AutoModeBase {
 //				(int) Gains.kForsetiShortDriveMotionMagicMaxAcceleration);
 
 		ArrayList<Routine> sequence = new ArrayList<>();
-
-//		sequence.add(new TalonSRXRoutine(driveBackup, true));
-	sequence.add(new DriveSensorResetRoutine(2));
-	sequence.add(new IntakeDownRoutine());
-		sequence.add(new IntakeCloseRoutine());
+		sequence.add(new IntakeDownRoutine());
+		sequence.add(new DriveSensorResetRoutine(.1));
+		sequence.add(new CascadingGyroEncoderTurnAngleRoutine(180));
 
 		return new SequentialRoutine(sequence);
 	}

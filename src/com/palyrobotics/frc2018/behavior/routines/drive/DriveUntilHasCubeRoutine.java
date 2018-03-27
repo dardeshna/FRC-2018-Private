@@ -12,11 +12,22 @@ public class DriveUntilHasCubeRoutine extends Routine {
     private DrivePathRoutine drivePathRoutine;
     private IntakeSensorStopRoutine intakeRoutine;
     private IntakeWheelRoutine test;
+    private double mTimeout;
+
+    private long mStartTime = -1;
+
+    public DriveUntilHasCubeRoutine(DrivePathRoutine drivePathRoutine, double timeout) {
+        this.drivePathRoutine = drivePathRoutine;
+        this.intakeRoutine = new IntakeSensorStopRoutine(Intake.WheelState.INTAKING, 3.0);
+        this.test = new IntakeWheelRoutine(Intake.WheelState.INTAKING, 3.0);
+        mTimeout = timeout;
+    }
 
     public DriveUntilHasCubeRoutine(DrivePathRoutine drivePathRoutine) {
         this.drivePathRoutine = drivePathRoutine;
         this.intakeRoutine = new IntakeSensorStopRoutine(Intake.WheelState.INTAKING, 3.0);
         this.test = new IntakeWheelRoutine(Intake.WheelState.INTAKING, 3.0);
+        mTimeout = 100;
     }
 
     @Override
@@ -24,6 +35,8 @@ public class DriveUntilHasCubeRoutine extends Routine {
         drivePathRoutine.start();
         intakeRoutine.start();
 //        test.start();
+        mStartTime = System.currentTimeMillis();
+
     }
 
     @Override
@@ -44,7 +57,13 @@ public class DriveUntilHasCubeRoutine extends Routine {
 
     @Override
     public boolean finished() {
-//        return drivePathRoutine.finished();
+        if(mStartTime != -1) {
+            if (System.currentTimeMillis() - mStartTime > mTimeout * 1000) {
+//                Logger.getInstance().logRobotThread(Level.WARNING, "Elevator custom positioning routine timed out!");
+                return true;
+            }
+        }
+
         return intakeRoutine.finished();
     }
 

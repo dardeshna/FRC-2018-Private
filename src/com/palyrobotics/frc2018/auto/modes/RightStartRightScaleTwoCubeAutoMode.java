@@ -88,7 +88,7 @@ public class RightStartRightScaleTwoCubeAutoMode extends AutoModeBase {
 
     public Routine turnIntake() {
         ArrayList<Routine> backupIntake = new ArrayList<Routine>();
-        backupIntake.add(new CascadingGyroEncoderTurnAngleRoutine(140));
+        backupIntake.add(new CascadingGyroEncoderTurnAngleRoutine(120));
         backupIntake.add(new DriveSensorResetRoutine(.1));
 
         List<Path.Waypoint> path = new ArrayList<>();

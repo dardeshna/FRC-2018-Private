@@ -101,6 +101,7 @@ public class Constants {
 	public static final double kRobotWidthInches = 34.0;
 	public static final double kRobotLengthInches = 39.0;
 	public static final double kCenterOfRotationOffsetFromFrontInches = 13.0;
+	public static final double kNullZoneAllowableBack = 5;
 
 	/**
 	 * Tolerances
@@ -109,7 +110,7 @@ public class Constants {
 	public static final double kAcceptableDriveVelocityError = 5;
 	public static final double kAcceptableShortDrivePositionError = 1;
 	public static final double kAcceptableShortDriveVelocityError = 3;
-	public static final double kAcceptableTurnAngleError = 1;
+	public static final double kAcceptableTurnAngleError = 5;
 	public static final double kAcceptableGyroZeroError = 3;
 	public static final double kAcceptableEncoderZeroError = 50;
 

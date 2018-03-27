@@ -41,7 +41,7 @@ public class RightStartRightScaleAutoMode extends AutoModeBase {
         DrivePathRoutine toScaleDrivePath = getToScale();
 
         ArrayList<Routine> prepareElevatorIntakeToScale = new ArrayList<>();
-        prepareElevatorIntakeToScale.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorSwitchPositionInches+16, 1.6));
+        prepareElevatorIntakeToScale.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorSwitchPositionInches+16, .75));
         prepareElevatorIntakeToScale.add(new SequentialRoutine(new IntakeDownRoutine(), new IntakeCloseRoutine()));
 
         ParallelRoutine toScale = new ParallelRoutine(toScaleDrivePath, new SequentialRoutine(
@@ -50,28 +50,51 @@ public class RightStartRightScaleAutoMode extends AutoModeBase {
                 1.6), toScaleDrivePath, "p1")
         ));
 
-        ParallelRoutine dropAndReset = new ParallelRoutine(new IntakeWheelRoutine(Intake.WheelState.EXPELLING, 1),
-                new DriveSensorResetRoutine(1.0));
+        ParallelRoutine dropAndReset = new ParallelRoutine(new IntakeWheelRoutine(Intake.WheelState.EXPELLING, .8));
 
         DrivePathRoutine backUpPath = getBackward();
         ParallelRoutine backUp = new ParallelRoutine(backUpPath, new WaypointTriggerRoutine(
-                new ElevatorCustomPositioningRoutine(Constants.kElevatorBottomPositionInches,3), backUpPath, "p5"));
+                new ElevatorCustomPositioningRoutine(Constants.kElevatorBottomPositionInches,1.05), backUpPath, "p5"));
 
         return new SequentialRoutine(new DriveSensorResetRoutine(1.0), toScale, dropAndReset, backUp, turnIntake());
     }
 
     public Routine turnIntake() {
         ArrayList<Routine> backupIntake = new ArrayList<Routine>();
-        backupIntake.add(new CascadingGyroEncoderTurnAngleRoutine(120));
 
+//        List<Path.Waypoint> path = new ArrayList<>();
+
+//        path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueRightScaleX - Constants.kRobotLengthInches- Constants.kNullZoneAllowableBack-55,
+//                -(Constants.kRobotWidthInches/2.0 + AutoDistances.kBlueRightCornerOffset)
+//                        + AutoDistances.kBlueRightScaleY + AutoDistances.kScalePlateWidth/2.5-55), 50, "p5"));
+//        path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueRightSwitchX + AutoDistances.kSwitchPlateLength,
+//                -(AutoDistances.kBlueRightCornerOffset)+AutoDistances.kBlueRightSwitchX), 0));
+//
+//        backupIntake.add(new DrivePathRoutine(new Path(path), false));
 
         List<Path.Waypoint> path = new ArrayList<>();
 
-        path.add(new Path.Waypoint(new Translation2d(0.0, 0.0), 45.0));
-        path.add(new Path.Waypoint(new Translation2d(60, 25), 0));
+        path.add(new Path.Waypoint(new Translation2d(0.0, 0.0), 55));
+        path.add(new Path.Waypoint(new Translation2d(60, 0), 0));
 
-        backupIntake.add(new ParallelRoutine(new DrivePathRoutine(new Path(path), false),
-                         new IntakeSensorStopRoutine(Intake.WheelState.INTAKING, 2)));
+        List<Path.Waypoint> backup = new ArrayList<>();
+
+        backup.add(new Path.Waypoint(new Translation2d(0.0, 0.0), 60));
+        backup.add(new Path.Waypoint(new Translation2d(-8, 0), 0));
+
+        List<Path.Waypoint> forward = new ArrayList<>();
+
+        forward.add(new Path.Waypoint(new Translation2d(0.0, 0.0), 60));
+        forward.add(new Path.Waypoint(new Translation2d(9, 0), 0));
+
+        backupIntake.add(new CascadingGyroEncoderTurnAngleRoutine(-90));
+        backupIntake.add(new ParallelRoutine(new ElevatorCustomPositioningRoutine(Constants.kElevatorBottomPositionInches,.3),
+                new DriveUntilHasCubeRoutine(new DrivePathRoutine(new Path(path), false),1.2)));
+        backupIntake.add(new DriveSensorResetRoutine(.01));
+        backupIntake.add(new DrivePathRoutine(new Path(backup), true));
+        backupIntake.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorSwitchPositionInches, 1));
+        backupIntake.add(new DrivePathRoutine(new Path(forward), false));
+        backupIntake.add(new IntakeWheelRoutine(Intake.WheelState.EXPELLING,.4));
 
         return new SequentialRoutine(backupIntake);
 
@@ -87,9 +110,9 @@ public class RightStartRightScaleAutoMode extends AutoModeBase {
             path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueRightScaleX - 2.0 * Constants.kRobotLengthInches,
                     -(Constants.kRobotWidthInches + AutoDistances.kBlueRightCornerOffset)
                             + AutoDistances.kBlueRightScaleY + AutoDistances.kScalePlateWidth/2.0), 70, "p2"));
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueRightScaleX - Constants.kRobotLengthInches,
+            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueRightScaleX - Constants.kRobotLengthInches- Constants.kNullZoneAllowableBack,
                     -(Constants.kRobotWidthInches/2.0 + AutoDistances.kBlueRightCornerOffset)
-                            + AutoDistances.kBlueRightScaleY + AutoDistances.kScalePlateWidth/2.0), 0.0, "p3"));
+                            + AutoDistances.kBlueRightScaleY + AutoDistances.kScalePlateWidth/2.5), 0.0, "p3"));
         } else {
             path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedRightSwitchX + Constants.kRobotLengthInches,
                     0.0), 100, "p1"));
@@ -109,10 +132,15 @@ public class RightStartRightScaleAutoMode extends AutoModeBase {
 
         List<Path.Waypoint> path = new ArrayList<>();
 
-        path.add(new Path.Waypoint(new Translation2d(0.0, 0.0), 45.0, "p4"));
-        path.add(new Path.Waypoint(new Translation2d(-20.0, 0.0), 30, "p5"));
-        path.add(new Path.Waypoint(new Translation2d(-30.0, 0.0), 0, "p6"));
-
+        path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueRightScaleX - Constants.kRobotLengthInches- Constants.kNullZoneAllowableBack,
+                -(Constants.kRobotWidthInches/2.0 + AutoDistances.kBlueRightCornerOffset)
+                        + AutoDistances.kBlueRightScaleY + AutoDistances.kScalePlateWidth/2.5), 40, "p4"));
+        path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueRightScaleX - Constants.kRobotLengthInches- Constants.kNullZoneAllowableBack-30,
+                -(Constants.kRobotWidthInches/2.0 + AutoDistances.kBlueRightCornerOffset)
+                        + AutoDistances.kBlueRightScaleY + AutoDistances.kScalePlateWidth/2.5-30), 10, "p5"));
+        path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueRightSwitchX + AutoDistances.kSwitchPlateLength + Constants.kSquareCubeLength,
+                -(AutoDistances.kBlueRightCornerOffset+10)+AutoDistances.kBlueRightSwitchX), 30));
+        // move that ^^
         return new DrivePathRoutine(new Path(path), true);
     }
 
