@@ -56,7 +56,7 @@ public class RightStartRightScaleAutoMode extends AutoModeBase {
         ParallelRoutine backUp = new ParallelRoutine(backUpPath, new WaypointTriggerRoutine(
                 new ElevatorCustomPositioningRoutine(Constants.kElevatorBottomPositionInches,1.05), backUpPath, "p5"));
 
-        return new SequentialRoutine(new DriveSensorResetRoutine(1.0), toScale, dropAndReset, backUp, turnIntake());
+        return new SequentialRoutine(new DriveSensorResetRoutine(1.0), toScale, new IntakeWheelRoutine(Intake.WheelState.EXPELLING, 1), backUp, turnIntake());
     }
 
     public Routine turnIntake() {
@@ -130,18 +130,13 @@ public class RightStartRightScaleAutoMode extends AutoModeBase {
 
     public DrivePathRoutine getBackward() {
 
-        List<Path.Waypoint> path = new ArrayList<>();
+        ArrayList<Path.Waypoint> path = new ArrayList<>();
 
-        path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueRightScaleX - Constants.kRobotLengthInches- Constants.kNullZoneAllowableBack,
-                -(Constants.kRobotWidthInches/2.0 + AutoDistances.kBlueRightCornerOffset)
-                        + AutoDistances.kBlueRightScaleY + AutoDistances.kScalePlateWidth/2.5), 40, "p4"));
-        path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueRightScaleX - Constants.kRobotLengthInches- Constants.kNullZoneAllowableBack-30,
-                -(Constants.kRobotWidthInches/2.0 + AutoDistances.kBlueRightCornerOffset)
-                        + AutoDistances.kBlueRightScaleY + AutoDistances.kScalePlateWidth/2.5-30), 10, "p5"));
-        path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueRightSwitchX + AutoDistances.kSwitchPlateLength + Constants.kSquareCubeLength,
-                -(AutoDistances.kBlueRightCornerOffset+10)+AutoDistances.kBlueRightSwitchX), 30));
-        // move that ^^
-        return new DrivePathRoutine(new Path(path), true);
+        path.add(new Path.Waypoint(new Translation2d(0.0, 0.0), 45.0, "p4"));
+        path.add(new Path.Waypoint(new Translation2d(-20.0, 0.0), 30, "p5"));
+        path.add(new Path.Waypoint(new Translation2d(-30.0, 0.0), 0, "p6"));
+
+        return new DrivePathRoutine(path, true, true);
     }
 
     @Override
