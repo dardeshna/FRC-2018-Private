@@ -30,19 +30,27 @@ public class DriveSensorResetRoutine extends Routine {
 
 	@Override
 	public void start() {
+		System.out.println("Starting reset routine");
 		this.mStartTime = System.currentTimeMillis();
+		HardwareAdapter.DrivetrainHardware.resetSensors();
+		robotState.reset(0, new RigidTransform2d());
+		robotState.drivePose.heading = 0.0;
+        robotState.drivePose.leftEnc = 0.0;
+        robotState.drivePose.rightEnc = 0.0;
+        robotState.drivePose.lastHeading = 0.0;
+		robotState.drivePose.lastLeftEnc = 0.0;
+		robotState.drivePose.lastRightEnc = 0.0;
 	}
 
 	@Override
 	public Commands update(Commands commands) {
-		HardwareAdapter.getInstance().getDrivetrain().resetSensors();
-		robotState.reset(0, new RigidTransform2d());
 		Commands output = commands.copy();
 		return output;
 	}
 
 	@Override
 	public Commands cancel(Commands commands) {
+		System.out.println("finished reset routine");
 		Commands output = commands.copy();
 		return output;
 	}

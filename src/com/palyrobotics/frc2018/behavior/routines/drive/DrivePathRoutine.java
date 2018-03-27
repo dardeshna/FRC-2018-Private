@@ -111,7 +111,7 @@ public class DrivePathRoutine extends Routine {
 
 	@Override
 	public Commands cancel(Commands commands) {
-//		Logger.getInstance().logSubsystemThread(Level.INFO, "Drive Path Routine finished");
+		Logger.getInstance().logSubsystemThread(Level.INFO, "Drive Path Routine finished");
 		drive.setNeutral();
 		commands.wantedDriveState = Drive.DriveState.NEUTRAL;
 		return commands;

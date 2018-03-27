@@ -470,6 +470,7 @@ class HardwareUpdater {
 
 		robotState.addObservations(time, odometry, velocity);
 
+		System.out.println(odometry.getTranslation());
 		//System.out.println("Odometry = " + odometry.getTranslation().getX());
 		//System.out.println("Velocity = " + velocity.dx);
 //		System.out.println("Gyro angle = " + robotState.drivePose.heading);

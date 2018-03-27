@@ -39,14 +39,16 @@ public class RightStartRightScaleAutoMode extends AutoModeBase {
     @Override
     public Routine getRoutine() {
         DrivePathRoutine toScaleDrivePath = getToScale();
-        ArrayList<Routine> toScaleSubsystems = new ArrayList<>();
-        toScaleSubsystems.add(new DriveSensorResetRoutine(.1));
-        toScaleSubsystems.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorSwitchPositionInches+16, 1.6));
-        toScaleSubsystems.add(new IntakeDownRoutine());
-        toScaleSubsystems.add(new IntakeCloseRoutine());
-        toScaleSubsystems.add(new WaypointTriggerRoutine(new ElevatorCustomPositioningRoutine(Constants.kElevatorTopBottomDifferenceInches,
-                1.6), toScaleDrivePath, "p1"));
-        ParallelRoutine toScale = new ParallelRoutine(toScaleDrivePath, new ParallelRoutine(toScaleSubsystems));
+
+        ArrayList<Routine> prepareElevatorIntakeToScale = new ArrayList<>();
+        prepareElevatorIntakeToScale.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorSwitchPositionInches+16, 1.6));
+        prepareElevatorIntakeToScale.add(new SequentialRoutine(new IntakeDownRoutine(), new IntakeCloseRoutine()));
+
+        ParallelRoutine toScale = new ParallelRoutine(toScaleDrivePath, new SequentialRoutine(
+                new IntakeCloseRoutine(), new IntakeDownRoutine(), new ElevatorCustomPositioningRoutine(Constants.kElevatorSwitchPositionInches + 16, 1.6),
+                new WaypointTriggerRoutine(new ElevatorCustomPositioningRoutine(Constants.kElevatorTopBottomDifferenceInches,
+                1.6), toScaleDrivePath, "p1")
+        ));
 
         ParallelRoutine dropAndReset = new ParallelRoutine(new IntakeWheelRoutine(Intake.WheelState.EXPELLING, 1),
                 new DriveSensorResetRoutine(1.0));
@@ -55,14 +57,12 @@ public class RightStartRightScaleAutoMode extends AutoModeBase {
         ParallelRoutine backUp = new ParallelRoutine(backUpPath, new WaypointTriggerRoutine(
                 new ElevatorCustomPositioningRoutine(Constants.kElevatorBottomPositionInches,3), backUpPath, "p5"));
 
-
-
         return new SequentialRoutine(new DriveSensorResetRoutine(1.0), toScale, dropAndReset, backUp, turnIntake());
     }
 
     public Routine turnIntake() {
         ArrayList<Routine> backupIntake = new ArrayList<Routine>();
-        backupIntake.add(new CascadingGyroEncoderTurnAngleRoutine(180));
+        backupIntake.add(new CascadingGyroEncoderTurnAngleRoutine(120));
 
 
         List<Path.Waypoint> path = new ArrayList<>();
@@ -110,7 +110,8 @@ public class RightStartRightScaleAutoMode extends AutoModeBase {
         List<Path.Waypoint> path = new ArrayList<>();
 
         path.add(new Path.Waypoint(new Translation2d(0.0, 0.0), 45.0, "p4"));
-        path.add(new Path.Waypoint(new Translation2d(-30, 0.0), 0, "p5"));
+        path.add(new Path.Waypoint(new Translation2d(-20.0, 0.0), 30, "p5"));
+        path.add(new Path.Waypoint(new Translation2d(-30.0, 0.0), 0, "p6"));
 
         return new DrivePathRoutine(new Path(path), true);
     }
