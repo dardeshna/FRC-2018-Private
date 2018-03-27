@@ -10,7 +10,7 @@ import java.util.*;
  * @author Team 254
  */
 public class Path {
-	protected static final double kSegmentCompletePercentage = .95;
+	protected static final double kSegmentCompletePercentage = .90;
 
 	protected List<Waypoint> mWaypoints;
 	protected List<PathSegment> mSegments;

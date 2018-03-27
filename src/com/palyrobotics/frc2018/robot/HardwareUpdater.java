@@ -542,18 +542,14 @@ class HardwareUpdater {
 	 */
 	private void updateElevator() {
 
-		//If climber is up, disable elevator input
-		if(mClimber.getClimberPositionEstimate() > Constants.kClimberUpPositionEstimateThreshold) {
-			updateTalonSRX(HardwareAdapter.getInstance().getElevator().elevatorMasterTalon, new TalonSRXOutput());
+		if(mElevator.getIsAtTop() && mElevator.movingUpwards()) {
+			TalonSRXOutput elevatorHoldOutput = new TalonSRXOutput();
+			elevatorHoldOutput.setPercentOutput(Constants.kElevatorHoldVoltage);
+			updateTalonSRX(HardwareAdapter.getInstance().getElevator().elevatorMasterTalon, elevatorHoldOutput);
 		} else {
-			if(mElevator.getIsAtTop() && mElevator.movingUpwards()) {
-				TalonSRXOutput elevatorHoldOutput = new TalonSRXOutput();
-				elevatorHoldOutput.setPercentOutput(Constants.kElevatorHoldVoltage);
-				updateTalonSRX(HardwareAdapter.getInstance().getElevator().elevatorMasterTalon, elevatorHoldOutput);
-			} else {
-				updateTalonSRX(HardwareAdapter.getInstance().getElevator().elevatorMasterTalon, mElevator.getOutput());
-			}
+			updateTalonSRX(HardwareAdapter.getInstance().getElevator().elevatorMasterTalon, mElevator.getOutput());
 		}
+
 	}
 
 	private void updateClimber() {
