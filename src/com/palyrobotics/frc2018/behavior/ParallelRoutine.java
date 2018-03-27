@@ -38,7 +38,8 @@ public class ParallelRoutine extends Routine {
 		if(!routinesToRemove.isEmpty()) {
 			for (Routine routine : routinesToRemove) {
 				routine.cancel(commands);
-				routinesToRemove.remove(routine);
+				mRoutines.remove(routine);
+//				routinesToRemove.remove(routine);
 			}
 		}
 

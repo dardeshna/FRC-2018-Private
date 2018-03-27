@@ -20,9 +20,9 @@ import com.palyrobotics.frc2018.util.trajectory.Translation2d;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RightStartRightScaleAutoMode extends AutoModeBase {
+public class RightStartRightScaleTwoCubeAutoMode extends AutoModeBase {
 
-    public RightStartRightScaleAutoMode(Alliance alliance) {
+    public RightStartRightScaleTwoCubeAutoMode(Alliance alliance) {
         super(alliance);
     }
 
@@ -55,26 +55,7 @@ public class RightStartRightScaleAutoMode extends AutoModeBase {
         ParallelRoutine backUp = new ParallelRoutine(backUpPath, new WaypointTriggerRoutine(
                 new ElevatorCustomPositioningRoutine(Constants.kElevatorBottomPositionInches,3), backUpPath, "p5"));
 
-
-
         return new SequentialRoutine(new DriveSensorResetRoutine(1.0), toScale, dropAndReset, backUp, turnIntake());
-    }
-
-    public Routine turnIntake() {
-        ArrayList<Routine> backupIntake = new ArrayList<Routine>();
-        backupIntake.add(new CascadingGyroEncoderTurnAngleRoutine(180));
-
-
-        List<Path.Waypoint> path = new ArrayList<>();
-
-        path.add(new Path.Waypoint(new Translation2d(0.0, 0.0), 45.0));
-        path.add(new Path.Waypoint(new Translation2d(60, 25), 0));
-
-        backupIntake.add(new ParallelRoutine(new DrivePathRoutine(new Path(path), false),
-                         new IntakeSensorStopRoutine(Intake.WheelState.INTAKING, 2)));
-
-        return new SequentialRoutine(backupIntake);
-
     }
 
     public DrivePathRoutine getToScale() {
@@ -104,6 +85,23 @@ public class RightStartRightScaleAutoMode extends AutoModeBase {
         return new DrivePathRoutine(new Path(path), false);
 
     }
+
+    public Routine turnIntake() {
+        ArrayList<Routine> backupIntake = new ArrayList<Routine>();
+        backupIntake.add(new CascadingGyroEncoderTurnAngleRoutine(140));
+        backupIntake.add(new DriveSensorResetRoutine(.1));
+
+        List<Path.Waypoint> path = new ArrayList<>();
+
+        path.add(new Path.Waypoint(new Translation2d(0.0, 0.0), 45.0));
+        path.add(new Path.Waypoint(new Translation2d(60, 25), 0));
+
+        backupIntake.add(new ParallelRoutine(new DriveUntilHasCubeRoutine(new DrivePathRoutine(new Path(path), false))));
+
+        return new SequentialRoutine(backupIntake);
+
+    }
+
 
     public DrivePathRoutine getBackward() {
 
