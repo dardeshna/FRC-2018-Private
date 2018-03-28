@@ -36,8 +36,8 @@ public class LeftStartRightMultiScaleAutoMode extends AutoModeBase {
 
     public DrivePathRoutine getPathToCubeOrBack() {
         List<Path.Waypoint> path = new ArrayList<>();
-        path.add(new Path.Waypoint(new Translation2d(0.0, 0.0), 72.0));
-        path.add(new Path.Waypoint(new Translation2d(107,30),0));
+        path.add(new Path.Waypoint(new Translation2d(0.0, 0.0), 72.0, true));
+        path.add(new Path.Waypoint(new Translation2d(107,30),0, true));
 
         return new DrivePathRoutine(new Path(path), false);
     }

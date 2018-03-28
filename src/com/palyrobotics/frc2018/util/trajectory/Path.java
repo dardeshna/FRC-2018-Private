@@ -24,17 +24,34 @@ public class Path {
 		public final Translation2d position;
 		public final double speed;
 		public final Optional<String> marker;
+		public final boolean isRelative;
 
 		public Waypoint(Translation2d position, double speed) {
 			this.position = position;
 			this.speed = speed;
 			this.marker = Optional.empty();
+			this.isRelative = false;
+		}
+
+		public Waypoint(Translation2d position, double speed, boolean isRelative) {
+			this.position = position;
+			this.speed = speed;
+			this.marker = Optional.empty();
+			this.isRelative = isRelative;
 		}
 
 		public Waypoint(Translation2d position, double speed, String marker) {
 			this.position = position;
 			this.speed = speed;
 			this.marker = Optional.of(marker);
+			this.isRelative = false;
+		}
+
+		public Waypoint(Translation2d position, double speed, String marker, boolean isRelative) {
+			this.position = position;
+			this.speed = speed;
+			this.marker = Optional.of(marker);
+			this.isRelative = isRelative;
 		}
 	}
 

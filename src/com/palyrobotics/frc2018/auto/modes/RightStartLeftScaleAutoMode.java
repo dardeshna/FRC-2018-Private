@@ -106,8 +106,8 @@ public class RightStartLeftScaleAutoMode extends AutoModeBase {
 
     public DrivePathRoutine getBackward() {
         List<Path.Waypoint> path = new ArrayList<>();
-        path.add(new Path.Waypoint(new Translation2d(0.0, 0.0), 45.0, "p7"));
-        path.add(new Path.Waypoint(new Translation2d(-30, 0.0), 0, "p8"));
+        path.add(new Path.Waypoint(new Translation2d(0.0, 0.0), 45.0, "p7", true));
+        path.add(new Path.Waypoint(new Translation2d(-30, 0.0), 0, "p8", true));
 
         return new DrivePathRoutine(new Path(path), true);
     }

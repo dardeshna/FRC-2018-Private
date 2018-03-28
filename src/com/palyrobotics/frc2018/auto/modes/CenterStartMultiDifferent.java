@@ -93,7 +93,7 @@ public class CenterStartMultiDifferent extends AutoModeBase {
 
 
 
-        return new DriveUntilHasCubeRoutine(new DrivePathRoutine(path, false, 50.0,  true, 27.5, 4.0));
+        return new DriveUntilHasCubeRoutine(new DrivePathRoutine(path, false, 50.0, 27.5, 4.0));
     }
 
     /**

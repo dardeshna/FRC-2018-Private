@@ -20,7 +20,6 @@ public class DrivePathRoutine extends Routine {
 	private Path mPath;
 	private ArrayList<Path.Waypoint> pathList;
 	private double mLookAhead;
-	private boolean mAddCurrentPosition;
 	private double mStartSpeed;
 	private boolean mInverted;
 	private double mTolerance;
@@ -35,7 +34,6 @@ public class DrivePathRoutine extends Routine {
 	public DrivePathRoutine(Path path, boolean inverted) {
 		this.mPath = path;
 		this.mLookAhead = Constants.kPathFollowingLookahead;
-		this.mAddCurrentPosition = false;
 		this.mStartSpeed = 0.0;
 		this.mInverted = inverted;
 		this.mTolerance = Constants.kPathFollowingTolerance;
@@ -51,42 +49,38 @@ public class DrivePathRoutine extends Routine {
 	public DrivePathRoutine(Path path, boolean inverted, double lookAhead) {
 		this.mPath = path;
 		this.mLookAhead = lookAhead;
-		this.mAddCurrentPosition = false;
 		this.mStartSpeed = 0.0;
 		this.mInverted = inverted;
 		this.mTolerance = Constants.kPathFollowingTolerance;
 		this.mRelative = false;
 	}
 
-	public DrivePathRoutine(ArrayList<Path.Waypoint> pathList, boolean inverted, double startSpeed, boolean addCurrentPosition) {
+	public DrivePathRoutine(ArrayList<Path.Waypoint> pathList, boolean inverted, double startSpeed) {
 		this.mPath = new Path(pathList);
 	    this.pathList = pathList;
 		this.mInverted = inverted;
 		this.mStartSpeed = startSpeed;
 		this.mLookAhead = Constants.kPathFollowingLookahead;
-		this.mAddCurrentPosition = addCurrentPosition;
 		this.mTolerance = Constants.kPathFollowingTolerance;
 		this.mRelative = false;
 	}
 
-	public DrivePathRoutine(ArrayList<Path.Waypoint> pathList, boolean inverted, double startSpeed, boolean addCurrentPosition, double lookahead) {
+	public DrivePathRoutine(ArrayList<Path.Waypoint> pathList, boolean inverted, double startSpeed, double lookahead) {
 		this.mPath = new Path(pathList);
 		this.pathList = pathList;
 		this.mInverted = inverted;
 		this.mStartSpeed = startSpeed;
 		this.mLookAhead = lookahead;
-		this.mAddCurrentPosition = addCurrentPosition;
 		this.mTolerance = Constants.kPathFollowingTolerance;
 		this.mRelative = false;
 	}
 
-	public DrivePathRoutine(ArrayList<Path.Waypoint> pathList, boolean inverted, double startSpeed, boolean addCurrentPosition, double lookahead, double tolerance) {
+	public DrivePathRoutine(ArrayList<Path.Waypoint> pathList, boolean inverted, double startSpeed, double lookahead, double tolerance) {
 		this.mPath = new Path(pathList);
 		this.pathList = pathList;
 		this.mInverted = inverted;
 		this.mStartSpeed = startSpeed;
 		this.mLookAhead = lookahead;
-		this.mAddCurrentPosition = addCurrentPosition;
 		this.mTolerance = tolerance;
 		this.mRelative = false;
 	}
@@ -102,27 +96,21 @@ public class DrivePathRoutine extends Routine {
 
 	@Override
 	public void start() {
-		if(mAddCurrentPosition) {
-			pathList.add(0, new Path.Waypoint(robotState.getLatestFieldToVehicle().getValue().getTranslation(), mStartSpeed));
-
-			for(Path.Waypoint point : pathList) {
-//				System.out.println("Pos: " + point.position);
-//				System.out.println("Speed: " + point.speed);
-			}
-
-			mPath = new Path(pathList);
-		} else if(mRelative) {
+		if(mRelative) {
 			ArrayList<Path.Waypoint> absoluteList = new ArrayList<>();
-			for(Path.Waypoint waypoint : pathList) {
-				if(waypoint.marker.isPresent()) {
-					absoluteList.add(new Path.Waypoint(robotState.getLatestFieldToVehicle().getValue().getTranslation().translateBy(waypoint.position), waypoint.speed, waypoint.marker.get()));
+			for (Path.Waypoint point : pathList) {
+				if (point.isRelative) {
+					if (point.marker.isPresent()) {
+						absoluteList.add(new Path.Waypoint(robotState.getLatestFieldToVehicle().getValue().getTranslation().translateBy(point.position), point.speed, point.marker.get(), false));
+					} else {
+						absoluteList.add(new Path.Waypoint(robotState.getLatestFieldToVehicle().getValue().getTranslation().translateBy(point.position), point.speed, false));
+					}
 				} else {
-					absoluteList.add(new Path.Waypoint(robotState.getLatestFieldToVehicle().getValue().getTranslation().translateBy(waypoint.position), waypoint.speed));
+					absoluteList.add(point);
 				}
 			}
 			mPath = new Path(absoluteList);
 		}
-
 		Logger.getInstance().logSubsystemThread(Level.INFO, "Starting Drive Path Routine");
 
 		drive.setTrajectoryController(mPath, mLookAhead, mInverted, mTolerance);

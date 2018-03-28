@@ -93,8 +93,8 @@ public class RightStartRightScaleTwoCubeAutoMode extends AutoModeBase {
 
         List<Path.Waypoint> path = new ArrayList<>();
 
-        path.add(new Path.Waypoint(new Translation2d(0.0, 0.0), 45.0));
-        path.add(new Path.Waypoint(new Translation2d(60, 25), 0));
+        path.add(new Path.Waypoint(new Translation2d(0.0, 0.0), 45.0, true));
+        path.add(new Path.Waypoint(new Translation2d(60, 25), 0, true));
 
         backupIntake.add(new ParallelRoutine(new DriveUntilHasCubeRoutine(new DrivePathRoutine(new Path(path), false))));
 
@@ -107,8 +107,8 @@ public class RightStartRightScaleTwoCubeAutoMode extends AutoModeBase {
 
         List<Path.Waypoint> path = new ArrayList<>();
 
-        path.add(new Path.Waypoint(new Translation2d(0.0, 0.0), 45.0, "p4"));
-        path.add(new Path.Waypoint(new Translation2d(-30, 0.0), 0, "p5"));
+        path.add(new Path.Waypoint(new Translation2d(0.0, 0.0), 45.0, "p4", true));
+        path.add(new Path.Waypoint(new Translation2d(-30, 0.0), 0, "p5", true));
 
         return new DrivePathRoutine(new Path(path), true);
     }

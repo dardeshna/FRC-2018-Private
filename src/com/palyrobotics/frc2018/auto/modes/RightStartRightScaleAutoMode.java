@@ -132,9 +132,9 @@ public class RightStartRightScaleAutoMode extends AutoModeBase {
 
         ArrayList<Path.Waypoint> path = new ArrayList<>();
 
-        path.add(new Path.Waypoint(new Translation2d(0.0, 0.0), 45.0, "p4"));
-        path.add(new Path.Waypoint(new Translation2d(-20.0, 0.0), 30, "p5"));
-        path.add(new Path.Waypoint(new Translation2d(-30.0, 0.0), 0, "p6"));
+        path.add(new Path.Waypoint(new Translation2d(0.0, 0.0), 45.0, "p4", true));
+        path.add(new Path.Waypoint(new Translation2d(-20.0, 0.0), 30, "p5", true));
+        path.add(new Path.Waypoint(new Translation2d(-30.0, 0.0), 0, "p6", true));
 
         return new DrivePathRoutine(path, true, true);
     }
