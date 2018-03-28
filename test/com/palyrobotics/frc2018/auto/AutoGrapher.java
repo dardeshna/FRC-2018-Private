@@ -1,5 +1,6 @@
 package com.palyrobotics.frc2018.auto;
 
+import com.palyrobotics.frc2018.auto.AutoModeBase.Alliance;
 import com.palyrobotics.frc2018.behavior.Routine;
 import com.palyrobotics.frc2018.behavior.routines.drive.DrivePathRoutine;
 import com.palyrobotics.frc2018.config.AutoDistances;
@@ -16,6 +17,7 @@ public class AutoGrapher {
     public void showAuto() throws IOException {
     	AutoDistances.updateAutoDistances();
         for (int i = 0; i < 26; i++) {
+        	AutoModeBase.mAlliance = (i%2==0 ? Alliance.BLUE: Alliance.RED);
             loadAutos(AutoModeSelector.getInstance().getAutoModeByIndex(i), (i%2==0 ? "Blue" : "Red"));
         }
 
@@ -30,7 +32,6 @@ public class AutoGrapher {
     public void loadAutos(AutoModeBase auto, String color) throws IOException {
         AutoModeBase base = auto;
         base.prestart();
-
         String pathType = base.getClass().getName().split("\\.")[base.getClass().getName().split("\\.").length-1] + color;
         System.out.println("Loading " + pathType);
         FileOutputStream out = new FileOutputStream("auto-graph/"+pathType + ".txt");
@@ -45,6 +46,15 @@ public class AutoGrapher {
                 for (int j = 0; j < pathExport.get(i).getEnclosingSequentialRoutine().size(); j++) {
                     if (pathExport.get(i).getEnclosingSequentialRoutine().get(j) instanceof DrivePathRoutine) {
                         out.write(pathExport.get(i).getEnclosingSequentialRoutine().get(j).toString().getBytes());
+                    }
+
+                }
+            }
+            
+            if (pathExport.get(i).getEnclosingParallelRoutine() != null) {
+                for (int j = 0; j < pathExport.get(i).getEnclosingParallelRoutine().size(); j++) {
+                    if (pathExport.get(i).getEnclosingParallelRoutine().get(j) instanceof DrivePathRoutine) {
+                        out.write(pathExport.get(i).getEnclosingParallelRoutine().get(j).toString().getBytes());
                     }
 
                 }
