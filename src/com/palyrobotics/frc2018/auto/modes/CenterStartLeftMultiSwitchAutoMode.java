@@ -76,18 +76,18 @@ public class CenterStartLeftMultiSwitchAutoMode extends AutoModeBase {
         //zero drive sensors
 //        backUp.add(new DriveSensorResetRoutine(1.5));
 
-        List<Waypoint> path = new ArrayList<>();
+        ArrayList<Waypoint> path = new ArrayList<>();
 
         path.add(new Waypoint(new Translation2d(0.0, 0.0), 72.0, true));
         path.add(new Waypoint(new Translation2d(-40.0, 0.0), 72.0, true));
-        if(mAlliance == Alliance.BLUE) {
-            path.add(new Waypoint(new Translation2d(-AutoDistances.kBluePyramidLength + Constants.kCenterOfRotationOffsetFromFrontInches + Constants.kSquareCubeLength/2.0,
-                    AutoDistances.kBluePyramidFromRightY - AutoDistances.kBlueRightSwitchY - AutoDistances.kSwitchPlateWidth/2.0 + AutoDistances.kBluePyramidWidth/2.0), 0.0, true));
-        } else if(mAlliance == Alliance.RED) {
-            path.add(new Waypoint(new Translation2d(-AutoDistances.kRedPyramidLength + Constants.kCenterOfRotationOffsetFromFrontInches + Constants.kSquareCubeLength/2.0,
-                    AutoDistances.kRedPyramidFromRightY - AutoDistances.kRedRightSwitchY - AutoDistances.kSwitchPlateWidth/2.0 + AutoDistances.kRedPyramidWidth/2.0), 0.0, true));
+        if (mAlliance == Alliance.BLUE) {
+            path.add(new Waypoint(new Translation2d(-80.0 + AutoDistances.kBlueLeftSwitchX - Constants.kRobotLengthInches,
+                    -20 + AutoDistances.kBlueLeftToCenterY + Constants.kRobotWidthInches/2.0 - AutoDistances.kBlueLeftSwitchY - AutoDistances.kSwitchPlateWidth/2.0), 0.0));
+        } else {
+            path.add(new Waypoint(new Translation2d(-80.0 + AutoDistances.kRedLeftSwitchX - Constants.kRobotLengthInches,
+                    -20.0 + AutoDistances.kRedLeftToCenterY + Constants.kRobotWidthInches/2.0 - AutoDistances.kRedLeftSwitchY - AutoDistances.kSwitchPlateWidth/2.0), 0.0));
         }
-        backUp.add(new DrivePathRoutine(new Path(path), true));
+        backUp.add(new DrivePathRoutine(path, true, true));
 
         return new SequentialRoutine(backUp);
     }
@@ -96,12 +96,12 @@ public class CenterStartLeftMultiSwitchAutoMode extends AutoModeBase {
 
         ArrayList<Waypoint> path = new ArrayList<>();
 
-        if(alliance == Alliance.BLUE) {
-            path.add(new Waypoint(new Translation2d(-AutoDistances.kBluePyramidLength + Constants.kCenterOfRotationOffsetFromFrontInches + Constants.kSquareCubeLength/2.0,
-                    -((AutoDistances.kFieldWidth - AutoDistances.kBluePyramidFromRightY) - AutoDistances.kBlueLeftSwitchY) + AutoDistances.kBluePyramidWidth/2.0 + AutoDistances.kSwitchPlateWidth/2.0), 0.0, true));
-        } else if(alliance == Alliance.RED) {
-            path.add(new Waypoint(new Translation2d(-AutoDistances.kRedPyramidLength + Constants.kCenterOfRotationOffsetFromFrontInches + Constants.kSquareCubeLength/2.0,
-                    -((AutoDistances.kFieldWidth - AutoDistances.kRedPyramidFromRightY) - AutoDistances.kRedLeftSwitchY) + AutoDistances.kRedPyramidWidth/2.0 + AutoDistances.kSwitchPlateWidth/2.0), 0.0, true));
+        if (alliance == Alliance.BLUE) {
+            path.add(new Waypoint(new Translation2d(-AutoDistances.kBluePyramidLength + Constants.kCenterOfRotationOffsetFromFrontInches + Constants.kSquareCubeLength / 2.0,
+                    -((AutoDistances.kFieldWidth - AutoDistances.kBluePyramidFromRightY) - AutoDistances.kBlueLeftSwitchY) + AutoDistances.kBluePyramidWidth / 2.0 + AutoDistances.kSwitchPlateWidth / 2.0), 0.0));
+        } else if (alliance == Alliance.RED) {
+            path.add(new Waypoint(new Translation2d(-AutoDistances.kRedPyramidLength + Constants.kCenterOfRotationOffsetFromFrontInches + Constants.kSquareCubeLength / 2.0,
+                    -((AutoDistances.kFieldWidth - AutoDistances.kRedPyramidFromRightY) - AutoDistances.kRedLeftSwitchY) + AutoDistances.kRedPyramidWidth / 2.0 + AutoDistances.kSwitchPlateWidth / 2.0), 0.0));
         }
 
         return new DriveUntilHasCubeRoutine(new DrivePathRoutine(path, false, 50.0, 20.0, 4.0));
@@ -132,12 +132,12 @@ public class CenterStartLeftMultiSwitchAutoMode extends AutoModeBase {
         returnToSwitchPt1ArrayList.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorCubeInTransitPositionInches, 1.0));
 
         ArrayList<Waypoint> path = new ArrayList<>();
-        if(mAlliance == Alliance.BLUE) {
-            path.add(new Waypoint(new Translation2d(-AutoDistances.kBluePyramidLength + Constants.kCenterOfRotationOffsetFromFrontInches + Constants.kSquareCubeLength/2.0,
-                    AutoDistances.kBluePyramidFromRightY - AutoDistances.kBlueRightSwitchY - AutoDistances.kSwitchPlateWidth/2.0 + AutoDistances.kBluePyramidWidth/2.0), 0.0, true));
-        } else if(mAlliance == Alliance.RED) {
-            path.add(new Waypoint(new Translation2d(-AutoDistances.kRedPyramidLength + Constants.kCenterOfRotationOffsetFromFrontInches + Constants.kSquareCubeLength/2.0,
-                    AutoDistances.kRedPyramidFromRightY - AutoDistances.kRedRightSwitchY - AutoDistances.kSwitchPlateWidth/2.0 + AutoDistances.kRedPyramidWidth/2.0), 0.0, true));
+        if (mAlliance == Alliance.BLUE) {
+            path.add(new Waypoint(new Translation2d(-80.0 + AutoDistances.kBlueRightSwitchX - Constants.kRobotLengthInches,
+                    -20.0 + AutoDistances.kBlueLeftToCenterY + Constants.kRobotWidthInches/2.0 - AutoDistances.kBlueLeftSwitchY - AutoDistances.kSwitchPlateWidth/2.0), 0.0));
+        } else {
+            path.add(new Waypoint(new Translation2d(-80.0 + AutoDistances.kRedRightSwitchX - Constants.kRobotLengthInches,
+                    -20.0 + AutoDistances.kRedLeftToCenterY + Constants.kRobotWidthInches/2.0 - AutoDistances.kRedLeftSwitchY - AutoDistances.kSwitchPlateWidth/2.0), 0.0));
         }
         returnToSwitchPt1ArrayList.add(new DrivePathRoutine(path, true, 72.0, Constants.kPathFollowingLookahead, 4.0));
 
@@ -155,16 +155,9 @@ public class CenterStartLeftMultiSwitchAutoMode extends AutoModeBase {
         returnToSwitchPt2ArrayList.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorSwitchPositionInches, 1.5));
 
         ArrayList<Waypoint> path = new ArrayList<>();
-        if (mAlliance == Alliance.BLUE) {
-            path.add(new Waypoint(new Translation2d(0,0), 72.0, true));
-            path.add(new Waypoint(new Translation2d(AutoDistances.kBlueRightSwitchX - Constants.kRobotLengthInches,
-                    AutoDistances.kBlueLeftToCenterY + Constants.kRobotWidthInches/2.0 - AutoDistances.kBlueLeftSwitchY - AutoDistances.kSwitchPlateWidth/2.0), 0.0));
-        } else {
-            path.add(new Waypoint(new Translation2d(0,0), 72.0, true));
-            path.add(new Waypoint(new Translation2d(AutoDistances.kRedRightSwitchX - Constants.kRobotLengthInches,
-                    AutoDistances.kRedLeftToCenterY + Constants.kRobotWidthInches/2.0 - AutoDistances.kRedLeftSwitchY - AutoDistances.kSwitchPlateWidth/2.0), 0.0));
-        }
-        returnToSwitchPt2ArrayList.add(new DrivePathRoutine(path,  false, 72.0, 30.0, 4.0));
+        path.add(new Waypoint(new Translation2d(AutoDistances.kBlueLeftSwitchX - Constants.kRobotLengthInches,
+                AutoDistances.kBlueLeftToCenterY + Constants.kRobotWidthInches/2.0 - AutoDistances.kBlueLeftSwitchY - AutoDistances.kSwitchPlateWidth/2.0), 0.0));
+        returnToSwitchPt2ArrayList.add(new DrivePathRoutine(path, false, 72.0, 30.0, 4.0));
 
         return new ParallelRoutine(returnToSwitchPt2ArrayList);
     }
@@ -173,5 +166,4 @@ public class CenterStartLeftMultiSwitchAutoMode extends AutoModeBase {
     public String getKey() {
         return mAlliance + " CENTER SWITCH LEFT SWITCH LEFT";
     }
-
 }
