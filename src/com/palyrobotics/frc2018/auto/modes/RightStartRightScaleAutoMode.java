@@ -118,10 +118,10 @@ public class RightStartRightScaleAutoMode extends AutoModeBase {
                     0.0), 100, "p1"));
             path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedRightScaleX - 2.0 * Constants.kRobotLengthInches,
                     -(Constants.kRobotWidthInches + AutoDistances.kRedRightCornerOffset)
-                            + AutoDistances.kRedRightScaleY + AutoDistances.kScalePlateWidth/2.0), 70, "p2"));
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedRightScaleX - Constants.kRobotLengthInches,
+                            + AutoDistances.kRedRightScaleY + AutoDistances.kScalePlateWidth/2.5), 70, "p2"));
+            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedRightScaleX - Constants.kRobotLengthInches- Constants.kNullZoneAllowableBack,
                     -(Constants.kRobotWidthInches/2.0 + AutoDistances.kRedRightCornerOffset)
-                            + AutoDistances.kRedRightScaleY + AutoDistances.kScalePlateWidth/2.0), 0.0, "p3"));
+                            + AutoDistances.kRedRightScaleY + AutoDistances.kScalePlateWidth/2.1), 0.0, "p3"));
         }
 
         return new DrivePathRoutine(new Path(path), false);
