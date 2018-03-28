@@ -82,10 +82,10 @@ public class CenterStartLeftMultiSwitchAutoMode extends AutoModeBase {
         path.add(new Waypoint(new Translation2d(-40.0, 0.0), 72.0, true));
         if (mAlliance == Alliance.BLUE) {
             path.add(new Waypoint(new Translation2d(-80.0 + AutoDistances.kBlueLeftSwitchX - Constants.kRobotLengthInches,
-                    -20 + AutoDistances.kBlueLeftToCenterY + Constants.kRobotWidthInches/2.0 - AutoDistances.kBlueLeftSwitchY - AutoDistances.kSwitchPlateWidth/2.0), 0.0));
+                     35.0 + AutoDistances.kBlueLeftToCenterY + Constants.kRobotWidthInches/2.0 - AutoDistances.kBlueLeftSwitchY - AutoDistances.kSwitchPlateWidth/2.0), 0.0));
         } else {
             path.add(new Waypoint(new Translation2d(-80.0 + AutoDistances.kRedLeftSwitchX - Constants.kRobotLengthInches,
-                    -20.0 + AutoDistances.kRedLeftToCenterY + Constants.kRobotWidthInches/2.0 - AutoDistances.kRedLeftSwitchY - AutoDistances.kSwitchPlateWidth/2.0), 0.0));
+                    35.0 + AutoDistances.kRedLeftToCenterY + Constants.kRobotWidthInches/2.0 - AutoDistances.kRedLeftSwitchY - AutoDistances.kSwitchPlateWidth/2.0), 0.0));
         }
         backUp.add(new DrivePathRoutine(path, true, true));
 
@@ -134,10 +134,10 @@ public class CenterStartLeftMultiSwitchAutoMode extends AutoModeBase {
         ArrayList<Waypoint> path = new ArrayList<>();
         if (mAlliance == Alliance.BLUE) {
             path.add(new Waypoint(new Translation2d(-80.0 + AutoDistances.kBlueRightSwitchX - Constants.kRobotLengthInches,
-                    -20.0 + AutoDistances.kBlueLeftToCenterY + Constants.kRobotWidthInches/2.0 - AutoDistances.kBlueLeftSwitchY - AutoDistances.kSwitchPlateWidth/2.0), 0.0));
+                    35.0 + AutoDistances.kBlueLeftToCenterY + Constants.kRobotWidthInches/2.0 - AutoDistances.kBlueLeftSwitchY - AutoDistances.kSwitchPlateWidth/2.0), 0.0));
         } else {
             path.add(new Waypoint(new Translation2d(-80.0 + AutoDistances.kRedRightSwitchX - Constants.kRobotLengthInches,
-                    -20.0 + AutoDistances.kRedLeftToCenterY + Constants.kRobotWidthInches/2.0 - AutoDistances.kRedLeftSwitchY - AutoDistances.kSwitchPlateWidth/2.0), 0.0));
+                    35.0 + AutoDistances.kRedLeftToCenterY + Constants.kRobotWidthInches/2.0 - AutoDistances.kRedLeftSwitchY - AutoDistances.kSwitchPlateWidth/2.0), 0.0));
         }
         returnToSwitchPt1ArrayList.add(new DrivePathRoutine(path, true, 72.0, Constants.kPathFollowingLookahead, 4.0));
 
