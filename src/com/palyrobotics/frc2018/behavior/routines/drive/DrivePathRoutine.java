@@ -84,6 +84,16 @@ public class DrivePathRoutine extends Routine {
 		this.mTolerance = tolerance;
 		this.mRelative = false;
 	}
+	
+	public DrivePathRoutine(ArrayList<Path.Waypoint> pathList, boolean inverted, double startSpeed, double lookahead, double tolerance, boolean isRelative) {
+		this.mPath = new Path(new ArrayList<>());
+		this.pathList = pathList;
+		this.mInverted = inverted;
+		this.mStartSpeed = startSpeed;
+		this.mLookAhead = lookahead;
+		this.mTolerance = tolerance;
+		this.mRelative = isRelative;
+	}
 
 	public DrivePathRoutine(ArrayList<Path.Waypoint> pathList, boolean inverted, boolean relative) {
 		this.mPath = new Path(new ArrayList<>());
@@ -97,6 +107,7 @@ public class DrivePathRoutine extends Routine {
 	@Override
 	public void start() {
 		if(mRelative) {
+			System.out.println("start size: " + pathList.size());
 			ArrayList<Path.Waypoint> absoluteList = new ArrayList<>();
 			for (Path.Waypoint point : pathList) {
 				if (point.isRelative) {
@@ -117,7 +128,8 @@ public class DrivePathRoutine extends Routine {
 			mPath = new Path(absoluteList);
 		}
 		Logger.getInstance().logSubsystemThread(Level.INFO, "Starting Drive Path Routine");
-
+		System.out.println("Path size = " + mPath.getWaypoints().size());
+		
 		drive.setTrajectoryController(mPath, mLookAhead, mInverted, mTolerance);
 	}
 

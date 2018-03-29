@@ -66,7 +66,8 @@ public class AdaptivePurePursuitController implements Drive.DriveController {
 
 		PathSegment.Sample lookahead_point = mPath.getLookaheadPoint(robot_pose.getTranslation(), distance_from_path + mFixedLookahead);
 //		System.out.println("Current point = " + robot_pose.getTranslation() + " " + "Lookahead point = " + lookahead_point.translation);
-
+		//if (!mPath.getWaypoints().isEmpty()) System.out.println("First point = " + mPath.getWaypoints().get(0).position.toString());
+		
 		Optional<Circle> circle = joinPath(pose, lookahead_point.translation);
 
 		double speed = lookahead_point.speed;

@@ -14,6 +14,7 @@ import com.palyrobotics.frc2018.behavior.routines.intake.IntakeSensorStopRoutine
 import com.palyrobotics.frc2018.behavior.routines.intake.IntakeWheelRoutine;
 import com.palyrobotics.frc2018.config.AutoDistances;
 import com.palyrobotics.frc2018.config.Constants;
+import com.palyrobotics.frc2018.robot.Robot;
 import com.palyrobotics.frc2018.subsystems.Intake;
 import com.palyrobotics.frc2018.util.trajectory.Path.Waypoint;
 import com.palyrobotics.frc2018.util.trajectory.Translation2d;
@@ -23,8 +24,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CenterStartLeftMultiSwitchAutoMode extends AutoModeBase {
+	
+	private Translation2d startPoint;
+	private Translation2d midPoint = new Translation2d(-85, 35);
 
-    private Alliance mAlliance;
+    public CenterStartLeftMultiSwitchAutoMode() {
+        if (mAlliance == Alliance.BLUE) {
+        	startPoint = new Translation2d(AutoDistances.kBlueRightSwitchX - Constants.kRobotLengthInches,
+					AutoDistances.kBlueLeftToCenterY + Constants.kRobotWidthInches/2.0 - AutoDistances.kBlueLeftSwitchY - AutoDistances.kSwitchPlateWidth/2.0);
+        	midPoint =  new Translation2d(-85, -((AutoDistances.kFieldWidth - AutoDistances.kBluePyramidFromRightY) - AutoDistances.kBlueLeftSwitchY) + AutoDistances.kBluePyramidWidth / 2.0 + AutoDistances.kSwitchPlateWidth / 2.0);
+        }
+        else {
+        	startPoint = new Translation2d(AutoDistances.kRedRightSwitchX - Constants.kRobotLengthInches,
+					AutoDistances.kRedLeftToCenterY + Constants.kRobotWidthInches/2.0 - AutoDistances.kRedLeftSwitchY - AutoDistances.kSwitchPlateWidth/2.0);
+        	midPoint =  new Translation2d(-85, -((AutoDistances.kFieldWidth - AutoDistances.kRedPyramidFromRightY) - AutoDistances.kRedLeftSwitchY) + AutoDistances.kRedPyramidWidth / 2.0 + AutoDistances.kSwitchPlateWidth / 2.0);
+        }
+    }
 
     //Point in between getting second cube and switch, used as a vertex to curve off of
     //-60, 30
@@ -55,7 +70,7 @@ public class CenterStartLeftMultiSwitchAutoMode extends AutoModeBase {
         routines.add(new ParallelRoutine(prepareForSecondCube));
 
         //Drive to and intake cube
-        routines.add(getDriveToAndIntakeCube(this.mAlliance));
+        routines.add(getDriveToAndIntakeCube());
 
         routines.add(getReturnToSwitchPt1());
 
@@ -67,40 +82,32 @@ public class CenterStartLeftMultiSwitchAutoMode extends AutoModeBase {
     }
 
     public Routine getBackUpFromSwitch() {
-        ArrayList<Routine> backUp = new ArrayList<>();
-
-        //zero drive sensors
-//        backUp.add(new DriveSensorResetRoutine(1.5));
-
         ArrayList<Waypoint> path = new ArrayList<>();
 
         path.add(new Waypoint(new Translation2d(0.0, 0.0), 72.0, true));
         path.add(new Waypoint(new Translation2d(-40.0, 0.0), 72.0, true));
-        if (mAlliance == Alliance.BLUE) {
-            path.add(new Waypoint(new Translation2d(-80.0 + AutoDistances.kBlueLeftSwitchX - Constants.kRobotLengthInches,
-                     35.0 + AutoDistances.kBlueLeftToCenterY + Constants.kRobotWidthInches/2.0 - AutoDistances.kBlueLeftSwitchY - AutoDistances.kSwitchPlateWidth/2.0), 0.0));
-        } else {
-            path.add(new Waypoint(new Translation2d(-80.0 + AutoDistances.kRedLeftSwitchX - Constants.kRobotLengthInches,
-                    35.0 + AutoDistances.kRedLeftToCenterY + Constants.kRobotWidthInches/2.0 - AutoDistances.kRedLeftSwitchY - AutoDistances.kSwitchPlateWidth/2.0), 0.0));
-        }
-        backUp.add(new DrivePathRoutine(path, true, true));
+        path.add(new Waypoint(startPoint.translateBy(midPoint), 0.0));
+       
+        return new DrivePathRoutine(path, true, true);
 
-        return new SequentialRoutine(backUp);
     }
 
-    public Routine getDriveToAndIntakeCube(Alliance alliance) {
-
+    public Routine getDriveToAndIntakeCube() {
+    	
         ArrayList<Waypoint> path = new ArrayList<>();
+        
+        path.add(new Waypoint(new Translation2d(0, 0), 35.0, true));
 
-        if (alliance == Alliance.BLUE) {
-            path.add(new Waypoint(new Translation2d(-AutoDistances.kBluePyramidLength + Constants.kCenterOfRotationOffsetFromFrontInches + Constants.kSquareCubeLength / 2.0,
-                    -((AutoDistances.kFieldWidth - AutoDistances.kBluePyramidFromRightY) - AutoDistances.kBlueLeftSwitchY) + AutoDistances.kBluePyramidWidth / 2.0 + AutoDistances.kSwitchPlateWidth / 2.0), 0.0));
-        } else if (alliance == Alliance.RED) {
-            path.add(new Waypoint(new Translation2d(-AutoDistances.kRedPyramidLength + Constants.kCenterOfRotationOffsetFromFrontInches + Constants.kSquareCubeLength / 2.0,
-                    -((AutoDistances.kFieldWidth - AutoDistances.kRedPyramidFromRightY) - AutoDistances.kRedLeftSwitchY) + AutoDistances.kRedPyramidWidth / 2.0 + AutoDistances.kSwitchPlateWidth / 2.0), 0.0));
+        if (mAlliance == Alliance.BLUE) {
+            path.add(new Waypoint(startPoint.translateBy(new Translation2d(-AutoDistances.kBluePyramidLength + Constants.kCenterOfRotationOffsetFromFrontInches + Constants.kSquareCubeLength / 2.0,
+                    -((AutoDistances.kFieldWidth - AutoDistances.kBluePyramidFromRightY) - AutoDistances.kBlueLeftSwitchY) + AutoDistances.kBluePyramidWidth / 2.0 + AutoDistances.kSwitchPlateWidth / 2.0)), 0.0));
         }
-
-        return new DriveUntilHasCubeRoutine(new DrivePathRoutine(path, false, 50.0, 20.0, 4.0));
+        else {
+            path.add(new Waypoint(startPoint.translateBy(new Translation2d(-AutoDistances.kRedPyramidLength + Constants.kCenterOfRotationOffsetFromFrontInches + Constants.kSquareCubeLength / 2.0,
+                    -((AutoDistances.kFieldWidth - AutoDistances.kRedPyramidFromRightY) - AutoDistances.kRedLeftSwitchY) + AutoDistances.kRedPyramidWidth / 2.0 + AutoDistances.kSwitchPlateWidth / 2.0)), 0.0));
+        }
+        
+        return new DriveUntilHasCubeRoutine(new DrivePathRoutine(path, false, 50.0, 20.0, 4.0, true));
     }
 
     /**
@@ -128,14 +135,11 @@ public class CenterStartLeftMultiSwitchAutoMode extends AutoModeBase {
         returnToSwitchPt1ArrayList.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorCubeInTransitPositionInches, 1.0));
 
         ArrayList<Waypoint> path = new ArrayList<>();
-        if (mAlliance == Alliance.BLUE) {
-            path.add(new Waypoint(new Translation2d(-80.0 + AutoDistances.kBlueRightSwitchX - Constants.kRobotLengthInches,
-                    35.0 + AutoDistances.kBlueLeftToCenterY + Constants.kRobotWidthInches/2.0 - AutoDistances.kBlueLeftSwitchY - AutoDistances.kSwitchPlateWidth/2.0), 0.0));
-        } else {
-            path.add(new Waypoint(new Translation2d(-80.0 + AutoDistances.kRedRightSwitchX - Constants.kRobotLengthInches,
-                    35.0 + AutoDistances.kRedLeftToCenterY + Constants.kRobotWidthInches/2.0 - AutoDistances.kRedLeftSwitchY - AutoDistances.kSwitchPlateWidth/2.0), 0.0));
-        }
-        returnToSwitchPt1ArrayList.add(new DrivePathRoutine(path, true, 72.0, Constants.kPathFollowingLookahead, 4.0));
+        
+        path.add(new Waypoint(new Translation2d(0, 0), 50.0, true));
+        path.add(new Waypoint(startPoint.translateBy(midPoint), 0.0));
+        
+        returnToSwitchPt1ArrayList.add(new DrivePathRoutine(path, true, 72.0, Constants.kPathFollowingLookahead, 4.0, true));
 
         return new ParallelRoutine(returnToSwitchPt1ArrayList);
     }
@@ -151,9 +155,11 @@ public class CenterStartLeftMultiSwitchAutoMode extends AutoModeBase {
         returnToSwitchPt2ArrayList.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorSwitchPositionInches, 1.5));
 
         ArrayList<Waypoint> path = new ArrayList<>();
-        path.add(new Waypoint(new Translation2d(AutoDistances.kBlueLeftSwitchX - Constants.kRobotLengthInches,
-                AutoDistances.kBlueLeftToCenterY + Constants.kRobotWidthInches/2.0 - AutoDistances.kBlueLeftSwitchY - AutoDistances.kSwitchPlateWidth/2.0), 0.0));
-        returnToSwitchPt2ArrayList.add(new DrivePathRoutine(path, false, 72.0, 30.0, 4.0));
+        
+        path.add(new Waypoint(new Translation2d(0, 0), 50.0, true));
+        path.add(new Waypoint(startPoint, 0.0));
+        
+        returnToSwitchPt2ArrayList.add(new DrivePathRoutine(path, false, 72.0, 30.0, 4.0, true));
 
         return new ParallelRoutine(returnToSwitchPt2ArrayList);
     }
