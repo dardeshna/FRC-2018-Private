@@ -314,10 +314,10 @@ class HardwareUpdater {
 
 		robotState.leftStickInput.update(HardwareAdapter.getInstance().getJoysticks().driveStick);
 		robotState.rightStickInput.update(HardwareAdapter.getInstance().getJoysticks().turnStick);
-		robotState.climberStickInput.update(HardwareAdapter.getInstance().getJoysticks().climberStick);
 		if(Constants.operatorXBoxController) {
 			robotState.operatorXboxControllerInput.update(HardwareAdapter.getInstance().getJoysticks().operatorXboxController);
 		} else {
+			robotState.climberStickInput.update(HardwareAdapter.getInstance().getJoysticks().climberStick);
 			robotState.operatorJoystickInput.update(HardwareAdapter.getInstance().getJoysticks().operatorJoystick);
 		}
 		switch(robotState.leftControlMode) {

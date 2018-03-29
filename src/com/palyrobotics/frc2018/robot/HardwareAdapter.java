@@ -159,15 +159,16 @@ public class HardwareAdapter {
 
 		public final Joystick driveStick = new Joystick(0);
 		public final Joystick turnStick = new Joystick(1);
-		public final Joystick climberStick = new Joystick(2);
+		public Joystick climberStick = null;
 		public Joystick operatorJoystick = null;
 		public XboxController operatorXboxController = null;
 
 		protected Joysticks() {
 			if(Constants.operatorXBoxController) {
-				operatorXboxController = new XboxController(3, false);
+				operatorXboxController = new XboxController(2, false);
 			} else {
 				operatorJoystick = new Joystick(3);
+				climberStick = new Joystick(2);
 			}
 		}
 	}
