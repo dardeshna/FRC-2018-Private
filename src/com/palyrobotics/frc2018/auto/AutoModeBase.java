@@ -10,7 +10,6 @@ public abstract class AutoModeBase {
 	//Will be run before the routine is taken
 	public abstract void prestart();
 
-	@Deprecated
 	public AutoModeBase() {}
 
 	public enum Alliance {
