@@ -55,7 +55,7 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void robotInit() {
-		Logger.getInstance().setFileName("Arizona North");
+		Logger.getInstance().setFileName("Silicon Valley");
 		Logger.getInstance().start();
 
 		Logger.getInstance().logRobotThread(Level.INFO, "Start robotInit() for " + Constants.kRobotName.toString());

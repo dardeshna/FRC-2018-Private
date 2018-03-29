@@ -492,7 +492,7 @@ class HardwareUpdater {
 		StickyFaults elevatorStickyFaults = new StickyFaults();
 		HardwareAdapter.getInstance().getElevator().elevatorMasterTalon.clearStickyFaults(0);
 		HardwareAdapter.getInstance().getElevator().elevatorMasterTalon.getStickyFaults(elevatorStickyFaults);
-		robotState.hasElevatorStickyFaults = elevatorStickyFaults.hasAnyFault();
+		robotState.hasElevatorStickyFaults = false;
 	}
 
 	/**
