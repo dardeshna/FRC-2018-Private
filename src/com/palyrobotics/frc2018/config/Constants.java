@@ -114,7 +114,7 @@ public class Constants {
 	public static final double kAcceptableGyroZeroError = 3;
 	public static final double kAcceptableEncoderZeroError = 50;
 
-	public static final double kElevatorAcceptablePositionError = 12;
+	public static final double kElevatorAcceptablePositionError = 40;
 	public static final double kElevatorAcceptableVelocityError = 0.01;
 
 	//Intake

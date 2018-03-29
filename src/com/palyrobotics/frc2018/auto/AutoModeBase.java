@@ -44,12 +44,12 @@ public abstract class AutoModeBase {
 	
 	// To set the auto mode, set these variables in code!
 	public static Alliance mAlliance = Alliance.RED;
-	public static StartingPosition mStartingPosition = StartingPosition.RIGHT;
-	public static Decision mScaleDecision = Decision.BOTH;
-	public static Decision mSwitchDecision = Decision.NEVER;
+	public static StartingPosition mStartingPosition = StartingPosition.CENTER;
+	public static Decision mScaleDecision = Decision.NEVER;
+	public static Decision mSwitchDecision = Decision.BOTH;
     public static SecondSideDecision mSecondScaleSideDecision = SecondSideDecision.NEVER;
     public static SecondSideDecision mSecondSwitchSideDecision = SecondSideDecision.SAME;
-	public static Priority mPriority = Priority.SCALE;
+	public static Priority mPriority = Priority.SWITCH;
 	public static Priority mSecondCubePriority = Priority.SWITCH;
 	public static boolean mMultiCube = true;
 
