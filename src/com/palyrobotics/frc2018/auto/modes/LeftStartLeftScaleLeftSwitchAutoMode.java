@@ -38,14 +38,14 @@ public class LeftStartLeftScaleLeftSwitchAutoMode extends AutoModeBase{
 
     public ArrayList<Path.Waypoint> getDriveIntoSwitch() {
         ArrayList<Path.Waypoint> path = new ArrayList<>();
-        path.add(new Path.Waypoint(new Translation2d(0, 0), 30.0, true));
+        path.add(new Path.Waypoint(new Translation2d(0, 0), 40.0, true));
         path.add(new Path.Waypoint(new Translation2d(-10.0, -3.5), 0.0, true));
         return path;
     }
 
     public ArrayList<Path.Waypoint> getDriveToCube() {
         ArrayList<Path.Waypoint> path = new ArrayList<>();
-        path.add(new Path.Waypoint(new Translation2d(0, 0), 30.0, true));
+        path.add(new Path.Waypoint(new Translation2d(0, 0), 40.0, true));
         if(mAlliance == Alliance.BLUE) {
             path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueLeftSwitchX + AutoDistances.kSwitchPlateLength + Constants.kSquareCubeLength - Constants.kRobotLengthInches + Constants.kCenterOfRotationOffsetFromFrontInches,
                     AutoDistances.kBlueLeftCornerOffset - AutoDistances.kBlueLeftSwitchY + Constants.kRobotWidthInches/2.0), 0.0, false));

@@ -48,13 +48,11 @@ public class LeftStartLeftScaleAutoMode extends AutoModeBase {
                         1.6), toScaleDrivePath, "p1")
         ));
 
-        ParallelRoutine dropAndReset = new ParallelRoutine(new IntakeWheelRoutine(Intake.WheelState.EXPELLING, .8));
-
         DrivePathRoutine backUpPath = getBackward();
         ParallelRoutine backUp = new ParallelRoutine(backUpPath, new WaypointTriggerRoutine(
-                new ElevatorCustomPositioningRoutine(Constants.kElevatorBottomPositionInches,1.05), backUpPath, "p5"));
+                new ElevatorCustomPositioningRoutine(Constants.kElevatorBottomPositionInches,3.0), backUpPath, "p5"));
 
-        return new SequentialRoutine(new DriveSensorResetRoutine(1.0), toScale, new IntakeWheelRoutine(Intake.WheelState.EXPELLING, 1), backUp);
+        return new SequentialRoutine(new DriveSensorResetRoutine(0.75), toScale, new IntakeWheelRoutine(Intake.WheelState.EXPELLING, 0.75), backUp);
     }
 
 
@@ -90,8 +88,8 @@ public class LeftStartLeftScaleAutoMode extends AutoModeBase {
 
         ArrayList<Path.Waypoint> path = new ArrayList<>();
 
-        path.add(new Path.Waypoint(new Translation2d(0.0, 0.0), 45.0, "p4", true));
-        path.add(new Path.Waypoint(new Translation2d(-15.0, 15.0), 30, "p5", true));
+        path.add(new Path.Waypoint(new Translation2d(0.0, 0.0), 50.0, "p4", true));
+        path.add(new Path.Waypoint(new Translation2d(-15.0, 15.0), 40.0, "p5", true));
         path.add(new Path.Waypoint(new Translation2d(-30.0, 30.0), 0, "p6", true));
 
         return new DrivePathRoutine(path, true, true);

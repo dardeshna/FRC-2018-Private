@@ -50,7 +50,7 @@ public class RightStartLeftScaleAutoMode extends AutoModeBase {
                 3), backUpPath, "p8"));
         ParallelRoutine backUp = new ParallelRoutine(backUpPath, new ParallelRoutine(backUpSubsystems));
 
-        return new SequentialRoutine(new DriveSensorResetRoutine(1.0), toScale, new IntakeWheelRoutine(Intake.WheelState.EXPELLING, 1), backUp);
+        return new SequentialRoutine(new DriveSensorResetRoutine(0.75), toScale, new IntakeWheelRoutine(Intake.WheelState.EXPELLING, 0.75), backUp);
     }
 
     public DrivePathRoutine getToScale() {
@@ -99,8 +99,8 @@ public class RightStartLeftScaleAutoMode extends AutoModeBase {
     public DrivePathRoutine getBackward() {
         ArrayList<Path.Waypoint> path = new ArrayList<>();
 
-        path.add(new Path.Waypoint(new Translation2d(0.0, 0.0), 45.0, "p7", true));
-        path.add(new Path.Waypoint(new Translation2d(-15.0, 15.0), 30, "p8", true));
+        path.add(new Path.Waypoint(new Translation2d(0.0, 0.0), 50.0, "p7", true));
+        path.add(new Path.Waypoint(new Translation2d(-15.0, 15.0), 40.0, "p8", true));
         path.add(new Path.Waypoint(new Translation2d(-30.0, 30.0), 0, "p9", true));
 
         return new DrivePathRoutine(path, true, true);
