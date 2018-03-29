@@ -68,22 +68,23 @@ public class LeftStartLeftScaleAutoMode extends AutoModeBase {
         path.add(new Path.Waypoint(new Translation2d(0.0, 0.0), 120.0));
         if(mAlliance == Alliance.BLUE) {
             path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueLeftSwitchX + Constants.kRobotLengthInches,
-                    0), 100,"p1"));
+                    (Constants.kRobotWidthInches + AutoDistances.kBlueLeftCornerOffset)
+                            - AutoDistances.kBlueLeftScaleY - AutoDistances.kScalePlateWidth/9), 100,"p1"));
             path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueLeftScaleX - 2.0*Constants.kRobotLengthInches,
                     (Constants.kRobotWidthInches + AutoDistances.kBlueLeftCornerOffset)
-                            - AutoDistances.kBlueLeftScaleY - AutoDistances.kScalePlateWidth/2.5), 72.0,"p2"));
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueLeftScaleX - Constants.kRobotLengthInches,
+                            - AutoDistances.kBlueLeftScaleY - AutoDistances.kScalePlateWidth/5), 58,"p2"));
+            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueLeftScaleX - Constants.kRobotLengthInches- Constants.kNullZoneAllowableBack,
                     (Constants.kRobotWidthInches/2.0 + AutoDistances.kBlueLeftCornerOffset)
-                            - AutoDistances.kBlueLeftScaleY - AutoDistances.kScalePlateWidth/2.1), 0.0, "p3"));
+                            - AutoDistances.kBlueLeftScaleY - AutoDistances.kScalePlateWidth/5), 0.0, "p3"));
         } else {
             path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedLeftSwitchX + Constants.kRobotLengthInches,
                     Constants.kRobotWidthInches/2.0 + AutoDistances.kRedLeftCornerOffset - AutoDistances.kRedLeftSwitchY/2.0), 72.0));
             path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedLeftScaleX - 2.0*Constants.kRobotLengthInches,
                     (Constants.kRobotWidthInches/2 + AutoDistances.kRedLeftCornerOffset)
-                            - AutoDistances.kRedLeftScaleY - AutoDistances.kScalePlateWidth/2.0), 72.0));
+                            - AutoDistances.kRedLeftScaleY - AutoDistances.kScalePlateWidth/5), 72.0));
             path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedLeftScaleX - Constants.kRobotLengthInches,
                     (Constants.kRobotWidthInches/2.0 + AutoDistances.kRedLeftCornerOffset)
-                            - AutoDistances.kRedLeftScaleY - AutoDistances.kScalePlateWidth/2.0), 0.0));
+                            - AutoDistances.kRedLeftScaleY - AutoDistances.kScalePlateWidth/5), 0.0));
         }
         return new DrivePathRoutine(new Path(path), false);
     }

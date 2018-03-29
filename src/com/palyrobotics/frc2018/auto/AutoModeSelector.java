@@ -110,8 +110,6 @@ public class AutoModeSelector {
 //                AutoModeBase.mSwitchDecision, AutoModeBase.mSecondScaleSideDecision, AutoModeBase.mSecondSwitchSideDecision,
 //                AutoModeBase.mPriority, AutoModeBase.mSecondCubePriority, AutoModeBase.mMultiCube);
 		return new RightStartRightScaleRightSwitchAutoMode(Alliance.BLUE);
-
-//		return new LeftStartLeftScaleAutoMode(Alliance.RED);
 	}
 
 	/**
