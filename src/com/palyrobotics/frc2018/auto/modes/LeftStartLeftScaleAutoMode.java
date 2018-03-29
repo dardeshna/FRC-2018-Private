@@ -24,10 +24,6 @@ import java.util.List;
 
 public class LeftStartLeftScaleAutoMode extends AutoModeBase {
 
-    public LeftStartLeftScaleAutoMode(Alliance alliance) {
-        super(alliance);
-    }
-
     @Override
     public String toString() {
         return mAlliance + this.getClass().toString();

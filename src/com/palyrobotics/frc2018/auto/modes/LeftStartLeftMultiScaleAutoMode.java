@@ -20,10 +20,6 @@ import java.util.List;
 
 public class LeftStartLeftMultiScaleAutoMode extends AutoModeBase {
 
-    public LeftStartLeftMultiScaleAutoMode(Alliance alliance) {
-        super(alliance);
-    }
-
     @Override
     public String toString() {
         return "Left Multi Scale Auto Mode";
@@ -47,7 +43,7 @@ public class LeftStartLeftMultiScaleAutoMode extends AutoModeBase {
     public Routine getRoutine() {
         ArrayList<Routine> routines = new ArrayList<>();
 
-        routines.add(new LeftStartLeftScaleAutoMode(this.mAlliance).getRoutine());
+        routines.add(new LeftStartLeftScaleAutoMode().getRoutine());
 
     //        routines.add(new CascadingTurnAngle(Math.PI));
         routines.add(new ParallelRoutine(new ArrayList<Routine>() {{

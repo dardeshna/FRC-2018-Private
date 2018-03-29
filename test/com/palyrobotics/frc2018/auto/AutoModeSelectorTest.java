@@ -54,7 +54,7 @@ public class AutoModeSelectorTest {
 	@Test
 	public void testGetAutoMode() throws IndexOutOfBoundsException {
 		//Using automodes registered in constructor
-		assertThat("Incorrect auto mode retrieved", auto.getAutoMode().getClass(), equalTo(new BaselineAutoMode(AutoModeBase.Alliance.RED).getClass()));
+		assertThat("Incorrect auto mode retrieved", auto.getAutoMode().getClass(), equalTo(new BaselineAutoMode().getClass()));
 
 		assertThat("Created wrong AutoMode from index outside bounds", auto.getAutoModeByIndex(-1), equalTo(auto.getAutoModeByIndex(0)));
 	}

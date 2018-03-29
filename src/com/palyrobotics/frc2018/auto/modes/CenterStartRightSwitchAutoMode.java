@@ -21,10 +21,6 @@ import java.util.List;
 
 public class CenterStartRightSwitchAutoMode extends AutoModeBase {
 
-	public CenterStartRightSwitchAutoMode(Alliance alliance) {
-		super(alliance);
-	}
-
 	@Override
 	public String toString() {
 		return mAlliance + this.getClass().toString();

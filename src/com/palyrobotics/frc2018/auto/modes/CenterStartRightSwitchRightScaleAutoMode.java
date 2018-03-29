@@ -5,10 +5,6 @@ import com.palyrobotics.frc2018.behavior.Routine;
 
 public class CenterStartRightSwitchRightScaleAutoMode extends AutoModeBase{
 
-    public CenterStartRightSwitchRightScaleAutoMode(Alliance alliance) {
-        super(alliance);
-    }
-
     @Override
     public String toString() {
         return null;

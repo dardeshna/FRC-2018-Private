@@ -48,7 +48,7 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
         ArrayList<Routine> routines = new ArrayList<>();
 
         //Initial cube score
-        routines.add(new CenterStartRightSwitchAutoMode(this.mAlliance).getRoutine());
+        routines.add(new CenterStartRightSwitchAutoMode().getRoutine());
 
         ArrayList<Routine> prepareForSecondCube = new ArrayList<>();
 

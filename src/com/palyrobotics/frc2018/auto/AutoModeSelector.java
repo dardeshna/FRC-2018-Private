@@ -32,59 +32,50 @@ public class AutoModeSelector {
 
 	protected AutoModeSelector() {
 		// left to right, blue alliance to red alliance
-		/* 0 */ registerAutonomous(new BaselineAutoMode(Alliance.BLUE), 0);
-		/* 1 */ registerAutonomous(new BaselineAutoMode(Alliance.RED), 1);
+		/* 0 */ registerAutonomous(new BaselineAutoMode(), 0);
 
-		/* 2 */ registerAutonomous(new LeftStartLeftSwitchAutoMode(Alliance.BLUE), 2);
-		/* 3 */ registerAutonomous(new LeftStartLeftSwitchAutoMode(Alliance.RED), 3);
+		/* 2 */ registerAutonomous(new LeftStartLeftSwitchAutoMode(), 1);
 
-		/* 4 */ registerAutonomous(new CenterStartLeftSwitchAutoMode(Alliance.BLUE), 4);
-		/* 5 */ registerAutonomous(new CenterStartLeftSwitchAutoMode(Alliance.RED), 5);
+		/* 5 */ registerAutonomous(new CenterStartLeftSwitchAutoMode(), 2);
 
-		/* 6 */ registerAutonomous(new RightStartLeftSwitchAutoMode(Alliance.BLUE), 6);
-		/* 7 */ registerAutonomous(new RightStartLeftSwitchAutoMode(Alliance.RED), 7);
+		/* 7 */ registerAutonomous(new RightStartLeftSwitchAutoMode(), 3);
 
-		/* 8 */ registerAutonomous(new LeftStartRightSwitchAutoMode(Alliance.BLUE), 8);
-		/* 9 */ registerAutonomous(new LeftStartRightSwitchAutoMode(Alliance.RED), 9);
+		/* 9 */ registerAutonomous(new LeftStartRightSwitchAutoMode(), 4);
 
-		/* 10 */ registerAutonomous(new CenterStartRightSwitchAutoMode(Alliance.BLUE), 10);
-		/* 11 */ registerAutonomous(new CenterStartRightSwitchAutoMode(Alliance.RED), 11);
+		/* 10 */ registerAutonomous(new CenterStartRightSwitchAutoMode(), 5);
 
-		/* 12 */ registerAutonomous(new RightStartRightSwitchAutoMode(Alliance.BLUE), 12);
-		/* 13 */ registerAutonomous(new RightStartRightSwitchAutoMode(Alliance.RED), 13);
+		/* 12 */ registerAutonomous(new RightStartRightSwitchAutoMode(), 6);
 
-		/* 14 */ registerAutonomous(new LeftStartLeftScaleAutoMode(Alliance.BLUE), 14);
-		/* 15 */ registerAutonomous(new LeftStartLeftScaleAutoMode(Alliance.RED), 15);
+		/* 14 */ registerAutonomous(new LeftStartLeftScaleAutoMode(), 7);
 
-		/* 16 */ registerAutonomous(new CenterStartLeftScaleAutoMode(Alliance.BLUE), 16);
-		/* 17 */ registerAutonomous(new CenterStartLeftScaleAutoMode(Alliance.RED), 17);
+		/* 16 */ registerAutonomous(new CenterStartLeftScaleAutoMode(), 8);
 
-		/* 18 */ registerAutonomous(new RightStartLeftScaleAutoMode(Alliance.BLUE), 18);
-		/* 19 */ registerAutonomous(new RightStartLeftScaleAutoMode(Alliance.RED), 19);
+		/* 18 */ registerAutonomous(new RightStartLeftScaleAutoMode(), 9);
 
-		/* 20 */ registerAutonomous(new LeftStartRightScaleAutoMode(Alliance.BLUE), 20);
-		/* 21 */ registerAutonomous(new LeftStartRightScaleAutoMode(Alliance.RED), 21);
+		/* 20 */ registerAutonomous(new LeftStartRightScaleAutoMode(), 10);
 
-		/* 22 */ registerAutonomous(new CenterStartRightScaleAutoMode(Alliance.BLUE), 22);
-		/* 23 */ registerAutonomous(new CenterStartRightScaleAutoMode(Alliance.RED), 23);
+		/* 22 */ registerAutonomous(new CenterStartRightScaleAutoMode(), 11);
 
-		/* 24 */ registerAutonomous(new RightStartRightScaleAutoMode(Alliance.BLUE), 24);
-		/* 25 */ registerAutonomous(new RightStartRightScaleAutoMode(Alliance.RED), 25);
+		/* 24 */ registerAutonomous(new RightStartRightScaleAutoMode(), 12);
 
-		/* 26 */ registerAutonomous(new CenterStartLeftMultiSwitchAutoMode(Alliance.BLUE), 26);
-		/* 27 */ registerAutonomous(new CenterStartLeftMultiSwitchAutoMode(Alliance.RED), 27);
+		/* 26 */ registerAutonomous(new CenterStartLeftMultiSwitchAutoMode(), 13);
 
-		/* 28 */ registerAutonomous(new CenterStartRightMultiSwitchAutoMode(Alliance.BLUE), 28);
-		/* 29 */ registerAutonomous(new CenterStartRightMultiSwitchAutoMode(Alliance.RED), 29);
+		/* 28 */ registerAutonomous(new CenterStartRightMultiSwitchAutoMode(Alliance.BLUE), 14);
+		/* 29 */ registerAutonomous(new CenterStartRightMultiSwitchAutoMode(Alliance.RED), 15);
 
-		/* 30 */ registerAutonomous(new LeftStartLeftMultiScaleAutoMode(Alliance.BLUE), 30);
-		/* 31 */ registerAutonomous(new LeftStartLeftMultiScaleAutoMode(Alliance.RED), 31);
+		/* 30 */ registerAutonomous(new LeftStartLeftMultiScaleAutoMode(), 16);
 
-		/* 32 */ registerAutonomous(new LeftStartRightMultiScaleAutoMode(Alliance.BLUE), 32);
-		/* 33 */ registerAutonomous(new LeftStartRightMultiScaleAutoMode(Alliance.RED), 33);
+		/* 32 */ registerAutonomous(new LeftStartRightMultiScaleAutoMode(), 17);
 
-		/* 34 */ registerAutonomous(new RightStartLeftMultiScaleAutoMode(Alliance.BLUE), 34);
-		/* 35 */ registerAutonomous(new RightStartLeftMultiScaleAutoMode(Alliance.RED), 35);
+		/* 34 */ registerAutonomous(new RightStartLeftMultiScaleAutoMode(), 18);
+
+		/* 36 */ registerAutonomous(new RightStartLeftScaleLeftSwitchAutoMode(), 19);
+
+		/* 38 */ registerAutonomous(new RightStartRightScaleRightSwitchAutoMode(), 20);
+
+		/* 40 */ registerAutonomous(new LeftStartLeftScaleLeftSwitchAutoMode(), 21);
+
+		/* 42 */ registerAutonomous(new LeftStartRightScaleRightSwitchAutoMode(), 22);
 	}
 
 	/**
@@ -106,13 +97,13 @@ public class AutoModeSelector {
 	public AutoModeBase getAutoMode() {
 //		return new TestAutoMode();
 
-//		return getAutoMode(AutoModeBase.mAlliance, AutoModeBase.mStartingPosition, AutoModeBase.mScaleDecision,
-//                AutoModeBase.mSwitchDecision, AutoModeBase.mSecondScaleSideDecision, AutoModeBase.mSecondSwitchSideDecision,
-//                AutoModeBase.mPriority, AutoModeBase.mSecondCubePriority, AutoModeBase.mMultiCube);
+		return getAutoMode(AutoModeBase.mAlliance, AutoModeBase.mStartingPosition, AutoModeBase.mScaleDecision,
+                AutoModeBase.mSwitchDecision, AutoModeBase.mSecondScaleSideDecision, AutoModeBase.mSecondSwitchSideDecision,
+                AutoModeBase.mPriority, AutoModeBase.mSecondCubePriority, AutoModeBase.mMultiCube);
 //		return new RightStartRightScaleRightSwitchAutoMode(Alliance.RED);
 //		return new LeftStartLeftScaleLeftSwitchAutoMode(Alliance.RED);
 //		return new LeftStartLeftScaleAutoMode(Alliance.RED);
-		return new RightStartLeftScaleLeftSwitchAutoMode(Alliance.BLUE);
+//		return new RightStartLeftScaleLeftSwitchAutoMode(Alliance.BLUE);
 //		return new LeftStartRightScaleRightSwitchAutoMode(Alliance.RED);
 	}
 
@@ -170,7 +161,6 @@ public class AutoModeSelector {
 				} else {
 					key = alliance + " " + startingPosition + " SCALE " + scaleSide;
 				}
-                System.out.println("scale key: " + key);
 				try {
 					scaleIndex = mAutoMap.get(key);
 				} catch (Exception e) {
@@ -217,7 +207,6 @@ public class AutoModeSelector {
                     } else {
                         key = alliance + " " + startingPosition + " SWITCH " + switchSide;
                     }
-                    System.out.println("switch key: " + key);
                     try {
                         switchIndex = mAutoMap.get(key);
                     } catch (Exception e) {

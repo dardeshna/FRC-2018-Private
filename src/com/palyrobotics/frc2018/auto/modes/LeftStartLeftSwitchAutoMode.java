@@ -28,10 +28,6 @@ public class LeftStartLeftSwitchAutoMode extends AutoModeBase {
         return mAlliance + this.getClass().toString();
     }
 
-    public LeftStartLeftSwitchAutoMode(Alliance alliance) {
-        super(alliance);
-    }
-
     @Override
     public void prestart() {
 

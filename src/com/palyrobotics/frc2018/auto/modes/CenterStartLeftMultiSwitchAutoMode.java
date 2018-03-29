@@ -24,10 +24,6 @@ import java.util.List;
 
 public class CenterStartLeftMultiSwitchAutoMode extends AutoModeBase {
 
-    public CenterStartLeftMultiSwitchAutoMode(Alliance alliance) {
-        super(alliance);
-    }
-
     private Alliance mAlliance;
 
     //Point in between getting second cube and switch, used as a vertex to curve off of
@@ -48,7 +44,7 @@ public class CenterStartLeftMultiSwitchAutoMode extends AutoModeBase {
         ArrayList<Routine> routines = new ArrayList<>();
 
         //Initial cube score
-        routines.add(new CenterStartLeftSwitchAutoMode(this.mAlliance).getRoutine());
+        routines.add(new CenterStartLeftSwitchAutoMode().getRoutine());
 
         ArrayList<Routine> prepareForSecondCube = new ArrayList<>();
 

@@ -21,10 +21,6 @@ import java.util.List;
 
 public class LeftStartRightSwitchAutoMode extends AutoModeBase {
 
-    public LeftStartRightSwitchAutoMode(Alliance alliance) {
-        super(alliance);
-    }
-
     @Override
     public String toString() {
         return mAlliance + this.getClass().toString();

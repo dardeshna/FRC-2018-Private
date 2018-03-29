@@ -13,10 +13,6 @@ public abstract class AutoModeBase {
 	@Deprecated
 	public AutoModeBase() {}
 
-	public AutoModeBase(Alliance alliance) {
-	    mAlliance = alliance;
-    }
-
 	public enum Alliance {
 		RED,
 		BLUE
@@ -48,12 +44,12 @@ public abstract class AutoModeBase {
 	}
 	
 	// To set the auto mode, set these variables in code!
-	public static Alliance mAlliance = Alliance.BLUE;
+	public static Alliance mAlliance = Alliance.RED;
 	public static StartingPosition mStartingPosition = StartingPosition.CENTER;
-	public static Decision mScaleDecision = Decision.BOTH;
+	public static Decision mScaleDecision = Decision.NEVER;
 	public static Decision mSwitchDecision = Decision.BOTH;
     public static SecondSideDecision mSecondScaleSideDecision = SecondSideDecision.NEVER;
-    public static SecondSideDecision mSecondSwitchSideDecision = SecondSideDecision.BOTH;
+    public static SecondSideDecision mSecondSwitchSideDecision = SecondSideDecision.SAME;
 	public static Priority mPriority = Priority.SWITCH;
 	public static Priority mSecondCubePriority = Priority.SWITCH;
 	public static boolean mMultiCube = true;

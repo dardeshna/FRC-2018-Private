@@ -17,13 +17,9 @@ import java.util.ArrayList;
 
 public class LeftStartRightScaleRightSwitchAutoMode extends AutoModeBase {
 
-    public LeftStartRightScaleRightSwitchAutoMode(Alliance alliance) {
-        super(alliance);
-    }
-
     @Override
     public String toString() {
-        return null;
+        return mAlliance + this.getClass().toString();
     }
 
     @Override
@@ -56,7 +52,7 @@ public class LeftStartRightScaleRightSwitchAutoMode extends AutoModeBase {
     public Routine getRoutine() {
         DriveUntilHasCubeRoutine getCube = new DriveUntilHasCubeRoutine(new DrivePathRoutine(getDriveToCube(), false, true), 3.0);
 
-        return new SequentialRoutine(new LeftStartRightScaleAutoMode(mAlliance).getRoutine(), getCube, new ElevatorCustomPositioningRoutine(Constants.kElevatorSwitchPositionInches, 0.7),
+        return new SequentialRoutine(new LeftStartRightScaleAutoMode().getRoutine(), getCube, new ElevatorCustomPositioningRoutine(Constants.kElevatorSwitchPositionInches, 0.7),
                 new DrivePathRoutine(getDriveIntoSwitch(), false, true), new IntakeWheelRoutine(Intake.WheelState.EXPELLING, 1.0));
     }
 
