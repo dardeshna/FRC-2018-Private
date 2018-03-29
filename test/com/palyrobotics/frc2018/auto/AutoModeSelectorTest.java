@@ -32,7 +32,7 @@ public class AutoModeSelectorTest {
 	}
 
 	@Test
-    public void getAuto() {
+    public void testRightAutos() {
         AutoFMS.getInstance().setSwitch(AutoFMS.Side.RIGHT);
         AutoFMS.getInstance().setScale(AutoFMS.Side.RIGHT);
         System.out.println(auto.getAutoMode(AutoModeBase.Alliance.BLUE, AutoModeBase.StartingPosition.RIGHT, AutoModeBase.Decision.RIGHT, AutoModeBase.Decision.RIGHT, AutoModeBase.SecondSideDecision.BOTH, AutoModeBase.SecondSideDecision.BOTH, AutoModeBase.Priority.SCALE, AutoModeBase.Priority.SCALE, true).getClass());
@@ -48,7 +48,6 @@ public class AutoModeSelectorTest {
         AutoFMS.getInstance().setSwitch(AutoFMS.Side.RIGHT);
         AutoFMS.getInstance().setScale(AutoFMS.Side.RIGHT);
         System.out.println(auto.getAutoMode(AutoModeBase.Alliance.BLUE, AutoModeBase.StartingPosition.RIGHT, AutoModeBase.Decision.RIGHT, AutoModeBase.Decision.RIGHT, AutoModeBase.SecondSideDecision.BOTH, AutoModeBase.SecondSideDecision.BOTH, AutoModeBase.Priority.SWITCH, AutoModeBase.Priority.SCALE, true).getClass());
-
     }
 
 	@Test
@@ -59,6 +58,36 @@ public class AutoModeSelectorTest {
 		assertThat("Created wrong AutoMode from index outside bounds", auto.getAutoModeByIndex(-1), equalTo(auto.getAutoModeByIndex(0)));
 	}
 
+	@Test
+    public void testLeftAutoModes() {
+        AutoFMS.getInstance().setSwitch(AutoFMS.Side.LEFT);
+        AutoFMS.getInstance().setScale(AutoFMS.Side.LEFT);
+        System.out.println(auto.getAutoMode(AutoModeBase.Alliance.BLUE, AutoModeBase.StartingPosition.LEFT, AutoModeBase.Decision.LEFT, AutoModeBase.Decision.LEFT, AutoModeBase.SecondSideDecision.BOTH, AutoModeBase.SecondSideDecision.BOTH, AutoModeBase.Priority.SCALE, AutoModeBase.Priority.SCALE, true).getClass());
+
+        AutoFMS.getInstance().setSwitch(AutoFMS.Side.LEFT);
+        AutoFMS.getInstance().setScale(AutoFMS.Side.LEFT);
+        System.out.println(auto.getAutoMode(AutoModeBase.Alliance.BLUE, AutoModeBase.StartingPosition.LEFT, AutoModeBase.Decision.LEFT, AutoModeBase.Decision.LEFT, AutoModeBase.SecondSideDecision.BOTH, AutoModeBase.SecondSideDecision.BOTH, AutoModeBase.Priority.SCALE, AutoModeBase.Priority.SWITCH, true).getClass());
+
+        AutoFMS.getInstance().setSwitch(AutoFMS.Side.LEFT);
+        AutoFMS.getInstance().setScale(AutoFMS.Side.LEFT);
+        System.out.println(auto.getAutoMode(AutoModeBase.Alliance.BLUE, AutoModeBase.StartingPosition.LEFT, AutoModeBase.Decision.LEFT, AutoModeBase.Decision.LEFT, AutoModeBase.SecondSideDecision.BOTH, AutoModeBase.SecondSideDecision.BOTH, AutoModeBase.Priority.SWITCH, AutoModeBase.Priority.SWITCH, true).getClass());
+
+        AutoFMS.getInstance().setSwitch(AutoFMS.Side.LEFT);
+        AutoFMS.getInstance().setScale(AutoFMS.Side.LEFT);
+        System.out.println(auto.getAutoMode(AutoModeBase.Alliance.BLUE, AutoModeBase.StartingPosition.LEFT, AutoModeBase.Decision.LEFT, AutoModeBase.Decision.LEFT, AutoModeBase.SecondSideDecision.BOTH, AutoModeBase.SecondSideDecision.BOTH, AutoModeBase.Priority.SWITCH, AutoModeBase.Priority.SCALE, true).getClass());
+    }
+
+    @Test
+    public void testCenterAutoModes() {
+        AutoFMS.getInstance().setSwitch(AutoFMS.Side.LEFT);
+        AutoFMS.getInstance().setScale(AutoFMS.Side.LEFT);
+        System.out.println(auto.getAutoMode(AutoModeBase.Alliance.BLUE, AutoModeBase.StartingPosition.CENTER, AutoModeBase.Decision.BOTH, AutoModeBase.Decision.BOTH, AutoModeBase.SecondSideDecision.BOTH, AutoModeBase.SecondSideDecision.BOTH, AutoModeBase.Priority.SWITCH, AutoModeBase.Priority.SCALE, true).getClass());
+
+        AutoFMS.getInstance().setSwitch(AutoFMS.Side.RIGHT);
+        AutoFMS.getInstance().setScale(AutoFMS.Side.LEFT);
+        System.out.println(auto.getAutoMode(AutoModeBase.Alliance.BLUE, AutoModeBase.StartingPosition.CENTER, AutoModeBase.Decision.BOTH, AutoModeBase.Decision.BOTH, AutoModeBase.SecondSideDecision.BOTH, AutoModeBase.SecondSideDecision.BOTH, AutoModeBase.Priority.SWITCH, AutoModeBase.Priority.SCALE, true).getClass());
+
+    }
 /*	@Test
 	public void testAutoPaths() {
 		AutoFMS.getInstance().setSwitch(AutoFMS.Side.LEFT);

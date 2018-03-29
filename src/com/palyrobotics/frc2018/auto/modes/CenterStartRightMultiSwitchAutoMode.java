@@ -24,12 +24,6 @@ import java.util.List;
 
 public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
 
-    private Alliance mAlliance;
-
-    public CenterStartRightMultiSwitchAutoMode(AutoModeBase.Alliance alliance) {
-        this.mAlliance = alliance;
-    }
-
     //Point in between getting second cube and switch, used as a vertex to curve off of
     //-60, -20
 
@@ -176,7 +170,7 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
 
     @Override
     public String getKey() {
-        return mAlliance + " MULTI CENTER SWITCH RIGHT";
+        return mAlliance + " CENTER SWITCH RIGHT SWITCH RIGHT";
     }
 
 }
