@@ -34,49 +34,48 @@ public class AutoModeSelector {
         // left to right, blue alliance to red alliance
         /* 0 */ registerAutonomous(new BaselineAutoMode(), 0);
 
-        /* 2 */ registerAutonomous(new LeftStartLeftSwitchAutoMode(), 1);
+        /* 1 */ registerAutonomous(new LeftStartLeftSwitchAutoMode(), 1);
 
-        /* 5 */ registerAutonomous(new CenterStartLeftSwitchAutoMode(), 2);
+        /* 2 */ registerAutonomous(new CenterStartLeftSwitchAutoMode(), 2);
 
-        /* 7 */ registerAutonomous(new RightStartLeftSwitchAutoMode(), 3);
+        /* 3 */ registerAutonomous(new RightStartLeftSwitchAutoMode(), 3);
 
-        /* 9 */ registerAutonomous(new LeftStartRightSwitchAutoMode(), 4);
+        /* 4 */ registerAutonomous(new LeftStartRightSwitchAutoMode(), 4);
 
-        /* 10 */ registerAutonomous(new CenterStartRightSwitchAutoMode(), 5);
+        /* 5 */ registerAutonomous(new CenterStartRightSwitchAutoMode(), 5);
 
-        /* 12 */ registerAutonomous(new RightStartRightSwitchAutoMode(), 6);
+        /* 6 */ registerAutonomous(new RightStartRightSwitchAutoMode(), 6);
 
-        /* 14 */ registerAutonomous(new LeftStartLeftScaleAutoMode(), 7);
+        /* 7 */ registerAutonomous(new LeftStartLeftScaleAutoMode(), 7);
 
-        /* 16 */ registerAutonomous(new CenterStartLeftScaleAutoMode(), 8);
+        /* 8 */ registerAutonomous(new CenterStartLeftScaleAutoMode(), 8);
 
-        /* 18 */ registerAutonomous(new RightStartLeftScaleAutoMode(), 9);
+        /* 9 */ registerAutonomous(new RightStartLeftScaleAutoMode(), 9);
 
-        /* 20 */ registerAutonomous(new LeftStartRightScaleAutoMode(), 10);
+        /* 10 */ registerAutonomous(new LeftStartRightScaleAutoMode(), 10);
 
-        /* 22 */ registerAutonomous(new CenterStartRightScaleAutoMode(), 11);
+        /* 11 */ registerAutonomous(new CenterStartRightScaleAutoMode(), 11);
 
-        /* 24 */ registerAutonomous(new RightStartRightScaleAutoMode(), 12);
+        /* 12 */ registerAutonomous(new RightStartRightScaleAutoMode(), 12);
 
-        /* 26 */ registerAutonomous(new CenterStartLeftMultiSwitchAutoMode(), 13);
+        /* 13 */ registerAutonomous(new CenterStartLeftMultiSwitchAutoMode(), 13);
 
-        /* 28 */ registerAutonomous(new CenterStartRightMultiSwitchAutoMode(), 14);
+		/* 14 */ registerAutonomous(new CenterStartRightMultiSwitchAutoMode(), 14);
 
-        /* 30 */ registerAutonomous(new LeftStartLeftMultiScaleAutoMode(), 15);
+		/* 15 */ registerAutonomous(new LeftStartLeftMultiScaleAutoMode(), 15);
 
-        /* 32 */ registerAutonomous(new LeftStartRightMultiScaleAutoMode(), 16);
+		/* 16 */ registerAutonomous(new LeftStartRightMultiScaleAutoMode(), 16);
 
-        /* 34 */ registerAutonomous(new RightStartLeftMultiScaleAutoMode(), 17);
+		/* 17 */ registerAutonomous(new RightStartLeftMultiScaleAutoMode(), 17);
 
-        /* 36 */ registerAutonomous(new RightStartLeftScaleLeftSwitchAutoMode(), 18);
+		/* 18 */ registerAutonomous(new RightStartLeftScaleLeftSwitchAutoMode(), 18);
 
-        /* 38 */ registerAutonomous(new RightStartRightScaleRightSwitchAutoMode(), 19);
+		/* 19 */ registerAutonomous(new RightStartRightScaleRightSwitchAutoMode(), 19);
 
-        /* 40 */ registerAutonomous(new LeftStartLeftScaleLeftSwitchAutoMode(), 20);
+		/* 20 */ registerAutonomous(new LeftStartLeftScaleLeftSwitchAutoMode(), 20);
 
-        /* 42 */ registerAutonomous(new LeftStartRightScaleRightSwitchAutoMode(), 21);
-
-    }
+		/* 21 */ registerAutonomous(new LeftStartRightScaleRightSwitchAutoMode(), 21);
+	}
 
 	/**
 	 * Add an AutoMode to list to choose from
