@@ -228,42 +228,40 @@ public class OperatorInterface {
 		/**
 		 * Climber controls
 		 */
-		if(Math.abs(ChezyMath.handleDeadband(mClimberStick.getY(), 0.1)) > 0.0) {
-			newCommands.wantedClimbMovement = Climber.MotionSubstate.MOVING;
+		if(Constants.operatorXBoxController) {
+			if (Math.abs(ChezyMath.handleDeadband(mOperatorXboxController.getLeftY(), 0.1)) > 0.0) {
+				newCommands.wantedClimbMovement = Climber.MotionSubstate.MOVING;
+			} else {
+				newCommands.wantedClimbMovement = Climber.MotionSubstate.LOCKED;
+			}
 
-			ArrayList<Routine> stowIntakeRoutine = new ArrayList<Routine>();
-			stowIntakeRoutine.add(new IntakeCloseRoutine());
-			stowIntakeRoutine.add(new IntakeUpRoutine());
-			newCommands.addWantedRoutine(new SequentialRoutine(stowIntakeRoutine));
+			//Driver intake control
+			//Override above intake wheel logic block
+			//Default idle state is in above logic block
+			if (mTurnStick.getButtonPressed(3)) {
+				newCommands.wantedIntakingState = Intake.WheelState.INTAKING;
+				newCommands.cancelCurrentRoutines = true;
+			} else if (mTurnStick.getButtonPressed(4)) {
+				newCommands.wantedIntakingState = Intake.WheelState.VAULT_EXPELLING;
+				newCommands.cancelCurrentRoutines = true;
+			}
 		} else {
-			newCommands.wantedClimbMovement = Climber.MotionSubstate.LOCKED;
-		}
+			if (Math.abs(ChezyMath.handleDeadband(mClimberStick.getY(), 0.1)) > 0.0) {
+				newCommands.wantedClimbMovement = Climber.MotionSubstate.MOVING;
+			} else {
+				newCommands.wantedClimbMovement = Climber.MotionSubstate.LOCKED;
+			}
 
-		if (mClimberStick.getTriggerPressed()) {
-			newCommands.wantedLockState = Climber.LockState.LOCKED;
-
-			ArrayList<Routine> stowIntakeRoutine = new ArrayList<Routine>();
-			stowIntakeRoutine.add(new IntakeCloseRoutine());
-			stowIntakeRoutine.add(new IntakeUpRoutine());
-			newCommands.addWantedRoutine(new SequentialRoutine(stowIntakeRoutine));
-		} else if (mClimberStick.getButtonPressed(2)) {
-			newCommands.wantedLockState = Climber.LockState.UNLOCKED;
-
-			ArrayList<Routine> stowIntakeRoutine = new ArrayList<Routine>();
-			stowIntakeRoutine.add(new IntakeCloseRoutine());
-			stowIntakeRoutine.add(new IntakeUpRoutine());
-			newCommands.addWantedRoutine(new SequentialRoutine(stowIntakeRoutine));
-		}
-
-		//Driver intake control
-		//Override above intake wheel logic block
-		//Default idle state is in above logic block
-		if(mTurnStick.getButtonPressed(3)) {
-			newCommands.wantedIntakingState = Intake.WheelState.INTAKING;
-			newCommands.cancelCurrentRoutines = true;
-		} else if(mTurnStick.getButtonPressed(4)) {
-			newCommands.wantedIntakingState = Intake.WheelState.VAULT_EXPELLING;
-			newCommands.cancelCurrentRoutines = true;
+			//Driver intake control
+			//Override above intake wheel logic block
+			//Default idle state is in above logic block
+			if (mTurnStick.getButtonPressed(3)) {
+				newCommands.wantedIntakingState = Intake.WheelState.INTAKING;
+				newCommands.cancelCurrentRoutines = true;
+			} else if (mTurnStick.getButtonPressed(4)) {
+				newCommands.wantedIntakingState = Intake.WheelState.VAULT_EXPELLING;
+				newCommands.cancelCurrentRoutines = true;
+			}
 		}
 
 		return newCommands;
