@@ -85,9 +85,6 @@ public class AutoModeSelector {
 
 		/* 34 */ registerAutonomous(new RightStartLeftMultiScaleAutoMode(Alliance.BLUE), 34);
 		/* 35 */ registerAutonomous(new RightStartLeftMultiScaleAutoMode(Alliance.RED), 35);
-
-		/* 36 */ registerAutonomous(new RightStartRightMultiScaleAutoMode(Alliance.BLUE), 36);
-		/* 37 */ registerAutonomous(new RightStartRightMultiScaleAutoMode(Alliance.RED), 37);
 	}
 
 	/**
@@ -112,8 +109,9 @@ public class AutoModeSelector {
 //		return getAutoMode(AutoModeBase.mAlliance, AutoModeBase.mStartingPosition, AutoModeBase.mScaleDecision,
 //                AutoModeBase.mSwitchDecision, AutoModeBase.mSecondScaleSideDecision, AutoModeBase.mSecondSwitchSideDecision,
 //                AutoModeBase.mPriority, AutoModeBase.mSecondCubePriority, AutoModeBase.mMultiCube);
+		return new RightStartRightScaleRightSwitchAutoMode(Alliance.BLUE);
 
-		return new LeftStartLeftScaleAutoMode(Alliance.RED);
+//		return new LeftStartLeftScaleAutoMode(Alliance.RED);
 	}
 
 	/**

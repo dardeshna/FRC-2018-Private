@@ -56,7 +56,7 @@ public class RightStartRightScaleAutoMode extends AutoModeBase {
         ParallelRoutine backUp = new ParallelRoutine(backUpPath, new WaypointTriggerRoutine(
                 new ElevatorCustomPositioningRoutine(Constants.kElevatorBottomPositionInches,1.05), backUpPath, "p5"));
 
-        return new SequentialRoutine(new DriveSensorResetRoutine(1.0), toScale, new IntakeWheelRoutine(Intake.WheelState.EXPELLING, 1), backUp, turnIntake());
+        return new SequentialRoutine(new DriveSensorResetRoutine(1.0), toScale, new IntakeWheelRoutine(Intake.WheelState.EXPELLING, 1), backUp);
     }
 
     public Routine turnIntake() {
@@ -133,8 +133,8 @@ public class RightStartRightScaleAutoMode extends AutoModeBase {
         ArrayList<Path.Waypoint> path = new ArrayList<>();
 
         path.add(new Path.Waypoint(new Translation2d(0.0, 0.0), 45.0, "p4", true));
-        path.add(new Path.Waypoint(new Translation2d(-20.0, 0.0), 30, "p5", true));
-        path.add(new Path.Waypoint(new Translation2d(-30.0, 0.0), 0, "p6", true));
+        path.add(new Path.Waypoint(new Translation2d(-20.0, -10.0), 30, "p5", true));
+        path.add(new Path.Waypoint(new Translation2d(-35.0, -35.0), 0, "p6", true));
 
         return new DrivePathRoutine(path, true, true);
     }
