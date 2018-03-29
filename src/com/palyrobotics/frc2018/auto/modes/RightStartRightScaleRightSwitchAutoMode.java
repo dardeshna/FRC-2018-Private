@@ -34,7 +34,7 @@ public class RightStartRightScaleRightSwitchAutoMode extends AutoModeBase {
     @Override
     public Routine getRoutine() {
 
-        DriveUntilHasCubeRoutine getCube = new DriveUntilHasCubeRoutine(new DrivePathRoutine(getDriveToCube(), false, true), 2.0);
+        DriveUntilHasCubeRoutine getCube = new DriveUntilHasCubeRoutine(new DrivePathRoutine(getDriveToCube(), false, true), 3.0);
 
         return new SequentialRoutine(new RightStartRightScaleAutoMode(mAlliance).getRoutine(), getCube, new ElevatorCustomPositioningRoutine(Constants.kElevatorSwitchPositionInches, 0.7),
                 new DrivePathRoutine(getDriveIntoSwitch(), false, true), new IntakeWheelRoutine(Intake.WheelState.EXPELLING, 1.0));
@@ -43,19 +43,19 @@ public class RightStartRightScaleRightSwitchAutoMode extends AutoModeBase {
     public ArrayList<Path.Waypoint> getDriveIntoSwitch() {
         ArrayList<Path.Waypoint> path = new ArrayList<>();
         path.add(new Path.Waypoint(new Translation2d(0, 0), 30.0, true));
-        path.add(new Path.Waypoint(new Translation2d(-4.0, 4.0), 0.0, true));
+        path.add(new Path.Waypoint(new Translation2d(-10.0, 3.5), 0.0, true));
         return path;
     }
 
     public ArrayList<Path.Waypoint> getDriveToCube() {
         ArrayList<Path.Waypoint> path = new ArrayList<>();
-        path.add(new Path.Waypoint(new Translation2d(0, 0), 72.0, true));
+        path.add(new Path.Waypoint(new Translation2d(0, 0), 30.0, true));
         if(mAlliance == Alliance.BLUE) {
             path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueRightSwitchX + AutoDistances.kSwitchPlateLength + Constants.kSquareCubeLength - Constants.kRobotLengthInches + Constants.kCenterOfRotationOffsetFromFrontInches, 
-                    -(AutoDistances.kFieldWidth - AutoDistances.kBlueLeftToCenterY) + AutoDistances.kBlueRightSwitchY), 0.0, false));
+                    -AutoDistances.kBlueRightCornerOffset + AutoDistances.kBlueRightSwitchY - Constants.kRobotWidthInches/2.0), 0.0, false));
         } else {
             path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedRightSwitchX + AutoDistances.kSwitchPlateLength + Constants.kSquareCubeLength - Constants.kRobotLengthInches + Constants.kCenterOfRotationOffsetFromFrontInches,
-                    -(AutoDistances.kFieldWidth - AutoDistances.kRedLeftToCenterY) + AutoDistances.kRedRightSwitchY), 0.0, false));
+                    -AutoDistances.kRedRightCornerOffset + AutoDistances.kRedRightSwitchY - Constants.kRobotWidthInches/2.0), 0.0, false));
         }
 
         return path;

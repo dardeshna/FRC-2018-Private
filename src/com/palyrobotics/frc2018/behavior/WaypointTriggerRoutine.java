@@ -25,23 +25,20 @@ public class WaypointTriggerRoutine extends Routine{
 
     @Override
     public void start() {
-        System.out.println("start");
+
     }
 
     @Override
     public Commands update(Commands commands) {
         this.mPath = mDrivePathRoutine.getPath();
-        System.out.println("Checking for marker" + mMarker);
         for (String s : mPath.getMarkersCrossed()) System.out.print(s);
         System.out.println();
         if(mPath.getMarkersCrossed().contains(mMarker) && !startedRoutine) {
-            System.out.println("Conditions met");
             mRoutine.start();
             startedRoutine = true;
         }
         if(startedRoutine) {
             mRoutine.update(commands);
-            System.out.println("Updating");
         }
         return commands;
     }

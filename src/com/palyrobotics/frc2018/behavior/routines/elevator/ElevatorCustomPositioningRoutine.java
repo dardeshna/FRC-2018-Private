@@ -56,9 +56,6 @@ public class ElevatorCustomPositioningRoutine extends Routine {
 	public void start() {
 	    if(!mPath.isPresent())
 		mStartTime = System.currentTimeMillis();
-	    System.out.println("ELEVATOR PRINT. STARTED");
-		System.out.println("ELEVATOR PRINT. STARTED");	    System.out.println("ELEVATOR PRINT. STARTED");
-		System.out.println("ELEVATOR PRINT. STARTED");	    System.out.println("ELEVATOR PRINT. STARTED");
 	}
 
 	/**

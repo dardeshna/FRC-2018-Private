@@ -109,6 +109,11 @@ public class DrivePathRoutine extends Routine {
 					absoluteList.add(point);
 				}
 			}
+
+			for (Path.Waypoint point : absoluteList) {
+				System.out.println("Desired pos: " + point.position);
+			}
+
 			mPath = new Path(absoluteList);
 		}
 		Logger.getInstance().logSubsystemThread(Level.INFO, "Starting Drive Path Routine");

@@ -15,10 +15,10 @@
     "kBlueLeftScaleY": 73.50,
     "kBlueRightScaleX": 300.0,
     "kBlueRightScaleY": 73.5,
-    "kRedLeftScaleX": 282.0,
-    "kRedLeftScaleY": 69.5,
+    "kRedLeftScaleX": 300.0,
+    "kRedLeftScaleY": 73.5,
     "kRedRightScaleX": 300.0,
-    "kRedRightScaleY": 59.5,
+    "kRedRightScaleY": 73.5,
     "kBluePyramidWidth": 47.0,
     "kBluePyramidLength": 44.0,
     "kRedPyramidWidth": 47.0,
@@ -38,6 +38,6 @@
     "kScalePlateLength": 48.0,
     "kBlueLeftPlatformY": 99.5,
     "kBlueRightPlatformY": 96.25,
-    "kRedLeftPlatformY": 0.0,
-    "kRedRightPlatformY": 0.0
+    "kRedLeftPlatformY": 99.5,
+    "kRedRightPlatformY": 96.25
 }
