@@ -44,7 +44,7 @@ public class RightStartLeftScaleAutoMode extends AutoModeBase {
         toScaleSubsystems.add(new SequentialRoutine(new IntakeCloseRoutine(), new IntakeDownRoutine(), new TimeoutRoutine(Constants.kScaleAutoWaitBeforeElevatorRaiseTimeSeconds), new ElevatorCustomPositioningRoutine(Constants.kElevatorCubeInTransitPositionInches, 1.0)));
         toScaleSubsystems.add(new WaypointTriggerRoutine(new ElevatorCustomPositioningRoutine(Constants.kElevatorTopBottomDifferenceInches,
                 1.6), toScaleDrivePath, "p4"));
-        ParallelRoutine toScale = new ParallelRoutine(toScaleDrivePath, new ParallelRoutine(toScaleSubsystems));
+        ParallelRoutine toScale = new ParallelRoutine(toScaleDrivePath, new SequentialRoutine(toScaleSubsystems));
 
         DrivePathRoutine backUpPath = getBackward();
         ArrayList<Routine> backUpSubsystems = new ArrayList<>();
