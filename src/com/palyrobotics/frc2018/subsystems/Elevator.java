@@ -125,8 +125,14 @@ public class Elevator extends Subsystem {
 							//Near bottom scales max allowed speed
 							//Going down is negative
 							if(Constants.operatorXBoxController) {
-								mOutput.setPercentOutput(Math.max(-Constants.kElevatorBottomScalingConstant * distInchesFromBottom
-										/ Constants.kElevatorBottomScalingMarginInches, mRobotState.operatorXboxControllerInput.getRightY()));
+								if(mRobotState.operatorXboxControllerInput.getRightY() < 0) {
+									mOutput.setPercentOutput(Constants.kElevatorConstantDownPower);
+								} else {
+									mOutput.setPercentOutput(mRobotState.operatorXboxControllerInput.getRightY());
+								}
+
+//								mOutput.setPercentOutput(Math.max(-Constants.kElevatorBottomScalingConstant * distInchesFromBottom
+//										/ Constants.kElevatorBottomScalingMarginInches, mRobotState.operatorXboxControllerInput.getRightY()));
 							} else {
 								mOutput.setPercentOutput(Math.max(-Constants.kElevatorBottomScalingConstant * distInchesFromBottom
 										/ Constants.kElevatorBottomScalingMarginInches, mRobotState.operatorJoystickInput.getY()));
