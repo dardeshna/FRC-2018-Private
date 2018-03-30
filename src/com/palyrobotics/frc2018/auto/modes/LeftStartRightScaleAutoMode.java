@@ -5,6 +5,7 @@ import com.palyrobotics.frc2018.behavior.ParallelRoutine;
 import com.palyrobotics.frc2018.behavior.Routine;
 import com.palyrobotics.frc2018.behavior.SequentialRoutine;
 import com.palyrobotics.frc2018.behavior.WaypointTriggerRoutine;
+import com.palyrobotics.frc2018.behavior.routines.TimeoutRoutine;
 import com.palyrobotics.frc2018.behavior.routines.drive.DrivePathRoutine;
 import com.palyrobotics.frc2018.behavior.routines.drive.DriveSensorResetRoutine;
 import com.palyrobotics.frc2018.behavior.routines.elevator.ElevatorCustomPositioningRoutine;
@@ -37,8 +38,9 @@ public class LeftStartRightScaleAutoMode extends AutoModeBase {
     public Routine getRoutine() {
         DrivePathRoutine toScaleDrivePath = getToScale();
         ArrayList<Routine> toScaleSubsystems = new ArrayList<>();
-        toScaleSubsystems.add(new IntakeDownRoutine());
-        toScaleSubsystems.add(new IntakeCloseRoutine());
+//        toScaleSubsystems.add(new IntakeDownRoutine());
+//        toScaleSubsystems.add(new IntakeCloseRoutine());
+        toScaleSubsystems.add(new SequentialRoutine(new IntakeCloseRoutine(), new IntakeDownRoutine(), new TimeoutRoutine(Constants.kScaleAutoWaitBeforeElevatorRaiseTimeSeconds), new ElevatorCustomPositioningRoutine(Constants.kElevatorCubeInTransitPositionInches, 1.0)));
         toScaleSubsystems.add(new WaypointTriggerRoutine(new ElevatorCustomPositioningRoutine(Constants.kElevatorTopBottomDifferenceInches,
                 1.6), toScaleDrivePath, "p4"));
         ParallelRoutine toScale = new ParallelRoutine(toScaleDrivePath, new ParallelRoutine(toScaleSubsystems));

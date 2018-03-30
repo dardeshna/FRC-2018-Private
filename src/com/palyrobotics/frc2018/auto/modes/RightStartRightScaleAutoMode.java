@@ -5,6 +5,7 @@ import com.palyrobotics.frc2018.behavior.ParallelRoutine;
 import com.palyrobotics.frc2018.behavior.Routine;
 import com.palyrobotics.frc2018.behavior.SequentialRoutine;
 import com.palyrobotics.frc2018.behavior.WaypointTriggerRoutine;
+import com.palyrobotics.frc2018.behavior.routines.TimeoutRoutine;
 import com.palyrobotics.frc2018.behavior.routines.drive.*;
 import com.palyrobotics.frc2018.behavior.routines.elevator.ElevatorCustomPositioningRoutine;
 import com.palyrobotics.frc2018.behavior.routines.intake.*;
@@ -41,7 +42,7 @@ public class RightStartRightScaleAutoMode extends AutoModeBase {
         prepareElevatorIntakeToScale.add(new SequentialRoutine(new IntakeDownRoutine(), new IntakeCloseRoutine()));
 
         ParallelRoutine toScale = new ParallelRoutine(toScaleDrivePath, new SequentialRoutine(
-                new IntakeCloseRoutine(), new IntakeDownRoutine(), new ElevatorCustomPositioningRoutine(Constants.kElevatorSwitchPositionInches + 16, 1.6),
+                new IntakeCloseRoutine(), new IntakeDownRoutine(), new TimeoutRoutine(Constants.kScaleAutoWaitBeforeElevatorRaiseTimeSeconds), new ElevatorCustomPositioningRoutine(Constants.kElevatorSwitchPositionInches + 16, 1.6),
                 new WaypointTriggerRoutine(new ElevatorCustomPositioningRoutine(Constants.kElevatorTopBottomDifferenceInches,
                 1.6), toScaleDrivePath, "p1")
         ));
