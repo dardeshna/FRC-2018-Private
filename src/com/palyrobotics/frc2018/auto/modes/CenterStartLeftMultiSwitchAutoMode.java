@@ -156,8 +156,8 @@ public class CenterStartLeftMultiSwitchAutoMode extends AutoModeBase {
 
         ArrayList<Waypoint> path = new ArrayList<>();
         
-        path.add(new Waypoint(new Translation2d(0, 0), 50.0, true));
-        path.add(new Waypoint(startPoint.translateBy(new Translation2d(-40.0, 0.0)), 50.0));
+        path.add(new Waypoint(new Translation2d(0, 0), 60.0, true));
+        path.add(new Waypoint(startPoint.translateBy(new Translation2d(-40.0, 0.0)), 60.0));
         path.add(new Waypoint(startPoint, 0.0));
         
         returnToSwitchPt2ArrayList.add(new DrivePathRoutine(path, false, 72.0, 30.0, 4.0, true));
