@@ -54,17 +54,7 @@ public class HardwareAdapter {
 			rightSlave2Victor = new WPI_VictorSPX(Constants.kForsetiRightDriveSlave2DeviceID);
             rightSlave3Victor = new WPI_VictorSPX(Constants.kForsetiRightDriveSlave3DeviceID);
 
-			//Gyro is currently attached to elevator talon as an... emergency provision
-
-			//HAL
-//			gyro = new PigeonIMU(new WPI_TalonSRX(Constants.kForsetiElevatorSlaveTalonID));
-
-			//Forseti
-			if(Constants.kRobotName == Constants.RobotName.HAL) {
-				gyro = new PigeonIMU(new WPI_TalonSRX(Constants.kForsetiElevatorSlaveTalonID));
-			} else {
-				gyro = new PigeonIMU(new WPI_TalonSRX(Constants.kForsetiIntakeSlaveDeviceID));
-			}
+			gyro = new PigeonIMU(new WPI_TalonSRX(Constants.kForsetiElevatorSlaveTalonID));
 		}
 	}
 

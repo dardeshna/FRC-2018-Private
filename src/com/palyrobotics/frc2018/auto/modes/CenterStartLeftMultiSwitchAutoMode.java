@@ -30,12 +30,12 @@ public class CenterStartLeftMultiSwitchAutoMode extends AutoModeBase {
 
     public CenterStartLeftMultiSwitchAutoMode() {
         if (mAlliance == Alliance.BLUE) {
-        	startPoint = new Translation2d(AutoDistances.kBlueRightSwitchX - Constants.kRobotLengthInches,
+        	startPoint = new Translation2d(AutoDistances.kBlueLeftSwitchX - Constants.kRobotLengthInches,
 					AutoDistances.kBlueLeftToCenterY + Constants.kRobotWidthInches/2.0 - AutoDistances.kBlueLeftSwitchY - AutoDistances.kSwitchPlateWidth/2.0);
         	midPoint =  new Translation2d(-85, -((AutoDistances.kFieldWidth - AutoDistances.kBluePyramidFromRightY) - AutoDistances.kBlueLeftSwitchY) + AutoDistances.kBluePyramidWidth / 2.0 + AutoDistances.kSwitchPlateWidth / 2.0);
         }
         else {
-        	startPoint = new Translation2d(AutoDistances.kRedRightSwitchX - Constants.kRobotLengthInches,
+        	startPoint = new Translation2d(AutoDistances.kRedLeftSwitchX - Constants.kRobotLengthInches,
 					AutoDistances.kRedLeftToCenterY + Constants.kRobotWidthInches/2.0 - AutoDistances.kRedLeftSwitchY - AutoDistances.kSwitchPlateWidth/2.0);
         	midPoint =  new Translation2d(-85, -((AutoDistances.kFieldWidth - AutoDistances.kRedPyramidFromRightY) - AutoDistances.kRedLeftSwitchY) + AutoDistances.kRedPyramidWidth / 2.0 + AutoDistances.kSwitchPlateWidth / 2.0);
         }

@@ -37,10 +37,6 @@ public class RightStartRightScaleAutoMode extends AutoModeBase {
     public Routine getRoutine() {
         DrivePathRoutine toScaleDrivePath = getToScale();
 
-        ArrayList<Routine> prepareElevatorIntakeToScale = new ArrayList<>();
-        prepareElevatorIntakeToScale.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorSwitchPositionInches+16, .75));
-        prepareElevatorIntakeToScale.add(new SequentialRoutine(new IntakeDownRoutine(), new IntakeCloseRoutine()));
-
         ParallelRoutine toScale = new ParallelRoutine(toScaleDrivePath, new SequentialRoutine(
                 new IntakeCloseRoutine(), new IntakeDownRoutine(), new TimeoutRoutine(Constants.kScaleAutoWaitBeforeElevatorRaiseTimeSeconds), new ElevatorCustomPositioningRoutine(Constants.kElevatorSwitchPositionInches + 16, 1.6),
                 new WaypointTriggerRoutine(new ElevatorCustomPositioningRoutine(Constants.kElevatorTopBottomDifferenceInches,
