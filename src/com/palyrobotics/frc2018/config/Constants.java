@@ -190,7 +190,7 @@ public class Constants {
 	public static final int kForsetiClimberLatchSolenoidForwardID = 6;
 	public static final int kForsetiClimberLatchSolenoidReverseID = 1;
 
-	public static final int kForsetiClimberBrakeSolenoidID = 5;
+	public static final int kForsetiClimberBrakeSolenoidID = 7;
 	public static final int kHALClimberBrakeSolenoidID = 6;
 
 
