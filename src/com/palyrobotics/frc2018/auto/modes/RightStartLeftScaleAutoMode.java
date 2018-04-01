@@ -52,7 +52,7 @@ public class RightStartLeftScaleAutoMode extends AutoModeBase {
                 3), backUpPath, "p8"));
         ParallelRoutine backUp = new ParallelRoutine(backUpPath, new ParallelRoutine(backUpSubsystems));
 
-        return new SequentialRoutine(new DriveSensorResetRoutine(0.75), toScale, new IntakeWheelRoutine(Intake.WheelState.EXPELLING, 0.75), backUp);
+        return new SequentialRoutine(new DriveSensorResetRoutine(0.75), new TimeoutRoutine(5.5), toScale, new IntakeWheelRoutine(Intake.WheelState.EXPELLING, 0.75), backUp);
     }
 
     public DrivePathRoutine getToScale() {

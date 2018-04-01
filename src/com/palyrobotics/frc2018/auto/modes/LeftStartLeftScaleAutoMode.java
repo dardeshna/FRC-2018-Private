@@ -90,9 +90,10 @@ public class LeftStartLeftScaleAutoMode extends AutoModeBase {
         ArrayList<Path.Waypoint> path = new ArrayList<>();
 
         path.add(new Path.Waypoint(new Translation2d(0.0, 0.0), 50.0, "p4", true));
-        path.add(new Path.Waypoint(new Translation2d(-15.0, 15.0), 40.0, "p5", true));
-        path.add(new Path.Waypoint(new Translation2d(-30.0, 30.0), 0, "p6", true));
-
+//        path.add(new Path.Waypoint(new Translation2d(-15.0, 15.0), 40.0, "p5", true));
+//        path.add(new Path.Waypoint(new Translation2d(-30.0, 30.0), 0, "p6", true));
+        path.add(new Path.Waypoint(new Translation2d(-15.0, 0.0), 40.0, "p5", true));
+        path.add(new Path.Waypoint(new Translation2d(-60.0, 0.0), 0, "p6", true));
         return new DrivePathRoutine(path, true, true);
     }
 
