@@ -222,19 +222,7 @@ public class Elevator extends Subsystem {
 	 *            the commands used to get the wanted state
 	 */
 	private void handleState(Commands commands) {
-//		if(mRobotState.hasElevatorStickyFaults && mRobotState.gamePeriod == RobotState.GamePeriod.AUTO) {
-//			kElevatorBottomPosition = Optional.empty();
-//			kElevatorTopPosition = Optional.empty();
-//			mElevatorWantedPosition = Optional.empty();
-//			mState = ElevatorState.IDLE;
-//		} else if(mRobotState.hasElevatorStickyFaults && mRobotState.gamePeriod == RobotState.GamePeriod.TELEOP) {
-//			kElevatorBottomPosition = Optional.empty();
-//			kElevatorTopPosition = Optional.empty();
-//			mElevatorWantedPosition = Optional.empty();
-//			mState = ElevatorState.MANUAL_POSITIONING;
-//		} else
-
-			if(commands.wantedElevatorState == ElevatorState.CALIBRATING) {
+		if(commands.wantedElevatorState == ElevatorState.CALIBRATING) {
 			if(!isCalibrated()) {
 				mState = ElevatorState.CALIBRATING;
 			}  else {

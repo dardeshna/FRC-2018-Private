@@ -238,8 +238,6 @@ public class Drive extends Subsystem {
 	 * @param inverted Boolean to invert path
 	 */
 	public void setTrajectoryController(Path path, boolean inverted) {
-		/*mController = new AdaptivePurePursuitController(Constants.kPathFollowingLookahead, Constants.kPathFollowingMaxAccel, Constants.kNormalLoopsDt, path,
-				inverted, Constants.kPathFollowingTolerance);*/
 		mController = new AdaptivePurePursuitController(Constants.kPathFollowingLookahead, Constants.kPathFollowingMaxAccel, Constants.kNormalLoopsDt, path,
 				inverted, 0);
 		mController.update(mCachedRobotState);
@@ -247,8 +245,6 @@ public class Drive extends Subsystem {
 	}
 
 	public void setTrajectoryController(Path path, double lookahead, boolean inverted) {
-		/*mController = new AdaptivePurePursuitController(Constants.kPathFollowingLookahead, Constants.kPathFollowingMaxAccel, Constants.kNormalLoopsDt, path,
-				inverted, Constants.kPathFollowingTolerance);*/
 		mController = new AdaptivePurePursuitController(lookahead, Constants.kPathFollowingMaxAccel, Constants.kNormalLoopsDt, path,
 				inverted, 0);
 		mController.update(mCachedRobotState);
@@ -256,8 +252,6 @@ public class Drive extends Subsystem {
 	}
 
 	public void setTrajectoryController(Path path, double lookahead, boolean inverted, double tolerance) {
-		/*mController = new AdaptivePurePursuitController(Constants.kPathFollowingLookahead, Constants.kPathFollowingMaxAccel, Constants.kNormalLoopsDt, path,
-				inverted, Constants.kPathFollowingTolerance);*/
 		mController = new AdaptivePurePursuitController(lookahead, Constants.kPathFollowingMaxAccel, Constants.kNormalLoopsDt, path,
 				inverted, tolerance);
 		mController.update(mCachedRobotState);
