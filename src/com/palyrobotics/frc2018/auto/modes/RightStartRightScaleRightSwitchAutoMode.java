@@ -46,13 +46,9 @@ public class RightStartRightScaleRightSwitchAutoMode extends AutoModeBase {
     public ArrayList<Path.Waypoint> getDriveToCube() {
         ArrayList<Path.Waypoint> path = new ArrayList<>();
         path.add(new Path.Waypoint(new Translation2d(0, 0), 40.0, true));
-        if(mAlliance == Alliance.BLUE) {
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueRightSwitchX + AutoDistances.kSwitchPlateLength + Constants.kSquareCubeLength - Constants.kRobotLengthInches + Constants.kCenterOfRotationOffsetFromFrontInches, 
-                    -AutoDistances.kBlueRightCornerOffset + AutoDistances.kBlueRightSwitchY - Constants.kRobotWidthInches/2.0), 0.0, false));
-        } else {
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedRightSwitchX + AutoDistances.kSwitchPlateLength + Constants.kSquareCubeLength - Constants.kRobotLengthInches + Constants.kCenterOfRotationOffsetFromFrontInches,
-                    -AutoDistances.kRedRightCornerOffset + AutoDistances.kRedRightSwitchY - Constants.kRobotWidthInches/2.0), 0.0, false));
-        }
+
+        path.add(new Path.Waypoint(new Translation2d(mDistances.kRightSwitchX + mDistances.kSwitchPlateLength + Constants.kSquareCubeLength - Constants.kRobotLengthInches + Constants.kCenterOfRotationOffsetFromFrontInches,
+                -mDistances.kRightCornerOffset + mDistances.kRightSwitchY - Constants.kRobotWidthInches/2.0), 0.0, false));
 
         return path;
     }

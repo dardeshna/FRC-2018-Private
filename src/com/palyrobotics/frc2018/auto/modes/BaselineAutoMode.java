@@ -30,12 +30,9 @@ public class BaselineAutoMode extends AutoModeBase {
 	public Routine getRoutine() {
 		List<Waypoint> path = new ArrayList<>();
 		path.add(new Waypoint(new Translation2d(0,0), 72.0));
-		if(mAlliance == Alliance.BLUE) {
-			path.add(new Waypoint(new Translation2d(AutoDistances.kBlueBaseLineDistanceInches - Constants.kRobotLengthInches, 0.0), 0.0));
-		}
-		else {
-			path.add(new Waypoint(new Translation2d(AutoDistances.kRedBaseLineDistanceInches  - Constants.kRobotLengthInches, 0.0), 0.0));
-		}
+
+		path.add(new Waypoint(new Translation2d(mDistances.kBaseLineDistanceInches - Constants.kRobotLengthInches, 0.0), 0.0));
+
 		ArrayList<Routine> routines = new ArrayList<>();
 		routines.add(new DriveSensorResetRoutine(1.0));
 		routines.add(new DrivePathRoutine(new Path(path), false));

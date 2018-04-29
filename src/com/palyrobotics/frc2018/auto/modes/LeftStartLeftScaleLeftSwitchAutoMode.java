@@ -46,13 +46,9 @@ public class LeftStartLeftScaleLeftSwitchAutoMode extends AutoModeBase{
     public ArrayList<Path.Waypoint> getDriveToCube() {
         ArrayList<Path.Waypoint> path = new ArrayList<>();
         path.add(new Path.Waypoint(new Translation2d(0, 0), 40.0, true));
-        if(mAlliance == Alliance.BLUE) {
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueLeftSwitchX + AutoDistances.kSwitchPlateLength + Constants.kSquareCubeLength - Constants.kRobotLengthInches + Constants.kCenterOfRotationOffsetFromFrontInches,
-                    AutoDistances.kBlueLeftCornerOffset - AutoDistances.kBlueLeftSwitchY + Constants.kRobotWidthInches/2.0), 0.0, false));
-        } else {
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedLeftSwitchX + AutoDistances.kSwitchPlateLength + Constants.kSquareCubeLength - Constants.kRobotLengthInches + Constants.kCenterOfRotationOffsetFromFrontInches,
-                    AutoDistances.kRedLeftCornerOffset - AutoDistances.kRedLeftSwitchY + Constants.kRobotWidthInches/2.0), 0.0, false));
-        }
+
+        path.add(new Path.Waypoint(new Translation2d(mDistances.kLeftSwitchX + mDistances.kSwitchPlateLength + Constants.kSquareCubeLength - Constants.kRobotLengthInches + Constants.kCenterOfRotationOffsetFromFrontInches,
+                mDistances.kLeftCornerOffset - mDistances.kLeftSwitchY + Constants.kRobotWidthInches/2.0), 0.0, false));
 
         return path;
     }

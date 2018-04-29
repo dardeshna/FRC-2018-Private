@@ -36,19 +36,12 @@ public class RightStartRightSwitchAutoMode extends AutoModeBase {
     public Routine getRoutine() {
         List<Path.Waypoint> path = new ArrayList<>();
         path.add(new Path.Waypoint(new Translation2d(0.0, 0.0), 72.0));
-        if(mAlliance == Alliance.BLUE) {
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueRightSwitchX  + AutoDistances.kSwitchPlateLength/2.0,
-                    -(Constants.kRobotWidthInches/2.0 + AutoDistances.kBlueRightCornerOffset) + AutoDistances.kBlueRightSwitchY/2.0), 72.0));
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueRightSwitchX + AutoDistances.kSwitchPlateLength/2.0,
-                    AutoDistances.kBlueRightSwitchY - Constants.kRobotWidthInches/2.0 - AutoDistances.kBlueRightCornerOffset
-                    - Constants.kCenterOfRotationOffsetFromFrontInches), 0.0));
-        } else {
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedRightSwitchX  + AutoDistances.kSwitchPlateLength/2.0,
-                    -(Constants.kRobotWidthInches/2.0 + AutoDistances.kRedRightCornerOffset) + AutoDistances.kRedRightSwitchY/2.0), 72.0));
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedRightSwitchX + AutoDistances.kSwitchPlateLength/2.0,
-                    AutoDistances.kRedRightSwitchY - Constants.kRobotWidthInches/2.0 - AutoDistances.kRedRightCornerOffset
-                    - Constants.kCenterOfRotationOffsetFromFrontInches), 0.0));
-        }
+
+        path.add(new Path.Waypoint(new Translation2d(mDistances.kRightSwitchX  + mDistances.kSwitchPlateLength/2.0,
+                -(Constants.kRobotWidthInches/2.0 + mDistances.kRightCornerOffset) + mDistances.kRightSwitchY/2.0), 72.0));
+        path.add(new Path.Waypoint(new Translation2d(mDistances.kRightSwitchX + mDistances.kSwitchPlateLength/2.0,
+                mDistances.kRightSwitchY - Constants.kRobotWidthInches/2.0 - mDistances.kRightCornerOffset
+                - Constants.kCenterOfRotationOffsetFromFrontInches), 0.0));
         
         ArrayList<Routine> routines = new ArrayList<>();
 

@@ -36,33 +36,19 @@ public class CenterStartRightScaleAutoMode extends AutoModeBase {
     public Routine getRoutine() {
         List<Path.Waypoint> path = new ArrayList<>();
         path.add(new Path.Waypoint(new Translation2d(0, 0), 72.0));
-        if (mAlliance == Alliance.BLUE) {
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueRightSwitchX - Constants.kRobotLengthInches,
-                    -(AutoDistances.kFieldWidth - AutoDistances.kBlueLeftToCenterY - Constants.kRobotWidthInches)
-                            + AutoDistances.kBlueRightSwitchY/2.0), 72.0));
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueRightScaleX - 2.0 * Constants.kRobotLengthInches,
-                    -(AutoDistances.kFieldWidth - AutoDistances.kBlueLeftToCenterY - Constants.kRobotWidthInches)
-                            + AutoDistances.kBlueRightSwitchY/2.0), 72.0));
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueRightScaleX - 2.0 * Constants.kRobotLengthInches,
-                    -(AutoDistances.kFieldWidth - AutoDistances.kBlueLeftToCenterY - Constants.kRobotWidthInches/2.0)
-                            + AutoDistances.kBlueRightScaleY + AutoDistances.kScalePlateWidth/2.0), 72.0));
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueRightScaleX - Constants.kRobotLengthInches,
-                    -(AutoDistances.kFieldWidth - AutoDistances.kBlueLeftToCenterY - Constants.kRobotWidthInches/2.0)
-                            + AutoDistances.kBlueRightScaleY + AutoDistances.kScalePlateWidth/2.0), 0.0));
-        } else {
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedRightSwitchX - Constants.kRobotLengthInches,
-                    -(AutoDistances.kFieldWidth - AutoDistances.kRedLeftToCenterY - Constants.kRobotWidthInches)
-                            + AutoDistances.kRedRightSwitchY/2.0), 72.0));
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedRightSwitchX + Constants.kRobotLengthInches,
-                    -(AutoDistances.kFieldWidth - AutoDistances.kRedLeftToCenterY - Constants.kRobotWidthInches)
-                            + AutoDistances.kRedRightSwitchY/2.0), 72.0));
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedRightScaleX - 2.0 * Constants.kRobotLengthInches,
-                    -(AutoDistances.kFieldWidth - AutoDistances.kRedLeftToCenterY - Constants.kRobotWidthInches/2.0)
-                            + AutoDistances.kRedRightScaleY + AutoDistances.kScalePlateWidth/2.0), 72.0));
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedRightScaleX - Constants.kRobotLengthInches,
-                    -(AutoDistances.kFieldWidth - AutoDistances.kRedLeftToCenterY - Constants.kRobotWidthInches/2.0)
-                            + AutoDistances.kRedRightScaleY + AutoDistances.kScalePlateWidth/2.0), 0.0));
-        }
+
+        path.add(new Path.Waypoint(new Translation2d(mDistances.kRightSwitchX - Constants.kRobotLengthInches,
+                -(mDistances.kFieldWidth - mDistances.kLeftToCenterY - Constants.kRobotWidthInches)
+                        + mDistances.kRightSwitchY/2.0), 72.0));
+        path.add(new Path.Waypoint(new Translation2d(mDistances.kRightScaleX - 2.0 * Constants.kRobotLengthInches,
+                -(mDistances.kFieldWidth - mDistances.kLeftToCenterY - Constants.kRobotWidthInches)
+                        + mDistances.kRightSwitchY/2.0), 72.0));
+        path.add(new Path.Waypoint(new Translation2d(mDistances.kRightScaleX - 2.0 * Constants.kRobotLengthInches,
+                -(mDistances.kFieldWidth - mDistances.kLeftToCenterY - Constants.kRobotWidthInches/2.0)
+                        + mDistances.kRightScaleY + mDistances.kScalePlateWidth/2.0), 72.0));
+        path.add(new Path.Waypoint(new Translation2d(mDistances.kRightScaleX - Constants.kRobotLengthInches,
+                -(mDistances.kFieldWidth - mDistances.kLeftToCenterY - Constants.kRobotWidthInches/2.0)
+                        + mDistances.kRightScaleY + mDistances.kScalePlateWidth/2.0), 0.0));
 
         ArrayList<Routine> routines = new ArrayList<>();
 

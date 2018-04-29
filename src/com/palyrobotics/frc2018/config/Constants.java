@@ -23,7 +23,7 @@ public class Constants {
 	public static final RobotName kRobotName = RobotName.FORSETI;
 	public static final DriverName kDriverName = DriverName.ERIC;
 	public static final OperatorName kOperatorName = OperatorName.JACOB;
-	public static final FieldName kFieldName = FieldName.SVR;
+	public static final FieldName kFieldName = FieldName.TEAM_8;
 
 	//Android app information
 	public static final String kPackageName = "com.frc8.team8vision.visionapp2018";

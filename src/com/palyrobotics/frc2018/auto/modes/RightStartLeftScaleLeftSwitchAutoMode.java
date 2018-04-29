@@ -38,13 +38,10 @@ public class RightStartLeftScaleLeftSwitchAutoMode extends AutoModeBase {
     public ArrayList<Path.Waypoint> getDriveToCube() {
         ArrayList<Path.Waypoint> path = new ArrayList<>();
         path.add(new Path.Waypoint(new Translation2d(0, 0), 40.0, true));
-        if(mAlliance == Alliance.BLUE) {
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueLeftSwitchX + AutoDistances.kSwitchPlateLength + Constants.kSquareCubeLength - Constants.kRobotLengthInches + Constants.kCenterOfRotationOffsetFromFrontInches,
-                    AutoDistances.kFieldWidth - AutoDistances.kBlueRightCornerOffset - Constants.kRobotWidthInches/2.0 - AutoDistances.kBlueLeftSwitchY), 0.0, false));
-        } else {
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedLeftSwitchX + AutoDistances.kSwitchPlateLength + Constants.kSquareCubeLength - Constants.kRobotLengthInches + Constants.kCenterOfRotationOffsetFromFrontInches,
-                    AutoDistances.kFieldWidth - AutoDistances.kRedRightCornerOffset - Constants.kRobotWidthInches/2.0 - AutoDistances.kRedLeftSwitchY), 0.0, false));
-        }
+
+        path.add(new Path.Waypoint(new Translation2d(mDistances.kLeftSwitchX + mDistances.kSwitchPlateLength + Constants.kSquareCubeLength - Constants.kRobotLengthInches + Constants.kCenterOfRotationOffsetFromFrontInches,
+                mDistances.kFieldWidth - mDistances.kRightCornerOffset - Constants.kRobotWidthInches/2.0 - mDistances.kLeftSwitchY), 0.0, false));
+
 
         return path;
     }

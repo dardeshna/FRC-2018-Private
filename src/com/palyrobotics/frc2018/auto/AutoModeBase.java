@@ -1,6 +1,8 @@
 package com.palyrobotics.frc2018.auto;
 
 import com.palyrobotics.frc2018.behavior.Routine;
+import com.palyrobotics.frc2018.config.AllianceDistances;
+import com.palyrobotics.frc2018.config.AutoDistances;
 
 public abstract class AutoModeBase {
 	protected boolean active = false;
@@ -10,7 +12,9 @@ public abstract class AutoModeBase {
 	//Will be run before the routine is taken
 	public abstract void prestart();
 
-	public AutoModeBase() {}
+	public AutoModeBase() {
+		loadDistances();
+	}
 
 	public enum Alliance {
 		RED,
@@ -44,14 +48,23 @@ public abstract class AutoModeBase {
 	
 	// To set the auto mode, set these variables in code!
 	public static Alliance mAlliance = Alliance.BLUE;
-	public static StartingPosition mStartingPosition = StartingPosition.RIGHT;
-	public static Decision mScaleDecision = Decision.BOTH;
-	public static Decision mSwitchDecision = Decision.NEVER;
+	public static StartingPosition mStartingPosition = StartingPosition.CENTER;
+	public static Decision mScaleDecision = Decision.NEVER;
+	public static Decision mSwitchDecision = Decision.BOTH;
     public static SecondSideDecision mSecondScaleSideDecision = SecondSideDecision.NEVER;
     public static SecondSideDecision mSecondSwitchSideDecision = SecondSideDecision.NEVER;
-	public static Priority mPriority = Priority.SCALE;
+	public static Priority mPriority = Priority.SWITCH;
 	public static Priority mSecondCubePriority = Priority.SWITCH;
 	public static boolean mMultiCube = false;
+	public static AllianceDistances mDistances;
+
+	private static void loadDistances() {
+		if(mAlliance == Alliance.BLUE) {
+			mDistances = AutoDistances.blue;
+		} else {
+			mDistances = AutoDistances.red;
+		}
+	}
 
 	public abstract Routine getRoutine();
 

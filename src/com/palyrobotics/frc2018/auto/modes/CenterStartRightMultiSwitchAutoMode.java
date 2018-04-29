@@ -28,17 +28,10 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
 	private Translation2d midPoint;
 	
     public CenterStartRightMultiSwitchAutoMode() {
-        if (mAlliance == Alliance.BLUE) {
-        	startPoint = new Translation2d(AutoDistances.kBlueRightSwitchX - Constants.kRobotLengthInches,
-					-(AutoDistances.kFieldWidth - AutoDistances.kBlueLeftToCenterY - Constants.kRobotWidthInches/2.0)
-					+ AutoDistances.kBlueRightSwitchY + AutoDistances.kSwitchPlateWidth/2.0);
-        	midPoint =  new Translation2d(-85, AutoDistances.kBluePyramidFromRightY + AutoDistances.kBluePyramidWidth / 2.0 - AutoDistances.kBlueRightSwitchY - AutoDistances.kSwitchPlateWidth / 2.0);
-        } else {
-            startPoint = new Translation2d(AutoDistances.kRedRightSwitchX - Constants.kRobotLengthInches,
-                    -(AutoDistances.kFieldWidth - AutoDistances.kRedLeftToCenterY - Constants.kRobotWidthInches/2.0)
-                            + AutoDistances.kRedRightSwitchY + AutoDistances.kSwitchPlateWidth/2.0);
-        	midPoint =  new Translation2d(-85, AutoDistances.kRedPyramidFromRightY + AutoDistances.kRedPyramidWidth / 2.0 - AutoDistances.kRedRightSwitchY - AutoDistances.kSwitchPlateWidth / 2.0);
-        }
+        startPoint = new Translation2d(mDistances.kRightSwitchX - Constants.kRobotLengthInches,
+                -(mDistances.kFieldWidth - mDistances.kLeftToCenterY - Constants.kRobotWidthInches/2.0)
+                + mDistances.kRightSwitchY + mDistances.kSwitchPlateWidth/2.0);
+        midPoint =  new Translation2d(-85, mDistances.kPyramidFromRightY + mDistances.kPyramidWidth / 2.0 - mDistances.kRightSwitchY - mDistances.kSwitchPlateWidth / 2.0);
     }
 
     //Point in between getting second cube and switch, used as a vertex to curve off of
@@ -97,13 +90,8 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
         
         path.add(new Waypoint(new Translation2d(0, 0), 35.0, true));
 
-        if(alliance == Alliance.BLUE) {
-            path.add(new Waypoint(startPoint.translateBy(new Translation2d(-AutoDistances.kBluePyramidLength,
-                    AutoDistances.kBluePyramidFromRightY - AutoDistances.kBlueRightSwitchY - AutoDistances.kSwitchPlateWidth/2.0 + AutoDistances.kBluePyramidWidth/2.0)), 0.0));
-        } else if(alliance == Alliance.RED) {
-            path.add(new Waypoint(startPoint.translateBy(new Translation2d(-AutoDistances.kRedPyramidLength,
-                    AutoDistances.kRedPyramidFromRightY - AutoDistances.kRedRightSwitchY - AutoDistances.kSwitchPlateWidth/2.0 + AutoDistances.kRedPyramidWidth/2.0)), 0.0));
-        }
+        path.add(new Waypoint(startPoint.translateBy(new Translation2d(-mDistances.kPyramidLength,
+                mDistances.kPyramidFromRightY - mDistances.kRightSwitchY - mDistances.kSwitchPlateWidth/2.0 + mDistances.kPyramidWidth/2.0)), 0.0));
 
         return new DriveUntilHasCubeRoutine(new DrivePathRoutine(path, false, 50.0, 25.0, 4.0));
     }

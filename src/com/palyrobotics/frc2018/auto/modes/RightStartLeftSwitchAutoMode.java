@@ -33,19 +33,13 @@ public class RightStartLeftSwitchAutoMode extends AutoModeBase {
     public Routine getRoutine() {
         List<Path.Waypoint> path = new ArrayList<>();
         path.add(new Path.Waypoint(new Translation2d(0.0, 0.0), 72.0));
-        if(mAlliance == Alliance.BLUE) {
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueScaleSwitchMidlineX - Constants.kRobotLengthInches/2.0,
-                    -Constants.kRobotWidthInches/2.0 - AutoDistances.kBlueRightCornerOffset + AutoDistances.kBlueRightSwitchY/2.0), 72.0));
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueLeftSwitchX + AutoDistances.kSwitchPlateLength + Constants.kRobotLengthInches/2.0
-                    + Constants.kSquareCubeLength, AutoDistances.kFieldWidth - Constants.kRobotWidthInches/2.0 - AutoDistances.kBlueRightCornerOffset
-                    - AutoDistances.kBlueLeftSwitchY - AutoDistances.kSwitchPlateWidth/2.0), 0.0));
-        } else {
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedScaleSwitchMidlineX - Constants.kRobotLengthInches/2.0,
-                    -Constants.kRobotWidthInches/2.0 - AutoDistances.kRedRightCornerOffset + AutoDistances.kRedRightSwitchY/2.0), 72.0));
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedLeftSwitchX + AutoDistances.kSwitchPlateLength + Constants.kRobotLengthInches/2.0
-                    + Constants.kSquareCubeLength, AutoDistances.kFieldWidth - Constants.kRobotWidthInches/2.0 - AutoDistances.kRedRightCornerOffset
-                    - AutoDistances.kRedLeftSwitchY - AutoDistances.kSwitchPlateWidth/2.0), 0.0));
-        }
+
+        path.add(new Path.Waypoint(new Translation2d(mDistances.kScaleSwitchMidlineX - Constants.kRobotLengthInches/2.0,
+                -Constants.kRobotWidthInches/2.0 - mDistances.kRightCornerOffset + mDistances.kRightSwitchY/2.0), 72.0));
+        path.add(new Path.Waypoint(new Translation2d(mDistances.kLeftSwitchX + mDistances.kSwitchPlateLength + Constants.kRobotLengthInches/2.0
+                + Constants.kSquareCubeLength, mDistances.kFieldWidth - Constants.kRobotWidthInches/2.0 - mDistances.kRightCornerOffset
+                - mDistances.kLeftSwitchY - mDistances.kSwitchPlateWidth/2.0), 0.0));
+
         ArrayList<Routine> routines = new ArrayList<>();
         routines.add(new DriveSensorResetRoutine(1.0));
 

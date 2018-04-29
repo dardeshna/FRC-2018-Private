@@ -35,19 +35,12 @@ public class LeftStartRightSwitchAutoMode extends AutoModeBase {
     public Routine getRoutine() {
         List<Path.Waypoint> path = new ArrayList<>();
         path.add(new Path.Waypoint(new Translation2d(0.0, 0.0), 72.0));
-        if(mAlliance == Alliance.BLUE) {
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueScaleSwitchMidlineX - Constants.kRobotLengthInches/2.0,
-                    Constants.kRobotWidthInches/2.0 + AutoDistances.kBlueLeftCornerOffset - AutoDistances.kBlueLeftSwitchY/2.0), 72.0));
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueLeftSwitchX + AutoDistances.kSwitchPlateLength + Constants.kRobotLengthInches/2.0
-                    + Constants.kSquareCubeLength, -AutoDistances.kFieldWidth + Constants.kRobotWidthInches/2.0 + AutoDistances.kBlueLeftCornerOffset
-                            + AutoDistances.kBlueRightSwitchY + AutoDistances.kSwitchPlateWidth/2.0), 0.0));
-        } else {
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedScaleSwitchMidlineX - Constants.kRobotLengthInches/2.0,
-                    Constants.kRobotWidthInches/2.0 + AutoDistances.kRedLeftCornerOffset - AutoDistances.kRedLeftSwitchY/2.0), 72.0));
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedLeftSwitchX + AutoDistances.kSwitchPlateLength + Constants.kRobotLengthInches/2.0
-                    + Constants.kSquareCubeLength, -AutoDistances.kFieldWidth + Constants.kRobotWidthInches/2.0 + AutoDistances.kRedLeftCornerOffset
-                            + AutoDistances.kRedRightSwitchY + AutoDistances.kSwitchPlateWidth/2.0), 0.0));
-        }
+
+        path.add(new Path.Waypoint(new Translation2d(mDistances.kScaleSwitchMidlineX - Constants.kRobotLengthInches/2.0,
+                Constants.kRobotWidthInches/2.0 + mDistances.kLeftCornerOffset - mDistances.kLeftSwitchY/2.0), 72.0));
+        path.add(new Path.Waypoint(new Translation2d(mDistances.kLeftSwitchX + mDistances.kSwitchPlateLength + Constants.kRobotLengthInches/2.0
+                + Constants.kSquareCubeLength, -mDistances.kFieldWidth + Constants.kRobotWidthInches/2.0 + mDistances.kLeftCornerOffset
+                        + mDistances.kRightSwitchY + mDistances.kSwitchPlateWidth/2.0), 0.0));
 
         ArrayList<Routine> routines = new ArrayList<Routine>();
 

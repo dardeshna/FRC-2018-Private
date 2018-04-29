@@ -37,17 +37,12 @@ public class LeftStartLeftSwitchAutoMode extends AutoModeBase {
     public Routine getRoutine() {
         List<Path.Waypoint> path = new ArrayList<>();
         path.add(new Path.Waypoint(new Translation2d(0.0, 0.0), 72.0));
-        if(mAlliance == Alliance.BLUE) {
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueLeftSwitchX + AutoDistances.kSwitchPlateWidth/2.0, 
-            		-(Constants.kRobotWidthInches/2.0 + AutoDistances.kBlueLeftCornerOffset) + AutoDistances.kBlueLeftSwitchY/2.0), 72.0));
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueLeftSwitchX + AutoDistances.kSwitchPlateWidth/2.0,
-                    -AutoDistances.kBlueLeftSwitchY + Constants.kCenterOfRotationOffsetFromFrontInches + Constants.kRobotWidthInches/2.0 + AutoDistances.kBlueLeftCornerOffset), 0.0));
-        } else {
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedLeftSwitchX + AutoDistances.kSwitchPlateWidth/2.0, 
-            		-(Constants.kRobotWidthInches/2.0 + AutoDistances.kRedLeftCornerOffset) + AutoDistances.kRedLeftSwitchY/2.0), 72.0));
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedLeftSwitchX + AutoDistances.kSwitchPlateWidth/2.0,
-                    -AutoDistances.kRedLeftSwitchY + Constants.kCenterOfRotationOffsetFromFrontInches + Constants.kRobotWidthInches/2.0 + AutoDistances.kRedLeftCornerOffset), 0.0));
-        }
+
+        path.add(new Path.Waypoint(new Translation2d(mDistances.kLeftSwitchX + mDistances.kSwitchPlateWidth/2.0,
+                -(Constants.kRobotWidthInches/2.0 + mDistances.kLeftCornerOffset) + mDistances.kLeftSwitchY/2.0), 72.0));
+        path.add(new Path.Waypoint(new Translation2d(mDistances.kLeftSwitchX + mDistances.kSwitchPlateWidth/2.0,
+                -mDistances.kLeftSwitchY + Constants.kCenterOfRotationOffsetFromFrontInches + Constants.kRobotWidthInches/2.0 + mDistances.kLeftCornerOffset), 0.0));
+
 
         ArrayList<Routine> routines = new ArrayList<>();
 
