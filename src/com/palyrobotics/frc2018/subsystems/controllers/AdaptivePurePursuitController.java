@@ -1,6 +1,7 @@
 package com.palyrobotics.frc2018.subsystems.controllers;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.palyrobotics.frc2018.auto.AutoPlayback;
 import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.config.Gains;
 import com.palyrobotics.frc2018.config.RobotState;
@@ -65,6 +66,9 @@ public class AdaptivePurePursuitController implements Drive.DriveController {
 		double distance_from_path = mPath.update(robot_pose.getTranslation());
 
 		PathSegment.Sample lookahead_point = mPath.getLookaheadPoint(robot_pose.getTranslation(), distance_from_path + mFixedLookahead);
+		
+		// Record this pose in the AutoPlayback class so it can be simulated
+		AutoPlayback.logPositionEstimation(robot_pose);
 //		System.out.println("Current point = " + robot_pose.getTranslation() + " " + "Lookahead point = " + lookahead_point.translation);
 		//if (!mPath.getWaypoints().isEmpty()) System.out.println("First point = " + mPath.getWaypoints().get(0).position.toString());
 		
