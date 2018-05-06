@@ -141,6 +141,7 @@ public class Constants {
 	public static final double kIntakeStallCoefficientA = 1.55;
 	public static final double kIntakeStallCoefficientB = 4.27;
 	public static final double kIntakeFreeSpinCurrent = 5;
+	public static final double kIntakeCubeInchTolerance = 10.5;
 
 	public static boolean operatorXBoxController = true;
 
@@ -209,6 +210,9 @@ public class Constants {
 	public static final int kForsetiIntakeOpenCloseOtherSolenoidID = 4;
 	public static final int kForsetiIntakeOpenCloseSolenoidID = 6;
 	public static final int kHALIntakeOpenCloseSolenoid = 5;
+	//Ultrasonic
+	public static final int kForsetiIntakeUltrasonicPing = 9;
+	public static final int kForsetiIntakeUltrasonicEcho = 8;
 
 
 	//!!! Physical constants

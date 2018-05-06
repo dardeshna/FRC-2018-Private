@@ -62,6 +62,7 @@ public class Intake extends Subsystem {
 		mUpDownState = commands.wantedIntakeUpDownState;
 		mOpenCloseState = commands.wantedIntakeOpenCloseState;
 
+
 		switch(mWheelState) {
 			case INTAKING:
 				if(commands.customIntakeSpeed) {

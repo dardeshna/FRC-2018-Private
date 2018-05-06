@@ -7,8 +7,7 @@ import com.palyrobotics.frc2018.util.Pose;
 import com.palyrobotics.frc2018.util.XboxInput;
 import com.palyrobotics.frc2018.util.trajectory.*;
 
-import java.util.ArrayList;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Holds all hardware input, such as sensors. <br />
@@ -43,7 +42,9 @@ public class RobotState {
 
 	//Intake
 	public boolean hasCube = true;
-//	public double cubeDistance = 0;
+	public double cubeDistance = 0;
+	public Queue<Double> mReadings = new LinkedList<>();
+	public ArrayList<Double> mSortedReadings = new ArrayList<>();
 
 	//Tracks total current from kPDP
 	public double totalCurrentDraw = 0;

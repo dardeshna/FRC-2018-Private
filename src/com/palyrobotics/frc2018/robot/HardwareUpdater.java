@@ -20,7 +20,9 @@ import com.palyrobotics.frc2018.util.trajectory.RigidTransform2d;
 import com.palyrobotics.frc2018.util.trajectory.Rotation2d;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Timer;
-import java.util.Optional;
+import edu.wpi.first.wpilibj.Ultrasonic;
+
+import java.util.*;
 import java.util.logging.Level;
 
 /**
@@ -33,9 +35,6 @@ class HardwareUpdater {
 	private Climber mClimber;
 	private Elevator mElevator;
 	private Intake mIntake;
-
-	private int intakeStallCounter = 10;
-	private int intakeFreeSpinCounter = 0;
 
 	/**
 	 * Hardware Updater for Forseti
@@ -262,6 +261,8 @@ class HardwareUpdater {
 		WPI_TalonSRX masterTalon = HardwareAdapter.getInstance().getIntake().masterTalon;
 		WPI_TalonSRX slaveTalon = HardwareAdapter.getInstance().getIntake().slaveTalon;
 
+		Ultrasonic ultrasonic = HardwareAdapter.getInstance().getIntake().ultrasonic;
+
 		masterTalon.setNeutralMode(NeutralMode.Brake);
 		slaveTalon.setNeutralMode(NeutralMode.Brake);
 
@@ -291,6 +292,9 @@ class HardwareUpdater {
 
 		//Set slave talons to follower mode
         slaveTalon.follow(masterTalon);
+
+        ultrasonic.setAutomaticMode(true);
+        ultrasonic.setEnabled(true);
 	}
 
 	/**
@@ -394,49 +398,18 @@ class HardwareUpdater {
 //		System.out.println("right: " + robotState.drivePose.rightEnc);
 //		System.out.println("gyro : " + robotState.drivePose.heading);
 
-		double masterCurrent = HardwareAdapter.getInstance().getIntake().masterTalon.getOutputCurrent();
-		double slaveCurrent = HardwareAdapter.getInstance().getIntake().slaveTalon.getOutputCurrent();
-
-//		System.out.println("master current: " + masterCurrent);
-//		System.out.println("slave current: " + slaveCurrent);
-//		System.out.println("has cube: " + robotState.hasCube);
-
-		if (masterCurrent >= Constants.kIntakeStallCoefficientA * Math.pow(Math.E, Constants.kIntakeStallCoefficientB
-				* mIntake.getTalonOutput().getSetpoint())
-				&& slaveCurrent >= Constants.kIntakeStallCoefficientA * Math.pow(Math.E, Constants.kIntakeStallCoefficientB
-				* mIntake.getTalonOutput().getSetpoint())
-				&& mIntake.getWheelState() == Intake.WheelState.INTAKING) {
-			intakeStallCounter++;
-		} else {
-			intakeStallCounter = 0;
+		Ultrasonic mUltrasonic = HardwareAdapter.getInstance().getIntake().ultrasonic;
+		robotState.mReadings.add(mUltrasonic.getRangeInches());
+		if(robotState.mReadings.size() > 10) {
+			robotState.mReadings.remove();
 		}
 
-		if (masterCurrent > Constants.kIntakeMasterIdleCurrent
-				&& masterCurrent <= Constants.kIntakeFreeSpinCurrent * -mIntake.getTalonOutput().getSetpoint()
-				&& slaveCurrent > Constants.kIntakeSlaveIdleCurrent
-				&& slaveCurrent <= Constants.kIntakeFreeSpinCurrent * -mIntake.getTalonOutput().getSetpoint()
-				&& mIntake.getWheelState() == Intake.WheelState.EXPELLING) {
-			intakeFreeSpinCounter++;
-		} else if (masterCurrent > Constants.kIntakeMasterIdleCurrent
-				&& masterCurrent <= Constants.kIntakeFreeSpinCurrent * -mIntake.getTalonOutput().getSetpoint()
-				&& slaveCurrent > Constants.kIntakeSlaveIdleCurrent
-				&& slaveCurrent <= Constants.kIntakeFreeSpinCurrent * -mIntake.getTalonOutput().getSetpoint()
-				&& mIntake.getWheelState() == Intake.WheelState.VAULT_EXPELLING) {
-			intakeFreeSpinCounter++;
-		} else if (masterCurrent > Constants.kIntakeMasterIdleCurrent
-				&& masterCurrent <= Constants.kIntakeFreeSpinCurrent * mIntake.getTalonOutput().getSetpoint()
-				&& slaveCurrent > Constants.kIntakeSlaveIdleCurrent
-				&& slaveCurrent <= Constants.kIntakeFreeSpinCurrent * mIntake.getTalonOutput().getSetpoint()
-				&& mIntake.getWheelState() == Intake.WheelState.INTAKING) {
-			intakeFreeSpinCounter++;
-		} else {
-			intakeFreeSpinCounter = 0;
-		}
-//		System.out.println(robotState.hasCube);
-
-		if(intakeStallCounter >= Constants.kIntakeStallCounterThreshold) {
+		robotState.mSortedReadings = new ArrayList<>(robotState.mReadings);
+		Collections.sort(robotState.mSortedReadings);
+		robotState.cubeDistance = robotState.mSortedReadings.get(robotState.mSortedReadings.size() / 2);
+		if(robotState.cubeDistance < Constants.kIntakeCubeInchTolerance) {
 			robotState.hasCube = true;
-		} else if(mIntake.getOpenCloseState() == Intake.OpenCloseState.OPEN || intakeFreeSpinCounter >= Constants.kIntakeFreeCounterThreshold){
+		} else {
 			robotState.hasCube = false;
 		}
 

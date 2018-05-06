@@ -123,6 +123,7 @@ public class HardwareAdapter {
 		public final DoubleSolenoid upDownSolenoid;
 		public final Solenoid openCloseSolenoid;
 		public final Solenoid openCloseOtherSolenoid;
+		public final Ultrasonic ultrasonic;
 
 		protected IntakeHardware() {
 			masterTalon = new WPI_TalonSRX(Constants.kForsetiIntakeMasterDeviceID);
@@ -133,9 +134,9 @@ public class HardwareAdapter {
 			}
 			else {
 				openCloseSolenoid = new Solenoid(1, Constants.kHALIntakeOpenCloseSolenoid);
-
 			}
 			openCloseOtherSolenoid = new Solenoid(1, Constants.kForsetiIntakeOpenCloseOtherSolenoidID);
+			ultrasonic = new Ultrasonic(Constants.kForsetiIntakeUltrasonicPing, Constants.kForsetiIntakeUltrasonicEcho);
 		}
 	}
 
