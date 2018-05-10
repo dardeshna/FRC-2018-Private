@@ -101,6 +101,7 @@ public class Robot extends TimedRobot {
 		AutoDistances.updateAutoDistances();
 
 		startSubsystems();
+		mHardwareUpdater.enableBrakeMode();
 		
 		if(!AutoFMS.isFMSDataAvailable()) {
 			Logger.getInstance().logRobotThread(Level.WARNING, "No FMS data detected");
@@ -149,6 +150,7 @@ public class Robot extends TimedRobot {
 		commands = operatorInterface.updateCommands(commands);
 //		commands.wantedIntakeUpDownState = Intake.UpDownState.DOWN;
 		startSubsystems();
+		mHardwareUpdater.enableBrakeMode();
 		robotState.reset(0, new RigidTransform2d());
 //		VisionManager.getInstance().verifyVisionAppIsRunning();
 
@@ -191,6 +193,7 @@ public class Robot extends TimedRobot {
 		//Stop controllers
 		mDrive.setNeutral();
 //		mHardwareUpdater.disableTalons();
+		mHardwareUpdater.disableBrakeMode();
 		DashboardManager.getInstance().toggleCANTable(false);
 
 		stopSubsystems();

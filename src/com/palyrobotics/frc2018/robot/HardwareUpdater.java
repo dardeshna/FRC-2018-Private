@@ -103,15 +103,7 @@ class HardwareUpdater {
         WPI_VictorSPX rightSlave2Victor = HardwareAdapter.getInstance().getDrivetrain().rightSlave2Victor;
         WPI_VictorSPX rightSlave3Victor = HardwareAdapter.getInstance().getDrivetrain().rightSlave3Victor;
 
-		//disables forward and reverse soft
-		leftMasterTalon.setNeutralMode(NeutralMode.Coast);
-		leftSlave1Victor.setNeutralMode(NeutralMode.Coast);
-        leftSlave2Victor.setNeutralMode(NeutralMode.Coast);
-        leftSlave3Victor.setNeutralMode(NeutralMode.Coast);
-        rightMasterTalon.setNeutralMode(NeutralMode.Coast);
-		rightSlave1Victor.setNeutralMode(NeutralMode.Coast);
-        rightSlave2Victor.setNeutralMode(NeutralMode.Coast);
-        rightSlave3Victor.setNeutralMode(NeutralMode.Coast);
+		disableBrakeMode();
 
         leftMasterTalon.enableVoltageCompensation(true);
         leftSlave1Victor.enableVoltageCompensation(true);
@@ -567,6 +559,48 @@ class HardwareUpdater {
 		HardwareAdapter.getInstance().getIntake().openCloseSolenoid.set(mIntake.getOpenCloseOutput()[0]);
 		HardwareAdapter.getInstance().getIntake().openCloseOtherSolenoid.set(mIntake.getOpenCloseOutput()[1]);
 		HardwareAdapter.getInstance().getIntake().upDownSolenoid.set(mIntake.getUpDownOutput());
+	}
+
+	void enableBrakeMode() {
+		WPI_TalonSRX leftMasterTalon = HardwareAdapter.getInstance().getDrivetrain().leftMasterTalon;
+		WPI_VictorSPX leftSlave1Victor = HardwareAdapter.getInstance().getDrivetrain().leftSlave1Victor;
+		WPI_VictorSPX leftSlave2Victor = HardwareAdapter.getInstance().getDrivetrain().leftSlave2Victor;
+		WPI_VictorSPX leftSlave3Victor = HardwareAdapter.getInstance().getDrivetrain().leftSlave3Victor;
+
+		WPI_TalonSRX rightMasterTalon = HardwareAdapter.getInstance().getDrivetrain().rightMasterTalon;
+		WPI_VictorSPX rightSlave1Victor = HardwareAdapter.getInstance().getDrivetrain().rightSlave1Victor;
+		WPI_VictorSPX rightSlave2Victor = HardwareAdapter.getInstance().getDrivetrain().rightSlave2Victor;
+		WPI_VictorSPX rightSlave3Victor = HardwareAdapter.getInstance().getDrivetrain().rightSlave3Victor;
+
+		leftMasterTalon.setNeutralMode(NeutralMode.Brake);
+		leftSlave1Victor.setNeutralMode(NeutralMode.Brake);
+		leftSlave2Victor.setNeutralMode(NeutralMode.Brake);
+		leftSlave3Victor.setNeutralMode(NeutralMode.Brake);
+		rightMasterTalon.setNeutralMode(NeutralMode.Brake);
+		rightSlave1Victor.setNeutralMode(NeutralMode.Brake);
+		rightSlave2Victor.setNeutralMode(NeutralMode.Brake);
+		rightSlave3Victor.setNeutralMode(NeutralMode.Brake);
+	}
+
+	void disableBrakeMode() {
+		WPI_TalonSRX leftMasterTalon = HardwareAdapter.getInstance().getDrivetrain().leftMasterTalon;
+		WPI_VictorSPX leftSlave1Victor = HardwareAdapter.getInstance().getDrivetrain().leftSlave1Victor;
+		WPI_VictorSPX leftSlave2Victor = HardwareAdapter.getInstance().getDrivetrain().leftSlave2Victor;
+		WPI_VictorSPX leftSlave3Victor = HardwareAdapter.getInstance().getDrivetrain().leftSlave3Victor;
+
+		WPI_TalonSRX rightMasterTalon = HardwareAdapter.getInstance().getDrivetrain().rightMasterTalon;
+		WPI_VictorSPX rightSlave1Victor = HardwareAdapter.getInstance().getDrivetrain().rightSlave1Victor;
+		WPI_VictorSPX rightSlave2Victor = HardwareAdapter.getInstance().getDrivetrain().rightSlave2Victor;
+		WPI_VictorSPX rightSlave3Victor = HardwareAdapter.getInstance().getDrivetrain().rightSlave3Victor;
+
+		leftMasterTalon.setNeutralMode(NeutralMode.Coast);
+		leftSlave1Victor.setNeutralMode(NeutralMode.Coast);
+		leftSlave2Victor.setNeutralMode(NeutralMode.Coast);
+		leftSlave3Victor.setNeutralMode(NeutralMode.Coast);
+		rightMasterTalon.setNeutralMode(NeutralMode.Coast);
+		rightSlave1Victor.setNeutralMode(NeutralMode.Coast);
+		rightSlave2Victor.setNeutralMode(NeutralMode.Coast);
+		rightSlave3Victor.setNeutralMode(NeutralMode.Coast);
 	}
 
 	/**
