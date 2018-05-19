@@ -7,6 +7,8 @@ import com.palyrobotics.frc2018.auto.AutoModeBase.Alliance;
 import com.palyrobotics.frc2018.config.AutoDistances;
 import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.util.trajectory.RigidTransform2d;
+import com.palyrobotics.frc2018.util.trajectory.Rotation2d;
+import com.palyrobotics.frc2018.util.trajectory.Translation2d;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -20,13 +22,17 @@ import javafx.stage.Stage;
 
 public class AutoPlayback extends Application {
 	
-	private static ArrayList<RigidTransform2d> poses = new ArrayList<>();
+	private static ArrayList<RigidTransform2d> poses;
 	
 	private Group root;
 	private Canvas canvas;
 	
 	// What point in the list of estimated positions are we displaying?
 	private int currentPoseIndex = 0;
+	
+	// Starting position of the robot as determined by AutoModeBase
+	private double startX = converted(Constants.kRobotLengthInches - Constants.kCenterOfRotationOffsetFromFrontInches, true);
+	private double startY = 0;
 	
 	private static final double canvasScale = 2;
 	private static final double canvasWidth = 400 * canvasScale;
@@ -42,19 +48,49 @@ public class AutoPlayback extends Application {
 		Scene scene = new Scene(root);
 		stage.setScene(scene);
 		
+		// Starting x is constant, but starting y depends on robot's starting position
+		if (AutoModeBase.mAlliance == Alliance.BLUE) {
+			switch(AutoModeBase.mStartingPosition) {
+				case LEFT:
+					startY = converted(AutoDistances.kFieldWidth - AutoDistances.kBlueLeftCornerOffset - Constants.kRobotWidthInches / 2.0, false);
+					break;
+				case CENTER:
+					startY = converted(AutoDistances.kFieldWidth - AutoDistances.kBlueLeftToCenterY - Constants.kRobotWidthInches / 2.0, false);
+					break;
+				case RIGHT:
+					startY = converted(AutoDistances.kBlueRightCornerOffset + Constants.kRobotWidthInches / 2.0, false);
+					break;
+			}
+		} else {
+			switch(AutoModeBase.mStartingPosition) {
+				case LEFT:
+					startY = converted(AutoDistances.kFieldWidth - AutoDistances.kRedLeftCornerOffset - Constants.kRobotWidthInches / 2.0, false);
+					break;
+				case CENTER:
+					startY = converted(AutoDistances.kFieldWidth - AutoDistances.kRedLeftToCenterY - Constants.kRobotWidthInches / 2.0, false);
+					break;
+				case RIGHT:
+					startY = converted(AutoDistances.kRedRightCornerOffset + Constants.kRobotWidthInches / 2.0, false);
+					break;
+			}
+		}
+		
+		
 		new AnimationTimer() {
 
 			@Override
 			public void handle(long arg0) {
 				GraphicsContext graphics = canvas.getGraphicsContext2D();
-				graphics.setLineWidth(1.0);
+				graphics.setLineWidth(3.0);
 				graphics.setStroke(new Color(0, 1, 0, 1));
 				// Trace the path that's already been traveled
+				// This isn't implemented with graphics.fillPolyline() because that would require repeated casting of 
+				// the lists of coordinates
 				for (int i = 0; i <= currentPoseIndex && i < poses.size(); i++) {
 					RigidTransform2d pose = AutoPlayback.poses.get(i);
-					double x = pose.getTranslation().getX(), y = pose.getTranslation().getY();
+					double x = startX + pose.getTranslation().getX(), y = startY + pose.getTranslation().getY();
 					// Draw one point in the path with radius 1
-					graphics.fillOval(x - 1, y - 1, 2, 2);
+					graphics.fillOval(x - graphics.getLineWidth() / 2.0, y - graphics.getLineWidth() / 2.0, graphics.getLineWidth(), graphics.getLineWidth());
 				}
 				// TODO: Draw the robot at its estimated position
 				//Constants.kCenterOfRotationOffsetFromFrontInches
@@ -68,6 +104,11 @@ public class AutoPlayback extends Application {
 		stage.show();
 	}
 	
+	// Reset the list of received robot poses. This should be called at the start of auto
+	public static void resetPoses() {
+		poses = new ArrayList<>();
+	}
+	
 	// Receive the most recent estimated translation + rotation of the robot during auto.
 	// This method should be called by AdaptivePurePursuit during every update cycle.
 	public static void logPositionEstimation(RigidTransform2d robot_pose) {
@@ -75,6 +116,8 @@ public class AutoPlayback extends Application {
 	}
 	
 	public static void main(String[] args) {
+		resetPoses();
+		loadTestOne();
 		launch(args);
 	}
 	
@@ -83,8 +126,7 @@ public class AutoPlayback extends Application {
 		GraphicsContext graphics = canvas.getGraphicsContext2D();
 		
 		// Since the positive y direction is down in JavaFX, y-coordinate calculations get nasty fast
-		// TODO: Find a way to invert y-coordinates
-		if (AutoModeBase.mAlliance == Alliance.RED) {
+		if (AutoModeBase.mAlliance == Alliance.BLUE) {
 			graphics.setStroke(new Color(0, 0, 1, 1));
 			graphics.setLineWidth(1.0);
 			
@@ -142,7 +184,7 @@ public class AutoPlayback extends Application {
 									converted(new double[] {AutoDistances.kRedRightScaleY + AutoDistances.kScalePlateWidth, AutoDistances.kRedRightScaleY, AutoDistances.kRedRightScaleY, AutoDistances.kRedRightScaleY + AutoDistances.kScalePlateWidth}, false), 4);
 		
 			// Draw pyramid square
-						graphics.strokePolygon(converted(new double[] {AutoDistances.kRedLeftSwitchX - AutoDistances.kRedPyramidLength, AutoDistances.kRedLeftSwitchX - AutoDistances.kRedPyramidLength, AutoDistances.kRedLeftSwitchX, AutoDistances.kRedLeftSwitchX}, true),
+			graphics.strokePolygon(converted(new double[] {AutoDistances.kRedLeftSwitchX - AutoDistances.kRedPyramidLength, AutoDistances.kRedLeftSwitchX - AutoDistances.kRedPyramidLength, AutoDistances.kRedLeftSwitchX, AutoDistances.kRedLeftSwitchX}, true),
 												converted(new double[] {AutoDistances.kRedPyramidFromRightY + AutoDistances.kRedPyramidWidth, AutoDistances.kRedPyramidFromRightY, AutoDistances.kRedPyramidFromRightY, AutoDistances.kRedPyramidFromRightY + AutoDistances.kRedPyramidWidth}, false), 4);
 		}
 	}
@@ -158,6 +200,23 @@ public class AutoPlayback extends Application {
 			}
 		}
 		return retval;
+	}
+	
+	private double converted(double coordinate, boolean isXCoordinate) {
+		double retval = 0.0;
+		if (isXCoordinate) {
+			retval = canvasScale * coordinate;
+		} else {
+			retval = canvasLength - canvasScale * coordinate;
+		}
+		return retval;
+	}
+	
+	// Construct odometry values for a hypothetical center start baseline auto
+	private static void loadTestOne() {
+		for (int i = 0; i < 3 * 60; i++) {
+			AutoPlayback.logPositionEstimation(new RigidTransform2d(new Translation2d(125 * i / (3*60), 0), new Rotation2d(0, 1, false)));
+		}
 	}
 	
 }
