@@ -18,6 +18,11 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Polyline;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Scale;
+import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 
 public class AutoPlayback extends Application {
@@ -25,6 +30,7 @@ public class AutoPlayback extends Application {
 	private static ArrayList<RigidTransform2d> poses;
 	
 	private Group root;
+	private Scene scene;
 	private Canvas canvas;
 	
 	// What point in the list of estimated positions are we displaying?
@@ -45,7 +51,7 @@ public class AutoPlayback extends Application {
 		root = new Group();
 		canvas = new Canvas(canvasWidth, canvasLength);
 		root.getChildren().add(canvas);
-		Scene scene = new Scene(root);
+		scene = new Scene(root);
 		stage.setScene(scene);
 		
 		// Starting x is constant, but starting y depends on robot's starting position
@@ -81,20 +87,37 @@ public class AutoPlayback extends Application {
 			@Override
 			public void handle(long arg0) {
 				GraphicsContext graphics = canvas.getGraphicsContext2D();
-				graphics.setLineWidth(3.0);
-				graphics.setStroke(new Color(0, 1, 0, 1));
-				// Trace the path that's already been traveled
-				// This isn't implemented with graphics.fillPolyline() because that would require repeated casting of 
-				// the lists of coordinates
-				for (int i = 0; i <= currentPoseIndex && i < poses.size(); i++) {
-					RigidTransform2d pose = AutoPlayback.poses.get(i);
-					double x = startX + pose.getTranslation().getX(), y = startY + pose.getTranslation().getY();
-					// Draw one point in the path with radius 1
+				
+				if (currentPoseIndex < poses.size()) {
+					// Trace the path that's already been traveled
+					// This isn't implemented with graphics.fillPolyline() because that would require repeated casting of 
+					// the lists of coordinates
+					graphics.setLineWidth(3.0);
+					graphics.setStroke(new Color(0, 1, 0, 1));
+					RigidTransform2d pose = poses.get(currentPoseIndex);
+					double x = startX + pose.getTranslation().getX() * canvasScale, y = startY - pose.getTranslation().getY() * canvasScale;
+					double rotationDegrees = pose.getRotation().getDegrees();
 					graphics.fillOval(x - graphics.getLineWidth() / 2.0, y - graphics.getLineWidth() / 2.0, graphics.getLineWidth(), graphics.getLineWidth());
+					
+					//Draw the robot at its estimated position
+					Rectangle robot = new Rectangle(-Constants.kRobotLengthInches + Constants.kCenterOfRotationOffsetFromFrontInches, -Constants.kRobotWidthInches / 2.0, Constants.kRobotLengthInches, Constants.kRobotWidthInches);
+					Scale scale = new Scale(canvasScale, canvasScale, 0, 0);
+					Rotate rotation = new Rotate(rotationDegrees, 0, 0);
+					Translate translation = new Translate(x, y);
+					
+					// NOTE: The transformations are applied in the reverse of the order you add them in!
+					robot.getTransforms().addAll(translation, rotation, scale);
+					robot.setStroke(new Color(0, 1, 0, 1));
+					robot.setFill(new Color(1, 1, 1, 1));
+					root = new Group();
+					root.getChildren().add(robot);
+					root.getChildren().add(canvas);
+					scene = new Scene(root);
+					stage.setScene(scene);
+
+					currentPoseIndex++;
 				}
-				// TODO: Draw the robot at its estimated position
-				//Constants.kCenterOfRotationOffsetFromFrontInches
-				currentPoseIndex++;
+				
 			}
 			
 		}.start();
@@ -117,7 +140,7 @@ public class AutoPlayback extends Application {
 	
 	public static void main(String[] args) {
 		resetPoses();
-		loadTestOne();
+		loadTestTwo();
 		launch(args);
 	}
 	
@@ -214,8 +237,15 @@ public class AutoPlayback extends Application {
 	
 	// Construct odometry values for a hypothetical center start baseline auto
 	private static void loadTestOne() {
-		for (int i = 0; i < 3 * 60; i++) {
-			AutoPlayback.logPositionEstimation(new RigidTransform2d(new Translation2d(125 * i / (3*60), 0), new Rotation2d(0, 1, false)));
+		for (int i = 0; i < 1 * 60; i++) {
+			AutoPlayback.logPositionEstimation(new RigidTransform2d(new Translation2d(90 * i / (1*60), 0), Rotation2d.fromRadians(0)));
+		}
+	}
+	
+	// Construct odometry values for a hypothetical semicircle path
+	private static void loadTestTwo() {
+		for (int i = 1; i <= 2 * 60; i++) {
+			AutoPlayback.logPositionEstimation(new RigidTransform2d(new Translation2d(100 * Math.sin(Math.PI/2.0 * i / (2 * 60)) * Math.cos(Math.PI/2.0 * i / (2 * 60)), 100 * Math.sin(Math.PI/2.0 * i / (2 * 60)) * Math.sin(Math.PI/2.0 * i / (2 * 60))), Rotation2d.fromRadians(-Math.PI * i / (2 * 60))));
 		}
 	}
 	
