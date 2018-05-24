@@ -222,4 +222,8 @@ public class Path {
 	public List<Waypoint> getWaypoints() {
 		return this.mWaypoints;
 	}
+	
+	public List<PathSegment> getSegments() {
+		return this.mSegments;
+	}
 }

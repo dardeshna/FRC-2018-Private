@@ -2,10 +2,14 @@ package com.palyrobotics.frc2018.auto;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import com.palyrobotics.frc2018.auto.AutoModeBase.Alliance;
 import com.palyrobotics.frc2018.config.AutoDistances;
 import com.palyrobotics.frc2018.config.Constants;
+import com.palyrobotics.frc2018.util.trajectory.Path;
+import com.palyrobotics.frc2018.util.trajectory.Path.Waypoint;
+import com.palyrobotics.frc2018.util.trajectory.PathSegment;
 import com.palyrobotics.frc2018.util.trajectory.RigidTransform2d;
 import com.palyrobotics.frc2018.util.trajectory.Rotation2d;
 import com.palyrobotics.frc2018.util.trajectory.Translation2d;
@@ -28,6 +32,7 @@ import javafx.stage.Stage;
 public class AutoPlayback extends Application {
 	
 	private static ArrayList<RigidTransform2d> poses;
+	private static Path mPath;
 	
 	private Group root;
 	private Scene scene;
@@ -122,7 +127,8 @@ public class AutoPlayback extends Application {
 			
 		}.start();
 		
-		drawField(stage);
+		drawField();
+		drawPath();
 		
 		stage.show();
 	}
@@ -138,14 +144,19 @@ public class AutoPlayback extends Application {
 		poses.add(robot_pose);
 	}
 	
+	public static void setPath(Path path) {
+		mPath = path;
+	}
+	
 	public static void main(String[] args) {
 		resetPoses();
 		loadTestTwo();
+		loadTestThree();
 		launch(args);
 	}
 	
-	// Called every update cycle: draws a basic Power Up field based on the deployed auto distances
-	private void drawField(Stage stage) {
+	// Called at instantiation: draws a basic Power Up field based on the deployed auto distances
+	private void drawField() {
 		GraphicsContext graphics = canvas.getGraphicsContext2D();
 		
 		// Since the positive y direction is down in JavaFX, y-coordinate calculations get nasty fast
@@ -212,6 +223,24 @@ public class AutoPlayback extends Application {
 		}
 	}
 	
+	// Called at instantiation: draws a basic Power Up field based on the deployed auto distances
+	private void drawPath() {
+		GraphicsContext graphics = canvas.getGraphicsContext2D();
+		graphics.setStroke(new Color(0, 0, 0, 1));
+		graphics.setLineWidth(6.0);
+		for (Waypoint point : mPath.getWaypoints()) {
+			double x = startX + point.position.getX() * canvasScale, y = startY - point.position.getY() * canvasScale;
+			graphics.fillOval(x - graphics.getLineWidth() / 2.0, y - graphics.getLineWidth() / 2.0, graphics.getLineWidth(), graphics.getLineWidth());
+		}
+		
+		graphics.setLineWidth(1.0);
+		for (PathSegment segment : mPath.getSegments()) {
+			double x1 = startX + segment.getStart().getX() * canvasScale, y1 = startY - segment.getStart().getY() * canvasScale;
+			double x2 = startX + segment.getEnd().getX() * canvasScale, y2 = startY - segment.getEnd().getY() * canvasScale;
+			graphics.strokeLine(x1, y1, x2, y2);
+		}
+	}
+	
 	// Convert the field coordinates (inches) to the coordinates on the canvas
 	private double[] converted(double[] coordinates, boolean areXCoordinates) {
 		double[] retval = new double[coordinates.length];
@@ -247,6 +276,50 @@ public class AutoPlayback extends Application {
 		for (int i = 1; i <= 2 * 60; i++) {
 			AutoPlayback.logPositionEstimation(new RigidTransform2d(new Translation2d(100 * Math.sin(Math.PI/2.0 * i / (2 * 60)) * Math.cos(Math.PI/2.0 * i / (2 * 60)), 100 * Math.sin(Math.PI/2.0 * i / (2 * 60)) * Math.sin(Math.PI/2.0 * i / (2 * 60))), Rotation2d.fromRadians(-Math.PI * i / (2 * 60))));
 		}
+	}
+	
+	// Construct a right start left scale path to test the waypoint display
+	private static void loadTestThree() {
+		List<Waypoint> path = new ArrayList<>();
+		path.add(new Waypoint(new Translation2d(0.0, 0.0), 140));
+
+		if(AutoModeBase.mAlliance == Alliance.BLUE) {
+	        path.add(new Waypoint(new Translation2d(0.0, 0.0), 140));
+            path.add(new Path.Waypoint(new Translation2d((AutoDistances.kBlueScaleSwitchMidlineX - Constants.kRobotLengthInches/2.0)/2,
+                    -Constants.kRobotWidthInches/2.0 - AutoDistances.kBlueRightCornerOffset + AutoDistances.kBlueRightSwitchY/2.0), 80, "p1"));
+            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueScaleSwitchMidlineX - Constants.kRobotLengthInches/2.0,
+                    -Constants.kRobotWidthInches/2.0 - AutoDistances.kBlueRightCornerOffset + AutoDistances.kBlueRightSwitchY/2.0), 67.5, "p2"));
+            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueScaleSwitchMidlineX - Constants.kRobotLengthInches/2.0,
+                    -Constants.kRobotWidthInches/2.0 - AutoDistances.kBlueRightCornerOffset + AutoDistances.kBlueRightSwitchY/2.0+20), 80, "p3"));
+            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueScaleSwitchMidlineX - Constants.kRobotLengthInches/2.0,
+                    (AutoDistances.kFieldWidth - Constants.kRobotWidthInches/2.0 - AutoDistances.kBlueRightCornerOffset
+                            - AutoDistances.kBlueLeftScaleY - AutoDistances.kScalePlateWidth/2.0
+                            -Constants.kRobotWidthInches/2.0 - AutoDistances.kBlueRightCornerOffset + AutoDistances.kBlueRightSwitchY/2.0)/2), 70.0, "p4"));
+            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueScaleSwitchMidlineX - Constants.kRobotLengthInches/2.0,
+                    AutoDistances.kFieldWidth - Constants.kRobotWidthInches/2 - AutoDistances.kBlueRightCornerOffset
+                            - AutoDistances.kBlueLeftScaleY), 30.0, "p5"));
+            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueLeftScaleX - Constants.kRobotLengthInches-Constants.kNullZoneAllowableBack,
+                    AutoDistances.kFieldWidth - Constants.kRobotWidthInches/2 - AutoDistances.kBlueRightCornerOffset
+                            - AutoDistances.kBlueLeftScaleY - AutoDistances.kScalePlateWidth/5.0), 0.0, "p6"));
+        } else {
+            path.add(new Path.Waypoint(new Translation2d((AutoDistances.kRedScaleSwitchMidlineX - Constants.kRobotLengthInches/2.0)/2,
+                    -Constants.kRobotWidthInches/2.0 - AutoDistances.kRedRightCornerOffset + AutoDistances.kRedRightSwitchY/2.0), 80, "p1"));
+            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedScaleSwitchMidlineX - Constants.kRobotLengthInches/2.0,
+                    -Constants.kRobotWidthInches/2.0 - AutoDistances.kRedRightCornerOffset + AutoDistances.kRedRightSwitchY/2.0), 67.5, "p2"));
+            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedScaleSwitchMidlineX - Constants.kRobotLengthInches/2.0,
+                    -Constants.kRobotWidthInches/2.0 - AutoDistances.kRedRightCornerOffset + AutoDistances.kRedRightSwitchY/2.0+20), 80, "p3"));
+            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedScaleSwitchMidlineX - Constants.kRobotLengthInches/2.0,
+                    (AutoDistances.kFieldWidth - Constants.kRobotWidthInches/2.0 - AutoDistances.kRedRightCornerOffset
+                            - AutoDistances.kRedLeftScaleY - AutoDistances.kScalePlateWidth/2.0
+                            -Constants.kRobotWidthInches/2.0 - AutoDistances.kRedRightCornerOffset + AutoDistances.kRedRightSwitchY/2.0)/2), 70.0, "p4"));
+            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedScaleSwitchMidlineX - Constants.kRobotLengthInches/2.0,
+                    AutoDistances.kFieldWidth - Constants.kRobotWidthInches/2 - AutoDistances.kRedRightCornerOffset
+                            - AutoDistances.kRedLeftScaleY), 30.0, "p5"));
+            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedLeftScaleX - Constants.kRobotLengthInches-Constants.kNullZoneAllowableBack,
+                    AutoDistances.kFieldWidth - Constants.kRobotWidthInches/2 - AutoDistances.kRedRightCornerOffset
+                            - AutoDistances.kRedLeftScaleY - AutoDistances.kScalePlateWidth/5.0), 0.0, "p6"));
+        }
+		setPath(new Path(path));
 	}
 	
 }
