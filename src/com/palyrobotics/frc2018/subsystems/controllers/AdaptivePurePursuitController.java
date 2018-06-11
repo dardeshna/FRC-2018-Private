@@ -1,7 +1,7 @@
 package com.palyrobotics.frc2018.subsystems.controllers;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.palyrobotics.frc2018.auto.AutoPlayback;
+import com.palyrobotics.frc2018.auto.AutoModeBase;
 import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.config.Gains;
 import com.palyrobotics.frc2018.config.RobotState;
@@ -12,8 +12,16 @@ import com.palyrobotics.frc2018.util.Pose;
 import com.palyrobotics.frc2018.util.TalonSRXOutput;
 import com.palyrobotics.frc2018.util.logger.Logger;
 import com.palyrobotics.frc2018.util.trajectory.*;
+import com.palyrobotics.frc2018.util.trajectory.Path.Waypoint;
+
 import edu.wpi.first.wpilibj.Timer;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Level;
@@ -36,6 +44,13 @@ public class AdaptivePurePursuitController implements Drive.DriveController {
 	double mDt;
 	boolean mReversed;
 	double mPathCompletionTolerance;
+	
+	// When auto is run, the controller logs all of the estimated poses and saves it to a .auto file
+	// so that AutoPlayback can reconstruct it visually. For instructions on how to load the .auto file,
+	// see AutoPlayback.java.
+	
+	StringBuilder mFileOutputString;
+	PrintWriter mFileOutput;
 
 	public AdaptivePurePursuitController(double fixed_lookahead, double max_accel, double nominal_dt, Path path, boolean reversed,
 			double path_completion_tolerance) {
@@ -46,6 +61,22 @@ public class AdaptivePurePursuitController implements Drive.DriveController {
 		mLastCommand = null;
 		mReversed = reversed;
 		mPathCompletionTolerance = path_completion_tolerance;
+		
+		mFileOutputString = new StringBuilder();
+		try {
+			mFileOutput = new PrintWriter(new File("/home/lvuser/auto-log" + new SimpleDateFormat().format(new Date()) + ".auto"));
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		mFileOutputString.append(AutoModeBase.mStartingPosition + " " + AutoModeBase.mAlliance + "\n");
+		
+		// Output file must specify the number of waypoints so AutoPlayback can properly read them in
+		mFileOutputString.append(path.getWaypoints().size() + "\n");
+		for (Waypoint point : path.getWaypoints()) {
+			mFileOutputString.append(point.position.getX() + " " + point.position.getY() + "\n");
+		}
 	}
 
 	/**
@@ -63,12 +94,12 @@ public class AdaptivePurePursuitController implements Drive.DriveController {
 			pose = new RigidTransform2d(robot_pose.getTranslation(), robot_pose.getRotation().rotateBy(Rotation2d.fromRadians(Math.PI)));
 		}
 		
+		mFileOutputString.append(pose.getTranslation().getX() + " " + pose.getTranslation().getY() + " " + pose.getRotation().getRadians() + "\n");
+		
 		double distance_from_path = mPath.update(robot_pose.getTranslation());
 
 		PathSegment.Sample lookahead_point = mPath.getLookaheadPoint(robot_pose.getTranslation(), distance_from_path + mFixedLookahead);
 		
-		// Record this pose in the AutoPlayback class so it can be simulated
-		AutoPlayback.logPositionEstimation(robot_pose);
 //		System.out.println("Current point = " + robot_pose.getTranslation() + " " + "Lookahead point = " + lookahead_point.translation);
 		//if (!mPath.getWaypoints().isEmpty()) System.out.println("First point = " + mPath.getWaypoints().get(0).position.toString());
 		
@@ -235,6 +266,11 @@ public class AdaptivePurePursuitController implements Drive.DriveController {
 		 */
 		double remainingLength = mPath.getRemainingLength();
 		//System.out.println("remaining length = " + remainingLength);
+		// Finalize file output upon completion
+		if (remainingLength <= mPathCompletionTolerance) {
+			mFileOutput.println(mFileOutputString.toString());
+			mFileOutput.close();
+		}
 		return remainingLength <= mPathCompletionTolerance;
 	}
 
