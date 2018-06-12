@@ -64,7 +64,7 @@ public class AdaptivePurePursuitController implements Drive.DriveController {
 		
 		mFileOutputString = new StringBuilder();
 		try {
-			mFileOutput = new PrintWriter(new File("/home/lvuser/auto-log" + new SimpleDateFormat().format(new Date()) + ".auto"));
+			mFileOutput = new PrintWriter("C:/auto/" + new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date()) + ".auto");
 		}
 		catch (IOException e) {
 			e.printStackTrace();
@@ -94,7 +94,7 @@ public class AdaptivePurePursuitController implements Drive.DriveController {
 			pose = new RigidTransform2d(robot_pose.getTranslation(), robot_pose.getRotation().rotateBy(Rotation2d.fromRadians(Math.PI)));
 		}
 		
-		mFileOutputString.append(pose.getTranslation().getX() + " " + pose.getTranslation().getY() + " " + pose.getRotation().getRadians() + "\n");
+		mFileOutputString.append(pose.getTranslation().getX() + " " + pose.getTranslation().getY() + " " + pose.getRotation().getDegrees() + "\n");
 		
 		double distance_from_path = mPath.update(robot_pose.getTranslation());
 
@@ -268,7 +268,8 @@ public class AdaptivePurePursuitController implements Drive.DriveController {
 		//System.out.println("remaining length = " + remainingLength);
 		// Finalize file output upon completion
 		if (remainingLength <= mPathCompletionTolerance) {
-			mFileOutput.println(mFileOutputString.toString());
+			System.out.println("Size: " + mFileOutputString.length());
+			mFileOutput.print(mFileOutputString.toString());
 			mFileOutput.close();
 		}
 		return remainingLength <= mPathCompletionTolerance;
