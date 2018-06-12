@@ -94,11 +94,12 @@ public class AdaptivePurePursuitController implements Drive.DriveController {
 			pose = new RigidTransform2d(robot_pose.getTranslation(), robot_pose.getRotation().rotateBy(Rotation2d.fromRadians(Math.PI)));
 		}
 		
-		mFileOutputString.append(pose.getTranslation().getX() + " " + pose.getTranslation().getY() + " " + pose.getRotation().getDegrees() + "\n");
 		
 		double distance_from_path = mPath.update(robot_pose.getTranslation());
 
 		PathSegment.Sample lookahead_point = mPath.getLookaheadPoint(robot_pose.getTranslation(), distance_from_path + mFixedLookahead);
+		
+		mFileOutputString.append(pose.getTranslation().getX() + " " + pose.getTranslation().getY() + " " + pose.getRotation().getDegrees() + " " + lookahead_point.translation.getX() + " " + lookahead_point.translation.getY() + "\n");		
 		
 //		System.out.println("Current point = " + robot_pose.getTranslation() + " " + "Lookahead point = " + lookahead_point.translation);
 		//if (!mPath.getWaypoints().isEmpty()) System.out.println("First point = " + mPath.getWaypoints().get(0).position.toString());

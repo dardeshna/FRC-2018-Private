@@ -25,6 +25,8 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Polyline;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
@@ -38,8 +40,8 @@ import javafx.stage.Window;
 public class AutoPlayback extends Application {
 	
 	// The sequence of estimated poses split into individual components
-	private static ArrayList<Double> xPositions, yPositions, headings;
-	private static Path mPath;
+	private ArrayList<Double> xPositions, yPositions, headings, xLookaheads, yLookaheads;
+	private Path mPath;
 	
 	private Group root;
 	private Scene scene;
@@ -58,6 +60,7 @@ public class AutoPlayback extends Application {
 
 	public void start(Stage stage) throws Exception {
 		
+		resetPoses();
 		handleInput(stage);
 		
 		stage.setTitle("Auto Playback");
@@ -79,10 +82,19 @@ public class AutoPlayback extends Application {
 					// This isn't implemented with graphics.fillPolyline() because that would require repeated casting of 
 					// the lists of coordinates
 					graphics.setLineWidth(3.0);
-					graphics.setStroke(new Color(0, 1, 0, 1));
 					double x = startX + xPositions.get(currentPoseIndex) * canvasScale, y = startY - yPositions.get(currentPoseIndex) * canvasScale;
-					double rotationDegrees = -headings.get(currentPoseIndex);
+					double xLookahead = startX + xLookaheads.get(currentPoseIndex) * canvasScale, yLookahead = startY - yLookaheads.get(currentPoseIndex) * canvasScale;double rotationDegrees = -headings.get(currentPoseIndex);
+					
+					graphics.setStroke(new Color(0, 1, 0, 1));
 					graphics.fillOval(x - graphics.getLineWidth() / 2.0, y - graphics.getLineWidth() / 2.0, graphics.getLineWidth(), graphics.getLineWidth());
+				
+					// Draw the current lookahead point
+					Circle lookaheadPoint = new Circle(xLookahead, yLookahead, 3.0, new Color(0, 1, 1, 1));
+					
+					// Draw a line connecting the robot center of rotation and lookahead for reference
+					Line lookaheadLine = new Line(x, y, xLookahead, yLookahead);
+					lookaheadLine.setStroke(new Color(0, 1, 1, 1));
+					lookaheadLine.setStrokeWidth(1.0);
 					
 					//Draw the robot at its estimated position
 					Rectangle robot = new Rectangle(-Constants.kRobotLengthInches + Constants.kCenterOfRotationOffsetFromFrontInches, -Constants.kRobotWidthInches / 2.0, Constants.kRobotLengthInches, Constants.kRobotWidthInches);
@@ -95,11 +107,15 @@ public class AutoPlayback extends Application {
 					robot.setStroke(new Color(0, 1, 0, 1));
 					robot.setFill(new Color(1, 1, 1, 1));
 					root = new Group();
+					root.getChildren().add(lookaheadPoint);
+					root.getChildren().add(lookaheadLine);
 					root.getChildren().add(robot);
 					root.getChildren().add(canvas);
 					scene = new Scene(root);
 					stage.setScene(scene);
 
+					// Since the distance between animation frames is 1/60 of a second, but the distance between
+					// iterations of adaptive pure pursuit is 1/
 					currentPoseIndex++;
 				}
 				
@@ -111,27 +127,27 @@ public class AutoPlayback extends Application {
 		drawPath();
 		
 		stage.show();
-		System.out.println(startX);
 	}
 	
 	// Reset the list of received robot poses. This should be called at the start of auto
-	public static void resetPoses() {
+	public void resetPoses() {
 		xPositions = new ArrayList<>();
 		yPositions = new ArrayList<>();
 		headings = new ArrayList<>();
+		xLookaheads = new ArrayList<>();
+		yLookaheads = new ArrayList<>();
 	}
 	
-	public static void setPath(Path path) {
+	public void setPath(Path path) {
 		mPath = path;
 	}
 	
 	public static void main(String[] args) {
-		resetPoses();
 		launch(args);
 	}
 	
 	// Parse the auto log file selected by the user
-	private static void handleInput(Stage stage) {
+	private void handleInput(Stage stage) {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.getExtensionFilters().add(new ExtensionFilter("Auto Log Files", "*.auto"));
 		fileChooser.setTitle("Select an auto log file to visualize");
@@ -178,7 +194,6 @@ public class AutoPlayback extends Application {
 			waypoints.add(new Waypoint(new Translation2d(0, 0), 0)); 
 			for (int i = 0; i < numWaypoints; i++) {
 				waypoints.add(new Waypoint(new Translation2d(scanner.nextDouble(), scanner.nextDouble()), 0));
-				System.out.println(waypoints.get(waypoints.size() - 1).position.toString());
 			}
 			setPath(new Path(waypoints));
 			
@@ -187,6 +202,8 @@ public class AutoPlayback extends Application {
 				xPositions.add(scanner.nextDouble());
 				yPositions.add(scanner.nextDouble());
 				headings.add(scanner.nextDouble());
+				xLookaheads.add(scanner.nextDouble());
+				yLookaheads.add(scanner.nextDouble());
 			}
 			scanner.close();
 			
@@ -269,9 +286,7 @@ public class AutoPlayback extends Application {
 		graphics.setStroke(new Color(0, 0, 0, 1));
 		graphics.setLineWidth(6.0);
 		for (Waypoint point : mPath.getWaypoints()) {
-			System.out.println(point.position.getX());
 			double x = startX + point.position.getX() * canvasScale, y = startY - point.position.getY() * canvasScale;
-			System.out.println(x + " " + y);
 			graphics.fillOval(x - graphics.getLineWidth() / 2.0, y - graphics.getLineWidth() / 2.0, graphics.getLineWidth(), graphics.getLineWidth());
 		}
 		
@@ -304,50 +319,6 @@ public class AutoPlayback extends Application {
 			retval = canvasLength - canvasScale * coordinate;
 		}
 		return retval;
-	}
-	
-	// Construct a right start left scale path to test the waypoint display
-	private static void loadTestThree() {
-		List<Waypoint> path = new ArrayList<>();
-		path.add(new Waypoint(new Translation2d(0.0, 0.0), 140));
-
-		if(AutoModeBase.mAlliance == Alliance.BLUE) {
-	        path.add(new Waypoint(new Translation2d(0.0, 0.0), 140));
-            path.add(new Path.Waypoint(new Translation2d((AutoDistances.kBlueScaleSwitchMidlineX - Constants.kRobotLengthInches/2.0)/2,
-                    -Constants.kRobotWidthInches/2.0 - AutoDistances.kBlueRightCornerOffset + AutoDistances.kBlueRightSwitchY/2.0), 80, "p1"));
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueScaleSwitchMidlineX - Constants.kRobotLengthInches/2.0,
-                    -Constants.kRobotWidthInches/2.0 - AutoDistances.kBlueRightCornerOffset + AutoDistances.kBlueRightSwitchY/2.0), 67.5, "p2"));
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueScaleSwitchMidlineX - Constants.kRobotLengthInches/2.0,
-                    -Constants.kRobotWidthInches/2.0 - AutoDistances.kBlueRightCornerOffset + AutoDistances.kBlueRightSwitchY/2.0+20), 80, "p3"));
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueScaleSwitchMidlineX - Constants.kRobotLengthInches/2.0,
-                    (AutoDistances.kFieldWidth - Constants.kRobotWidthInches/2.0 - AutoDistances.kBlueRightCornerOffset
-                            - AutoDistances.kBlueLeftScaleY - AutoDistances.kScalePlateWidth/2.0
-                            -Constants.kRobotWidthInches/2.0 - AutoDistances.kBlueRightCornerOffset + AutoDistances.kBlueRightSwitchY/2.0)/2), 70.0, "p4"));
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueScaleSwitchMidlineX - Constants.kRobotLengthInches/2.0,
-                    AutoDistances.kFieldWidth - Constants.kRobotWidthInches/2 - AutoDistances.kBlueRightCornerOffset
-                            - AutoDistances.kBlueLeftScaleY), 30.0, "p5"));
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kBlueLeftScaleX - Constants.kRobotLengthInches-Constants.kNullZoneAllowableBack,
-                    AutoDistances.kFieldWidth - Constants.kRobotWidthInches/2 - AutoDistances.kBlueRightCornerOffset
-                            - AutoDistances.kBlueLeftScaleY - AutoDistances.kScalePlateWidth/5.0), 0.0, "p6"));
-        } else {
-            path.add(new Path.Waypoint(new Translation2d((AutoDistances.kRedScaleSwitchMidlineX - Constants.kRobotLengthInches/2.0)/2,
-                    -Constants.kRobotWidthInches/2.0 - AutoDistances.kRedRightCornerOffset + AutoDistances.kRedRightSwitchY/2.0), 80, "p1"));
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedScaleSwitchMidlineX - Constants.kRobotLengthInches/2.0,
-                    -Constants.kRobotWidthInches/2.0 - AutoDistances.kRedRightCornerOffset + AutoDistances.kRedRightSwitchY/2.0), 67.5, "p2"));
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedScaleSwitchMidlineX - Constants.kRobotLengthInches/2.0,
-                    -Constants.kRobotWidthInches/2.0 - AutoDistances.kRedRightCornerOffset + AutoDistances.kRedRightSwitchY/2.0+20), 80, "p3"));
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedScaleSwitchMidlineX - Constants.kRobotLengthInches/2.0,
-                    (AutoDistances.kFieldWidth - Constants.kRobotWidthInches/2.0 - AutoDistances.kRedRightCornerOffset
-                            - AutoDistances.kRedLeftScaleY - AutoDistances.kScalePlateWidth/2.0
-                            -Constants.kRobotWidthInches/2.0 - AutoDistances.kRedRightCornerOffset + AutoDistances.kRedRightSwitchY/2.0)/2), 70.0, "p4"));
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedScaleSwitchMidlineX - Constants.kRobotLengthInches/2.0,
-                    AutoDistances.kFieldWidth - Constants.kRobotWidthInches/2 - AutoDistances.kRedRightCornerOffset
-                            - AutoDistances.kRedLeftScaleY), 30.0, "p5"));
-            path.add(new Path.Waypoint(new Translation2d(AutoDistances.kRedLeftScaleX - Constants.kRobotLengthInches-Constants.kNullZoneAllowableBack,
-                    AutoDistances.kFieldWidth - Constants.kRobotWidthInches/2 - AutoDistances.kRedRightCornerOffset
-                            - AutoDistances.kRedLeftScaleY - AutoDistances.kScalePlateWidth/5.0), 0.0, "p6"));
-        }
-		setPath(new Path(path));
 	}
 	
 }
