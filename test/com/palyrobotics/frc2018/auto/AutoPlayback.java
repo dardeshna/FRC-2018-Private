@@ -19,10 +19,13 @@ import com.palyrobotics.frc2018.util.trajectory.Translation2d;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
@@ -46,6 +49,9 @@ public class AutoPlayback extends Application {
 	private Group root;
 	private Scene scene;
 	private Canvas canvas;
+	
+	// Has playback been paused or not?
+	private boolean paused = false;
 	
 	// What point in the list of estimated positions are we displaying?
 	private int currentPoseIndex = 0;
@@ -89,12 +95,12 @@ public class AutoPlayback extends Application {
 					graphics.fillOval(x - graphics.getLineWidth() / 2.0, y - graphics.getLineWidth() / 2.0, graphics.getLineWidth(), graphics.getLineWidth());
 				
 					// Draw the current lookahead point
-					Circle lookaheadPoint = new Circle(xLookahead, yLookahead, 3.0, new Color(0, 1, 1, 1));
+					Circle lookaheadPoint = new Circle(xLookahead, yLookahead, 5.0, new Color(0, 1, 1, 1));
 					
 					// Draw a line connecting the robot center of rotation and lookahead for reference
 					Line lookaheadLine = new Line(x, y, xLookahead, yLookahead);
 					lookaheadLine.setStroke(new Color(0, 1, 1, 1));
-					lookaheadLine.setStrokeWidth(1.0);
+					lookaheadLine.setStrokeWidth(3.0);
 					
 					//Draw the robot at its estimated position
 					Rectangle robot = new Rectangle(-Constants.kRobotLengthInches + Constants.kCenterOfRotationOffsetFromFrontInches, -Constants.kRobotWidthInches / 2.0, Constants.kRobotLengthInches, Constants.kRobotWidthInches);
@@ -105,23 +111,48 @@ public class AutoPlayback extends Application {
 					// NOTE: The transformations are applied in the reverse of the order you add them in!
 					robot.getTransforms().addAll(translation, rotation, scale);
 					robot.setStroke(new Color(0, 1, 0, 1));
-					robot.setFill(new Color(1, 1, 1, 1));
+					robot.setFill(new Color(1, 1, 1, 0));
 					root = new Group();
-					root.getChildren().add(lookaheadPoint);
-					root.getChildren().add(lookaheadLine);
-					root.getChildren().add(robot);
 					root.getChildren().add(canvas);
-					scene = new Scene(root);
-					stage.setScene(scene);
+					root.getChildren().add(robot);
+					root.getChildren().add(lookaheadLine);
+					root.getChildren().add(lookaheadPoint);
+					
+					scene.setRoot(root);
+					//stage.setScene(scene);
 
-					// Since the distance between animation frames is 1/60 of a second, but the distance between
-					// iterations of adaptive pure pursuit is 1/
-					currentPoseIndex++;
-				}
+					if (!paused) currentPoseIndex++;
+				} else paused = true;
 				
 			}
 			
 		}.start();
+		
+		// Configure keyboard control to stop, start, increment, and rewind playback
+		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+
+			@Override
+			public void handle(KeyEvent event) {
+				switch (event.getCode()) {
+				
+				case SPACE:
+					paused = !paused;
+					break;
+				case LEFT:
+					if (paused) currentPoseIndex = Math.max(currentPoseIndex - 4, 0);
+					break;
+				case RIGHT:
+					if (paused) currentPoseIndex = Math.min(currentPoseIndex + 4, xPositions.size() - 1);;
+					break;
+				case HOME:
+					currentPoseIndex = 0;
+				default:
+					break;
+				
+				}
+			}
+			
+		});
 		
 		drawField();
 		drawPath();
@@ -284,7 +315,7 @@ public class AutoPlayback extends Application {
 	private void drawPath() {
 		GraphicsContext graphics = canvas.getGraphicsContext2D();
 		graphics.setStroke(new Color(0, 0, 0, 1));
-		graphics.setLineWidth(6.0);
+		graphics.setLineWidth(10.0);
 		for (Waypoint point : mPath.getWaypoints()) {
 			double x = startX + point.position.getX() * canvasScale, y = startY - point.position.getY() * canvasScale;
 			graphics.fillOval(x - graphics.getLineWidth() / 2.0, y - graphics.getLineWidth() / 2.0, graphics.getLineWidth(), graphics.getLineWidth());
