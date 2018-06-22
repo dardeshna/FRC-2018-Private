@@ -94,9 +94,7 @@ public class AutoModeSelector {
 	 * @return AutoMode currently selected
 	 */
 	public AutoModeBase getAutoMode() {
-		return getAutoMode(AutoModeBase.mAlliance, AutoModeBase.mStartingPosition, AutoModeBase.mScaleDecision,
-                AutoModeBase.mSwitchDecision, AutoModeBase.mSecondScaleSideDecision, AutoModeBase.mSecondSwitchSideDecision,
-                AutoModeBase.mPriority, AutoModeBase.mSecondCubePriority, AutoModeBase.mMultiCube);
+		return new CenterStartRightSwitchAutoMode();
 	}
 
 	/**

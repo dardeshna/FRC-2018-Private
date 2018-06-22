@@ -102,7 +102,7 @@ public class Constants {
 	public static final double kRobotWidthInches = 34.0;
 	public static final double kRobotLengthInches = 39.0;
 	public static final double kCenterOfRotationOffsetFromFrontInches = 13.0;
-	public static final double kNullZoneAllowableBack = 4;
+	public static final double kNullZoneAllowableBack = 4.5;
 
 	/**
 	 * Tolerances
@@ -133,7 +133,7 @@ public class Constants {
 	public static final double kIntakeSlaveExpelCurrent = 1.5;
 	public static final double kIntakeSlaveVaultExpelCurrent = 6.0;
 	public static final double kIntakeSlaveIntakingCurrent = 6;
-	public static final double kSwitchAutoWaitBeforeElevatorRaiseTimeSeconds = 1.5;
+	public static final double kSwitchAutoWaitBeforeElevatorRaiseTimeSeconds = .25;
 	public static final double kScaleAutoWaitBeforeElevatorRaiseTimeSeconds = 1.0;
 	public static final double kScaleOffset = 18;
 	public static final int kIntakeStallCounterThreshold = 5;
