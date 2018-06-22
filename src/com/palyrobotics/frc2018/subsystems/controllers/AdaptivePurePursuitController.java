@@ -1,6 +1,7 @@
 package com.palyrobotics.frc2018.subsystems.controllers;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.google.common.io.Files;
 import com.palyrobotics.frc2018.auto.AutoModeBase;
 import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.config.Gains;
@@ -64,7 +65,24 @@ public class AdaptivePurePursuitController implements Drive.DriveController {
 		
 		mFileOutputString = new StringBuilder();
 		try {
-			mFileOutput = new PrintWriter("C:/auto/" + new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date()) + ".auto");
+			String os = System.getProperty("os.name");
+			
+			File outputFile = null;
+			if (os.startsWith("Windows")) {
+				outputFile = new File("C:/auto/" + new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date()) + ".auto");
+			} else if (os.startsWith("Mac")) {
+				outputFile = new File("~/auto/" + new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date()) + ".auto");
+			} else if (os.startsWith("Linux")) {
+				// Assume we're on a RIO
+				// RIP Linux users
+				outputFile = new File("/home/lvuser/auto-logs/" + new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date()) + ".auto");
+			} else {
+				System.out.println("Unknown operating system, defaulting to RIO");
+				outputFile = new File("/home/lvuser/auto-logs/" + new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date()) + ".auto");
+			}
+			Files.createParentDirs(outputFile);
+			outputFile.createNewFile();
+			mFileOutput = new PrintWriter(outputFile);
 		}
 		catch (IOException e) {
 			e.printStackTrace();
