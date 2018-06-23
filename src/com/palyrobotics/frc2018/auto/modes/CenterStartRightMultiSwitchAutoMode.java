@@ -28,10 +28,6 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
 	private Translation2d midPoint;
 	
     public CenterStartRightMultiSwitchAutoMode() {
-        startPoint = new Translation2d(mDistances.kRightSwitchX - Constants.kRobotLengthInches,
-                -(mDistances.kFieldWidth - mDistances.kLeftToCenterY - Constants.kRobotWidthInches/2.0)
-                + mDistances.kRightSwitchY + mDistances.kSwitchPlateWidth/2.0);
-        midPoint =  new Translation2d(-85, mDistances.kPyramidFromRightY + mDistances.kPyramidWidth / 2.0 - mDistances.kRightSwitchY - mDistances.kSwitchPlateWidth / 2.0);
     }
 
     //Point in between getting second cube and switch, used as a vertex to curve off of
@@ -54,101 +50,83 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
         //Initial cube score
         routines.add(new CenterStartRightSwitchAutoMode().getRoutine());
 
-        ArrayList<Routine> prepareForSecondCube = new ArrayList<>();
+        ArrayList<Routine> secondCubeRoutine = new ArrayList<>();
 
-        prepareForSecondCube.add(getPrepareForIntaking());
-        prepareForSecondCube.add(getBackUpFromSwitch());
+        secondCubeRoutine.add(getFirstBackup());
+        secondCubeRoutine.add(driveForward());
 
-        //Back up and move elevator down
-        routines.add(new ParallelRoutine(prepareForSecondCube));
+        routines.add(new SequentialRoutine(secondCubeRoutine));
+        routines.add(driveBackToSwitchAndExpel());
 
-        //Drive to and intake cube
-        routines.add(getDriveToAndIntakeCube(mAlliance));
-
-        routines.add(getReturnToSwitchPt1());
-
-        routines.add(getReturnToSwitchPt2());
-
-        routines.add(new IntakeWheelRoutine(Intake.WheelState.EXPELLING, 2.0));
 
         return new SequentialRoutine(routines);
     }
 
-    public Routine getBackUpFromSwitch() {
-        ArrayList<Waypoint> path = new ArrayList<>();
-
-        path.add(new Waypoint(new Translation2d(0.0, 0.0), 72.0, true));
-        path.add(new Waypoint(new Translation2d(-40.0, 0.0), 72.0, true));
-        path.add(new Waypoint(startPoint.translateBy(midPoint), 0.0));
-        
-        return new DrivePathRoutine(path, true, true);
+    public Waypoint getFirstBackUpPoint() {
+        double backX = mDistances.kRightSwitchX - Constants.kRobotLengthInches - mDistances.kPyramidLength * 1.68;
+        return new Waypoint(new Translation2d(backX,0), 0);
     }
 
-    public Routine getDriveToAndIntakeCube(Alliance alliance) {
+    public Routine getFirstBackup() {
+        List<Waypoint> path = new ArrayList<>();
+        Waypoint cp = new Waypoint(CenterStartRightSwitchAutoMode.end.position, 100);
+        path.add(cp);
 
-        ArrayList<Waypoint> path = new ArrayList<>();
-        
-        path.add(new Waypoint(new Translation2d(0, 0), 35.0, true));
+        path.add(getFirstBackUpPoint());
 
-        path.add(new Waypoint(startPoint.translateBy(new Translation2d(-mDistances.kPyramidLength,
-                mDistances.kPyramidFromRightY - mDistances.kRightSwitchY - mDistances.kSwitchPlateWidth/2.0 + mDistances.kPyramidWidth/2.0)), 0.0));
+        ArrayList<Routine> dropElevator = new ArrayList<>();
+        dropElevator.add(new TimeoutRoutine(.2));
+        dropElevator.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorBottomPositionInches, 1.1));
 
-        return new DriveUntilHasCubeRoutine(new DrivePathRoutine(path, false, 50.0, 25.0, 4.0));
+        return new ParallelRoutine(new DrivePathRoutine(new Path(path), true),new SequentialRoutine(dropElevator));
     }
 
-    /**
-     * Bring elevator and intake down
-     *
-     * @return
-     */
-    public Routine getPrepareForIntaking() {
-        //Use this in parallel with backing up
-        ArrayList<Routine> prepareForIntakingArrayList = new ArrayList<>();
-        prepareForIntakingArrayList.add(new TimeoutRoutine(1));
-        prepareForIntakingArrayList.add(new IntakeDownRoutine());
-        prepareForIntakingArrayList.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorBottomPositionInches, 1.5));
-        Routine prepareForIntakingRoutine = new SequentialRoutine(prepareForIntakingArrayList);
-        return prepareForIntakingRoutine;
+    public Routine driveForward() {
+        List<Waypoint> path = new ArrayList<>();
+        Waypoint cp = new Waypoint(getFirstBackUpPoint().position, 70);
+        path.add(cp);
+
+        double backX = mDistances.kRightSwitchX - Constants.kRobotLengthInches - mDistances.kPyramidLength*1.1;
+        path.add(new Waypoint(new Translation2d(backX,0), 0));
+
+        return new DriveUntilHasCubeRoutine(new DrivePathRoutine(new Path(path), false));
     }
 
-    /**
-     * Back up to get in position to drive in
-     *
-     * @return
-     */
-    public Routine getReturnToSwitchPt1() {
-        ArrayList<Routine> returnToSwitchPt1ArrayList = new ArrayList<>();
-        returnToSwitchPt1ArrayList.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorCubeInTransitPositionInches, 1.0));
+    public Routine driveBackToSwitchAndExpel() {
+        ArrayList<Routine> routines = new ArrayList<>();
 
-        ArrayList<Waypoint> path = new ArrayList<>();
-        
-        path.add(new Waypoint(new Translation2d(0, 0), 50.0, true));
-        path.add(new Waypoint(startPoint.translateBy(midPoint), 0.0));
-        
-        returnToSwitchPt1ArrayList.add(new DrivePathRoutine(path, true, 72.0, Constants.kPathFollowingLookahead, 4.0, true));
+        List<Waypoint> path = new ArrayList<>();
+        double backX = mDistances.kRightSwitchX - Constants.kRobotLengthInches - mDistances.kPyramidLength*1.1;
+        path.add(new Waypoint(new Translation2d(backX,0), 80));
 
-        return new ParallelRoutine(returnToSwitchPt1ArrayList);
-    }
+        path.add(getFirstBackUpPoint());
+        routines.add(new DrivePathRoutine(new Path(path), true));
 
-    /**
-     * Drive into switch
-     *
-     * @return
-     */
-    public Routine getReturnToSwitchPt2() {
-        ArrayList<Routine> returnToSwitchPt2ArrayList = new ArrayList<>();
 
-        returnToSwitchPt2ArrayList.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorSwitchPositionInches, 1.5));
+        // The last part of driving to the switch is done in two parts.
+        // Let the total translation required be a dX and a dY.  To ensure
+        // that we end with a correct angle, set a point from the current point translated by dx/3 and dy*2/3.
+        // the last point is just a translation of dy and dx.
 
-        ArrayList<Waypoint> path = new ArrayList<>();
-        
-        path.add(new Waypoint(new Translation2d(0, 0), 60.0, true));
-        path.add(new Waypoint(startPoint.translateBy(new Translation2d(-40.0, 0.0)), 60.0));
-        path.add(new Waypoint(startPoint, 0.0));
-        
-        returnToSwitchPt2ArrayList.add(new DrivePathRoutine(path,  false, 72.0, 30.0, 4.0, true));
+        List<Waypoint> secondPath = new ArrayList<>();
+        secondPath.add(new Waypoint(getFirstBackUpPoint().position.translateBy(new Translation2d(Constants.kSquareCubeLength,0)), 100));
 
-        return new ParallelRoutine(returnToSwitchPt2ArrayList);
+        // NOTE: THE CONSTANT AT THE END NEEDS TO BE HIGHER BECAUSE THE POSITION ESTIMATOR IS _BAD_
+        double dy = (mDistances.kFieldWidth/2 - mDistances.kRightSwitchY)/2 * .96;
+
+        dy *= -1;
+
+        double dx = (mDistances.kRightSwitchX - Constants.kRobotLengthInches - Constants.kNullZoneAllowableBack) -
+                (mDistances.kRightSwitchX - Constants.kRobotLengthInches - mDistances.kPyramidLength * 1.68);
+
+        secondPath.add(new Waypoint(getFirstBackUpPoint().position.translateBy(new Translation2d(dx/3, dy*2/3)), 80));
+        secondPath.add(new Waypoint(getFirstBackUpPoint().position.translateBy(new Translation2d(dx, dy)), 0));
+
+        routines.add(new ParallelRoutine(new ElevatorCustomPositioningRoutine(Constants.kElevatorSwitchPositionInches, 1.2),
+                    new DrivePathRoutine(new Path(secondPath), false)));
+        routines.add(new IntakeWheelRoutine(Intake.WheelState.VAULT_EXPELLING, .3));
+
+        return new SequentialRoutine(routines);
     }
 
     @Override

@@ -64,6 +64,7 @@ public abstract class AutoModeBase {
 		} else {
 			mDistances = AutoDistances.red;
 		}
+
 	}
 
 	public abstract Routine getRoutine();

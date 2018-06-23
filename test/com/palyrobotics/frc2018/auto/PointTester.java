@@ -17,5 +17,10 @@ public class PointTester {
 
         System.out.println(dx);
         System.out.println(dy);
+
+        double d = (mDistances.kRightSwitchX - Constants.kRobotLengthInches - Constants.kNullZoneAllowableBack) -
+                mDistances.kRightSwitchX - Constants.kRobotLengthInches - mDistances.kPyramidLength * 1.8;
+        System.out.println(d);
+
     }
 }

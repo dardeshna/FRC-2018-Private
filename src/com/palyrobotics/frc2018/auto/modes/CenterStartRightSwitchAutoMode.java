@@ -21,6 +21,17 @@ import java.util.List;
 
 public class CenterStartRightSwitchAutoMode extends AutoModeBase {
 
+	private double dy;
+	private double dx;
+	public static Waypoint end;
+
+	static {
+		double dy = (mDistances.kFieldWidth/2 - mDistances.kRightSwitchY)/2 * .92;
+		dy *= -1;
+		double dx = mDistances.kRightSwitchX - Constants.kRobotLengthInches - Constants.kNullZoneAllowableBack;
+		CenterStartRightSwitchAutoMode.end = new Waypoint(new Translation2d(dx, dy), 0);
+	}
+
 	@Override
 	public String toString() {
 		return mAlliance + this.getClass().toString();
@@ -36,12 +47,8 @@ public class CenterStartRightSwitchAutoMode extends AutoModeBase {
         List<Waypoint> path = new ArrayList<>();
         path.add(new Waypoint(new Translation2d(0, 0), 150));
 
-		double dy = (mDistances.kFieldWidth/2 - mDistances.kRightSwitchY)/2 * .85;
-		dy *= -1;
-		double dx = mDistances.kRightSwitchX - Constants.kRobotLengthInches - Constants.kNullZoneAllowableBack;
-
 		path.add(new Waypoint(new Translation2d(dx/2, dy/2), 120));
-		path.add(new Waypoint(new Translation2d(dx, dy), 0));
+		path.add(CenterStartRightSwitchAutoMode.end);
 
         ArrayList<Routine> routines = new ArrayList<>();
 
