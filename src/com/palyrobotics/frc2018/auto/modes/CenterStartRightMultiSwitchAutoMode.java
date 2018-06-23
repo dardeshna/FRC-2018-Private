@@ -59,6 +59,10 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
         routines.add(driveBackToSwitchAndExpel());
 
 
+        routines.add(getSecondBackup());
+        routines.add(driveForwardAgain());
+        routines.add(driveBackToSwitchAndExpelSecond());
+
         return new SequentialRoutine(routines);
     }
 
@@ -97,7 +101,7 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
 
         List<Waypoint> path = new ArrayList<>();
         double backX = mDistances.kRightSwitchX - Constants.kRobotLengthInches - mDistances.kPyramidLength*1.1;
-        path.add(new Waypoint(new Translation2d(backX,0), 80));
+        path.add(new Waypoint(new Translation2d(backX,0), 100));
 
         path.add(getFirstBackUpPoint());
         routines.add(new DrivePathRoutine(new Path(path), true));
@@ -128,6 +132,85 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
 
         return new SequentialRoutine(routines);
     }
+
+    public Waypoint getFirstEndWaypoint() {
+        double dy = (mDistances.kFieldWidth/2 - mDistances.kRightSwitchY)/2 * .96;
+
+        dy *= -1;
+
+        double dx = (mDistances.kRightSwitchX - Constants.kRobotLengthInches - Constants.kNullZoneAllowableBack) -
+                (mDistances.kRightSwitchX - Constants.kRobotLengthInches - mDistances.kPyramidLength * 1.68);
+
+        return new Waypoint(getFirstBackUpPoint().position.translateBy(new Translation2d(dx, dy)), 0);
+    }
+
+    public Routine getSecondBackup() {
+        List<Waypoint> path = new ArrayList<>();
+        Waypoint cp = new Waypoint(getFirstEndWaypoint().position, 100);
+        path.add(cp);
+
+        path.add(getSecondBackupPoint());
+
+        ArrayList<Routine> dropElevator = new ArrayList<>();
+        dropElevator.add(new TimeoutRoutine(.2));
+        dropElevator.add(new ElevatorCustomPositioningRoutine(13 * 1.8, 1.1));
+
+        return new ParallelRoutine(new DrivePathRoutine(new Path(path), true),new SequentialRoutine(dropElevator));
+    }
+
+    public Waypoint getSecondBackupPoint() {
+        double backX = mDistances.kRightSwitchX - Constants.kRobotLengthInches - mDistances.kPyramidLength * 1.68 + Constants.kSquareCubeLength;
+        return new Waypoint(new Translation2d(backX,0), 0);
+    }
+
+    public Routine driveForwardAgain() {
+        List<Waypoint> path = new ArrayList<>();
+        Waypoint cp = new Waypoint(getFirstBackUpPoint().position, 70);
+        path.add(cp);
+
+        double backX = mDistances.kRightSwitchX - Constants.kRobotLengthInches - mDistances.kPyramidLength*1.1 + Constants.kSquareCubeLength;
+        path.add(new Waypoint(new Translation2d(backX,0), 0));
+
+        return new ParallelRoutine(new DrivePathRoutine(new Path(path), false), new IntakeWheelRoutine(Intake.WheelState.INTAKING, 1.5));
+    }
+
+    public Routine driveBackToSwitchAndExpelSecond() {
+        ArrayList<Routine> routines = new ArrayList<>();
+
+        List<Waypoint> path = new ArrayList<>();
+        double backX = mDistances.kRightSwitchX - Constants.kRobotLengthInches - mDistances.kPyramidLength*1.1 + Constants.kSquareCubeLength;
+        path.add(new Waypoint(new Translation2d(backX,0), 100));
+
+        path.add(getSecondBackupPoint());
+        routines.add(new DrivePathRoutine(new Path(path), true));
+
+
+        // The last part of driving to the switch is done in two parts.
+        // Let the total translation required be a dX and a dY.  To ensure
+        // that we end with a correct angle, set a point from the current point translated by dx/3 and dy*2/3.
+        // the last point is just a translation of dy and dx.
+
+        List<Waypoint> secondPath = new ArrayList<>();
+        secondPath.add(new Waypoint(getSecondBackupPoint().position.translateBy(new Translation2d(Constants.kSquareCubeLength,0)), 100));
+
+        // NOTE: THE CONSTANT AT THE END NEEDS TO BE HIGHER BECAUSE THE POSITION ESTIMATOR IS _BAD_
+        double dy = (mDistances.kFieldWidth/2 - mDistances.kRightSwitchY)/2 * .96;
+
+        dy *= -1;
+
+        double dx = (mDistances.kRightSwitchX - Constants.kRobotLengthInches - Constants.kNullZoneAllowableBack) -
+                (mDistances.kRightSwitchX - Constants.kRobotLengthInches - mDistances.kPyramidLength * 1.68 + Constants.kSquareCubeLength);
+
+        secondPath.add(new Waypoint(getSecondBackupPoint().position.translateBy(new Translation2d(dx/3, dy*2/3)), 80));
+        secondPath.add(new Waypoint(getSecondBackupPoint().position.translateBy(new Translation2d(dx, dy)), 0));
+
+        routines.add(new ParallelRoutine(new ElevatorCustomPositioningRoutine(Constants.kElevatorSwitchPositionInches, 1.2),
+                new DrivePathRoutine(new Path(secondPath), false)));
+        routines.add(new IntakeWheelRoutine(Intake.WheelState.VAULT_EXPELLING, .3));
+
+        return new SequentialRoutine(routines);
+    }
+
 
     @Override
     public String getKey() {
