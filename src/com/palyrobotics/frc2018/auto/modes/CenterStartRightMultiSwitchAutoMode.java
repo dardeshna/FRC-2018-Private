@@ -113,7 +113,7 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
         // the last point is just a translation of dy and dx.
 
         List<Waypoint> secondPath = new ArrayList<>();
-        secondPath.add(new Waypoint(getFirstBackUpPoint().position.translateBy(new Translation2d(Constants.kSquareCubeLength,0)), 100));
+        secondPath.add(new Waypoint(getFirstBackUpPoint().position.translateBy(new Translation2d(Constants.kSquareCubeLength,0)), 130));
 
         // NOTE: THE CONSTANT AT THE END NEEDS TO BE HIGHER BECAUSE THE POSITION ESTIMATOR IS _BAD_
         double dy = (mDistances.kFieldWidth/2 - mDistances.kRightSwitchY)/2 * .96;
@@ -123,7 +123,7 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
         double dx = (mDistances.kRightSwitchX - Constants.kRobotLengthInches - Constants.kNullZoneAllowableBack) -
                 (mDistances.kRightSwitchX - Constants.kRobotLengthInches - mDistances.kPyramidLength * 1.68);
 
-        secondPath.add(new Waypoint(getFirstBackUpPoint().position.translateBy(new Translation2d(dx/3, dy*2/3)), 80));
+        secondPath.add(new Waypoint(getFirstBackUpPoint().position.translateBy(new Translation2d(dx/3, dy*2/3)), 100));
         secondPath.add(new Waypoint(getFirstBackUpPoint().position.translateBy(new Translation2d(dx, dy)), 0));
 
         routines.add(new ParallelRoutine(new ElevatorCustomPositioningRoutine(Constants.kElevatorSwitchPositionInches, 1.2),
@@ -191,7 +191,7 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
         // the last point is just a translation of dy and dx.
 
         List<Waypoint> secondPath = new ArrayList<>();
-        secondPath.add(new Waypoint(getSecondBackupPoint().position.translateBy(new Translation2d(Constants.kSquareCubeLength,0)), 100));
+        secondPath.add(new Waypoint(getSecondBackupPoint().position.translateBy(new Translation2d(Constants.kSquareCubeLength,0)), 130));
 
         // NOTE: THE CONSTANT AT THE END NEEDS TO BE HIGHER BECAUSE THE POSITION ESTIMATOR IS _BAD_
         double dy = (mDistances.kFieldWidth/2 - mDistances.kRightSwitchY)/2 * .96;
@@ -201,7 +201,7 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
         double dx = (mDistances.kRightSwitchX - Constants.kRobotLengthInches - Constants.kNullZoneAllowableBack) -
                 (mDistances.kRightSwitchX - Constants.kRobotLengthInches - mDistances.kPyramidLength * 1.68 + Constants.kSquareCubeLength);
 
-        secondPath.add(new Waypoint(getSecondBackupPoint().position.translateBy(new Translation2d(dx/3, dy*2/3)), 80));
+        secondPath.add(new Waypoint(getSecondBackupPoint().position.translateBy(new Translation2d(dx/3, dy*2/3)), 110));
         secondPath.add(new Waypoint(getSecondBackupPoint().position.translateBy(new Translation2d(dx, dy)), 0));
 
         routines.add(new ParallelRoutine(new ElevatorCustomPositioningRoutine(Constants.kElevatorSwitchPositionInches, 1.2),
