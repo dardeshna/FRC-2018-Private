@@ -52,10 +52,10 @@ public abstract class AutoModeBase {
 	public static Decision mScaleDecision = Decision.NEVER;
 	public static Decision mSwitchDecision = Decision.BOTH;
     public static SecondSideDecision mSecondScaleSideDecision = SecondSideDecision.NEVER;
-    public static SecondSideDecision mSecondSwitchSideDecision = SecondSideDecision.NEVER;
+    public static SecondSideDecision mSecondSwitchSideDecision = SecondSideDecision.BOTH;
 	public static Priority mPriority = Priority.SWITCH;
 	public static Priority mSecondCubePriority = Priority.SWITCH;
-	public static boolean mMultiCube = false;
+	public static boolean mMultiCube = true;
 	public static AllianceDistances mDistances;
 
 	private static void loadDistances() {

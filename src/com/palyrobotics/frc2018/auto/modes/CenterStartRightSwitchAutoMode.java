@@ -26,7 +26,7 @@ public class CenterStartRightSwitchAutoMode extends AutoModeBase {
 	public static Waypoint end;
 
 	static {
-		double dy = (mDistances.kFieldWidth/2 - mDistances.kRightSwitchY)/2 * .92;
+		double dy = (mDistances.kFieldWidth/2 - mDistances.kRightSwitchY) * .55;
 		dy *= -1;
 		double dx = mDistances.kRightSwitchX - Constants.kRobotLengthInches - Constants.kNullZoneAllowableBack;
 		CenterStartRightSwitchAutoMode.end = new Waypoint(new Translation2d(dx, dy), 0);

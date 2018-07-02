@@ -72,7 +72,7 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
     }
 
     public Routine getFirstBackup() {
-        List<Waypoint> path = new ArrayList<>();
+        ArrayList<Waypoint> path = new ArrayList<>();
         Waypoint cp = new Waypoint(CenterStartRightSwitchAutoMode.end.position, 100);
         path.add(cp);
 
@@ -82,7 +82,7 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
         dropElevator.add(new TimeoutRoutine(.2));
         dropElevator.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorBottomPositionInches, 1.1));
 
-        return new ParallelRoutine(new DrivePathRoutine(new Path(path), true),new SequentialRoutine(dropElevator));
+        return new ParallelRoutine(new DrivePathRoutine(path, true, 0.0, 35.0, 10.0),new SequentialRoutine(dropElevator));
     }
 
     public Routine driveForward() {
@@ -116,7 +116,7 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
         secondPath.add(new Waypoint(getFirstBackUpPoint().position.translateBy(new Translation2d(Constants.kSquareCubeLength,0)), 130));
 
         // NOTE: THE CONSTANT AT THE END NEEDS TO BE HIGHER BECAUSE THE POSITION ESTIMATOR IS _BAD_
-        double dy = (mDistances.kFieldWidth/2 - mDistances.kRightSwitchY)/2 * .96;
+        double dy = (mDistances.kFieldWidth/2 - mDistances.kRightSwitchY) * .55;
 
         dy *= -1;
 
@@ -134,7 +134,7 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
     }
 
     public Waypoint getFirstEndWaypoint() {
-        double dy = (mDistances.kFieldWidth/2 - mDistances.kRightSwitchY)/2 * .96;
+        double dy = (mDistances.kFieldWidth/2 - mDistances.kRightSwitchY) *.55;
 
         dy *= -1;
 
@@ -145,7 +145,7 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
     }
 
     public Routine getSecondBackup() {
-        List<Waypoint> path = new ArrayList<>();
+        ArrayList<Waypoint> path = new ArrayList<>();
         Waypoint cp = new Waypoint(getFirstEndWaypoint().position, 100);
         path.add(cp);
 
@@ -155,7 +155,7 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
         dropElevator.add(new TimeoutRoutine(.2));
         dropElevator.add(new ElevatorCustomPositioningRoutine(13 * 1.8, 1.1));
 
-        return new ParallelRoutine(new DrivePathRoutine(new Path(path), true),new SequentialRoutine(dropElevator));
+        return new ParallelRoutine(new DrivePathRoutine(path, true, 0.0, 35.0, 10.0),new SequentialRoutine(dropElevator));
     }
 
     public Waypoint getSecondBackupPoint() {
@@ -194,7 +194,7 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
         secondPath.add(new Waypoint(getSecondBackupPoint().position.translateBy(new Translation2d(Constants.kSquareCubeLength,0)), 130));
 
         // NOTE: THE CONSTANT AT THE END NEEDS TO BE HIGHER BECAUSE THE POSITION ESTIMATOR IS _BAD_
-        double dy = (mDistances.kFieldWidth/2 - mDistances.kRightSwitchY)/2 * .96;
+        double dy = (mDistances.kFieldWidth/2 - mDistances.kRightSwitchY) * .55;
 
         dy *= -1;
 
