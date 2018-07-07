@@ -26,6 +26,8 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
 
 	private Translation2d startPoint;
 	private Translation2d midPoint;
+
+	private final double offsetPyramid = 0;
 	
     public CenterStartRightMultiSwitchAutoMode() {
     }
@@ -68,12 +70,12 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
 
     public Waypoint getFirstBackUpPoint() {
         double backX = mDistances.kRightSwitchX - Constants.kRobotLengthInches - mDistances.kPyramidLength * 1.68;
-        return new Waypoint(new Translation2d(backX,0), 0);
+        return new Waypoint(new Translation2d(backX,offsetPyramid), 0);
     }
 
     public Routine getFirstBackup() {
         ArrayList<Waypoint> path = new ArrayList<>();
-        Waypoint cp = new Waypoint(CenterStartRightSwitchAutoMode.end.position, 100);
+        Waypoint cp = new Waypoint(CenterStartRightSwitchAutoMode.end.position, 140);
         path.add(cp);
 
         path.add(getFirstBackUpPoint());
@@ -87,11 +89,11 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
 
     public Routine driveForward() {
         List<Waypoint> path = new ArrayList<>();
-        Waypoint cp = new Waypoint(getFirstBackUpPoint().position, 70);
+        Waypoint cp = new Waypoint(getFirstBackUpPoint().position, 40);
         path.add(cp);
 
-        double backX = mDistances.kRightSwitchX - Constants.kRobotLengthInches - mDistances.kPyramidLength*1.1;
-        path.add(new Waypoint(new Translation2d(backX,0), 0));
+        double backX = mDistances.kRightSwitchX - Constants.kRobotLengthInches - mDistances.kPyramidLength*.96;
+        path.add(new Waypoint(new Translation2d(backX,offsetPyramid), 0));
 
         return new DriveUntilHasCubeRoutine(new DrivePathRoutine(new Path(path), false));
     }
@@ -100,8 +102,8 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
         ArrayList<Routine> routines = new ArrayList<>();
 
         List<Waypoint> path = new ArrayList<>();
-        double backX = mDistances.kRightSwitchX - Constants.kRobotLengthInches - mDistances.kPyramidLength*1.1;
-        path.add(new Waypoint(new Translation2d(backX,0), 100));
+        double backX = mDistances.kRightSwitchX - Constants.kRobotLengthInches - mDistances.kPyramidLength * .96;
+        path.add(new Waypoint(new Translation2d(backX,offsetPyramid), 110));
 
         path.add(getFirstBackUpPoint());
         routines.add(new DrivePathRoutine(new Path(path), true));
@@ -123,12 +125,12 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
         double dx = (mDistances.kRightSwitchX - Constants.kRobotLengthInches - Constants.kNullZoneAllowableBack) -
                 (mDistances.kRightSwitchX - Constants.kRobotLengthInches - mDistances.kPyramidLength * 1.68);
 
-        secondPath.add(new Waypoint(getFirstBackUpPoint().position.translateBy(new Translation2d(dx/3, dy*2/3)), 100));
+        secondPath.add(new Waypoint(getFirstBackUpPoint().position.translateBy(new Translation2d(3.5*dx/7, dy*3.5/7)), 100));
         secondPath.add(new Waypoint(getFirstBackUpPoint().position.translateBy(new Translation2d(dx, dy)), 0));
 
         routines.add(new ParallelRoutine(new ElevatorCustomPositioningRoutine(Constants.kElevatorSwitchPositionInches, 1.2),
                     new DrivePathRoutine(new Path(secondPath), false)));
-        routines.add(new IntakeWheelRoutine(Intake.WheelState.VAULT_EXPELLING, .3));
+        routines.add(new IntakeWheelRoutine(Intake.WheelState.VAULT_EXPELLING, .2));
 
         return new SequentialRoutine(routines);
     }
@@ -146,7 +148,7 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
 
     public Routine getSecondBackup() {
         ArrayList<Waypoint> path = new ArrayList<>();
-        Waypoint cp = new Waypoint(getFirstEndWaypoint().position, 100);
+        Waypoint cp = new Waypoint(getFirstEndWaypoint().position, 110);
         path.add(cp);
 
         path.add(getSecondBackupPoint());
@@ -160,18 +162,18 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
 
     public Waypoint getSecondBackupPoint() {
         double backX = mDistances.kRightSwitchX - Constants.kRobotLengthInches - mDistances.kPyramidLength * 1.68 + Constants.kSquareCubeLength;
-        return new Waypoint(new Translation2d(backX,0), 0);
+        return new Waypoint(new Translation2d(backX,3), 0);
     }
 
     public Routine driveForwardAgain() {
         List<Waypoint> path = new ArrayList<>();
-        Waypoint cp = new Waypoint(getFirstBackUpPoint().position, 70);
+        Waypoint cp = new Waypoint(getFirstBackUpPoint().position, 45);
         path.add(cp);
 
         double backX = mDistances.kRightSwitchX - Constants.kRobotLengthInches - mDistances.kPyramidLength*1.1 + Constants.kSquareCubeLength;
-        path.add(new Waypoint(new Translation2d(backX,0), 0));
+        path.add(new Waypoint(new Translation2d(backX,3), 0));
 
-        return new ParallelRoutine(new DrivePathRoutine(new Path(path), false), new IntakeWheelRoutine(Intake.WheelState.INTAKING, 1.5));
+        return new ParallelRoutine(new DrivePathRoutine(new Path(path), false), new IntakeWheelRoutine(Intake.WheelState.INTAKING, 1.25));
     }
 
     public Routine driveBackToSwitchAndExpelSecond() {
@@ -179,7 +181,7 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
 
         List<Waypoint> path = new ArrayList<>();
         double backX = mDistances.kRightSwitchX - Constants.kRobotLengthInches - mDistances.kPyramidLength*1.1 + Constants.kSquareCubeLength;
-        path.add(new Waypoint(new Translation2d(backX,0), 100));
+        path.add(new Waypoint(new Translation2d(backX,3), 160));
 
         path.add(getSecondBackupPoint());
         routines.add(new DrivePathRoutine(new Path(path), true));
@@ -194,19 +196,19 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
         secondPath.add(new Waypoint(getSecondBackupPoint().position.translateBy(new Translation2d(Constants.kSquareCubeLength,0)), 130));
 
         // NOTE: THE CONSTANT AT THE END NEEDS TO BE HIGHER BECAUSE THE POSITION ESTIMATOR IS _BAD_
-        double dy = (mDistances.kFieldWidth/2 - mDistances.kRightSwitchY) * .55;
+        double dy = (mDistances.kFieldWidth/2 - mDistances.kRightSwitchY) * .55 + 2;
 
         dy *= -1;
 
         double dx = (mDistances.kRightSwitchX - Constants.kRobotLengthInches - Constants.kNullZoneAllowableBack) -
                 (mDistances.kRightSwitchX - Constants.kRobotLengthInches - mDistances.kPyramidLength * 1.68 + Constants.kSquareCubeLength);
 
-        secondPath.add(new Waypoint(getSecondBackupPoint().position.translateBy(new Translation2d(dx/3, dy*2/3)), 110));
+        secondPath.add(new Waypoint(getSecondBackupPoint().position.translateBy(new Translation2d(1.5*dx/3, dy*1.5/3)), 110));
         secondPath.add(new Waypoint(getSecondBackupPoint().position.translateBy(new Translation2d(dx, dy)), 0));
 
         routines.add(new ParallelRoutine(new ElevatorCustomPositioningRoutine(Constants.kElevatorSwitchPositionInches, 1.2),
                 new DrivePathRoutine(new Path(secondPath), false)));
-        routines.add(new IntakeWheelRoutine(Intake.WheelState.VAULT_EXPELLING, .3));
+        routines.add(new IntakeWheelRoutine(Intake.WheelState.EXPELLING, .5)); // last thing, so there is no need to have a low expel time
 
         return new SequentialRoutine(routines);
     }

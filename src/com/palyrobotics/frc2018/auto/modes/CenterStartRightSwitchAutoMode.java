@@ -45,9 +45,9 @@ public class CenterStartRightSwitchAutoMode extends AutoModeBase {
 	@Override
 	public Routine getRoutine() {
         List<Waypoint> path = new ArrayList<>();
-        path.add(new Waypoint(new Translation2d(0, 0), 160));
+        path.add(new Waypoint(new Translation2d(0, 0), 190));
 
-		path.add(new Waypoint(new Translation2d(dx/2, dy/2), 130));
+		path.add(new Waypoint(new Translation2d(dx/2, dy/2), 120));
 		path.add(CenterStartRightSwitchAutoMode.end);
 
         ArrayList<Routine> routines = new ArrayList<>();
@@ -66,7 +66,7 @@ public class CenterStartRightSwitchAutoMode extends AutoModeBase {
 		routines.add(new ParallelRoutine(inTransitRoutines));
 
 		//Expel when everything is done to score
-		routines.add(new IntakeSensorStopRoutine(Intake.WheelState.VAULT_EXPELLING, .25));
+		routines.add(new IntakeSensorStopRoutine(Intake.WheelState.VAULT_EXPELLING, .2));
 //		routines.add(new IntakeWheelRoutine(Intake.WheelState.EXPELLING, 1.0));
 
 		return new SequentialRoutine(routines);

@@ -36,6 +36,10 @@ class HardwareUpdater {
 	private Elevator mElevator;
 	private Intake mIntake;
 
+	private double lastVelocity = 0;
+	private double maxA = 0;
+	private double maxV = 0;
+
 	/**
 	 * Hardware Updater for Forseti
 	 */
@@ -437,10 +441,17 @@ class HardwareUpdater {
 
 //		System.out.println(odometry.getTranslation());
 		//System.out.println("Odometry = " + odometry.getTranslation().getX());
-		//System.out.println("Velocity = " + velocity.dx);
+//		System.out.println("Velocity = " + velocity.dx);
 //		System.out.println("Gyro angle = " + robotState.drivePose.heading);
 //		System.out.println("Latest field to vehicle = " + robotState.getLatestFieldToVehicle().toString());
 //		System.out.println("Encoder estimate = " + left_distance);
+
+		double cv = (robotState.drivePose.leftEncVelocity + robotState.drivePose.rightEncVelocity)/2 * 1/Constants.kDriveSpeedUnitConversion;
+
+		this.maxV = Math.max(this.maxV, cv);
+		this.maxA = Math.max(this.maxA, (cv - lastVelocity)/.02);
+		System.out.println("Max V " + maxV);
+		System.out.println("Max A " + maxA);
 
 //        //Update compressor pressure
 //        robotState.compressorPressure = HardwareAdapter.getInstance().getMiscellaneousHardware().compressorSensor.getVoltage() * Constants.kForsetiCompressorVoltageToPSI; //TODO: Implement the constant!
