@@ -123,6 +123,7 @@ public class Constants {
 	public static final double kExpellingMotorVelocity = -0.225;
 	public static final double kVaultExpellingMotorVelocity = -.92;
 	public static final double kExpelToScoreTime = 0.5;
+	public static final double kIntakeCurrentThreshold = 1;
 	public static final double kIntakeMasterStallCurrent = 70;
 	public static final double kIntakeMasterIdleCurrent = 0.125;
 	public static final double kIntakeMasterExpelCurrent = 1.5;

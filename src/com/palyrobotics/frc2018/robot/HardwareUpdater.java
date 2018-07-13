@@ -19,6 +19,7 @@ import com.palyrobotics.frc2018.util.trajectory.Kinematics;
 import com.palyrobotics.frc2018.util.trajectory.RigidTransform2d;
 import com.palyrobotics.frc2018.util.trajectory.Rotation2d;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Ultrasonic;
 
@@ -411,8 +412,11 @@ class HardwareUpdater {
 		robotState.mSortedReadings = new ArrayList<>(robotState.mReadings);
 		Collections.sort(robotState.mSortedReadings);
 		robotState.cubeDistance = robotState.mSortedReadings.get(robotState.mSortedReadings.size() / 2);
+
 		if(robotState.cubeDistance < Constants.kIntakeCubeInchTolerance) {
-			robotState.hasCube = true;
+		    if(HardwareAdapter.getInstance().getMiscellaneousHardware().pdp.getCurrent(Constants.kForsetiIntakeMasterDeviceID) > Constants.kIntakeCurrentThreshold) {
+                robotState.hasCube = true;
+            }
 		} else {
 			robotState.hasCube = false;
 		}

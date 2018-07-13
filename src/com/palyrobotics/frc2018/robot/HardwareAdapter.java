@@ -176,10 +176,12 @@ public class HardwareAdapter {
 
         public final Compressor compressor;
         public final AnalogInput compressorSensor;
+		public final PowerDistributionPanel pdp;
 
         protected MiscellaneousHardware() {
             compressor = new Compressor();
             compressorSensor = new AnalogInput(Constants.kForsetiCompressorSensorDeviceID);
+            pdp = new PowerDistributionPanel();
         }
 
     }
