@@ -53,11 +53,11 @@ public class Gains {
 			kForsetiShortDriveMotionMagickD, kForsetiShortDriveMotionMagickF, kForsetiShortDriveMotionMagickIzone, kForsetiShortDriveMotionMagickRampRate);
 
 	//Long distance more aggressive, 180 in/s, 120 in/s^2 accel
-	public static final double kForsetiLongDriveMotionMagicCruiseVelocity = 180 * Constants.kDriveSpeedUnitConversion;
-	public static final double kForsetiLongDriveMotionMagicMaxAcceleration = 120 * Constants.kDriveSpeedUnitConversion;
-	public static final double kForsetiLongDriveMotionMagickP = 4.0;
+	public static final double kForsetiLongDriveMotionMagicCruiseVelocity = 200 * Constants.kDriveSpeedUnitConversion;
+	public static final double kForsetiLongDriveMotionMagicMaxAcceleration = 125 * Constants.kDriveSpeedUnitConversion;
+	public static final double kForsetiLongDriveMotionMagickP = 3.5;
 	public static final double kForsetiLongDriveMotionMagickI = 0.01;
-	public static final double kForsetiLongDriveMotionMagickD = 400;
+	public static final double kForsetiLongDriveMotionMagickD = 75;
 	public static final double kForsetiLongDriveMotionMagickF = 2.0;
 	public static final int kForsetiLongDriveMotionMagickIzone = 50;
 	public static final double kForsetiLongDriveMotionMagickRampRate = 0.0;
@@ -77,7 +77,7 @@ public class Gains {
 			kForsetiTurnMotionMagickF, kForsetiTurnMotionMagickIzone, kForsetiTurnMotionMagickRampRate);
 	
 	//Drive cascading turn angle gains
-	public static final double kForsetiCascadingTurnkP = 55;
+	public static final double kForsetiCascadingTurnkP = 65;
 	public static final double kForsetiCascadingTurnkI = 0;
 	public static final double kForsetiCascadingTurnkD = 5;
 	public static final double kForsetiCascadingTurnIzone = 7.0;

@@ -119,7 +119,7 @@ public class Constants {
 	public static final double kElevatorAcceptableVelocityError = 0.01;
 
 	//Intake
-	public static final double kIntakingMotorVelocity = 0.75;
+	public static final double kIntakingMotorVelocity = .4;
 	public static final double kExpellingMotorVelocity = -0.225;
 	public static final double kVaultExpellingMotorVelocity = -.92;
 	public static final double kExpelToScoreTime = 0.5;
