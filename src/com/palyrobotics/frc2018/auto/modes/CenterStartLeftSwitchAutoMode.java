@@ -24,30 +24,38 @@ import java.util.List;
 
 public class CenterStartLeftSwitchAutoMode extends AutoModeBase {
 
-    @Override
-    public String toString() {
-        return mAlliance + this.getClass().toString();
-    }
+	private double dy;
+	private double dx;
+	public static Waypoint end;
 
-    @Override
-    public void prestart() {
+	static {
+		double dy = (mDistances.kFieldWidth/2 - mDistances.kLeftSwitchY) * .55;
+//		dy *= -1;
+		double dx = mDistances.kLeftSwitchX - Constants.kRobotLengthInches - Constants.kNullZoneAllowableBack;
+		CenterStartRightSwitchAutoMode.end = new Waypoint(new Translation2d(dx, dy), 0);
+	}
 
-    }
+	@Override
+	public String toString() {
+		return mAlliance + this.getClass().toString();
+	}
 
-    @Override
-    public Routine getRoutine() {
-        List<Waypoint> path = new ArrayList<>();
-        path.add(new Waypoint(new Translation2d(0, 0), 72.0));
+	@Override
+	public void prestart() {
 
-		path.add(new Waypoint(new Translation2d(1.2 * Constants.kRobotLengthInches - Constants.kCenterOfRotationOffsetFromFrontInches, 0), 72.0));
-		path.add(new Waypoint(new Translation2d(1.515 * Constants.kRobotLengthInches - Constants.kCenterOfRotationOffsetFromFrontInches,
-				mDistances.kLeftToCenterY + Constants.kRobotWidthInches/2.0 - mDistances.kLeftSwitchY - mDistances.kSwitchPlateWidth/2.0), 60.0));
-		path.add(new Waypoint(new Translation2d(mDistances.kRightSwitchX - Constants.kRobotLengthInches,
-				mDistances.kLeftToCenterY + Constants.kRobotWidthInches/2.0 - mDistances.kLeftSwitchY - mDistances.kSwitchPlateWidth/2.0), 0.0));
+	}
 
-        ArrayList<Routine> routines = new ArrayList<>();
+	@Override
+	public Routine getRoutine() {
+		List<Waypoint> path = new ArrayList<>();
+		path.add(new Waypoint(new Translation2d(0, 0), 190));
 
-        routines.add(new DriveSensorResetRoutine(1.0));
+		path.add(new Waypoint(new Translation2d(dx/2, dy/2), 120));
+		path.add(CenterStartRightSwitchAutoMode.end);
+
+		ArrayList<Routine> routines = new ArrayList<>();
+
+		routines.add(new DriveSensorResetRoutine(50/1000 * 3));
 
 		ArrayList<Routine> inTransitRoutines = new ArrayList<>();
 		inTransitRoutines.add(new DrivePathRoutine(new Path(path), false));
@@ -55,19 +63,20 @@ public class CenterStartLeftSwitchAutoMode extends AutoModeBase {
 		ArrayList<Routine> scoreRoutines = new ArrayList<>();
 		scoreRoutines.add(new IntakeDownRoutine());
 		scoreRoutines.add(new TimeoutRoutine(Constants.kSwitchAutoWaitBeforeElevatorRaiseTimeSeconds));
-	 	scoreRoutines.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorSwitchPositionInches, 1.5));
+		scoreRoutines.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorSwitchPositionInches, 1.5));
 		inTransitRoutines.add(new SequentialRoutine(scoreRoutines));
 
 		routines.add(new ParallelRoutine(inTransitRoutines));
 
 		//Expel when everything is done to score
-        routines.add(new IntakeSensorStopRoutine(Intake.WheelState.EXPELLING, 1.5));
+		routines.add(new IntakeSensorStopRoutine(Intake.WheelState.VAULT_EXPELLING, .2));
+//		routines.add(new IntakeWheelRoutine(Intake.WheelState.EXPELLING, 1.0));
 
 		return new SequentialRoutine(routines);
-    }
+	}
 
 	@Override
 	public String getKey() {
-		return mAlliance + " CENTER SWITCH LEFT";
+		return mAlliance + " CENTER SWITCH RIGHT";
 	}
 }
