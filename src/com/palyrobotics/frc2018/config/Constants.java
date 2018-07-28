@@ -102,7 +102,7 @@ public class Constants {
 	public static final double kRobotWidthInches = 34.0;
 	public static final double kRobotLengthInches = 39.0;
 	public static final double kCenterOfRotationOffsetFromFrontInches = 13.0;
-	public static final double kNullZoneAllowableBack = 4.5;
+	public static final double kNullZoneAllowableBack = 5;
 
 	/**
 	 * Tolerances

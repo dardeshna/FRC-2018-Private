@@ -1,12 +1,15 @@
 package com.palyrobotics.frc2018.auto.modes;
 
 import com.palyrobotics.frc2018.auto.AutoModeBase;
+import com.palyrobotics.frc2018.behavior.ParallelRoutine;
 import com.palyrobotics.frc2018.behavior.Routine;
 import com.palyrobotics.frc2018.behavior.SequentialRoutine;
+import com.palyrobotics.frc2018.behavior.routines.drive.CascadingGyroEncoderTurnAngleRoutine;
 import com.palyrobotics.frc2018.behavior.routines.drive.DrivePathRoutine;
 import com.palyrobotics.frc2018.behavior.routines.drive.DriveSensorResetRoutine;
 import com.palyrobotics.frc2018.behavior.routines.drive.GyroMotionMagicTurnAngleRoutine;
 import com.palyrobotics.frc2018.behavior.routines.elevator.ElevatorCustomPositioningRoutine;
+import com.palyrobotics.frc2018.behavior.routines.intake.IntakeDownRoutine;
 import com.palyrobotics.frc2018.behavior.routines.intake.IntakeWheelRoutine;
 import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.subsystems.Intake;
@@ -39,9 +42,10 @@ public class RightHookScaleAutoMode extends AutoModeBase {
 
         ArrayList<Routine> routines = new ArrayList<>();
         routines.add(new DriveSensorResetRoutine(.1));
-        routines.add(new SequentialRoutine(new DrivePathRoutine(new Path(path), false), new ElevatorCustomPositioningRoutine(Constants.kElevatorSwitchPositionInches, 1.0)));
-        routines.add(new GyroMotionMagicTurnAngleRoutine(90));
-        routines.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorTopBottomDifferenceInches, 4));
+        routines.add(new IntakeDownRoutine());
+        routines.add(new ParallelRoutine(new DrivePathRoutine(new Path(path), false), new ElevatorCustomPositioningRoutine(Constants.kElevatorSwitchPositionInches, 1.0)));
+        routines.add(new CascadingGyroEncoderTurnAngleRoutine(95));
+        routines.add(new ElevatorCustomPositioningRoutine(Constants.kElevatorTopBottomDifferenceInches, 3));
         routines.add(new IntakeWheelRoutine(Intake.WheelState.VAULT_EXPELLING, .3));
 
         return new SequentialRoutine(routines);

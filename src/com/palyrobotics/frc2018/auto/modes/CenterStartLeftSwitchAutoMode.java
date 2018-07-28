@@ -32,7 +32,7 @@ public class CenterStartLeftSwitchAutoMode extends AutoModeBase {
 		double dy = (mDistances.kFieldWidth/2 - mDistances.kLeftSwitchY) * .55;
 //		dy *= -1;
 		double dx = mDistances.kLeftSwitchX - Constants.kRobotLengthInches - Constants.kNullZoneAllowableBack;
-		CenterStartRightSwitchAutoMode.end = new Waypoint(new Translation2d(dx, dy), 0);
+		CenterStartLeftSwitchAutoMode.end = new Waypoint(new Translation2d(dx, dy), 0);
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public class CenterStartLeftSwitchAutoMode extends AutoModeBase {
 		path.add(new Waypoint(new Translation2d(0, 0), 190));
 
 		path.add(new Waypoint(new Translation2d(dx/2, dy/2), 120));
-		path.add(CenterStartRightSwitchAutoMode.end);
+		path.add(CenterStartLeftSwitchAutoMode.end);
 
 		ArrayList<Routine> routines = new ArrayList<>();
 

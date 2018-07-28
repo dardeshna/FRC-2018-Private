@@ -5,7 +5,6 @@ import com.palyrobotics.frc2018.behavior.ParallelRoutine;
 import com.palyrobotics.frc2018.behavior.Routine;
 import com.palyrobotics.frc2018.behavior.SequentialRoutine;
 import com.palyrobotics.frc2018.behavior.routines.TimeoutRoutine;
-import com.palyrobotics.frc2018.behavior.routines.drive.CascadingGyroEncoderTurnAngleRoutine;
 import com.palyrobotics.frc2018.behavior.routines.drive.DrivePathRoutine;
 import com.palyrobotics.frc2018.behavior.routines.drive.DriveSensorResetRoutine;
 import com.palyrobotics.frc2018.behavior.routines.drive.DriveUntilHasCubeRoutine;
@@ -23,14 +22,14 @@ import com.palyrobotics.frc2018.util.trajectory.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
+public class Chezy3CubeCenterStartRight extends AutoModeBase {
 
-	private Translation2d startPoint;
-	private Translation2d midPoint;
+    private Translation2d startPoint;
+    private Translation2d midPoint;
 
-	private final double offsetPyramid = 3;
-	
-    public CenterStartRightMultiSwitchAutoMode() {
+    private final double offsetPyramid = 3;
+
+    public Chezy3CubeCenterStartRight() {
     }
 
     //Point in between getting second cube and switch, used as a vertex to curve off of
@@ -115,11 +114,23 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
         // that we end with a correct angle, set a point from the current point translated by dx/3 and dy*2/3.
         // the last point is just a translation of dy and dx.
 
-        List<Routine> secondPath = new ArrayList<>();
-        secondPath.add(new ParallelRoutine(new ElevatorCustomPositioningRoutine(40, 1.5),
-                new CascadingGyroEncoderTurnAngleRoutine(30)));
-        secondPath.add(new IntakeWheelRoutine(Intake.WheelState.VAULT_EXPELLING, 1.1));
-        secondPath.add(new CascadingGyroEncoderTurnAngleRoutine(-30));
+        List<Waypoint> secondPath = new ArrayList<>();
+        secondPath.add(new Waypoint(getFirstBackUpPoint().position.translateBy(new Translation2d(Constants.kSquareCubeLength,0)), 130));
+
+        // NOTE: THE CONSTANT AT THE END NEEDS TO BE HIGHER BECAUSE THE POSITION ESTIMATOR IS _BAD_
+        double dy = (mDistances.kFieldWidth/2 - mDistances.kRightSwitchY) * .55;
+
+        dy *= -1;
+
+        double dx = (mDistances.kRightSwitchX - Constants.kRobotLengthInches - Constants.kNullZoneAllowableBack) -
+                (mDistances.kRightSwitchX - Constants.kRobotLengthInches - mDistances.kPyramidLength * 1.68);
+
+        secondPath.add(new Waypoint(getFirstBackUpPoint().position.translateBy(new Translation2d(3.5*dx/7, dy*3.5/7)), 100));
+        secondPath.add(new Waypoint(getFirstBackUpPoint().position.translateBy(new Translation2d(dx, dy)), 0));
+
+        routines.add(new ParallelRoutine(new ElevatorCustomPositioningRoutine(Constants.kElevatorSwitchPositionInches, 1.2),
+                new DrivePathRoutine(new Path(secondPath), false)));
+        routines.add(new IntakeWheelRoutine(Intake.WheelState.VAULT_EXPELLING, .2));
 
         return new SequentialRoutine(routines);
     }
