@@ -53,6 +53,8 @@ public class Robot extends TimedRobot {
 	// Started boolean for if auto has been started.
 	private boolean mAutoStarted = false;
 
+	private int disabledCycles;
+
 	@Override
 	public void robotInit() {
 		Logger.getInstance().setFileName("Silicon Valley");
@@ -193,7 +195,7 @@ public class Robot extends TimedRobot {
 		//Stop controllers
 		mDrive.setNeutral();
 //		mHardwareUpdater.disableTalons();
-		mHardwareUpdater.disableBrakeMode();
+		disabledCycles = 0;
 		DashboardManager.getInstance().toggleCANTable(false);
 
 		stopSubsystems();
@@ -206,6 +208,10 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void disabledPeriodic() {
+		disabledCycles++;
+		if(disabledCycles == 100) {
+			mHardwareUpdater.disableBrakeMode();
+		}
 	}
 
 	//Call during teleop and auto periodic
