@@ -6,6 +6,7 @@ import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.config.Gains;
 import com.palyrobotics.frc2018.config.RobotState;
 import com.palyrobotics.frc2018.util.TalonSRXOutput;
+import com.palyrobotics.frc2018.util.csvlogger.CSVWriter;
 
 import java.util.Optional;
 
@@ -49,6 +50,9 @@ public class Elevator extends Subsystem {
 
 	//The subsystem output
 	private TalonSRXOutput mOutput = new TalonSRXOutput();
+
+	private CSVWriter mWriter = CSVWriter.getInstance();
+
 
 	/**
 	 * Constructor for Elevator, defaults state to calibrating.
@@ -197,6 +201,12 @@ public class Elevator extends Subsystem {
 			default:
 				break;
 		}
+
+		mElevatorWantedPosition.ifPresent(aDouble -> mWriter.addData("elevatorWantedPosition", aDouble));
+		mWriter.addData("elevatorSetpoint", mOutput.getSetpoint());
+		mWriter.addData("elevatorPosition", mRobotState.elevatorPosition);
+		mWriter.addData("elevatorVelocity", mRobotState.elevatorVelocity);
+
 	}
 
 	/**

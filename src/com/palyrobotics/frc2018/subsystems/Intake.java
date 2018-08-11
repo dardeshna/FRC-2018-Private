@@ -3,7 +3,9 @@ package com.palyrobotics.frc2018.subsystems;
 import com.palyrobotics.frc2018.config.Commands;
 import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.config.RobotState;
+import com.palyrobotics.frc2018.robot.HardwareAdapter;
 import com.palyrobotics.frc2018.util.TalonSRXOutput;
+import com.palyrobotics.frc2018.util.csvlogger.CSVWriter;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 /**
@@ -37,6 +39,9 @@ public class Intake extends Subsystem {
 	private WheelState mWheelState = WheelState.IDLE;
 	private UpDownState mUpDownState = UpDownState.UP;
 	private OpenCloseState mOpenCloseState = OpenCloseState.CLOSED;
+
+	private CSVWriter mWriter = CSVWriter.getInstance();
+
 
 	protected Intake() {
 		super("Intake");
@@ -109,6 +114,10 @@ public class Intake extends Subsystem {
 				mOpenCloseOutput[1] = false;
 				break;
 		}
+
+		mWriter.addData("intakeSetpoint", mTalonOutput.getSetpoint());
+		mWriter.addData("intakeCurrentDraw", HardwareAdapter.getInstance().getIntake().masterTalon.getOutputCurrent()
+				+ HardwareAdapter.getInstance().getIntake().slaveTalon.getOutputCurrent());
 	}
 
 	public WheelState getWheelState() {

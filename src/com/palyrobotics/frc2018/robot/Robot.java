@@ -4,7 +4,6 @@ import com.palyrobotics.frc2018.auto.AutoFMS;
 import com.palyrobotics.frc2018.auto.AutoModeBase;
 import com.palyrobotics.frc2018.auto.AutoModeSelector;
 import com.palyrobotics.frc2018.behavior.RoutineManager;
-import com.palyrobotics.frc2018.behavior.routines.drive.DriveSensorResetRoutine;
 import com.palyrobotics.frc2018.config.AutoDistances;
 import com.palyrobotics.frc2018.config.Commands;
 import com.palyrobotics.frc2018.config.Constants;
@@ -15,9 +14,9 @@ import com.palyrobotics.frc2018.subsystems.Climber;
 import com.palyrobotics.frc2018.subsystems.Drive;
 import com.palyrobotics.frc2018.subsystems.Elevator;
 import com.palyrobotics.frc2018.subsystems.Intake;
+import com.palyrobotics.frc2018.util.csvlogger.CSVWriter;
 import com.palyrobotics.frc2018.util.logger.Logger;
 import com.palyrobotics.frc2018.util.trajectory.RigidTransform2d;
-import com.palyrobotics.frc2018.vision.VisionManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 
@@ -53,6 +52,8 @@ public class Robot extends TimedRobot {
 	// Started boolean for if auto has been started.
 	private boolean mAutoStarted = false;
 
+	private CSVWriter mWriter = CSVWriter.getInstance();
+
 	private int disabledCycles;
 
 	@Override
@@ -74,9 +75,10 @@ public class Robot extends TimedRobot {
 		mHardwareUpdater.initHardware();
 
 		DriveTeam.configConstants();
+		mWriter.cleanFile();
 		
 		Logger.getInstance().logRobotThread(Level.INFO, "End robotInit()");
-	}
+		}
 
 	@Override
 	public void autonomousInit() {
@@ -86,6 +88,8 @@ public class Robot extends TimedRobot {
 		DashboardManager.getInstance().toggleCANTable(true);
 		robotState.gamePeriod = RobotState.GamePeriod.AUTO;
 		mHardwareUpdater.configureHardware();
+
+		robotState.matchStartTime = System.currentTimeMillis();
 
 		//Wait for talons to update
 //		try {
@@ -99,6 +103,8 @@ public class Robot extends TimedRobot {
 		mRoutineManager.reset(commands);
 		robotState.reset(0, new RigidTransform2d());
 //		commands.wantedIntakeUpDownState = Intake.UpDownState.UP;
+
+		mWriter.cleanFile();
 
 		AutoDistances.updateAutoDistances();
 
@@ -150,11 +156,13 @@ public class Robot extends TimedRobot {
 		DashboardManager.getInstance().toggleCANTable(true);
 		commands.wantedDriveState = Drive.DriveState.CHEZY; //switch to chezy after auto ends
 		commands = operatorInterface.updateCommands(commands);
+		mWriter.cleanFile();
 //		commands.wantedIntakeUpDownState = Intake.UpDownState.DOWN;
 		startSubsystems();
 		mHardwareUpdater.enableBrakeMode();
 		robotState.reset(0, new RigidTransform2d());
 //		VisionManager.getInstance().verifyVisionAppIsRunning();
+		robotState.matchStartTime = System.currentTimeMillis();
 
 		Logger.getInstance().logRobotThread(Level.INFO, "End teleopInit()");
 	}
@@ -167,6 +175,9 @@ public class Robot extends TimedRobot {
 
 		//Update the hardware
 		mHardwareUpdater.updateHardware();
+		if(mWriter.getSize() > 10000) {
+			mWriter.write();
+		}
 		logPeriodic();
 	}
 
@@ -199,6 +210,8 @@ public class Robot extends TimedRobot {
 		DashboardManager.getInstance().toggleCANTable(false);
 
 		stopSubsystems();
+
+		mWriter.write();
 
 		//Manually run garbage collector
 		System.gc();

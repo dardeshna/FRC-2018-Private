@@ -6,6 +6,7 @@ import com.palyrobotics.frc2018.config.RobotState;
 import com.palyrobotics.frc2018.config.dashboard.DashboardManager;
 import com.palyrobotics.frc2018.config.dashboard.DashboardValue;
 import com.palyrobotics.frc2018.subsystems.controllers.*;
+import com.palyrobotics.frc2018.util.csvlogger.CSVWriter;
 import com.palyrobotics.frc2018.util.CheesyDriveHelper;
 import com.palyrobotics.frc2018.util.DriveSignal;
 import com.palyrobotics.frc2018.util.Pose;
@@ -67,6 +68,8 @@ public class Drive extends Subsystem {
 
 	private DashboardValue leftEncoder;
 	private DashboardValue rightEncoder;
+
+	private CSVWriter mWriter = CSVWriter.getInstance();
 
 	protected Drive() {
 		super("Drive");
@@ -191,6 +194,17 @@ public class Drive extends Subsystem {
 		DashboardManager.getInstance().publishKVPair(rightEncoder);
 
 		DashboardManager.getInstance().publishKVPair(motors);
+
+		mWriter.addData("driveLeftEnc", state.drivePose.leftEnc);
+		mWriter.addData("driveLeftEncVelocity", state.drivePose.leftEncVelocity);
+		mWriter.addData("driveRightEnc", state.drivePose.rightEnc);
+		mWriter.addData("driveRightEncVelocity", state.drivePose.rightEncVelocity);
+		mWriter.addData("driveHeading", state.drivePose.heading);
+		mWriter.addData("driveHeadingVelocity", state.drivePose.headingVelocity);
+		state.drivePose.leftError.ifPresent(integer -> mWriter.addData("driveLeftError", (double) integer));
+		state.drivePose.rightError.ifPresent(integer -> mWriter.addData("driveRightError", (double) integer));
+		mWriter.addData("driveLeftSetpoint", mSignal.leftMotor.getSetpoint());
+		mWriter.addData("driveRightSetpoint", mSignal.rightMotor.getSetpoint());
 	}
 
 	@Override
