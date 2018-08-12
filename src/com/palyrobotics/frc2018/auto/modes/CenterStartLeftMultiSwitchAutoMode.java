@@ -170,7 +170,7 @@ public class CenterStartLeftMultiSwitchAutoMode extends AutoModeBase {
         Waypoint cp = new Waypoint(getFirstBackUpPoint().position, 45);
         path.add(cp);
 
-        double backX = mDistances.kLeftSwitchX - Constants.kRobotLengthInches - mDistances.kPyramidLength*1.1 + Constants.kSquareCubeLength;
+        double backX = mDistances.kLeftSwitchX - Constants.kRobotLengthInches - mDistances.kPyramidLength*1.0 + Constants.kSquareCubeLength;
         path.add(new Waypoint(new Translation2d(backX,3), 0));
 
         return new ParallelRoutine(new DrivePathRoutine(new Path(path), false), new IntakeWheelRoutine(Intake.WheelState.INTAKING, 1.4));

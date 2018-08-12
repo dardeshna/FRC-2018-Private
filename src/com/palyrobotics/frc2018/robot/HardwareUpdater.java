@@ -405,6 +405,7 @@ class HardwareUpdater {
 
 		Ultrasonic mUltrasonic = HardwareAdapter.getInstance().getIntake().ultrasonic;
 		robotState.mReadings.add(mUltrasonic.getRangeInches());
+		System.out.println(mUltrasonic.getRangeInches());
 		if(robotState.mReadings.size() > 10) {
 			robotState.mReadings.remove();
 		}
@@ -420,6 +421,9 @@ class HardwareUpdater {
 		} else {
 			robotState.hasCube = false;
 		}
+
+		System.out.println(robotState.hasCube);
+		System.out.println(robotState.cubeDistance);
 
 //		System.out.println("elevator: " + robotState.elevatorPosition);
 //        System.out.println("left: " + robotState.drivePose.leftEnc);

@@ -83,7 +83,7 @@ public class Constants {
 	/*
 	 * Control loop constants for both robots
 	 */
-	public static final double kTurnInPlacePower = 0.17; //for bang bang
+	public static final double kTurnInPlacePower = .5; //for bang bang
 	public static final double kCalibratePower = -0.28;
 	public static final double kDriveMaxClosedLoopOutput = 1.0;
 	public static final double kElevatorMaxClosedLoopOutput = 0.666;

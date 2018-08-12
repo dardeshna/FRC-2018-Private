@@ -5,10 +5,7 @@ import com.palyrobotics.frc2018.behavior.ParallelRoutine;
 import com.palyrobotics.frc2018.behavior.Routine;
 import com.palyrobotics.frc2018.behavior.SequentialRoutine;
 import com.palyrobotics.frc2018.behavior.routines.TimeoutRoutine;
-import com.palyrobotics.frc2018.behavior.routines.drive.CascadingGyroEncoderTurnAngleRoutine;
-import com.palyrobotics.frc2018.behavior.routines.drive.DrivePathRoutine;
-import com.palyrobotics.frc2018.behavior.routines.drive.DriveSensorResetRoutine;
-import com.palyrobotics.frc2018.behavior.routines.drive.DriveUntilHasCubeRoutine;
+import com.palyrobotics.frc2018.behavior.routines.drive.*;
 import com.palyrobotics.frc2018.behavior.routines.elevator.ElevatorCustomPositioningRoutine;
 import com.palyrobotics.frc2018.behavior.routines.intake.IntakeDownRoutine;
 import com.palyrobotics.frc2018.behavior.routines.intake.IntakeSensorStopRoutine;
@@ -70,7 +67,7 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
     }
 
     public Waypoint getFirstBackUpPoint() {
-        double backX = mDistances.kRightSwitchX - Constants.kRobotLengthInches - mDistances.kPyramidLength * 1.68;
+        double backX = mDistances.kRightSwitchX - Constants.kRobotLengthInches - mDistances.kPyramidLength * 1.53;
         return new Waypoint(new Translation2d(backX,offsetPyramid), 0);
     }
 
@@ -115,11 +112,13 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
         // that we end with a correct angle, set a point from the current point translated by dx/3 and dy*2/3.
         // the last point is just a translation of dy and dx.
 
-        List<Routine> secondPath = new ArrayList<>();
-        secondPath.add(new ParallelRoutine(new ElevatorCustomPositioningRoutine(40, 1.5),
-                new CascadingGyroEncoderTurnAngleRoutine(30)));
+        ArrayList<Routine> secondPath = new ArrayList<>();
+        secondPath.add(new ParallelRoutine(new ElevatorCustomPositioningRoutine(45, 1.5),
+                new BBTurnAngleRoutine(-30)));
         secondPath.add(new IntakeWheelRoutine(Intake.WheelState.VAULT_EXPELLING, 1.1));
-        secondPath.add(new CascadingGyroEncoderTurnAngleRoutine(-30));
+        secondPath.add(new CascadingGyroEncoderTurnAngleRoutine(30));
+
+        routines.add(new SequentialRoutine(secondPath));
 
         return new SequentialRoutine(routines);
     }
