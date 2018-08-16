@@ -327,7 +327,7 @@ class HardwareUpdater {
 			case Velocity:
 			case MotionProfileArc:
 			case MotionProfile:
-			case MotionMagicArc:
+//			case MotionMagicArc:
 			case MotionMagic:
 				robotState.leftSetpoint = leftMasterTalon.getClosedLoopTarget(0);
 				break;
@@ -349,7 +349,7 @@ class HardwareUpdater {
 			case Velocity:
 			case MotionProfileArc:
 			case MotionProfile:
-			case MotionMagicArc:
+//			case MotionMagicArc:
 			case MotionMagic:
 				robotState.rightSetpoint = rightMasterTalon.getClosedLoopTarget(0);
 				break;

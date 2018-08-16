@@ -1,10 +1,17 @@
 package com.palyrobotics.frc2018.subsystems;
 
-import com.palyrobotics.frc2018.config.Commands;
-import com.palyrobotics.frc2018.config.RobotState;
-import com.palyrobotics.frc2018.robot.MockRobot;
+import com.palyrobotics.frc2018.config.Constants;
+import com.palyrobotics.frc2018.util.MockTalon;
+import com.palyrobotics.frc2018.util.TalonSRXOutput;
 
-public class ElevatorSimulation {
+public class ElevatorSimulation extends SubsystemSimulation {
+	
+	private static ElevatorSimulation instance = new ElevatorSimulation();
+	
+	public static ElevatorSimulation getInstance() {
+		return instance;
+	}
+	
 	//Stall Torque in N m
 	static final double kStallTorque = 0.71;
 	//Stall Current in Amps
@@ -14,65 +21,100 @@ public class ElevatorSimulation {
 	//Free Current in Amps
 	static final double kFreeCurrent = 0.7;
 	//Mass of the Elevator
-	static final double kMass = 30.0;
+	static final double kMass = 10.0;
 
 	//Number of motors
 	static final double kNumMotors = 2.0;
 	//Resistance of the motor
 	static final double kResistance = 12.0 / kStallCurrent;
 	//Motor velocity constant
-	static final double Kv = ((kFreeSpeed / 60.0 * 2.0 * Math.PI) / (12.0 - kResistance * kFreeCurrent));
+	static final double Kv = (kFreeSpeed * 2.0 * Math.PI / 60.0 / (12.0 - kResistance * kFreeCurrent));
 	//Torque constant
 	static final double Kt = (kNumMotors * kStallTorque) / kStallCurrent;
 	//Gear ratio
 	static final double kG = 42;
 	//Radius of pulley
-	static final double kr = 1.5;
+	static final double kr = 3 * 1.432 / 2.0 / 39.37; //m
+	//Acceleration of gravity
+	static final double g = 9.8;
 
 	//Control loop time step
-	static final double kDt = 0.010;
 
 	//Max elevator height in inches
 	static final double kElevatorHeight = 85;
+	
+	private MockTalon talon;
+	
+	private double position = 0;
+	private double velocity = 0;
+	private double acceleration = 0;
+	private double voltage = 0;
+	
+	public ElevatorSimulation() {
+		talon = new MockTalon(position*Constants.kElevatorTicksPerInch);
+		talon.configClosedloopRamp(0.4);
+		talon.configVoltageCompSaturation(14.0);
+	}
 
 	//V = I * R + omega / Kv
 	//torque = Kt * I
 
-	double GetAcceleration(double voltage) {
-		return -Kt * kG * kG / (Kv * kResistance * kr * kr * kMass) * velocity_ + kG * Kt / (kResistance * kr * kMass) * voltage;
+	private double calcAcceleration(double voltage) {
+		return (kG * Kt / (kResistance * kMass * kr) * voltage - Kt * kG * kG / (Kv * kResistance * kMass * kr * kr) * velocity / 39.37 - g) * 39.37;
 	}
 
-	double position_ = 0.1;
-	double velocity_ = 0;
-	double voltage_ = 0;
-	double offset_ = -0.1;
-	Elevator mElevator = Elevator.getInstance();
-
-	double encoder() {
-		return position_ + offset_;
+	public boolean getBottomHallEffect() {
+		return position >= -0.25 && position <= 0.25;
 	}
 
-	boolean bottomHalleffect() {
-		return position_ < 0.0 && position_ > -0.01;
+	public boolean getTopHallEffect() {
+		return position <= kElevatorHeight + 0.25 && position >= kElevatorHeight - 0.25;
 	}
-
-	boolean topHallEffect() {
-		return position_ < kElevatorHeight + 0.005 && position_ > kElevatorHeight - 0.005;
-	}
-
-	double current_time = 0;
-
-	void simulateTime(double time, Commands commands, double voltage) {
-		RobotState robotState = MockRobot.getRobotState();
-		while(time > 0) {
-			robotState.elevatorBottomHFX = this.bottomHalleffect();
-			robotState.elevatorTopHFX = this.topHallEffect();
-			robotState.elevatorPosition = position_;
-			mElevator.update(commands, robotState);
-			final double current_dt = Math.min(time, 0.001);
-			position_ += current_dt * velocity_;
-			velocity_ += current_dt * GetAcceleration(voltage);
-			time -= 0.001;
+	
+	public void step() {
+		talon.update();
+		//capped voltage
+		voltage = talon.getOutputVoltage();
+		double prevVelocity = velocity;
+		acceleration = calcAcceleration(voltage);
+		velocity += kDt * acceleration;
+		position += kDt * velocity + 0.5 * kDt * kDt * acceleration;
+		//Hard limits
+		if (position >= kElevatorHeight) {
+			acceleration = -prevVelocity/kDt;
+			velocity = 0;
+			position = kElevatorHeight;
 		}
+		else if (position <= 0) {
+			acceleration = -prevVelocity/kDt;
+			velocity = 0;
+			position = 0;
+		}
+		talon.pushReading(position*Constants.kElevatorTicksPerInch);
 	}
+	
+	public double getSensorPosition() {
+		return talon.getReading();
+	}
+	
+	public double getSensorVelocity() {
+		return talon.getRate();
+	}
+
+	public double getPosition() {
+		return position;
+	}
+	
+	public double getVelocity() {
+		return velocity;
+	}
+	
+	public void set(TalonSRXOutput talonSRXOutput) {
+		updateTalonSRX(talon, talonSRXOutput);
+	}
+	
+	public String getState() {
+		return position + "," + velocity + "," + acceleration + "," + voltage + "," + talon.getSetpoint() / Constants.kElevatorTicksPerInch;
+	}
+
 }

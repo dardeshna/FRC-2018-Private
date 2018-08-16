@@ -84,7 +84,7 @@ public class Elevator extends Subsystem {
 
 		handleState(commands);
 		checkTopBottom(mRobotState);
-
+		
 		//Execute update loop based on the current state
 		//Does not switch between states, only performs actions
 		switch(mState) {

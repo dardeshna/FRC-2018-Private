@@ -89,10 +89,10 @@ public class TalonSRXDriveController implements Drive.DriveController {
 				output.leftMotionMagicPos = Optional.of((int) mSignal.leftMotor.getSetpoint());
 				output.leftMotionMagicVel = Optional.of(0);
 				break;
-			case MotionMagicArc:
-				output.leftMotionMagicPos = Optional.of((int) mSignal.leftMotor.getSetpoint());
-				output.leftMotionMagicVel = Optional.of(0);
-				break;
+//			case MotionMagicArc:
+//				output.leftMotionMagicPos = Optional.of((int) mSignal.leftMotor.getSetpoint());
+//				output.leftMotionMagicVel = Optional.of(0);
+//				break;
 			case Disabled:
 				output = new Pose();
 				break;
@@ -126,10 +126,10 @@ public class TalonSRXDriveController implements Drive.DriveController {
 				output.rightMotionMagicPos = Optional.of((int) mSignal.rightMotor.getSetpoint());
 				output.rightMotionMagicVel = Optional.of(0);
 				break;
-			case MotionMagicArc:
-				output.rightMotionMagicPos = Optional.of((int) mSignal.rightMotor.getSetpoint());
-				output.rightMotionMagicVel = Optional.of(0);
-				break;
+//			case MotionMagicArc:
+//				output.rightMotionMagicPos = Optional.of((int) mSignal.rightMotor.getSetpoint());
+//				output.rightMotionMagicVel = Optional.of(0);
+//				break;
 			case Disabled:
 				output = new Pose();
 				break;
