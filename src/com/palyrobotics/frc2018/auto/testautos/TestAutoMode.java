@@ -5,6 +5,7 @@ import com.palyrobotics.frc2018.behavior.ParallelRoutine;
 import com.palyrobotics.frc2018.behavior.Routine;
 import com.palyrobotics.frc2018.behavior.SequentialRoutine;
 import com.palyrobotics.frc2018.behavior.routines.drive.*;
+import com.palyrobotics.frc2018.behavior.routines.elevator.ElevatorCustomPositioningRoutine;
 import com.palyrobotics.frc2018.behavior.routines.intake.IntakeCloseRoutine;
 import com.palyrobotics.frc2018.behavior.routines.intake.IntakeDownRoutine;
 import com.palyrobotics.frc2018.config.Constants;
@@ -22,8 +23,8 @@ public class TestAutoMode extends AutoModeBase {
 
 	@Override
 	public Routine getRoutine() {
-
-		return getDrive();
+		return new ElevatorCustomPositioningRoutine(Constants.kElevatorSwitchPositionInches, 1000);
+//		return getDrive();
 //		return testF();
 //		return getDrive();
 	}
