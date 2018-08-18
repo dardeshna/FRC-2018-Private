@@ -101,6 +101,7 @@ public class DrivePathRoutine extends Routine {
 		this.mInverted = inverted;
 		this.mLookAhead = Constants.kPathFollowingLookahead;
 		this.mStartSpeed = 0.0;
+		this.mTolerance = Constants.kPathFollowingTolerance;
 		this.mRelative = relative;
 	}
 
