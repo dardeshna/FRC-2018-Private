@@ -180,6 +180,8 @@ class MockHardwareUpdater extends HardwareUpdater {
 //		} else {
 //			robotState.hasCube = false;
 //		}
+		
+		robotState.hasCube = mIntakeSimulation.hasCube();
 
 //		System.out.println("elevator: " + robotState.elevatorPosition);
 //        System.out.println("left: " + robotState.drivePose.leftEnc);
@@ -284,7 +286,7 @@ class MockHardwareUpdater extends HardwareUpdater {
 	 * Updates the intake
 	 */
 	private void updateIntake() {
-		mIntakeSimulation.set(mIntake.getTalonOutput(), mIntake.getOpenCloseOutput()[0], mIntake.getOpenCloseOutput()[1], mIntake.getUpDownOutput());
+		mIntakeSimulation.set(mIntake.getWheelState(), mIntake.getOpenCloseState(), mIntake.getUpDownState());
 	}
 	
 	private void updateMiscellaneousHardware() {
@@ -304,6 +306,7 @@ class MockHardwareUpdater extends HardwareUpdater {
 	void updateSimulations() {
 		mElevatorSimulation.step();
 		mDriveSimulation.step();
+		mIntakeSimulation.step();
 		dumper.println(mDriveSimulation.getState() + "," + mElevatorSimulation.getState());
 	}
 	
