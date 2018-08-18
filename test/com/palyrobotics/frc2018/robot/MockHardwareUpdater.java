@@ -2,6 +2,7 @@ package com.palyrobotics.frc2018.robot;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.util.Optional;
 
 import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.config.RobotState;
@@ -13,6 +14,11 @@ import com.palyrobotics.frc2018.subsystems.ElevatorSimulation;
 import com.palyrobotics.frc2018.subsystems.Intake;
 import com.palyrobotics.frc2018.subsystems.IntakeSimulation;
 import com.palyrobotics.frc2018.util.TalonSRXOutput;
+import com.palyrobotics.frc2018.util.trajectory.Kinematics;
+import com.palyrobotics.frc2018.util.trajectory.RigidTransform2d;
+import com.palyrobotics.frc2018.util.trajectory.Rotation2d;
+
+import edu.wpi.first.wpilibj.Timer;
 
 /**
  * Should only be used in robot package.
@@ -53,6 +59,8 @@ class MockHardwareUpdater extends HardwareUpdater {
 	
 	@Override
 	void disableTalons() {
+		mDriveSimulation.disable();
+		mElevatorSimulation.disable();
 	}
 
 	@Override
@@ -65,22 +73,20 @@ class MockHardwareUpdater extends HardwareUpdater {
 	 */
 	void updateState(RobotState robotState) {
 		
-		/*
+		
+		robotState.leftControlMode = mDriveSimulation.getLeftControlMode();
+		robotState.rightControlMode = mDriveSimulation.getRightControlMode();
 
-		WPI_TalonSRX leftMasterTalon = HardwareAdapter.getInstance().getDrivetrain().leftMasterTalon;
-		WPI_TalonSRX rightMasterTalon = HardwareAdapter.getInstance().getDrivetrain().rightMasterTalon;
-
-		robotState.leftControlMode = leftMasterTalon.getControlMode();
-		robotState.rightControlMode = rightMasterTalon.getControlMode();
-
-		robotState.leftStickInput.update(HardwareAdapter.getInstance().getJoysticks().driveStick);
-		robotState.rightStickInput.update(HardwareAdapter.getInstance().getJoysticks().turnStick);
-		if(Constants.operatorXBoxController) {
-			robotState.operatorXboxControllerInput.update(HardwareAdapter.getInstance().getJoysticks().operatorXboxController);
-		} else {
-			robotState.climberStickInput.update(HardwareAdapter.getInstance().getJoysticks().climberStick);
-			robotState.operatorJoystickInput.update(HardwareAdapter.getInstance().getJoysticks().operatorJoystick);
-		}
+		
+//		robotState.leftStickInput.update(HardwareAdapter.getInstance().getJoysticks().driveStick);
+//		robotState.rightStickInput.update(HardwareAdapter.getInstance().getJoysticks().turnStick);
+//		if(Constants.operatorXBoxController) {
+//			robotState.operatorXboxControllerInput.update(HardwareAdapter.getInstance().getJoysticks().operatorXboxController);
+//		} else {
+//			robotState.climberStickInput.update(HardwareAdapter.getInstance().getJoysticks().climberStick);
+//			robotState.operatorJoystickInput.update(HardwareAdapter.getInstance().getJoysticks().operatorJoystick);
+//		}
+		
 		switch(robotState.leftControlMode) {
 			//Fall through
 			case Position:
@@ -89,15 +95,15 @@ class MockHardwareUpdater extends HardwareUpdater {
 			case MotionProfile:
 //			case MotionMagicArc:
 			case MotionMagic:
-				robotState.leftSetpoint = leftMasterTalon.getClosedLoopTarget(0);
+//				robotState.leftSetpoint = leftMasterTalon.getClosedLoopTarget(0);
 				break;
 			case Current:
-				robotState.leftSetpoint = leftMasterTalon.getOutputCurrent();
+//				robotState.leftSetpoint = leftMasterTalon.getOutputCurrent();
 				break;
 			//Fall through
 			case Follower:
 			case PercentOutput:
-				robotState.leftSetpoint = leftMasterTalon.getMotorOutputPercent();
+				robotState.leftSetpoint = mDriveSimulation.getLeftOutput();
 				break;
 			default:
 				break;
@@ -111,84 +117,79 @@ class MockHardwareUpdater extends HardwareUpdater {
 			case MotionProfile:
 //			case MotionMagicArc:
 			case MotionMagic:
-				robotState.rightSetpoint = rightMasterTalon.getClosedLoopTarget(0);
+//				robotState.rightSetpoint = rightMasterTalon.getClosedLoopTarget(0);
 				break;
 			case Current:
-				robotState.rightSetpoint = rightMasterTalon.getOutputCurrent();
+//				robotState.rightSetpoint = rightMasterTalon.getOutputCurrent();
 				break;
 			//Fall through
 			case Follower:
 			case PercentOutput:
-				robotState.rightSetpoint = rightMasterTalon.getMotorOutputPercent();
+				robotState.rightSetpoint = mDriveSimulation.getRightOutput();
 				break;
 			default:
 				break;
 		}
 
-		PigeonIMU gyro = HardwareAdapter.getInstance().getDrivetrain().gyro;
-		if(gyro != null) {
-			robotState.drivePose.heading = gyro.getFusedHeading();
-			robotState.drivePose.headingVelocity = (robotState.drivePose.heading - robotState.drivePose.lastHeading) / Constants.kNormalLoopsDt;
-			robotState.drivePose.lastHeading = gyro.getFusedHeading();
-		} else {
-			robotState.drivePose.heading = -0;
-			robotState.drivePose.headingVelocity = -0;
-		}
+		robotState.drivePose.lastHeading = robotState.drivePose.heading;
+		robotState.drivePose.heading = mDriveSimulation.getSensorAngle();
+		robotState.drivePose.headingVelocity = (robotState.drivePose.heading - robotState.drivePose.lastHeading) / Constants.kNormalLoopsDt;
 
 		robotState.drivePose.lastLeftEnc = robotState.drivePose.leftEnc;
-		robotState.drivePose.leftEnc = leftMasterTalon.getSelectedSensorPosition(0);
-		robotState.drivePose.leftEncVelocity = leftMasterTalon.getSelectedSensorVelocity(0);
+		robotState.drivePose.leftEnc = mDriveSimulation.getLeftSensorPosition();
+		robotState.drivePose.leftEncVelocity = mDriveSimulation.getLeftSensorVelocity();
 		robotState.drivePose.lastRightEnc = robotState.drivePose.rightEnc;
-		robotState.drivePose.rightEnc = rightMasterTalon.getSelectedSensorPosition(0);
-		robotState.drivePose.rightEncVelocity = rightMasterTalon.getSelectedSensorVelocity(0);
+		robotState.drivePose.rightEnc = mDriveSimulation.getRightSensorPosition();
+		robotState.drivePose.rightEncVelocity = mDriveSimulation.getRightSensorVelocity();
 
-		if(leftMasterTalon.getControlMode().equals(ControlMode.MotionMagic)) {
-			robotState.drivePose.leftMotionMagicPos = Optional.of(leftMasterTalon.getActiveTrajectoryPosition());
-			robotState.drivePose.leftMotionMagicVel = Optional.of(leftMasterTalon.getActiveTrajectoryVelocity());
-		} else {
-			robotState.drivePose.leftMotionMagicPos = Optional.empty();
-			robotState.drivePose.leftMotionMagicVel = Optional.empty();
-		}
-
-		if(rightMasterTalon.getControlMode().equals(ControlMode.MotionMagic)) {
-			robotState.drivePose.rightMotionMagicPos = Optional.of(rightMasterTalon.getActiveTrajectoryPosition());
-			robotState.drivePose.rightMotionMagicVel = Optional.of(rightMasterTalon.getActiveTrajectoryVelocity());
-		} else {
-			robotState.drivePose.rightMotionMagicPos = Optional.empty();
-			robotState.drivePose.rightMotionMagicVel = Optional.empty();
-		}
+//		if(leftMasterTalon.getControlMode().equals(ControlMode.MotionMagic)) {
+//			robotState.drivePose.leftMotionMagicPos = Optional.of(leftMasterTalon.getActiveTrajectoryPosition());
+//			robotState.drivePose.leftMotionMagicVel = Optional.of(leftMasterTalon.getActiveTrajectoryVelocity());
+//		} else {
+//			robotState.drivePose.leftMotionMagicPos = Optional.empty();
+//			robotState.drivePose.leftMotionMagicVel = Optional.empty();
+//		}
+//
+//		if(rightMasterTalon.getControlMode().equals(ControlMode.MotionMagic)) {
+//			robotState.drivePose.rightMotionMagicPos = Optional.of(rightMasterTalon.getActiveTrajectoryPosition());
+//			robotState.drivePose.rightMotionMagicVel = Optional.of(rightMasterTalon.getActiveTrajectoryVelocity());
+//		} else {
+//			robotState.drivePose.rightMotionMagicPos = Optional.empty();
+//			robotState.drivePose.rightMotionMagicVel = Optional.empty();
+//		}
 
 //		System.out.println("bot: " + robotState.elevatorBottomHFX);
 //		System.out.println("left: " + robotState.drivePose.leftEnc);
 //		System.out.println("right: " + robotState.drivePose.rightEnc);
 //		System.out.println("gyro : " + robotState.drivePose.heading);
 
-		Ultrasonic mUltrasonic = HardwareAdapter.getInstance().getIntake().ultrasonic;
-		robotState.mReadings.add(mUltrasonic.getRangeInches());
-		if(robotState.mReadings.size() > 10) {
-			robotState.mReadings.remove();
-		}
-
-		robotState.mSortedReadings = new ArrayList<>(robotState.mReadings);
-		Collections.sort(robotState.mSortedReadings);
-		robotState.cubeDistance = robotState.mSortedReadings.get(robotState.mSortedReadings.size() / 2);
-
-		if(robotState.cubeDistance < Constants.kIntakeCubeInchTolerance) {
-		    if(HardwareAdapter.getInstance().getMiscellaneousHardware().pdp.getCurrent(Constants.kForsetiIntakeMasterDeviceID) > Constants.kIntakeCurrentThreshold) {
-                robotState.hasCube = true;
-            }
-		} else {
-			robotState.hasCube = false;
-		}
+//		Ultrasonic mUltrasonic = HardwareAdapter.getInstance().getIntake().ultrasonic;
+//		robotState.mReadings.add(mUltrasonic.getRangeInches());
+//		if(robotState.mReadings.size() > 10) {
+//			robotState.mReadings.remove();
+//		}
+//
+//		robotState.mSortedReadings = new ArrayList<>(robotState.mReadings);
+//		Collections.sort(robotState.mSortedReadings);
+//		robotState.cubeDistance = robotState.mSortedReadings.get(robotState.mSortedReadings.size() / 2);
+//
+//		if(robotState.cubeDistance < Constants.kIntakeCubeInchTolerance) {
+//		    if(HardwareAdapter.getInstance().getMiscellaneousHardware().pdp.getCurrent(Constants.kForsetiIntakeMasterDeviceID) > Constants.kIntakeCurrentThreshold) {
+//                robotState.hasCube = true;
+//            }
+//		} else {
+//			robotState.hasCube = false;
+//		}
 
 //		System.out.println("elevator: " + robotState.elevatorPosition);
 //        System.out.println("left: " + robotState.drivePose.leftEnc);
 //        System.out.println("right: " + robotState.drivePose.rightEnc);
 
-		robotState.drivePose.leftError = Optional.of(leftMasterTalon.getClosedLoopError(0));
-		robotState.drivePose.rightError = Optional.of(rightMasterTalon.getClosedLoopError(0));
+		robotState.drivePose.leftError = Optional.of(mDriveSimulation.getLeftClosedLoopError());
+		robotState.drivePose.rightError = Optional.of(mDriveSimulation.getRightClosedLoopError());
 
 		double time = Timer.getFPGATimestamp();
+//		double time = System.currentTimeMillis();
 
 		//Rotation2d gyro_angle = Rotation2d.fromRadians((right_distance - left_distance) * Constants.kTrackScrubFactor
 		///Constants.kTrackEffectiveDiameter);
@@ -202,7 +203,7 @@ class MockHardwareUpdater extends HardwareUpdater {
 				robotState.drivePose.rightEncVelocity / Constants.kDriveSpeedUnitConversion, gyro_velocity.getRadians());
 
 		robotState.addObservations(time, odometry, velocity);
-
+		
 //		System.out.println(odometry.getTranslation());
 		//System.out.println("Odometry = " + odometry.getTranslation().getX());
 //		System.out.println("Velocity = " + velocity.dx);
@@ -214,8 +215,8 @@ class MockHardwareUpdater extends HardwareUpdater {
 
 		this.maxV = Math.max(this.maxV, cv);
 		this.maxA = Math.max(this.maxA, (cv - lastVelocity)/.02);
-		System.out.println("Max V " + maxV);
-		System.out.println("Max A " + maxA);
+//		System.out.println("Max V " + maxV);
+//		System.out.println("Max A " + maxA);
 
 //        //Update compressor pressure
 //        robotState.compressorPressure = HardwareAdapter.getInstance().getMiscellaneousHardware().compressorSensor.getVoltage() * Constants.kForsetiCompressorVoltageToPSI; //TODO: Implement the constant!
@@ -226,7 +227,6 @@ class MockHardwareUpdater extends HardwareUpdater {
 
 		//Update elevator sensors
 		
-		*/
 		
 		robotState.elevatorPosition = mElevatorSimulation.getSensorPosition();
 //		System.out.println(robotState.elevatorPosition);
@@ -303,7 +303,8 @@ class MockHardwareUpdater extends HardwareUpdater {
 
 	void updateSimulations() {
 		mElevatorSimulation.step();
-		dumper.println(mElevatorSimulation.getState());
+		mDriveSimulation.step();
+		dumper.println(mDriveSimulation.getState() + "," + mElevatorSimulation.getState());
 	}
 	
 }

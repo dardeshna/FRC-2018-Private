@@ -1,5 +1,6 @@
 package com.palyrobotics.frc2018.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.util.MockTalon;
 import com.palyrobotics.frc2018.util.TalonSRXOutput;
@@ -21,7 +22,7 @@ public class ElevatorSimulation extends SubsystemSimulation {
 	//Free Current in Amps
 	static final double kFreeCurrent = 0.7;
 	//Mass of the Elevator
-	static final double kMass = 10.0;
+	static final double kMass = 20.0;
 
 	//Number of motors
 	static final double kNumMotors = 2.0;
@@ -51,7 +52,7 @@ public class ElevatorSimulation extends SubsystemSimulation {
 	private double voltage = 0;
 	
 	public ElevatorSimulation() {
-		talon = new MockTalon(position*Constants.kElevatorTicksPerInch);
+		talon = new MockTalon(position*Constants.kElevatorTicksPerInch, "elevator");
 		talon.configClosedloopRamp(0.4);
 		talon.configVoltageCompSaturation(14.0);
 	}
@@ -115,6 +116,11 @@ public class ElevatorSimulation extends SubsystemSimulation {
 	
 	public String getState() {
 		return position + "," + velocity + "," + acceleration + "," + voltage + "," + talon.getSetpoint() / Constants.kElevatorTicksPerInch;
+	}
+
+	public void disable() {
+		talon.set(ControlMode.Disabled, 0);
+		
 	}
 
 }

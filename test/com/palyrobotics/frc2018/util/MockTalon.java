@@ -9,12 +9,14 @@ public class MockTalon {
 	private static int measurementWindow = 100;
 	private static int rollingAvgPeriod = 64;
 	
+	private String name;
 	private Gains gains;
-	private ControlMode mode;
+	private ControlMode mode = ControlMode.Disabled;
 	private int[] sensorReadings = new int[measurementWindow+rollingAvgPeriod];
 	private int prevSensorRate = 0;
 	private int sensorRate = 0;
 	private int setpoint;
+	private int error;
 	private int iAccum;
 	private boolean reset;
 	private int output;
@@ -25,7 +27,12 @@ public class MockTalon {
 	private double deadband = 0.04;
 	private double voltageCompSaturation = 12.0;
 	
+	
 	public MockTalon(double reading) {
+		this(reading, "null");
+	}
+	public MockTalon(double reading, String name) {
+		this.name = name;
 		sensorReadings = new int[measurementWindow+rollingAvgPeriod];
 		for (int i = 0; i < sensorReadings.length; i++) {
 			sensorReadings[i] = (int) reading;
@@ -48,7 +55,8 @@ public class MockTalon {
 	public void update() {
 		this.prevOutput = output;
 		if (this.mode == ControlMode.PercentOutput) {
-			output = this.setpoint * 1023;
+			output = (int) (this.setpoint / voltageCompSaturation * 1023);
+			error = 0;
 		}
 		else if (this.mode == ControlMode.Position) {
 			pid(sensorReadings[0], sensorReadings[1]);
@@ -58,6 +66,7 @@ public class MockTalon {
 		}
 		else {
 			output = 0;
+			error = 0;
 		}
 		if (rampRate != 0) {
 			if (Math.signum(output)*(output - prevOutput) > 1023/rampRate * SubsystemSimulation.kDt) {
@@ -67,7 +76,7 @@ public class MockTalon {
 	}
 	
 	private void pid(int pos, int prevPos) {
-		int error = setpoint - pos;
+		error = setpoint - pos;
 		if (reset) {
 			iAccum = 0;
 		}
@@ -84,7 +93,7 @@ public class MockTalon {
  		if (reset) reset = false;
  		
  		this.output = (int) Math.max(Math.min(1023*forwardsPeakOutput, error*gains.P + dErr*gains.D + iAccum*gains.I + setpoint*gains.F), -1023*reversePeakOutput);
-	
+ 		
 	}
 
 	public void pushReading(double reading) {
@@ -149,12 +158,21 @@ public class MockTalon {
 	}
 	
 	public double getOutputVoltage(double batteryVoltage) {
+
 		if (Math.abs(output) <= deadband*1023) {
 			return 0;
 		}
 		else {
 			return Math.max(-batteryVoltage, Math.min(batteryVoltage, output/1023.0 * voltageCompSaturation));
 		}
+	}
+	
+	public int getClosedLoopError() {
+		return error;
+	}
+
+	public ControlMode getControlMode() {
+		return this.mode;
 	}
 
 	
