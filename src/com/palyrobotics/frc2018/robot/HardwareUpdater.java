@@ -233,10 +233,10 @@ class HardwareUpdater {
 		masterTalon.overrideLimitSwitchesEnable(true);
 		slaveTalon.overrideLimitSwitchesEnable(true);
 
-		masterTalon.configPeakOutputForward(1, 0);
-		masterTalon.configPeakOutputReverse(-1, 0);
-		slaveTalon.configPeakOutputForward(1, 0);
-		slaveTalon.configPeakOutputReverse(-1, 0);
+		masterTalon.configPeakOutputForward(.9, 0);
+		masterTalon.configPeakOutputReverse(-.9, 0);
+		slaveTalon.configPeakOutputForward(.9, 0);
+		slaveTalon.configPeakOutputReverse(-.9, 0);
 
 		masterTalon.configClosedloopRamp(0.4, 0);
 		masterTalon.configOpenloopRamp(0.4, 0);
