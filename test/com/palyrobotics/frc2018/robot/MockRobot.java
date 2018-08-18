@@ -304,7 +304,7 @@ public class MockRobot {
 		disabledInit();
 		autonomousInit();
 		double t = 0;
-		while (t < 30) {
+		while (t < 25) {
 			autonomousPeriodic();
 			t+=Constants.kNormalLoopsDt;
 			double s = 0;
