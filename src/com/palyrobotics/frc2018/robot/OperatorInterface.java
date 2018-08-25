@@ -104,6 +104,12 @@ public class OperatorInterface {
 				newCommands.disableElevatorScaling = true;
 			}
 
+			if(mOperatorXboxController.getButtonB()) {
+				newCommands.addWantedRoutine(new ElevatorCustomPositioningRoutine(Constants.kElevatorTopBottomDifferenceInches - 10, 5));
+			}
+			if(mOperatorXboxController.getButtonX()) {
+				newCommands.cancelCurrentRoutines = true;
+			}
 			/**
 			 * Intake controls
 			 */
