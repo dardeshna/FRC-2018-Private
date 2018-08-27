@@ -38,8 +38,8 @@ public class RightHookScaleAutoMode extends AutoModeBase {
     public Routine getRoutine() {
         List<Waypoint> path = new ArrayList<>();
         path.add(new Waypoint(new Translation2d(0,0), 170));
-        double distanceX = mDistances.kLeftScaleX - Constants.kRobotLengthInches + 1.2 * mDistances.kScalePlateLength/2 - 15;
-        double distance2X = mDistances.kLeftScaleX - Constants.kRobotLengthInches + 1.4 * mDistances.kScalePlateLength/2;
+        double distanceX = mDistances.kRightScaleX - Constants.kRobotLengthInches + 1.2 * mDistances.kScalePlateLength/2 - 15;
+        double distance2X = mDistances.kRightScaleX - Constants.kRobotLengthInches + 1.4 * mDistances.kScalePlateLength/2;
 
         path.add(new Waypoint(new Translation2d(distanceX, 0), 20));
         path.add(new Waypoint(new Translation2d(distance2X, 0), 0.0));
