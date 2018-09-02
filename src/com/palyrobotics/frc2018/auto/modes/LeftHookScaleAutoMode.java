@@ -22,7 +22,7 @@ import com.palyrobotics.frc2018.util.trajectory.Translation2d;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RightHookScaleAutoMode extends AutoModeBase {
+public class LeftHookScaleAutoMode extends AutoModeBase {
 
     @Override
     public String toString() {
