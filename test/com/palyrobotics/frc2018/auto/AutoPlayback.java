@@ -191,29 +191,31 @@ public class AutoPlayback extends Application {
 			// Read starting position and alliance color
 			String position = scanner.next(), alliance = scanner.next();
 			
+			AutoDistances.updateAutoDistances();
+			
 			// Starting x is constant, but starting y depends on robot's starting position
 			if (alliance.equals("BLUE")) {
 				switch (position) {
 				case "LEFT":
-					startY = converted(AutoDistances.kFieldWidth - AutoDistances.kBlueLeftCornerOffset - Constants.kRobotWidthInches / 2.0, false);
+					startY = converted(AutoDistances.blue.kFieldWidth - AutoDistances.blue.kLeftCornerOffset - Constants.kRobotWidthInches / 2.0, false);
 					break;
 				case "CENTER":
-					startY = converted(AutoDistances.kFieldWidth - AutoDistances.kBlueLeftToCenterY - Constants.kRobotWidthInches / 2.0, false);
+					startY = converted(AutoDistances.blue.kFieldWidth - AutoDistances.blue.kLeftToCenterY - Constants.kRobotWidthInches / 2.0, false);
 					break;
 				case "RIGHT":
-					startY = converted(AutoDistances.kBlueRightCornerOffset + Constants.kRobotWidthInches / 2.0, false);
+					startY = converted(AutoDistances.blue.kRightCornerOffset + Constants.kRobotWidthInches / 2.0, false);
 					break;
 				}
 			} else {
 				switch (position) {
 				case "LEFT":
-					startY = converted(AutoDistances.kFieldWidth - AutoDistances.kRedLeftCornerOffset - Constants.kRobotWidthInches / 2.0, false);
+					startY = converted(AutoDistances.red.kFieldWidth - AutoDistances.red.kLeftCornerOffset - Constants.kRobotWidthInches / 2.0, false);
 					break;
 				case "CENTER":
-					startY = converted(AutoDistances.kFieldWidth - AutoDistances.kRedLeftToCenterY - Constants.kRobotWidthInches / 2.0, false);
+					startY = converted(AutoDistances.red.kFieldWidth - AutoDistances.red.kLeftToCenterY - Constants.kRobotWidthInches / 2.0, false);
 					break;
 				case "RIGHT":
-					startY = converted(AutoDistances.kRedRightCornerOffset + Constants.kRobotWidthInches / 2.0, false);
+					startY = converted(AutoDistances.red.kRightCornerOffset + Constants.kRobotWidthInches / 2.0, false);
 					break;
 				}
 			}
@@ -253,61 +255,61 @@ public class AutoPlayback extends Application {
 			graphics.setLineWidth(1.0);
 			
 			// Draw entire switch
-			graphics.strokePolygon(converted(new double[] {AutoDistances.kBlueLeftSwitchX, AutoDistances.kBlueRightSwitchX, AutoDistances.kBlueRightSwitchX + AutoDistances.kSwitchPlateLength, AutoDistances.kBlueLeftSwitchX + AutoDistances.kSwitchPlateLength}, true),
-									converted(new double[] {AutoDistances.kFieldWidth - AutoDistances.kBlueLeftSwitchY, AutoDistances.kBlueRightSwitchY, AutoDistances.kBlueRightSwitchY, AutoDistances.kFieldWidth - AutoDistances.kBlueLeftSwitchY}, false), 4);
+			graphics.strokePolygon(converted(new double[] {AutoDistances.blue.kLeftSwitchX, AutoDistances.blue.kRightSwitchX, AutoDistances.blue.kRightSwitchX + AutoDistances.blue.kSwitchPlateLength, AutoDistances.blue.kLeftSwitchX + AutoDistances.blue.kSwitchPlateLength}, true),
+									converted(new double[] {AutoDistances.blue.kFieldWidth - AutoDistances.blue.kLeftSwitchY, AutoDistances.blue.kRightSwitchY, AutoDistances.blue.kRightSwitchY, AutoDistances.blue.kFieldWidth - AutoDistances.blue.kLeftSwitchY}, false), 4);
 			// Draw entire scale
-			graphics.strokePolygon(converted(new double[] {AutoDistances.kBlueLeftScaleX, AutoDistances.kBlueRightScaleX, AutoDistances.kBlueRightScaleX + AutoDistances.kScalePlateLength, AutoDistances.kBlueLeftScaleX + AutoDistances.kScalePlateLength}, true),
-									converted(new double[] {AutoDistances.kFieldWidth - AutoDistances.kBlueLeftScaleY, AutoDistances.kBlueRightScaleY, AutoDistances.kBlueRightScaleY, AutoDistances.kFieldWidth - AutoDistances.kBlueLeftScaleY}, false)  , 4);
+			graphics.strokePolygon(converted(new double[] {AutoDistances.blue.kLeftScaleX, AutoDistances.blue.kRightScaleX, AutoDistances.blue.kRightScaleX + AutoDistances.blue.kScalePlateLength, AutoDistances.blue.kLeftScaleX + AutoDistances.blue.kScalePlateLength}, true),
+									converted(new double[] {AutoDistances.blue.kFieldWidth - AutoDistances.blue.kLeftScaleY, AutoDistances.blue.kRightScaleY, AutoDistances.blue.kRightScaleY, AutoDistances.blue.kFieldWidth - AutoDistances.blue.kLeftScaleY}, false)  , 4);
 			
 			graphics.setLineWidth(3.0);
 			
 			// Draw left switch plate
-			graphics.strokePolygon(converted(new double[] {AutoDistances.kBlueLeftSwitchX, AutoDistances.kBlueLeftSwitchX, AutoDistances.kBlueLeftSwitchX + AutoDistances.kSwitchPlateLength, AutoDistances.kBlueLeftSwitchX + AutoDistances.kSwitchPlateLength}, true),
-									converted(new double[] {AutoDistances.kFieldWidth - AutoDistances.kBlueLeftSwitchY, AutoDistances.kFieldWidth - AutoDistances.kBlueLeftSwitchY - AutoDistances.kSwitchPlateWidth, AutoDistances.kFieldWidth - AutoDistances.kBlueLeftSwitchY - AutoDistances.kSwitchPlateWidth, AutoDistances.kFieldWidth - AutoDistances.kBlueLeftSwitchY}, false), 4);
+			graphics.strokePolygon(converted(new double[] {AutoDistances.blue.kLeftSwitchX, AutoDistances.blue.kLeftSwitchX, AutoDistances.blue.kLeftSwitchX + AutoDistances.blue.kSwitchPlateLength, AutoDistances.blue.kLeftSwitchX + AutoDistances.blue.kSwitchPlateLength}, true),
+									converted(new double[] {AutoDistances.blue.kFieldWidth - AutoDistances.blue.kLeftSwitchY, AutoDistances.blue.kFieldWidth - AutoDistances.blue.kLeftSwitchY - AutoDistances.blue.kSwitchPlateWidth, AutoDistances.blue.kFieldWidth - AutoDistances.blue.kLeftSwitchY - AutoDistances.blue.kSwitchPlateWidth, AutoDistances.blue.kFieldWidth - AutoDistances.blue.kLeftSwitchY}, false), 4);
 			// Draw right switch plate 
-			graphics.strokePolygon(converted(new double[] {AutoDistances.kBlueRightSwitchX, AutoDistances.kBlueRightSwitchX, AutoDistances.kBlueRightSwitchX + AutoDistances.kSwitchPlateLength, AutoDistances.kBlueRightSwitchX + AutoDistances.kSwitchPlateLength}, true),
-									converted(new double[] {AutoDistances.kBlueRightSwitchY + AutoDistances.kSwitchPlateWidth, AutoDistances.kBlueRightSwitchY, AutoDistances.kBlueRightSwitchY, AutoDistances.kBlueRightSwitchY + AutoDistances.kSwitchPlateWidth}, false), 4);
+			graphics.strokePolygon(converted(new double[] {AutoDistances.blue.kRightSwitchX, AutoDistances.blue.kRightSwitchX, AutoDistances.blue.kRightSwitchX + AutoDistances.blue.kSwitchPlateLength, AutoDistances.blue.kRightSwitchX + AutoDistances.blue.kSwitchPlateLength}, true),
+									converted(new double[] {AutoDistances.blue.kRightSwitchY + AutoDistances.blue.kSwitchPlateWidth, AutoDistances.blue.kRightSwitchY, AutoDistances.blue.kRightSwitchY, AutoDistances.blue.kRightSwitchY + AutoDistances.blue.kSwitchPlateWidth}, false), 4);
 		
 			// Draw left scale plate
-			graphics.strokePolygon(converted(new double[] {AutoDistances.kBlueLeftScaleX, AutoDistances.kBlueLeftScaleX, AutoDistances.kBlueLeftScaleX + AutoDistances.kScalePlateLength, AutoDistances.kBlueLeftScaleX + AutoDistances.kScalePlateLength}, true),
-									converted(new double[] {AutoDistances.kFieldWidth - AutoDistances.kBlueLeftScaleY, AutoDistances.kFieldWidth - AutoDistances.kBlueLeftScaleY - AutoDistances.kScalePlateWidth, AutoDistances.kFieldWidth - AutoDistances.kBlueLeftScaleY - AutoDistances.kScalePlateWidth, AutoDistances.kFieldWidth - AutoDistances.kBlueLeftScaleY}, false), 4);
+			graphics.strokePolygon(converted(new double[] {AutoDistances.blue.kLeftScaleX, AutoDistances.blue.kLeftScaleX, AutoDistances.blue.kLeftScaleX + AutoDistances.blue.kScalePlateLength, AutoDistances.blue.kLeftScaleX + AutoDistances.blue.kScalePlateLength}, true),
+									converted(new double[] {AutoDistances.blue.kFieldWidth - AutoDistances.blue.kLeftScaleY, AutoDistances.blue.kFieldWidth - AutoDistances.blue.kLeftScaleY - AutoDistances.blue.kScalePlateWidth, AutoDistances.blue.kFieldWidth - AutoDistances.blue.kLeftScaleY - AutoDistances.blue.kScalePlateWidth, AutoDistances.blue.kFieldWidth - AutoDistances.blue.kLeftScaleY}, false), 4);
 			// Draw right scale plate
-			graphics.strokePolygon(converted(new double[] {AutoDistances.kBlueRightScaleX, AutoDistances.kBlueRightScaleX, AutoDistances.kBlueRightScaleX + AutoDistances.kScalePlateLength, AutoDistances.kBlueRightScaleX + AutoDistances.kScalePlateLength}, true),
-									converted(new double[] {AutoDistances.kBlueRightScaleY + AutoDistances.kScalePlateWidth, AutoDistances.kBlueRightScaleY, AutoDistances.kBlueRightScaleY, AutoDistances.kBlueRightScaleY + AutoDistances.kScalePlateWidth}, false), 4);
+			graphics.strokePolygon(converted(new double[] {AutoDistances.blue.kRightScaleX, AutoDistances.blue.kRightScaleX, AutoDistances.blue.kRightScaleX + AutoDistances.blue.kScalePlateLength, AutoDistances.blue.kRightScaleX + AutoDistances.blue.kScalePlateLength}, true),
+									converted(new double[] {AutoDistances.blue.kRightScaleY + AutoDistances.blue.kScalePlateWidth, AutoDistances.blue.kRightScaleY, AutoDistances.blue.kRightScaleY, AutoDistances.blue.kRightScaleY + AutoDistances.blue.kScalePlateWidth}, false), 4);
 			
 			// Draw pyramid square
-			graphics.strokePolygon(converted(new double[] {AutoDistances.kBlueLeftSwitchX - AutoDistances.kBluePyramidLength, AutoDistances.kBlueLeftSwitchX - AutoDistances.kBluePyramidLength, AutoDistances.kBlueLeftSwitchX, AutoDistances.kBlueLeftSwitchX}, true),
-									converted(new double[] {AutoDistances.kBluePyramidFromRightY + AutoDistances.kBluePyramidWidth, AutoDistances.kBluePyramidFromRightY, AutoDistances.kBluePyramidFromRightY, AutoDistances.kBluePyramidFromRightY + AutoDistances.kBluePyramidWidth}, false), 4);
+			graphics.strokePolygon(converted(new double[] {AutoDistances.blue.kLeftSwitchX - AutoDistances.blue.kPyramidLength, AutoDistances.blue.kLeftSwitchX - AutoDistances.blue.kPyramidLength, AutoDistances.blue.kLeftSwitchX, AutoDistances.blue.kLeftSwitchX}, true),
+									converted(new double[] {AutoDistances.blue.kPyramidFromRightY + AutoDistances.blue.kPyramidWidth, AutoDistances.blue.kPyramidFromRightY, AutoDistances.blue.kPyramidFromRightY, AutoDistances.blue.kPyramidFromRightY + AutoDistances.blue.kPyramidWidth}, false), 4);
 		} else {
 			graphics.setStroke(new Color(1, 0, 0, 1));
 			graphics.setLineWidth(1.0);
 			
 			// Draw entire switch
-			graphics.strokePolygon(converted(new double[] {AutoDistances.kRedLeftSwitchX, AutoDistances.kRedRightSwitchX, AutoDistances.kRedRightSwitchX + AutoDistances.kSwitchPlateLength, AutoDistances.kRedLeftSwitchX + AutoDistances.kSwitchPlateLength}, true),
-									converted(new double[] {AutoDistances.kFieldWidth - AutoDistances.kRedLeftSwitchY, AutoDistances.kRedRightSwitchY, AutoDistances.kRedRightSwitchY, AutoDistances.kFieldWidth - AutoDistances.kRedLeftSwitchY}, false), 4);
+			graphics.strokePolygon(converted(new double[] {AutoDistances.red.kLeftSwitchX, AutoDistances.red.kRightSwitchX, AutoDistances.red.kRightSwitchX + AutoDistances.red.kSwitchPlateLength, AutoDistances.red.kLeftSwitchX + AutoDistances.red.kSwitchPlateLength}, true),
+									converted(new double[] {AutoDistances.red.kFieldWidth - AutoDistances.red.kLeftSwitchY, AutoDistances.red.kRightSwitchY, AutoDistances.red.kRightSwitchY, AutoDistances.red.kFieldWidth - AutoDistances.red.kLeftSwitchY}, false), 4);
 			// Draw entire scale
-			graphics.strokePolygon(converted(new double[] {AutoDistances.kRedLeftScaleX, AutoDistances.kRedRightScaleX, AutoDistances.kRedRightScaleX + AutoDistances.kScalePlateLength, AutoDistances.kRedLeftScaleX + AutoDistances.kScalePlateLength}, true),
-									converted(new double[] {AutoDistances.kFieldWidth - AutoDistances.kRedLeftScaleY, AutoDistances.kRedRightScaleY, AutoDistances.kRedRightScaleY, AutoDistances.kFieldWidth - AutoDistances.kRedLeftScaleY}, false)  , 4);
+			graphics.strokePolygon(converted(new double[] {AutoDistances.red.kLeftScaleX, AutoDistances.red.kRightScaleX, AutoDistances.red.kRightScaleX + AutoDistances.red.kScalePlateLength, AutoDistances.red.kLeftScaleX + AutoDistances.red.kScalePlateLength}, true),
+									converted(new double[] {AutoDistances.red.kFieldWidth - AutoDistances.red.kLeftScaleY, AutoDistances.red.kRightScaleY, AutoDistances.red.kRightScaleY, AutoDistances.red.kFieldWidth - AutoDistances.red.kLeftScaleY}, false)  , 4);
 			
 			graphics.setLineWidth(3.0);
 			
 			// Draw left switch plate
-			graphics.strokePolygon(converted(new double[] {AutoDistances.kRedLeftSwitchX, AutoDistances.kRedLeftSwitchX, AutoDistances.kRedLeftSwitchX + AutoDistances.kSwitchPlateLength, AutoDistances.kRedLeftSwitchX + AutoDistances.kSwitchPlateLength}, true),
-									converted(new double[] {AutoDistances.kFieldWidth - AutoDistances.kRedLeftSwitchY, AutoDistances.kFieldWidth - AutoDistances.kRedLeftSwitchY - AutoDistances.kSwitchPlateWidth, AutoDistances.kFieldWidth - AutoDistances.kRedLeftSwitchY - AutoDistances.kSwitchPlateWidth, AutoDistances.kFieldWidth - AutoDistances.kRedLeftSwitchY}, false), 4);
+			graphics.strokePolygon(converted(new double[] {AutoDistances.red.kLeftSwitchX, AutoDistances.red.kLeftSwitchX, AutoDistances.red.kLeftSwitchX + AutoDistances.red.kSwitchPlateLength, AutoDistances.red.kLeftSwitchX + AutoDistances.red.kSwitchPlateLength}, true),
+									converted(new double[] {AutoDistances.red.kFieldWidth - AutoDistances.red.kLeftSwitchY, AutoDistances.red.kFieldWidth - AutoDistances.red.kLeftSwitchY - AutoDistances.red.kSwitchPlateWidth, AutoDistances.red.kFieldWidth - AutoDistances.red.kLeftSwitchY - AutoDistances.red.kSwitchPlateWidth, AutoDistances.red.kFieldWidth - AutoDistances.red.kLeftSwitchY}, false), 4);
 			// Draw right switch plate 
-			graphics.strokePolygon(converted(new double[] {AutoDistances.kRedRightSwitchX, AutoDistances.kRedRightSwitchX, AutoDistances.kRedRightSwitchX + AutoDistances.kSwitchPlateLength, AutoDistances.kRedRightSwitchX + AutoDistances.kSwitchPlateLength}, true),
-									converted(new double[] {AutoDistances.kRedRightSwitchY + AutoDistances.kSwitchPlateWidth, AutoDistances.kRedRightSwitchY, AutoDistances.kRedRightSwitchY, AutoDistances.kRedRightSwitchY + AutoDistances.kSwitchPlateWidth}, false), 4);
+			graphics.strokePolygon(converted(new double[] {AutoDistances.red.kRightSwitchX, AutoDistances.red.kRightSwitchX, AutoDistances.red.kRightSwitchX + AutoDistances.red.kSwitchPlateLength, AutoDistances.red.kRightSwitchX + AutoDistances.red.kSwitchPlateLength}, true),
+									converted(new double[] {AutoDistances.red.kRightSwitchY + AutoDistances.red.kSwitchPlateWidth, AutoDistances.red.kRightSwitchY, AutoDistances.red.kRightSwitchY, AutoDistances.red.kRightSwitchY + AutoDistances.red.kSwitchPlateWidth}, false), 4);
 		
 			// Draw left scale plate
-			graphics.strokePolygon(converted(new double[] {AutoDistances.kRedLeftScaleX, AutoDistances.kRedLeftScaleX, AutoDistances.kRedLeftScaleX + AutoDistances.kScalePlateLength, AutoDistances.kRedLeftScaleX + AutoDistances.kScalePlateLength}, true),
-									converted(new double[] {AutoDistances.kFieldWidth - AutoDistances.kRedLeftScaleY, AutoDistances.kFieldWidth - AutoDistances.kRedLeftScaleY - AutoDistances.kScalePlateWidth, AutoDistances.kFieldWidth - AutoDistances.kRedLeftScaleY - AutoDistances.kScalePlateWidth, AutoDistances.kFieldWidth - AutoDistances.kRedLeftScaleY}, false), 4);
+			graphics.strokePolygon(converted(new double[] {AutoDistances.red.kLeftScaleX, AutoDistances.red.kLeftScaleX, AutoDistances.red.kLeftScaleX + AutoDistances.red.kScalePlateLength, AutoDistances.red.kLeftScaleX + AutoDistances.red.kScalePlateLength}, true),
+									converted(new double[] {AutoDistances.red.kFieldWidth - AutoDistances.red.kLeftScaleY, AutoDistances.red.kFieldWidth - AutoDistances.red.kLeftScaleY - AutoDistances.red.kScalePlateWidth, AutoDistances.red.kFieldWidth - AutoDistances.red.kLeftScaleY - AutoDistances.red.kScalePlateWidth, AutoDistances.red.kFieldWidth - AutoDistances.red.kLeftScaleY}, false), 4);
 			// Draw right scale plate
-			graphics.strokePolygon(converted(new double[] {AutoDistances.kRedRightScaleX, AutoDistances.kRedRightScaleX, AutoDistances.kRedRightScaleX + AutoDistances.kScalePlateLength, AutoDistances.kRedRightScaleX + AutoDistances.kScalePlateLength}, true),
-									converted(new double[] {AutoDistances.kRedRightScaleY + AutoDistances.kScalePlateWidth, AutoDistances.kRedRightScaleY, AutoDistances.kRedRightScaleY, AutoDistances.kRedRightScaleY + AutoDistances.kScalePlateWidth}, false), 4);
+			graphics.strokePolygon(converted(new double[] {AutoDistances.red.kRightScaleX, AutoDistances.red.kRightScaleX, AutoDistances.red.kRightScaleX + AutoDistances.red.kScalePlateLength, AutoDistances.red.kRightScaleX + AutoDistances.red.kScalePlateLength}, true),
+									converted(new double[] {AutoDistances.red.kRightScaleY + AutoDistances.red.kScalePlateWidth, AutoDistances.red.kRightScaleY, AutoDistances.red.kRightScaleY, AutoDistances.red.kRightScaleY + AutoDistances.red.kScalePlateWidth}, false), 4);
 		
 			// Draw pyramid square
-			graphics.strokePolygon(converted(new double[] {AutoDistances.kRedLeftSwitchX - AutoDistances.kRedPyramidLength, AutoDistances.kRedLeftSwitchX - AutoDistances.kRedPyramidLength, AutoDistances.kRedLeftSwitchX, AutoDistances.kRedLeftSwitchX}, true),
-												converted(new double[] {AutoDistances.kRedPyramidFromRightY + AutoDistances.kRedPyramidWidth, AutoDistances.kRedPyramidFromRightY, AutoDistances.kRedPyramidFromRightY, AutoDistances.kRedPyramidFromRightY + AutoDistances.kRedPyramidWidth}, false), 4);
+			graphics.strokePolygon(converted(new double[] {AutoDistances.red.kLeftSwitchX - AutoDistances.red.kPyramidLength, AutoDistances.red.kLeftSwitchX - AutoDistances.red.kPyramidLength, AutoDistances.red.kLeftSwitchX, AutoDistances.red.kLeftSwitchX}, true),
+												converted(new double[] {AutoDistances.red.kPyramidFromRightY + AutoDistances.red.kPyramidWidth, AutoDistances.red.kPyramidFromRightY, AutoDistances.red.kPyramidFromRightY, AutoDistances.red.kPyramidFromRightY + AutoDistances.red.kPyramidWidth}, false), 4);
 		}
 	}
 	

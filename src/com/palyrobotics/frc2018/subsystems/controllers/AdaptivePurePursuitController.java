@@ -71,7 +71,7 @@ public class AdaptivePurePursuitController implements Drive.DriveController {
 			if (os.startsWith("Windows")) {
 				outputFile = new File("C:/auto/" + new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date()) + ".auto");
 			} else if (os.startsWith("Mac")) {
-				outputFile = new File("~/auto/" + new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date()) + ".auto");
+				outputFile = new File("auto/" + new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date()) + ".auto");
 			} else if (os.startsWith("Linux")) {
 				// Assume we're on a RIO
 				// RIP Linux users
@@ -91,7 +91,8 @@ public class AdaptivePurePursuitController implements Drive.DriveController {
 		mFileOutputString.append(AutoModeBase.mStartingPosition + " " + AutoModeBase.mAlliance + "\n");
 		
 		// Output file must specify the number of waypoints so AutoPlayback can properly read them in
-		mFileOutputString.append(path.getWaypoints().size() + "\n");
+		mFileOutputString.append(path.getWaypoints().size()+1 + "\n");
+		mFileOutputString.append(Robot.getRobotState().getLatestFieldToVehicle().getValue().getTranslation().getX() + " " + Robot.getRobotState().getLatestFieldToVehicle().getValue().getTranslation().getY() + "\n");
 		for (Waypoint point : path.getWaypoints()) {
 			mFileOutputString.append(point.position.getX() + " " + point.position.getY() + "\n");
 		}
