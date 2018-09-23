@@ -102,7 +102,7 @@ public class Constants {
 	public static final double kRobotWidthInches = 34.0;
 	public static final double kRobotLengthInches = 39.0;
 	public static final double kCenterOfRotationOffsetFromFrontInches = 13.0;
-	public static final double kNullZoneAllowableBack = 5;
+	public static final double kNullZoneAllowableBack = 10;
 
 	/**
 	 * Tolerances
@@ -124,7 +124,7 @@ public class Constants {
 	public static final double kExpellingMotorVelocity = -0.225;
 	public static final double kVaultExpellingMotorVelocity = -.92;
 	public static final double kExpelToScoreTime = 0.5;
-	public static final double kIntakeCurrentThreshold = 1;
+	public static final double kIntakeCurrentThreshold = -1;
 	public static final double kIntakeMasterStallCurrent = 70;
 	public static final double kIntakeMasterIdleCurrent = 0.125;
 	public static final double kIntakeMasterExpelCurrent = 1.5;
@@ -143,7 +143,7 @@ public class Constants {
 	public static final double kIntakeStallCoefficientA = 1.55;
 	public static final double kIntakeStallCoefficientB = 4.27;
 	public static final double kIntakeFreeSpinCurrent = 5;
-	public static final double kIntakeCubeInchTolerance = 12.5;
+	public static final double kIntakeCubeInchTolerance = 13;
 
 	public static boolean operatorXBoxController = true;
 
@@ -230,7 +230,7 @@ public class Constants {
 	public static final double kTrackEffectiveDiameter = (kTrackWidthInches * kTrackWidthInches + kTrackLengthInches * kTrackLengthInches) / kTrackWidthInches;
 	public static final double kTrackScrubFactor = 0.5;
 	public static final double kPathFollowingLookahead = 35.0;
-	public static final double kPathFollowingMaxAccel = 120;
+	public static final double kPathFollowingMaxAccel = 102.5;
 	public static final double kPathFollowingMaxVel = 191.544 * .98;
 	//public static final double kPathFollowingMaxVel = 5 * kPathFollowingMaxAccel;
 	public static final double kPathFollowingTolerance = 0.20;

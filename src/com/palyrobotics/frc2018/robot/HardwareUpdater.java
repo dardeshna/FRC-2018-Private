@@ -407,7 +407,7 @@ class HardwareUpdater {
 		robotState.mReadings.add(mUltrasonic.getRangeInches());
 //		System.out.println(mUltrasonic.getRangeInches());
 		if(robotState.mReadings.size() > 10) {
-			robotState.mReadings.remove();
+			robotState.mReadings.remove(0);
 		}
 
 		robotState.mSortedReadings = new ArrayList<>(robotState.mReadings);
@@ -415,15 +415,14 @@ class HardwareUpdater {
 		robotState.cubeDistance = robotState.mSortedReadings.get(robotState.mSortedReadings.size() / 2);
 
 		if(robotState.cubeDistance < Constants.kIntakeCubeInchTolerance) {
-		    if(HardwareAdapter.getInstance().getMiscellaneousHardware().pdp.getCurrent(Constants.kForsetiIntakeMasterDeviceID) > Constants.kIntakeCurrentThreshold) {
-                robotState.hasCube = true;
-            }
+			robotState.hasCube = true;
 		} else {
 			robotState.hasCube = false;
 		}
 
-//		System.out.println(robotState.hasCube);
-//		System.out.println(robotState.cubeDistance);
+		System.out.println(robotState.hasCube);
+		System.out.println(mUltrasonic.getRangeInches());
+//		System.out.println(robotState.drivePose.heading);
 
 //		System.out.println("elevator: " + robotState.elevatorPosition);
 //        System.out.println("left: " + robotState.drivePose.leftEnc);

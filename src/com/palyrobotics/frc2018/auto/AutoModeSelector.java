@@ -96,7 +96,7 @@ public class AutoModeSelector {
 	 * @return AutoMode currently selected
 	 */
 	public AutoModeBase getAutoMode() {
-		return new RightHookScaleAutoMode();
+		return new CenterStartRightMultiSwitchAutoMode();
 	}
 
 	/**
