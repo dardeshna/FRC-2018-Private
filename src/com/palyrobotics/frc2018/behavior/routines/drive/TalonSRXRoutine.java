@@ -83,7 +83,7 @@ public class TalonSRXRoutine extends Routine {
 
 	@Override
 	public boolean finished() {
-		//Wait for controller to be added before finishing routine
+//		return false;
 		if(Math.abs(mSignal.leftMotor.getSetpoint() - Robot.getRobotState().leftSetpoint) > 1) {
 			Logger.getInstance().logRobotThread(Level.WARNING, "Mismatched desired talon and actual talon setpoints! desired, actual");
 			Logger.getInstance().logRobotThread(Level.WARNING, "Left", mSignal.leftMotor.getSetpoint() + ", " + Robot.getRobotState().leftSetpoint);
@@ -103,7 +103,8 @@ public class TalonSRXRoutine extends Routine {
 		}
 		if(!drive.hasController() || (drive.getController().getClass() == TalonSRXDriveController.class && drive.controllerOnTarget())) {
 		}
-
+		System.out.println(!drive.hasController() || System.currentTimeMillis() > this.timeout + startTime
+				|| (drive.getController().getClass() == TalonSRXDriveController.class && drive.controllerOnTarget()));
 		return !drive.hasController() || System.currentTimeMillis() > this.timeout + startTime
 				|| (drive.getController().getClass() == TalonSRXDriveController.class && drive.controllerOnTarget());
 	}

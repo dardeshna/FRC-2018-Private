@@ -44,30 +44,30 @@ public class TestAutoMode extends AutoModeBase {
 	}
 
 	private Routine testF() {
-		double power = 0.1;
+		double power = 0.6;
 		DriveSignal signal = DriveSignal.getNeutralSignal();
-		signal.leftMotor.setVelocity(20 * Constants.kDriveSpeedUnitConversion, Gains.forsetiVelocity);
-		signal.rightMotor.setVelocity(20 * Constants.kDriveSpeedUnitConversion, Gains.forsetiVelocity);
+//		signal.leftMotor.setVelocity(20 * Constants.kDriveSpeedUnitConversion, Gains.forsetiVelocity);
+//		signal.rightMotor.setVelocity(20 * Constants.kDriveSpeedUnitConversion, Gains.forsetiVelocity);
 
-//		signal.leftMotor.setPercentOutput(0.4);
-//		signal.rightMotor.setPercentOutput(0.4);
-		return new TalonSRXRoutine(signal, false);
+		signal.leftMotor.setPercentOutput(power);
+		signal.rightMotor.setPercentOutput(power);
+		return new TalonSRXRoutine(signal, false, 15);
 	}
 
 	private SequentialRoutine getDrive() {
-		Gains mShortGains = Gains.forsetiLongDriveMotionMagicGains;
+		Gains mShortGains = Gains.forsetiShortDriveMotionMagicGains;
 		DriveSignal driveBackup = DriveSignal.getNeutralSignal();
 		double driveBackupSetpoint = 60 * Constants.kDriveTicksPerInch;
-		driveBackup.leftMotor.setMotionMagic(-1 * driveBackupSetpoint, mShortGains, (int) Gains.kForsetiLongDriveMotionMagicCruiseVelocity,
-				(int) Gains.kForsetiLongDriveMotionMagicMaxAcceleration);
-		driveBackup.rightMotor.setMotionMagic(driveBackupSetpoint, mShortGains, (int) Gains.kForsetiLongDriveMotionMagicCruiseVelocity,
-				(int) Gains.kForsetiLongDriveMotionMagicMaxAcceleration);
+		driveBackup.leftMotor.setMotionMagic( driveBackupSetpoint, mShortGains, (int) Gains.kForsetiShortDriveMotionMagicCruiseVelocity,
+				(int) Gains.kForsetiShortDriveMotionMagicMaxAcceleration);
+		driveBackup.rightMotor.setMotionMagic(driveBackupSetpoint, mShortGains, (int) Gains.kForsetiShortDriveMotionMagicCruiseVelocity,
+				(int) Gains.kForsetiShortDriveMotionMagicMaxAcceleration);
 
 		ArrayList<Routine> sequence = new ArrayList<>();
 //		sequence.add(new IntakeDownRoutine());
-		sequence.add(new DriveSensorResetRoutine(.1));
-		sequence.add(new CascadingGyroEncoderTurnAngleRoutine(180));
-//		sequence.add(new TalonSRXRoutine(driveBackup, false));
+//		sequence.add(new DriveSensorResetRoutine(.1));
+//		sequence.add(new CascadingGyroEncoderTurnAngleRoutine(180));
+		sequence.add(new TalonSRXRoutine(driveBackup, false));
 
 		return new SequentialRoutine(sequence);
 	}

@@ -405,7 +405,7 @@ class HardwareUpdater {
 
 		Ultrasonic mUltrasonic = HardwareAdapter.getInstance().getIntake().ultrasonic;
 		robotState.mReadings.add(mUltrasonic.getRangeInches());
-		System.out.println(mUltrasonic.getRangeInches());
+//		System.out.println(mUltrasonic.getRangeInches());
 		if(robotState.mReadings.size() > 10) {
 			robotState.mReadings.remove();
 		}
@@ -422,8 +422,8 @@ class HardwareUpdater {
 			robotState.hasCube = false;
 		}
 
-		System.out.println(robotState.hasCube);
-		System.out.println(robotState.cubeDistance);
+//		System.out.println(robotState.hasCube);
+//		System.out.println(robotState.cubeDistance);
 
 //		System.out.println("elevator: " + robotState.elevatorPosition);
 //        System.out.println("left: " + robotState.drivePose.leftEnc);
@@ -455,11 +455,11 @@ class HardwareUpdater {
 //		System.out.println("Encoder estimate = " + left_distance);
 
 		double cv = (robotState.drivePose.leftEncVelocity + robotState.drivePose.rightEncVelocity)/2 * 1/Constants.kDriveSpeedUnitConversion;
-
-		this.maxV = Math.max(this.maxV, cv);
-		this.maxA = Math.max(this.maxA, (cv - lastVelocity)/.02);
-		System.out.println("Max V " + maxV);
-		System.out.println("Max A " + maxA);
+//
+//		this.maxV = Math.max(this.maxV, cv);
+//		this.maxA = Math.max(this.maxA, (cv - lastVelocity)/.02);
+//		System.out.println("Max V " + maxV);
+//		System.out.println("Max A " + maxA);
 
 //        //Update compressor pressure
 //        robotState.compressorPressure = HardwareAdapter.getInstance().getMiscellaneousHardware().compressorSensor.getVoltage() * Constants.kForsetiCompressorVoltageToPSI; //TODO: Implement the constant!

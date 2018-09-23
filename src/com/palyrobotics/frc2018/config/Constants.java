@@ -119,6 +119,7 @@ public class Constants {
 	public static final double kElevatorAcceptableVelocityError = 0.01;
 
 	//Intake
+	public static final double kAutoIntakeVelocity = .2;
 	public static final double kIntakingMotorVelocity = .4;
 	public static final double kExpellingMotorVelocity = -0.225;
 	public static final double kVaultExpellingMotorVelocity = -.92;
@@ -230,7 +231,7 @@ public class Constants {
 	public static final double kTrackScrubFactor = 0.5;
 	public static final double kPathFollowingLookahead = 35.0;
 	public static final double kPathFollowingMaxAccel = 120;
-	public static final double kPathFollowingMaxVel = 200.0;
+	public static final double kPathFollowingMaxVel = 191.544 * .98;
 	//public static final double kPathFollowingMaxVel = 5 * kPathFollowingMaxAccel;
 	public static final double kPathFollowingTolerance = 0.20;
 

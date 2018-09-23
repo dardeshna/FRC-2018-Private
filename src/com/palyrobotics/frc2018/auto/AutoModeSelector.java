@@ -3,6 +3,7 @@ package com.palyrobotics.frc2018.auto;
 import com.palyrobotics.frc2018.auto.AutoFMS.Side;
 import com.palyrobotics.frc2018.auto.AutoModeBase.*;
 import com.palyrobotics.frc2018.auto.modes.*;
+import com.palyrobotics.frc2018.auto.testautos.FTestAuto;
 import com.palyrobotics.frc2018.auto.testautos.TestAutoMode;
 import com.palyrobotics.frc2018.util.logger.Logger;
 import org.json.simple.JSONArray;
@@ -95,7 +96,7 @@ public class AutoModeSelector {
 	 * @return AutoMode currently selected
 	 */
 	public AutoModeBase getAutoMode() {
-		return new CenterStartRightMultiSwitchAutoMode();
+		return new RightHookScaleAutoMode();
 	}
 
 	/**

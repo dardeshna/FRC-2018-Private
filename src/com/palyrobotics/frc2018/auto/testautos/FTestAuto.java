@@ -30,22 +30,23 @@ public class FTestAuto extends AutoModeBase {
     @Override
     public Routine getRoutine() {
 
-        List<Path.Waypoint> path = new ArrayList<>();
-        path.add(new Path.Waypoint(new Translation2d(0, 0), 72.0));
-        path.add(new Path.Waypoint(new Translation2d(20.0, 0.0), 72.0));
-        path.add(new Path.Waypoint(new Translation2d(mDistances.kLeftSwitchX - Constants.kRobotLengthInches,
-                mDistances.kLeftToCenterY + Constants.kRobotWidthInches/2.0 - mDistances.kLeftSwitchY/2.0), 72.0));
-        path.add(new Path.Waypoint(new Translation2d(mDistances.kLeftSwitchX + Constants.kRobotLengthInches,
-                mDistances.kLeftToCenterY + Constants.kRobotWidthInches/2.0 - mDistances.kLeftSwitchY/2.0), 0.0));
-        return new DrivePathRoutine(new Path(path), false);
+//        List<Path.Waypoint> path = new ArrayList<>();
+//        path.add(new Path.Waypoint(new Translation2d(0, 0), 72.0));
+//        path.add(new Path.Waypoint(new Translation2d(20.0, 0.0), 72.0));
+//        path.add(new Path.Waypoint(new Translation2d(mDistances.kLeftSwitchX - Constants.kRobotLengthInches,
+//                mDistances.kLeftToCenterY + Constants.kRobotWidthInches/2.0 - mDistances.kLeftSwitchY/2.0), 72.0));
+//        path.add(new Path.Waypoint(new Translation2d(mDistances.kLeftSwitchX + Constants.kRobotLengthInches,
+//                mDistances.kLeftToCenterY + Constants.kRobotWidthInches/2.0 - mDistances.kLeftSwitchY/2.0), 0.0));
+//        return new DrivePathRoutine(new Path(path), false);
 
 
-//        DriveSignal test = DriveSignal.getNeutralSignal();
+        DriveSignal test = DriveSignal.getNeutralSignal();
 //        test.leftMotor.setPercentOutput(0.2);
 //        test.rightMotor.setPercentOutput(0.2);
 //        return new TalonSRXRoutine(test, true);
-//        return new TimedDriveRoutine(0.2, 6.5);
-//        return getDrive();
+////        return new TimedDriveRoutine(0.2, 6.5);
+        return getDrive();
+
     }
 
     @Override
@@ -63,18 +64,16 @@ public class FTestAuto extends AutoModeBase {
         Logger.getInstance().logRobotThread(Level.FINE, "Starting TestAutoMode");
     }
 
-    private ParallelRoutine getDrive() {
-        Gains mShortGains = Gains.forsetiShortDriveMotionMagicGains;
-
+    private Routine getDrive() {
         DriveSignal driveBackup = DriveSignal.getNeutralSignal();
-        driveBackup.leftMotor.setPercentOutput(.48);
-        driveBackup.rightMotor.setPercentOutput(.48);
+        driveBackup.leftMotor.setPercentOutput(.2);
+        driveBackup.rightMotor.setPercentOutput(.2);
         ArrayList<Routine> sequence = new ArrayList<>();
 
-        sequence.add(new TalonSRXRoutine(driveBackup, true));
+        sequence.add(new TalonSRXRoutine(driveBackup, false));
         sequence.add(new TimeoutRoutine(10));
 
 
-        return new ParallelRoutine(sequence);
+        return new SequentialRoutine(sequence);
     }
 }

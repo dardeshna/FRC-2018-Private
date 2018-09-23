@@ -25,7 +25,7 @@ public class Intake extends Subsystem {
 	private DoubleSolenoid.Value mUpDownOutput = DoubleSolenoid.Value.kForward;
 
 	public enum WheelState {
-		INTAKING, IDLE, EXPELLING, VAULT_EXPELLING
+		INTAKING, IDLE, EXPELLING, VAULT_EXPELLING, AUTO_INTAKE
 	}
 
 	public enum UpDownState {
@@ -88,6 +88,9 @@ public class Intake extends Subsystem {
 				break;
 			case VAULT_EXPELLING:
 				mTalonOutput.setPercentOutput(Constants.kVaultExpellingMotorVelocity);
+				break;
+			case AUTO_INTAKE:
+				mTalonOutput.setPercentOutput(Constants.kAutoIntakeVelocity);
 				break;
 		}
 

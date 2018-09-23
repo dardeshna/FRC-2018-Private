@@ -10,6 +10,7 @@ import com.palyrobotics.frc2018.subsystems.Drive;
 import com.palyrobotics.frc2018.util.DriveSignal;
 import com.palyrobotics.frc2018.util.Pose;
 import com.palyrobotics.frc2018.util.TalonSRXOutput;
+import com.palyrobotics.frc2018.util.csvlogger.CSVWriter;
 
 import java.util.Optional;
 
@@ -51,8 +52,10 @@ public class TalonSRXDriveController implements Drive.DriveController {
 		DashboardManager.getInstance().updateCANTable("dt_velocity_right",
 				Integer.toString((drivePose.rightMotionMagicVel.isPresent()) ? drivePose.rightMotionMagicVel.get() : 0));
 
-		DashboardManager.getInstance().updateCANTable("dt_error_left", Double.toString(mSignal.leftMotor.getSetpoint() - drivePose.leftEnc));
-		DashboardManager.getInstance().updateCANTable("dt_error_right", Double.toString(mSignal.rightMotor.getSetpoint() - drivePose.rightEnc));
+//		DashboardManager.getInstance().updateCANTable("dt_error_left", Double.toString(mSignal.leftMotor.getSetpoint() - drivePose.leftEnc));
+//		DashboardManager.getInstance().updateCANTable("dt_error_right", Double.toString(mSignal.rightMotor.getSetpoint() - drivePose.rightEnc));
+//		CSVWriter.getInstance().addData("dt_error_left", mSignal.leftMotor.get - drivePose.leftEnc);
+//		CSVWriter.getInstance().addData("dt_error_right", mSignal.rightMotor.getSetpoint() - drivePose.rightEnc);
 
 		return this.mSignal;
 	}

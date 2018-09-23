@@ -197,12 +197,14 @@ public class Drive extends Subsystem {
 
 		mWriter.addData("driveLeftEnc", state.drivePose.leftEnc);
 		mWriter.addData("driveLeftEncVelocity", state.drivePose.leftEncVelocity);
+		mWriter.addData("driveVelocity", (state.drivePose.leftEncVelocity + state.drivePose.rightEncVelocity)/2 * 1 / Constants.kDriveSpeedUnitConversion);
+
 		mWriter.addData("driveRightEnc", state.drivePose.rightEnc);
 		mWriter.addData("driveRightEncVelocity", state.drivePose.rightEncVelocity);
 		mWriter.addData("driveHeading", state.drivePose.heading);
 		mWriter.addData("driveHeadingVelocity", state.drivePose.headingVelocity);
-		state.drivePose.leftError.ifPresent(integer -> mWriter.addData("driveLeftError", (double) integer));
-		state.drivePose.rightError.ifPresent(integer -> mWriter.addData("driveRightError", (double) integer));
+//		state.drivePose.leftError.ifPresent(integer -> mWriter.addData("driveLeftError", (double) integer));
+//		state.drivePose.rightError.ifPresent(integer -> mWriter.addData("driveRightError", (double) integer));
 		mWriter.addData("driveLeftSetpoint", mSignal.leftMotor.getSetpoint());
 		mWriter.addData("driveRightSetpoint", mSignal.rightMotor.getSetpoint());
 	}
