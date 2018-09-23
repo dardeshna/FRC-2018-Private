@@ -3,6 +3,7 @@ package com.palyrobotics.frc2018.robot;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.Optional;
+import java.util.logging.Level;
 
 import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.config.RobotState;
@@ -14,6 +15,7 @@ import com.palyrobotics.frc2018.subsystems.ElevatorSimulation;
 import com.palyrobotics.frc2018.subsystems.Intake;
 import com.palyrobotics.frc2018.subsystems.IntakeSimulation;
 import com.palyrobotics.frc2018.util.TalonSRXOutput;
+import com.palyrobotics.frc2018.util.logger.DataLogger;
 import com.palyrobotics.frc2018.util.trajectory.Kinematics;
 import com.palyrobotics.frc2018.util.trajectory.RigidTransform2d;
 import com.palyrobotics.frc2018.util.trajectory.Rotation2d;
@@ -303,6 +305,11 @@ class MockHardwareUpdater extends HardwareUpdater {
 
 	}
 
+	void logSimulations() {
+		mDriveSimulation.logState();
+		mElevatorSimulation.logState();
+	}
+	
 	void updateSimulations() {
 		mElevatorSimulation.step();
 		mDriveSimulation.step();

@@ -94,7 +94,7 @@ public class Logger {
 		//Changes directory based on competition status
 		try {
 			fmsConnected = DriverStation.getInstance().isFMSAttached();
-		} catch(UnsatisfiedLinkError e) {
+		} catch(UnsatisfiedLinkError|NoClassDefFoundError e) {
 			System.out.println("FMS is not attached");
 		}
 		if(LoggerConstants.compStatus || fmsConnected) {
@@ -167,7 +167,7 @@ public class Logger {
 		Optional<Object> v = Optional.ofNullable(value);
 		Optional<String> k = Optional.ofNullable(key);
 		try {
-			mSubsystemThreadLogs.add(new LeveledString(l, k.orElse("NULL KEY") + ": " + checkStackTrace(l, v.orElse("NULL VALUE"))));
+			mSubsystemThreadLogs.add(new LeveledString(l, k.orElse("NULL KEY"), checkStackTrace(l, v.orElse("NULL VALUE"))));
 		} catch(ConcurrentModificationException e) {
 			System.err.println("Attempted concurrent modification on subsystem logger");
 		}
@@ -206,7 +206,7 @@ public class Logger {
 		Optional<Object> v = Optional.ofNullable(value);
 		Optional<String> k = Optional.ofNullable(key);
 		try {
-			mRobotThreadLogs.add(new LeveledString(l, k.orElse("NULL KEY") + ": " + checkStackTrace(l, v.orElse("NULL VALUE"))));
+			mRobotThreadLogs.add(new LeveledString(l, k.orElse("NULL KEY"), checkStackTrace(l, v.orElse("NULL VALUE"))));
 		} catch(ConcurrentModificationException e) {
 			System.err.println("Attempted concurrent modification on robot logger");
 		}

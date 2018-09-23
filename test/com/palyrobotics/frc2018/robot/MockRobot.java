@@ -20,6 +20,7 @@ import com.palyrobotics.frc2018.subsystems.Climber;
 import com.palyrobotics.frc2018.subsystems.Drive;
 import com.palyrobotics.frc2018.subsystems.Elevator;
 import com.palyrobotics.frc2018.subsystems.Intake;
+import com.palyrobotics.frc2018.util.logger.DataLogger;
 import com.palyrobotics.frc2018.util.logger.Logger;
 import com.palyrobotics.frc2018.util.trajectory.RigidTransform2d;
 
@@ -124,8 +125,10 @@ public class MockRobot {
 
 	
 	public void robotInit() {
-		Logger.getInstance().setFileName("Silicon Valley");
+		Logger.getInstance().setFileName("AutoSim");
 		Logger.getInstance().start();
+		DataLogger.getInstance().setFileName("AutoSim");
+		DataLogger.getInstance().start();
 
 		Logger.getInstance().logRobotThread(Level.INFO, "Start robotInit() for " + Constants.kRobotName.toString());
 
@@ -275,6 +278,8 @@ public class MockRobot {
 
 	//Call during teleop and auto periodic
 	private void logPeriodic() {
+		((MockHardwareUpdater) mHardwareUpdater).logSimulations();
+		DataLogger.getInstance().cycle();
 	}
 
 	private void startSubsystems() {

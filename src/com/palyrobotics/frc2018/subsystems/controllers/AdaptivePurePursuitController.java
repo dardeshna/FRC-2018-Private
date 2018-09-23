@@ -11,6 +11,7 @@ import com.palyrobotics.frc2018.subsystems.Drive;
 import com.palyrobotics.frc2018.util.DriveSignal;
 import com.palyrobotics.frc2018.util.Pose;
 import com.palyrobotics.frc2018.util.TalonSRXOutput;
+import com.palyrobotics.frc2018.util.logger.DataLogger;
 import com.palyrobotics.frc2018.util.logger.Logger;
 import com.palyrobotics.frc2018.util.trajectory.*;
 import com.palyrobotics.frc2018.util.trajectory.Path.Waypoint;
@@ -96,6 +97,14 @@ public class AdaptivePurePursuitController implements Drive.DriveController {
 		for (Waypoint point : path.getWaypoints()) {
 			mFileOutputString.append(point.position.getX() + " " + point.position.getY() + "\n");
 		}
+		String path_metadata = "";
+		path_metadata += AutoModeBase.mStartingPosition + "/" + AutoModeBase.mAlliance + "/";
+		path_metadata += path.getWaypoints().size()+1 + "/";
+		path_metadata += "[" + Robot.getRobotState().getLatestFieldToVehicle().getValue().getTranslation().getX() + ";" + Robot.getRobotState().getLatestFieldToVehicle().getValue().getTranslation().getY() + "];"; 
+		for (Waypoint point : path.getWaypoints()) {
+			path_metadata += "[" + point.position.getX() + ";" + point.position.getY() + "];";
+		}
+		DataLogger.getInstance().logData(Level.FINE, "path_metadata", path_metadata);
 	}
 
 	/**
@@ -119,6 +128,13 @@ public class AdaptivePurePursuitController implements Drive.DriveController {
 		PathSegment.Sample lookahead_point = mPath.getLookaheadPoint(robot_pose.getTranslation(), distance_from_path + mFixedLookahead);
 		
 		mFileOutputString.append(pose.getTranslation().getX() + " " + pose.getTranslation().getY() + " " + pose.getRotation().getDegrees() + " " + lookahead_point.translation.getX() + " " + lookahead_point.translation.getY() + "\n");		
+		
+		DataLogger.getInstance().logData(Level.FINE, "estimated_robot_x", pose.getTranslation().getX());
+		DataLogger.getInstance().logData(Level.FINE, "estimated_robot_y", pose.getTranslation().getY());
+		DataLogger.getInstance().logData(Level.FINE, "estimated_robot_heading", pose.getRotation().getDegrees());
+		DataLogger.getInstance().logData(Level.FINE, "lookahead_x", lookahead_point.translation.getX());
+		DataLogger.getInstance().logData(Level.FINE, "lookahead_y", lookahead_point.translation.getY());	
+
 		
 //		System.out.println("Current point = " + robot_pose.getTranslation() + " " + "Lookahead point = " + lookahead_point.translation);
 		//if (!mPath.getWaypoints().isEmpty()) System.out.println("First point = " + mPath.getWaypoints().get(0).position.toString());
@@ -291,7 +307,9 @@ public class AdaptivePurePursuitController implements Drive.DriveController {
 			System.out.println("Size: " + mFileOutputString.length());
 			mFileOutput.print(mFileOutputString.toString());
 			mFileOutput.close();
+			
 		}
+		
 		return remainingLength <= mPathCompletionTolerance;
 	}
 

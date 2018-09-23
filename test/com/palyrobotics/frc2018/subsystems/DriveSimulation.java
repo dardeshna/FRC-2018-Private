@@ -1,11 +1,14 @@
 package com.palyrobotics.frc2018.subsystems;
 
+import java.util.logging.Level;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.util.DriveSignal;
 import com.palyrobotics.frc2018.util.MockTalon;
 import com.palyrobotics.frc2018.util.geometry.Pose2d;
 import com.palyrobotics.frc2018.util.geometry.Twist2d;
+import com.palyrobotics.frc2018.util.logger.DataLogger;
 import com.palyrobotics.frc2018.util.physics.DCMotorTransmission;
 import com.palyrobotics.frc2018.util.physics.DifferentialDrive;
 import com.palyrobotics.frc2018.util.physics.DifferentialDrive.DriveDynamics;
@@ -131,6 +134,13 @@ public class DriveSimulation extends SubsystemSimulation {
 	public String getState() {
 		Pose2d scaledPos = new Pose2d(pos.getTranslation().scale(39.3701), pos.getRotation());
 		return scaledPos.toCSV();
+	}
+	
+	public void logState() {
+		Pose2d scaledPos = new Pose2d(pos.getTranslation().scale(39.3701), pos.getRotation());
+		DataLogger.getInstance().logData(Level.FINE, "robot_x", scaledPos.getTranslation().x());
+		DataLogger.getInstance().logData(Level.FINE, "robot_y", scaledPos.getTranslation().y());
+		DataLogger.getInstance().logData(Level.FINE, "robot_heading", scaledPos.getRotation().getDegrees());
 	}
 
 	public void resetSensors() {

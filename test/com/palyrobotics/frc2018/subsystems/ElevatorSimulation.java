@@ -1,9 +1,12 @@
 package com.palyrobotics.frc2018.subsystems;
 
+import java.util.logging.Level;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.util.MockTalon;
 import com.palyrobotics.frc2018.util.TalonSRXOutput;
+import com.palyrobotics.frc2018.util.logger.DataLogger;
 
 public class ElevatorSimulation extends SubsystemSimulation {
 	
@@ -112,6 +115,10 @@ public class ElevatorSimulation extends SubsystemSimulation {
 	
 	public void set(TalonSRXOutput talonSRXOutput) {
 		updateTalonSRX(talon, talonSRXOutput);
+	}
+	
+	public void logState() {
+		DataLogger.getInstance().logData(Level.FINE, "elevator_position", position);
 	}
 	
 	public String getState() {

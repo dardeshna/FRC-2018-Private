@@ -6,6 +6,7 @@ import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.robot.Robot;
 import com.palyrobotics.frc2018.subsystems.Drive;
 import com.palyrobotics.frc2018.subsystems.Subsystem;
+import com.palyrobotics.frc2018.util.logger.DataLogger;
 import com.palyrobotics.frc2018.util.logger.Logger;
 import com.palyrobotics.frc2018.util.trajectory.Path;
 
@@ -146,6 +147,7 @@ public class DrivePathRoutine extends Routine {
 	@Override
 	public Commands cancel(Commands commands) {
 		Logger.getInstance().logSubsystemThread(Level.INFO, "Drive Path Routine finished");
+		DataLogger.getInstance().logData(Level.FINE, "path_end", "");
 		drive.setNeutral();
 		commands.wantedDriveState = Drive.DriveState.NEUTRAL;
 		return commands;
