@@ -93,7 +93,7 @@ public class DataLogger {
 		String cDate = ZonedDateTime.now(LoggerConstants.tZone).format(DateTimeFormatter.ofPattern("MM-dd-yy"));
 		String cTime = ZonedDateTime.now(LoggerConstants.tZone).format(DateTimeFormatter.ofPattern("HH-mm"));
 		String os = System.getProperty("os.name");
-		String filePath = fileName + File.separatorChar + cDate + File.separatorChar + fileName + "-" + cTime + "-DATA";
+		String filePath = fileName + File.separatorChar + cDate + File.separatorChar + fileName + "-" + cTime;
 		//Changes directory based on competition status
 		try {
 			fmsConnected = DriverStation.getInstance().isFMSAttached();

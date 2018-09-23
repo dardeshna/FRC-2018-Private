@@ -16,25 +16,29 @@ import com.palyrobotics.frc2018.auto.AutoModeBase;
 import com.palyrobotics.frc2018.auto.AutoModeBase.Alliance;
 import com.palyrobotics.frc2018.config.AutoDistances;
 import com.palyrobotics.frc2018.config.Constants;
-import com.palyrobotics.frc2018.util.trajectory.Path;
-import com.palyrobotics.frc2018.util.trajectory.Path.Waypoint;
-import com.palyrobotics.frc2018.util.trajectory.Translation2d;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.VPos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
@@ -52,9 +56,14 @@ public class RobotPlayback extends Application {
 	private Canvas background;
 	private Canvas path;
 	private Slider slider;
+	private Text status;
+	private TextArea log;
+	private StackPane center;
+	
 	
 	private TreeMap<LocalTime, HashMap<String, String>> parsedFile;
 	private ArrayList<RecordedPath> paths;
+	private String logText = "";
 	
 	// Has playback been paused or not?
 	private boolean paused = false;
@@ -68,7 +77,7 @@ public class RobotPlayback extends Application {
 	private long currentTime = 0;
 	private long endTime;
 	
-	private static final double canvasScale = 2.8;
+	private static final double canvasScale = 2.6;
 	private static final double canvasWidth = 400 * canvasScale;
 	private static final double canvasLength = 324 * canvasScale;
 
@@ -79,19 +88,55 @@ public class RobotPlayback extends Application {
 		endTime = ChronoUnit.NANOS.between(parsedFile.firstKey(), parsedFile.lastKey());
 		
 		stage.setTitle("Robot Playback");
+		
+		border = new BorderPane();
 				
 		root = new Group();
 		background = new Canvas(canvasWidth, canvasLength);
 		path = new Canvas(canvasWidth, canvasLength);
+		background.getGraphicsContext2D().strokeLine(canvasWidth, 0, canvasWidth, canvasLength);
 		root.getChildren().add(background);
-		
-		border = new BorderPane();
+		center = new StackPane();
+		center.setMinSize(StackPane.USE_PREF_SIZE, StackPane.USE_PREF_SIZE);
+		center.setPrefSize(canvasWidth, canvasLength);
+		center.setMaxSize(StackPane.USE_PREF_SIZE, StackPane.USE_PREF_SIZE);
+		center.getChildren().add(root);
+		border.setCenter(center);
+
 		slider = new Slider(0, (double)endTime/1e9, 0);
 		slider.setShowTickMarks(true);
 		slider.setShowTickLabels(true);
 		slider.setMajorTickUnit(2);
-		border.setCenter(root);
 		border.setBottom(slider);
+		
+		status = new Text();
+		GridPane.setMargin(status, new Insets(10, 10, 10, 10));
+		GridPane.setRowIndex(status, 0);
+	    GridPane.setColumnIndex(status, 0);
+		GridPane.setValignment(status, VPos.TOP);
+	    
+	    log = new TextArea(logText);
+	    log.setStyle("-fx-font-size: .85em;");
+	    log.setPrefWidth(200*canvasScale);
+	   
+
+	    GridPane.setRowIndex(log, 1);
+	    GridPane.setColumnIndex(log, 0);
+	    
+		GridPane right = new GridPane();
+		
+		right.setPrefWidth(200*canvasScale);
+		right.setMaxWidth(200*canvasScale);
+		RowConstraints row1 = new RowConstraints();
+		row1.setPercentHeight(25);
+		RowConstraints row2 = new RowConstraints();
+		row2.setPercentHeight(75);
+		right.getRowConstraints().addAll(row1, row2);
+		right.getChildren().add(status);
+		right.getChildren().add(log);
+		
+		border.setRight(right);
+		
 		scene = new Scene(border);
 		stage.setScene(scene);
 		
@@ -164,10 +209,14 @@ public class RobotPlayback extends Application {
 //					root.getChildren().add(lookaheadLine);
 //					root.getChildren().add(lookaheadPoint);
 					
-					border.setCenter(root);
+					root.setManaged(false);
+					center.getChildren().setAll(root);
+					
 					stage.setScene(scene);
 					
 					background.requestFocus();
+					
+					status.setText("Elevator Height: " + String.format( "%.2f", parseDouble(line, "elevator_position")));
 
 					if (!paused) {
 						currentTime += (long)2e7;
@@ -223,12 +272,6 @@ public class RobotPlayback extends Application {
 	
 	public static void main(String[] args) {
 		launch(args);
-//		File logFile = new File("/Users/dardeshna/Documents/robotics/FRC-2018-Private/logs/PRACTICE/AutoSim/09-06-18/AutoSim-22-44-DATA.datalog");
-//		TreeMap<LocalTime, HashMap<String, String>> parsedFile = parseFile(logFile);
-//		ArrayList<RecordedPath> paths = readPaths(parsedFile);
-//		for (RecordedPath p: paths) {
-//			p.print();
-//		}
 	}
 	
 	// Parse the auto log file selected by the user
@@ -236,14 +279,28 @@ public class RobotPlayback extends Application {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.getExtensionFilters().add(new ExtensionFilter("Robot Data Log Files", "*.datalog"));
 		fileChooser.setTitle("Select an data log file to visualize");
-		File logFile = fileChooser.showOpenDialog(stage);
+		File dataLogFile = fileChooser.showOpenDialog(stage);
 		
-		parsedFile = parseFile(logFile);
+		try {
+			File logFile = new File(dataLogFile.getAbsolutePath().replaceAll(".datalog", ".log"));
+			BufferedReader reader = new BufferedReader(new FileReader(logFile));
+			String currentLine;
+			while ((currentLine = reader.readLine()) != null) {
+				logText += currentLine+"\n";
+			}
+			reader.close();
+		}
+		catch (Exception e) {
+			logText="No log file of same name found";
+		}
+		
+		
+		parsedFile = parseFile(dataLogFile);
 		paths = readPaths(parsedFile);
 //		for (RecordedPath p: paths) {
 //			p.print();
 //		}
-			RecordedPath path = paths.get(2);
+			RecordedPath path = paths.get(0);
 			
 			String alliance = path.alliance;
 			String position = path.start_location;
@@ -461,10 +518,6 @@ public class RobotPlayback extends Application {
 					continue;
 				}
 				String[] split_line = line.split(": |, ");
-				for (int i = 0; i < split_line.length; i++){
-					System.out.print(split_line[i] + ", ");
-				}
-				System.out.println();
 				LocalTime timestamp = LocalTime.parse(split_line[0]);
 				HashMap<String, String> data = new HashMap<String, String>();
 				for (int i = 1; i < split_line.length; i+=2) {
