@@ -119,8 +119,8 @@ public class Intake extends Subsystem {
 		}
 
 		mWriter.addData("intakeSetpoint", mTalonOutput.getSetpoint());
-		mWriter.addData("intakeCurrentDraw", HardwareAdapter.getInstance().getIntake().masterTalon.getOutputCurrent()
-				+ HardwareAdapter.getInstance().getIntake().slaveTalon.getOutputCurrent());
+//		mWriter.addData("intakeCurrentDraw", HardwareAdapter.getInstance().getIntake().masterTalon.getOutputCurrent()
+//				+ HardwareAdapter.getInstance().getIntake().slaveTalon.getOutputCurrent());
 	}
 
 	public WheelState getWheelState() {
