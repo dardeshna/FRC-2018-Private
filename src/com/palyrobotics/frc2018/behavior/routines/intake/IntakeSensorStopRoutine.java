@@ -37,7 +37,7 @@ public class IntakeSensorStopRoutine extends Routine {
      */
     public Commands update(Commands commands) {
         if(wantedWheelState == Intake.WheelState.INTAKING) {
-            commands.wantedIntakeOpenCloseState = Intake.OpenCloseState.NEUTRAL;
+            commands.wantedIntakeOpenCloseState = Intake.OpenCloseState.CLOSED;
         }
         commands.wantedIntakingState = wantedWheelState;
         return commands;
