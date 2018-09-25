@@ -308,21 +308,32 @@ public class MockRobot {
 		robotInit();
 		disabledInit();
 		autonomousInit();
-		double t = 0;
-		while (t < 25) {
+		int t = 0;
+		boolean nowIsSet;
+		long now;
+		while (t < 25*1000) {
+			now = System.nanoTime();
+			nowIsSet = true;
 			autonomousPeriodic();
-			t+=Constants.kNormalLoopsDt;
-			double s = 0;
+			t+=(int)(Constants.kNormalLoopsDt*1000);
+			int s = 0;
 			while (s < 20) {
+				if (!nowIsSet) now = System.nanoTime();
+				nowIsSet = true;
 				((MockHardwareUpdater) mHardwareUpdater).updateSimulations();
-				long now = System.nanoTime();
 				while (System.nanoTime() < now + 1e6) {
 					//wait
 				}
 				s++;
+				nowIsSet = false;
 			}
 		}
 		disabledInit();
+		System.out.println("Writing to logs...");
+		now = System.nanoTime();
+		while (System.nanoTime() < now + (long)5.1e8) {
+			//wait
+		}
 		System.out.println("Terminated");
 	}
 }

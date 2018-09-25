@@ -55,11 +55,9 @@ public class DriveSimulation extends SubsystemSimulation {
 	     rightTalon.configVoltageCompSaturation(voltageCompSaturation);
 	     leftTalon.configVoltageCompSaturation(voltageCompSaturation);
 	     
-//	     rightTalon.configClosedloopRamp(0.4);
-//	     rightTalon.configVoltageCompSaturation(14.0);
-//	     
-//	     leftTalon.configClosedloopRamp(0.4);
-//	     leftTalon.configVoltageCompSaturation(14.0);
+	     rightTalon.configClosedloopRamp(0.2);
+	     leftTalon.configClosedloopRamp(0.2);
+
 	}
 	//V = I * R + omega / Kv
 	//torque = Kt * I

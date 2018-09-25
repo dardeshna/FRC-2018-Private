@@ -43,9 +43,7 @@ public class DataLogger {
 
 	private ArrayList<TimestampedString> mData = new ArrayList<>();
 	private ArrayList<LeveledString> mCycleLine = new ArrayList<>();
-
-	//synchronized lock for writing out the latest data
-	private final Object writingLock = new Object();
+	
 	private Thread mWritingThread = null;
 	//Stores the runnable for the thread to be restarted
 	private Runnable mRunnable;
@@ -176,7 +174,7 @@ public class DataLogger {
 		}
 	}
 
-	public synchronized void cleanup() {
+	public void cleanup() {
 		mWritingThread.interrupt();
 	}
 
@@ -204,14 +202,15 @@ public class DataLogger {
 	 * Writes current log messages to file and console according to level Still supports deprecated log messages, will log all of them
 	 */
 	private void writeLogs() {
-		synchronized(writingLock) {
+		
 			ArrayList<TimestampedString> mDataCopy;
-			final Lock r = lock.readLock();
-		    r.lock();
+			final Lock w = lock.writeLock();
+		    w.lock();
 		    try {
 		    	mDataCopy = new ArrayList<>(mData);
+		    	mData.clear();
 		    } finally {
-		        r.unlock();
+		        w.unlock();
 		    }
 			if(isEnabled) {
 				writeLimit = 0;
@@ -229,18 +228,12 @@ public class DataLogger {
 						e.printStackTrace();
 					}
 				});
-				final Lock w = lock.writeLock();
-				w.lock();
-			    try {
-			    	mData.clear();
-			    } finally {
-			        w.unlock();
-			    }
+
 			}
-		}
+		
 	}
 	
-	public synchronized void cycle() {
+	public void cycle() {
 		try {
 			mCycleLine.removeIf(Objects::isNull);
 		}
@@ -288,19 +281,24 @@ public class DataLogger {
 	}
 
 	//Used to cleanup internally, write out last words, etc
-	private synchronized void shutdown() {
+	private void shutdown() {
 		System.out.println("Shutting down");
-		synchronized(writingLock) {
-			writeLogs();
-			mCycleLine.clear();
+		writeLogs();
+		mCycleLine.clear();
+		final Lock w = lock.writeLock();
+		w.lock();
+	    try {
 			mData.clear();
-			try {
-				Files.append("Logger stopped \n", mainLog, Charsets.UTF_8);
-			} catch(IOException e) {
-				System.out.println("Unable to write, logger stopped");
-				e.printStackTrace();
-			}
-			isEnabled = false;
+	    } finally {
+	        w.unlock();
+	    }
+	    
+		try {
+			Files.append("Logger stopped \n", mainLog, Charsets.UTF_8);
+		} catch(IOException e) {
+			System.out.println("Unable to write, logger stopped");
+			e.printStackTrace();
 		}
+		isEnabled = false;
 	}
 }

@@ -57,6 +57,7 @@ public class ElevatorSimulation extends SubsystemSimulation {
 	public ElevatorSimulation() {
 		talon = new MockTalon(position*Constants.kElevatorTicksPerInch, "elevator");
 		talon.configClosedloopRamp(0.4);
+		talon.configPeakOutput(.9,  -.9);
 		talon.configVoltageCompSaturation(14.0);
 	}
 
