@@ -43,9 +43,9 @@ public class RobotState {
 	public double rightSetpoint = 0;
 
 	//Intake
-	public boolean hasCube = true;
+	public boolean hasCube = false;
 	public double cubeDistance = 0;
-	public Queue<Double> mReadings = new LinkedList<>();
+	public ArrayList<Double> mReadings = new ArrayList<>();
 	public ArrayList<Double> mSortedReadings = new ArrayList<>();
 
 	//Tracks total current from kPDP

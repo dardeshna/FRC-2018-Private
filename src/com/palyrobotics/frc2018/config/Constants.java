@@ -230,7 +230,7 @@ public class Constants {
 	public static final double kTrackEffectiveDiameter = (kTrackWidthInches * kTrackWidthInches + kTrackLengthInches * kTrackLengthInches) / kTrackWidthInches;
 	public static final double kTrackScrubFactor = 0.5;
 	public static final double kPathFollowingLookahead = 35.0;
-	public static final double kPathFollowingMaxAccel = 102.5;
+	public static final double kPathFollowingMaxAccel = 130;
 	public static final double kPathFollowingMaxVel = 191.544 * .98;
 	//public static final double kPathFollowingMaxVel = 5 * kPathFollowingMaxAccel;
 	public static final double kPathFollowingTolerance = 0.20;

@@ -45,9 +45,9 @@ public class CenterStartRightSwitchAutoMode extends AutoModeBase {
 	@Override
 	public Routine getRoutine() {
         List<Waypoint> path = new ArrayList<>();
-        path.add(new Waypoint(new Translation2d(0, 0), 180));
+        path.add(new Waypoint(new Translation2d(0, 0), 160));
 
-		path.add(new Waypoint(new Translation2d(dx/2, dy/2), 120));
+		path.add(new Waypoint(new Translation2d(dx/2, dy/2), 100));
 		path.add(CenterStartRightSwitchAutoMode.end);
 
         ArrayList<Routine> routines = new ArrayList<>();

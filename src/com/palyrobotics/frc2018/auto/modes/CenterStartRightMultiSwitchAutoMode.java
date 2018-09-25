@@ -61,9 +61,9 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
         routines.add(driveBackToSwitchAndExpel());
 
 //
-//        routines.add(getSecondBackup());
-//        routines.add(driveForwardAgain());
-//        routines.add(driveBackToSwitchAndExpelSecond());
+        routines.add(getSecondBackup());
+        routines.add(driveForwardAgain());
+        routines.add(driveBackToSwitchAndExpelSecond());
 
         return new SequentialRoutine(routines);
     }
@@ -75,7 +75,7 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
 
     public Routine getFirstBackup() {
         ArrayList<Waypoint> path = new ArrayList<>();
-        Waypoint cp = new Waypoint(CenterStartRightSwitchAutoMode.end.position, 140);
+        Waypoint cp = new Waypoint(CenterStartRightSwitchAutoMode.end.position, 115);
         path.add(cp);
 
         path.add(getFirstBackUpPoint());
@@ -89,7 +89,7 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
 
     public Routine driveForward() {
         List<Waypoint> path = new ArrayList<>();
-        Waypoint cp = new Waypoint(getFirstBackUpPoint().position, 30);
+        Waypoint cp = new Waypoint(getFirstBackUpPoint().position, 45);
         path.add(cp);
 
         double backX = mDistances.kRightSwitchX - Constants.kRobotLengthInches - mDistances.kPyramidLength*.96;
@@ -103,7 +103,7 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
 
         List<Waypoint> path = new ArrayList<>();
         double backX = mDistances.kRightSwitchX - Constants.kRobotLengthInches - mDistances.kPyramidLength * .96;
-        path.add(new Waypoint(new Translation2d(backX,offsetPyramid), 110));
+        path.add(new Waypoint(new Translation2d(backX,offsetPyramid), 115));
 
         path.add(getFirstBackUpPoint());
         routines.add(new DrivePathRoutine(new Path(path), true));
@@ -155,7 +155,7 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
 
         ArrayList<Routine> dropElevator = new ArrayList<>();
         dropElevator.add(new TimeoutRoutine(.2));
-        dropElevator.add(new ElevatorCustomPositioningRoutine(13 * 1.8, 1.1));
+        dropElevator.add(new ElevatorCustomPositioningRoutine(13 * 1.4, 1.1));
 
         return new ParallelRoutine(new DrivePathRoutine(path, true, 0.0, 35.0, 10.0),new SequentialRoutine(dropElevator));
     }
@@ -167,7 +167,7 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
 
     public Routine driveForwardAgain() {
         List<Waypoint> path = new ArrayList<>();
-        Waypoint cp = new Waypoint(getFirstBackUpPoint().position, 45);
+        Waypoint cp = new Waypoint(getFirstBackUpPoint().position, 30);
         path.add(cp);
 
         double backX = mDistances.kRightSwitchX - Constants.kRobotLengthInches - mDistances.kPyramidLength*.9 + Constants.kSquareCubeLength;
@@ -204,11 +204,11 @@ public class CenterStartRightMultiSwitchAutoMode extends AutoModeBase {
                 (mDistances.kRightSwitchX - Constants.kRobotLengthInches - mDistances.kPyramidLength * 1.68 + Constants.kSquareCubeLength);
 
         secondPath.add(new Waypoint(getSecondBackupPoint().position.translateBy(new Translation2d(1.5*dx/3, dy*1.5/3)), 110));
-        secondPath.add(new Waypoint(getSecondBackupPoint().position.translateBy(new Translation2d(dx, dy)), 0));
+        secondPath.add(new Waypoint(getSecondBackupPoint().position.translateBy(new Translation2d(dx+10, dy+4)), 0));
 
-        routines.add(new ParallelRoutine(new ElevatorCustomPositioningRoutine(Constants.kElevatorSwitchPositionInches, 1.2),
+        routines.add(new ParallelRoutine(new ElevatorCustomPositioningRoutine(Constants.kElevatorSwitchPositionInches+10, 1.2),
                 new DrivePathRoutine(new Path(secondPath), false)));
-        routines.add(new IntakeWheelRoutine(Intake.WheelState.EXPELLING, .5)); // last thing, so there is no need to have a low expel time
+        routines.add(new IntakeWheelRoutine(Intake.WheelState.VAULT_EXPELLING, 1)); // last thing, so there is no need to have a low expel time
 
         return new SequentialRoutine(routines);
     }

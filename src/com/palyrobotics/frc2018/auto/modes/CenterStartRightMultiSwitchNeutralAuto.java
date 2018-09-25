@@ -89,7 +89,7 @@ public class CenterStartRightMultiSwitchNeutralAuto extends AutoModeBase {
 
     public Routine driveForward() {
         List<Waypoint> path = new ArrayList<>();
-        Waypoint cp = new Waypoint(getFirstBackUpPoint().position, 40);
+        Waypoint cp = new Waypoint(getFirstBackUpPoint().position, 88);
         path.add(cp);
 
         double backX = mDistances.kRightSwitchX - Constants.kRobotLengthInches - mDistances.kPyramidLength*.96;
@@ -155,7 +155,7 @@ public class CenterStartRightMultiSwitchNeutralAuto extends AutoModeBase {
 
         ArrayList<Routine> dropElevator = new ArrayList<>();
         dropElevator.add(new TimeoutRoutine(.2));
-        dropElevator.add(new ElevatorCustomPositioningRoutine(13 * 1.8, 1.1));
+        dropElevator.add(new ElevatorCustomPositioningRoutine(13 * 1.45, 1.1));
 
         return new ParallelRoutine(new DrivePathRoutine(path, true, 0.0, 35.0, 10.0),new SequentialRoutine(dropElevator));
     }
@@ -167,7 +167,7 @@ public class CenterStartRightMultiSwitchNeutralAuto extends AutoModeBase {
 
     public Routine driveForwardAgain() {
         List<Waypoint> path = new ArrayList<>();
-        Waypoint cp = new Waypoint(getFirstBackUpPoint().position, 45);
+        Waypoint cp = new Waypoint(getFirstBackUpPoint().position, 30);
         path.add(cp);
 
         double backX = mDistances.kRightSwitchX - Constants.kRobotLengthInches - mDistances.kPyramidLength*1.1 + Constants.kSquareCubeLength;
@@ -205,9 +205,9 @@ public class CenterStartRightMultiSwitchNeutralAuto extends AutoModeBase {
 
         secondPath.add(new Waypoint(getSecondBackupPoint().position.translateBy(new Translation2d(1.5*(dx+25)/3, dy*1.7/3)), 80));
         secondPath.add(new Waypoint(getSecondBackupPoint().position.translateBy(new Translation2d(dx+25, dy)), 40));
-        secondPath.add(new Waypoint(getSecondBackupPoint().position.translateBy(new Translation2d(dx+40, dy+5)), 0));
+        secondPath.add(new Waypoint(getSecondBackupPoint().position.translateBy(new Translation2d(dx+68, dy+15)), 0));
 
-        routines.add(new ParallelRoutine(new ElevatorCustomPositioningRoutine(Constants.kElevatorSwitchPositionInches, 1.2),
+        routines.add(new ParallelRoutine(new ElevatorCustomPositioningRoutine(Constants.kElevatorSwitchPositionInches+10, 1.2),
                 new DrivePathRoutine(new Path(secondPath), false, 45)));
 
         return new SequentialRoutine(routines);
