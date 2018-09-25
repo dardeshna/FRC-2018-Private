@@ -1,8 +1,11 @@
 package com.palyrobotics.frc2018.subsystems;
 
+import java.util.logging.Level;
+
 import com.palyrobotics.frc2018.subsystems.Intake.OpenCloseState;
 import com.palyrobotics.frc2018.subsystems.Intake.UpDownState;
 import com.palyrobotics.frc2018.subsystems.Intake.WheelState;
+import com.palyrobotics.frc2018.util.logger.DataLogger;
 
 public class IntakeSimulation extends SubsystemSimulation {
 	
@@ -59,5 +62,12 @@ public class IntakeSimulation extends SubsystemSimulation {
 
 	public boolean hasCube() {
 		return hasCube;
+	}
+
+	public void logState() {
+		DataLogger.getInstance().logData(Level.FINE, "intake_wheel", wheel_state.toString());
+		DataLogger.getInstance().logData(Level.FINE, "intake_open_close", open_close_state.toString());
+		DataLogger.getInstance().logData(Level.FINE, "intake_up_down", up_down_state.toString());
+		
 	}
 }

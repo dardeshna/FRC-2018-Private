@@ -118,6 +118,7 @@ public class RobotPlayback extends Application {
 	    log = new TextArea(logText);
 	    log.setStyle("-fx-font-size: .85em;");
 	    log.setPrefWidth(200*canvasScale);
+	    log.setEditable(false);
 	   
 
 	    GridPane.setRowIndex(log, 1);
@@ -162,7 +163,6 @@ public class RobotPlayback extends Application {
 							drawPath(p);
 							root.getChildren().add(path);
 							drawEstimatedRobot = true;
-							break;
 						}
 					}
 					
@@ -216,7 +216,11 @@ public class RobotPlayback extends Application {
 					
 					background.requestFocus();
 					
-					status.setText("Elevator Height: " + String.format( "%.2f", parseDouble(line, "elevator_position")));
+					status.setText("Current Timestamp: " + currentLocalTime.toString().substring(0, 12) + "\n" +
+							"Elevator Height: " + String.format( "%.2f", parseDouble(line, "elevator_position")) + "\n" +
+							"Intake Wheel State: " + line.get("intake_wheel") + "\n" +
+							"Intake Open Close State: " + line.get("intake_open_close") + "\n" +
+							"Intake Up Down State: " + line.get("intake_up_down"));
 
 					if (!paused) {
 						currentTime += (long)2e7;

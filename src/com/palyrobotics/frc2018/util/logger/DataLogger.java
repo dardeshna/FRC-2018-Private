@@ -202,7 +202,7 @@ public class DataLogger {
 	 * Writes current log messages to file and console according to level Still supports deprecated log messages, will log all of them
 	 */
 	private void writeLogs() {
-		
+		if(isEnabled) {
 			ArrayList<TimestampedString> mDataCopy;
 			final Lock w = lock.writeLock();
 		    w.lock();
@@ -212,24 +212,24 @@ public class DataLogger {
 		    } finally {
 		        w.unlock();
 		    }
-			if(isEnabled) {
-				writeLimit = 0;
+			
+			writeLimit = 0;
+			try {
+				mDataCopy.removeIf(Objects::isNull);
+			}
+			catch(UnsupportedOperationException e) {
+				e.printStackTrace();
+			}
+			mDataCopy.sort(TimestampedString::compareTo);
+			mDataCopy.forEach(c -> {
 				try {
-					mDataCopy.removeIf(Objects::isNull);
-				}
-				catch(UnsupportedOperationException e) {
+						Files.append(c.getTimestampedString(), mainLog, Charsets.UTF_8);
+				} catch(IOException e) {
 					e.printStackTrace();
 				}
-				mDataCopy.sort(TimestampedString::compareTo);
-				mDataCopy.forEach(c -> {
-					try {
-							Files.append(c.getTimestampedString(), mainLog, Charsets.UTF_8);
-					} catch(IOException e) {
-						e.printStackTrace();
-					}
-				});
+			});
 
-			}
+		}
 		
 	}
 	

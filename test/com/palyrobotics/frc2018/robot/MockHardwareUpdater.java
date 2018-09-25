@@ -308,6 +308,7 @@ class MockHardwareUpdater extends HardwareUpdater {
 	void logSimulations() {
 		mDriveSimulation.logState();
 		mElevatorSimulation.logState();
+		mIntakeSimulation.logState();
 	}
 	
 	void updateSimulations() {
