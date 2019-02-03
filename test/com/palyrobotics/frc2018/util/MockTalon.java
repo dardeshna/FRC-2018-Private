@@ -55,7 +55,7 @@ public class MockTalon {
 	public void update() {
 		this.prevOutput = output;
 		if (this.mode == ControlMode.PercentOutput) {
-			output = (int) (this.setpoint / voltageCompSaturation * 1023);
+			output = (int) (this.setpoint * 1023);
 			error = 0;
 		}
 		else if (this.mode == ControlMode.Position) {
@@ -153,11 +153,11 @@ public class MockTalon {
 		
 	}
 	
-	public double getOutputVoltage() {
-		return getOutputVoltage(12);
+	public double getMotorOutputVoltage() {
+		return getMotorOutputVoltage(12.0);
 	}
 	
-	public double getOutputVoltage(double batteryVoltage) {
+	public double getMotorOutputVoltage(double batteryVoltage) {
 
 		if (Math.abs(output) <= deadband*1023) {
 			return 0;
@@ -165,6 +165,14 @@ public class MockTalon {
 		else {
 			return Math.max(-batteryVoltage, Math.min(batteryVoltage, output/1023.0 * voltageCompSaturation));
 		}
+	}
+	
+	public double getMotorOutputPercent() {
+		return getMotorOutputPercent(12.0);
+	}
+	
+	public double getMotorOutputPercent(double batteryVoltage) {
+		return getMotorOutputVoltage(batteryVoltage)/batteryVoltage;
 	}
 	
 	public int getClosedLoopError() {

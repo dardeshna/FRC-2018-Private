@@ -317,7 +317,7 @@ public class MockRobot {
 			autonomousPeriodic();
 			t+=(int)(Constants.kNormalLoopsDt*1000);
 			int s = 0;
-			while (s < 20) {
+			while (s < (int)(Constants.kNormalLoopsDt*1000)) {
 				if (!nowIsSet) now = System.nanoTime();
 				nowIsSet = true;
 				((MockHardwareUpdater) mHardwareUpdater).updateSimulations();

@@ -28,8 +28,9 @@ public class DriveSimulation extends SubsystemSimulation {
 	static final double speed_per_volt_ = 18730 * 2.0 * Math.PI / 60 / gear_ratio / 12.0;
 	static final double torque_per_volt_ = motors_per_gearbox * 0.71 * gear_ratio / 12.0;
 	static final double friction_voltage_ = 1.0;
+	static final double current_per_volt_ = motors_per_gearbox * 134 / 12.0;
 	
-	public static final double kRobotLinearInertia = 60.0;  // kg TODO tune
+	public static final double kRobotLinearInertia = 65.0;  // kg TODO tune
     public static final double kRobotAngularInertia = 10.0;  // kg m^2 TODO tune
     public static final double kRobotAngularDrag = 12.0;  // N*m / (rad/sec) TODO tune
     
@@ -41,13 +42,13 @@ public class DriveSimulation extends SubsystemSimulation {
 	private DifferentialDrive mModel;
 	private MockTalon rightTalon;
 	private MockTalon leftTalon;
-	private WheelState voltage;
+	private WheelState voltage = new WheelState();
 	private DriveDynamics driveDynamics = new DriveDynamics();
 	private WheelState wheel_position = new WheelState();
 	private Pose2d pos = Pose2d.identity();
 	
 	public DriveSimulation() {
-		 final DCMotorTransmission transmission = new DCMotorTransmission(speed_per_volt_, torque_per_volt_, friction_voltage_);
+		 final DCMotorTransmission transmission = new DCMotorTransmission(speed_per_volt_, torque_per_volt_, friction_voltage_, current_per_volt_);
 	     mModel = new DifferentialDrive(kRobotLinearInertia, kRobotAngularInertia, kRobotAngularDrag, kRobotWheelRadius, kRobotEffectiveWheelBaseRadius, transmission, transmission);
 	     rightTalon = new MockTalon(0, "right");
 	     leftTalon = new MockTalon(0, "left");
@@ -67,7 +68,9 @@ public class DriveSimulation extends SubsystemSimulation {
 		rightTalon.update();
 		leftTalon.update();
 		
-		voltage = new WheelState(leftTalon.getOutputVoltage(), rightTalon.getOutputVoltage());
+		double battery_voltage = RobotSimulation.getInstance().getBatteryVoltage();
+		voltage = new WheelState(leftTalon.getMotorOutputVoltage(battery_voltage), rightTalon.getMotorOutputVoltage(battery_voltage));
+		
 		driveDynamics = mModel.solveForwardDynamics(driveDynamics.chassis_velocity, voltage);
 		
 		driveDynamics.chassis_velocity.linear += driveDynamics.chassis_acceleration.linear*kDt;
@@ -110,11 +113,18 @@ public class DriveSimulation extends SubsystemSimulation {
 		return rightTalon.getControlMode();
 	}
 	
-	public double getLeftOutput() {
-		return voltage.left/voltageCompSaturation;
+	public double getLeftMotorOutputVoltage() {
+		return voltage.left;
 	}
-	public double getRightOutput() {
-		return voltage.right/voltageCompSaturation;
+	public double getRightMotorOutputVoltage() {
+		return voltage.right;
+	}
+	
+	public double getLeftMotorOutputPercent() {
+		return leftTalon.getMotorOutputPercent(RobotSimulation.getInstance().getBatteryVoltage());
+	}
+	public double getRightMotorOutputPercent() {
+		return rightTalon.getMotorOutputPercent(RobotSimulation.getInstance().getBatteryVoltage());
 	}
 	
 	public int getLeftClosedLoopError() {
@@ -122,6 +132,13 @@ public class DriveSimulation extends SubsystemSimulation {
 	}
 	public int getRightClosedLoopError() {
 		return rightTalon.getClosedLoopError();
+	}
+	
+	public double getLeftCurrent() {
+		return driveDynamics.current.left;
+	}
+	public double getRightCurrent() {
+		return driveDynamics.current.right;
 	}
 	
 	public void set(DriveSignal signal) {
@@ -139,6 +156,9 @@ public class DriveSimulation extends SubsystemSimulation {
 		DataLogger.getInstance().logData(Level.FINE, "robot_x", scaledPos.getTranslation().x());
 		DataLogger.getInstance().logData(Level.FINE, "robot_y", scaledPos.getTranslation().y());
 		DataLogger.getInstance().logData(Level.FINE, "robot_heading", scaledPos.getRotation().getDegrees());
+		
+		DataLogger.getInstance().logData(Level.FINE, "left_output", voltage.left);
+		DataLogger.getInstance().logData(Level.FINE, "right_output", voltage.right);
 	}
 
 	public void resetSensors() {

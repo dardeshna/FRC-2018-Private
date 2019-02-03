@@ -53,6 +53,7 @@ public class ElevatorSimulation extends SubsystemSimulation {
 	private double velocity = 0;
 	private double acceleration = 0;
 	private double voltage = 0;
+	private double current = 0;
 	
 	public ElevatorSimulation() {
 		talon = new MockTalon(position*Constants.kElevatorTicksPerInch, "elevator");
@@ -79,21 +80,24 @@ public class ElevatorSimulation extends SubsystemSimulation {
 	public void step() {
 		talon.update();
 		//capped voltage
-		voltage = talon.getOutputVoltage();
+		voltage = talon.getMotorOutputVoltage(RobotSimulation.getInstance().getBatteryVoltage());
 		double prevVelocity = velocity;
 		acceleration = calcAcceleration(voltage);
 		velocity += kDt * acceleration;
 		position += kDt * velocity + 0.5 * kDt * kDt * acceleration;
+		current = kNumMotors * (voltage - velocity / Kv) / kResistance;
 		//Hard limits
 		if (position >= kElevatorHeight) {
 			acceleration = -prevVelocity/kDt;
 			velocity = 0;
 			position = kElevatorHeight;
+			current = kNumMotors * voltage / kResistance;
 		}
 		else if (position <= 0) {
 			acceleration = -prevVelocity/kDt;
 			velocity = 0;
 			position = 0;
+			current = kNumMotors * voltage / kResistance;
 		}
 		talon.pushReading(position*Constants.kElevatorTicksPerInch);
 	}
@@ -114,12 +118,21 @@ public class ElevatorSimulation extends SubsystemSimulation {
 		return velocity;
 	}
 	
+	public double getCurrent() {
+		return current;
+	}
+	
+	public double getMotorOutputPercent() {
+		return talon.getMotorOutputPercent(RobotSimulation.getInstance().getBatteryVoltage());
+	}
+	
 	public void set(TalonSRXOutput talonSRXOutput) {
 		updateTalonSRX(talon, talonSRXOutput);
 	}
 	
 	public void logState() {
 		DataLogger.getInstance().logData(Level.FINE, "elevator_position", position);
+		DataLogger.getInstance().logData(Level.FINE, "elevator_output", voltage);
 	}
 	
 	public String getState() {

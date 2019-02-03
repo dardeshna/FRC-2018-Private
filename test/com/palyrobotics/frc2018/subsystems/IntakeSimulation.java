@@ -21,17 +21,17 @@ public class IntakeSimulation extends SubsystemSimulation {
 	
 	private int cycles_expelling;
 	private int cycles_intaking;
-	private boolean hasCube;
+	private boolean hasCube = true;
 	
 	public void step() {
 		if (this.open_close_state == OpenCloseState.OPEN) {
 			hasCube = false;
 		}
 		else {
-			if (!hasCube && cycles_intaking > 300) {
+			if (!hasCube && cycles_intaking > 50) {
 				hasCube = true;
 			}
-			else if (hasCube && cycles_expelling > 100) {
+			else if (hasCube && cycles_expelling > 5) {
 				hasCube = false;
 			}
 		}
@@ -40,14 +40,14 @@ public class IntakeSimulation extends SubsystemSimulation {
 
 	public void set(WheelState wheel_state, OpenCloseState open_close_state, UpDownState up_down_state) {
 		
-		if (this.wheel_state == wheel_state && wheel_state == WheelState.INTAKING) {
+		if (this.wheel_state == wheel_state && (wheel_state == WheelState.INTAKING || wheel_state == WheelState.AUTO_INTAKE)) {
 			cycles_intaking++;
 		}
 		else {
 			cycles_intaking = 0;
 		}
 		
-		if (this.wheel_state == wheel_state && wheel_state == WheelState.EXPELLING) {
+		if (this.wheel_state == wheel_state && (wheel_state == WheelState.EXPELLING || wheel_state == WheelState.VAULT_EXPELLING)) {
 			cycles_expelling++;
 		}
 		else {

@@ -1,14 +1,25 @@
 package com.palyrobotics.frc2018.robotplayback;
 
+import static java.time.temporal.ChronoField.HOUR_OF_DAY;
+import static java.time.temporal.ChronoField.MINUTE_OF_HOUR;
+import static java.time.temporal.ChronoField.NANO_OF_SECOND;
+import static java.time.temporal.ChronoField.SECOND_OF_MINUTE;
+
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.ResolverStyle;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -21,6 +32,7 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
@@ -28,13 +40,22 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Slider;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -62,11 +83,13 @@ public class RobotPlayback extends Application {
 	
 	
 	private TreeMap<LocalTime, HashMap<String, String>> parsedFile;
+	private TreeSet<String> keys;
 	private ArrayList<RecordedPath> paths;
 	private String logText = "";
 	
 	// Has playback been paused or not?
 	private boolean paused = false;
+	private boolean update = true;
 	
 	// What point in the list of estimated positions are we displaying?
 	
@@ -80,6 +103,21 @@ public class RobotPlayback extends Application {
 	private static final double canvasScale = 2.6;
 	private static final double canvasWidth = 400 * canvasScale;
 	private static final double canvasLength = 324 * canvasScale;
+	
+	public static final DateTimeFormatter TIME_FORMAT;
+    static {
+        TIME_FORMAT = new DateTimeFormatterBuilder()
+                .appendValue(HOUR_OF_DAY, 2)
+                .appendLiteral(':')
+                .appendValue(MINUTE_OF_HOUR, 2)
+                .optionalStart()
+                .appendLiteral(':')
+                .appendValue(SECOND_OF_MINUTE, 2)
+                .optionalStart()
+                .appendFraction(NANO_OF_SECOND, 3, 3, true)
+                .toFormatter();
+    }
+	
 
 	public void start(Stage stage) throws Exception {
 		
@@ -88,6 +126,8 @@ public class RobotPlayback extends Application {
 		endTime = ChronoUnit.NANOS.between(parsedFile.firstKey(), parsedFile.lastKey());
 		
 		stage.setTitle("Robot Playback");
+		
+		//Playback tab
 		
 		border = new BorderPane();
 				
@@ -138,7 +178,193 @@ public class RobotPlayback extends Application {
 		
 		border.setRight(right);
 		
-		scene = new Scene(border);
+		Tab playbackTab = new Tab();
+		playbackTab.setText("Playback");
+		playbackTab.setContent(border);
+		
+		//Export tab
+		
+		VBox layout = new VBox();
+		ArrayList<CheckBox> boxes = new ArrayList<CheckBox>();
+		
+		for (String s: keys) {
+			CheckBox box = new CheckBox(s);
+			boxes.add(box);
+		}
+		
+		layout.getChildren().addAll(boxes);
+		
+		Button export = new Button();
+		export.setText("Export");
+		
+		layout.getChildren().add(export);
+		
+		export.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				
+				FileChooser fileChooser = new FileChooser();
+				fileChooser.getExtensionFilters().add(new ExtensionFilter("CSV", "*.csv"));
+				fileChooser.setTitle("Select a file to export to");
+				fileChooser.setInitialFileName("data.csv");
+				File exportFile = fileChooser.showSaveDialog(stage);
+				
+				TreeSet<String> export_keys = new TreeSet<String>();
+				
+				for(CheckBox b: boxes) {
+					if (b.isSelected()) {
+						export_keys.add(b.getText());
+					}
+				}
+				
+				try {
+					BufferedWriter writer = new BufferedWriter(new FileWriter(exportFile));
+					
+					String header = "timestamp,";
+					for(String s: export_keys) {
+						header+=s+",";
+					}
+					
+					writer.write(header);
+					writer.newLine();
+					
+					for (LocalTime time: parsedFile.keySet()) {
+						HashMap<String, String> line = parsedFile.get(time);
+						
+						String l = String.format("%.5f",ChronoUnit.NANOS.between(parsedFile.firstKey(), time)/(1.0e9)) + ",";
+						
+						for (String s: export_keys) {
+							if (line.containsKey(s)) {
+								l+=line.get(s)+",";
+							}
+							else {
+								l+=",";
+							}
+						}
+						writer.write(l);
+						writer.newLine();
+					}
+					
+					writer.close();
+					
+				}
+				catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			
+		});
+		
+		Tab exportTab = new Tab();
+		exportTab.setText("Export");
+		exportTab.setContent(layout);
+		
+		//Plot tab
+		
+		VBox plot_layout = new VBox();
+				
+		ArrayList<CheckBox> plot_boxes = new ArrayList<CheckBox>();
+		HashMap<String, XYChart.Series<Number, Number>> keyToData = new HashMap<String, XYChart.Series<Number, Number>>();
+		
+		for (String s: keys) {
+			CheckBox box = new CheckBox(s);
+			plot_boxes.add(box);
+
+			XYChart.Series<Number, Number> series = new XYChart.Series<Number, Number>();
+			series.setName(s);
+
+			for (LocalTime time: parsedFile.keySet()) {
+				HashMap<String, String> line = parsedFile.get(time);
+
+				double value;
+
+				try {
+					value = Double.parseDouble(line.get(s)); 
+				}
+				catch (Exception e) {
+					value = 0;
+				}
+
+				series.getData().add(new XYChart.Data<Number, Number>(ChronoUnit.NANOS.between(parsedFile.firstKey(), time)/(1.0e9), value));
+
+			}
+
+			keyToData.put(s, series);			
+
+		}
+		
+		plot_layout.getChildren().addAll(plot_boxes);
+		
+		Button reset = new Button();
+		reset.setText("Reset");
+		
+		plot_layout.getChildren().add(reset);
+		
+		
+		final NumberAxis xAxis = new NumberAxis();
+        final NumberAxis yAxis = new NumberAxis();
+        xAxis.setLabel("Time (s)");
+        yAxis.setLabel("Data");
+        
+        LineChart<Number,Number> lineChart = new LineChart<Number,Number>(xAxis,yAxis);
+        lineChart.setCreateSymbols(false);
+        lineChart.setAnimated(false);
+        lineChart.setVerticalGridLinesVisible(true);
+        lineChart.setHorizontalGridLinesVisible(true);
+        lineChart.setVerticalZeroLineVisible(true);
+        lineChart.setHorizontalZeroLineVisible(true);
+		
+		plot_layout.getChildren().add(lineChart);
+		
+		reset.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				for (CheckBox b: plot_boxes) {
+					b.setSelected(false);
+				}
+				lineChart.getData().clear();
+				
+			}
+			
+		});
+				
+		EventHandler<ActionEvent> plot_handler = new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				
+				for (CheckBox b: plot_boxes) {
+					if (b.isSelected() && !lineChart.getData().contains(keyToData.get(b.getText()))) {
+						lineChart.getData().add(keyToData.get(b.getText()));
+					}
+					else if (!b.isSelected() && lineChart.getData().contains(keyToData.get(b.getText()))) {
+						lineChart.getData().remove(keyToData.get(b.getText()));
+					}
+				}
+				
+			}
+			
+		};
+		
+		for(CheckBox b: plot_boxes) {
+			b.setOnAction(plot_handler);
+		}
+		
+		
+		Tab plotTab = new Tab();
+		plotTab.setText("Plot");
+		plotTab.setContent(plot_layout);
+		
+		//Set up scene
+		
+		TabPane tabs = new TabPane();
+		tabs.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
+		
+		tabs.getTabs().addAll(playbackTab, exportTab, plotTab);
+		
+		scene = new Scene(tabs);
 		stage.setScene(scene);
 		
 		new AnimationTimer() {
@@ -146,7 +372,11 @@ public class RobotPlayback extends Application {
 			@Override
 			public void handle(long arg0) {
 				
-				if (currentTime < endTime) {
+				if (tabs.getSelectionModel().getSelectedItem() == playbackTab) {
+					border.requestFocus();
+				}
+				
+				if (!paused || update) {
 					
 					LocalTime currentLocalTime = parsedFile.firstKey().plus(currentTime, ChronoUnit.NANOS);
 					
@@ -211,33 +441,35 @@ public class RobotPlayback extends Application {
 					
 					root.setManaged(false);
 					center.getChildren().setAll(root);
+										
+					border.requestFocus();
 					
-					stage.setScene(scene);
 					
-					background.requestFocus();
-					
-					status.setText("Current Timestamp: " + currentLocalTime.toString().substring(0, 12) + "\n" +
+					status.setText("Current Timestamp: " + currentLocalTime.format(TIME_FORMAT) + "\n" +
+							"Current Time: " + String.format("%.3f", ChronoUnit.NANOS.between(parsedFile.firstKey(), currentLocalTime)/(1.0e9)) + "s\n" +
 							"Elevator Height: " + String.format( "%.2f", parseDouble(line, "elevator_position")) + "\n" +
 							"Intake Wheel State: " + line.get("intake_wheel") + "\n" +
 							"Intake Open Close State: " + line.get("intake_open_close") + "\n" +
 							"Intake Up Down State: " + line.get("intake_up_down"));
 
-					if (!paused) {
+					if (currentTime < endTime && !paused) {
 						currentTime += (long)2e7;
 						slider.setValue(currentTime/1e9);
 					}
+					else if (currentTime >= endTime && !paused) {
+						slider.setValue(currentTime/1e9);
+						paused = true;
+					}
+					
+					update = false;
 					
 				}
-				else {
-					paused = true;
-				}
-				
 			}
 			
 		}.start();
 		
 		// Configure keyboard control to stop, start, increment, and rewind playback
-		background.setOnKeyPressed(new EventHandler<KeyEvent>() {
+		border.setOnKeyPressed(new EventHandler<KeyEvent>() {
 
 			@Override
 			public void handle(KeyEvent event) {
@@ -247,13 +479,25 @@ public class RobotPlayback extends Application {
 					paused = !paused;
 					break;
 				case LEFT:
-					if (paused) currentTime = Math.max(currentTime - (int)1e8, 0);
+					if (paused) {
+						currentTime = Math.max(currentTime - (int)1e8, 0);
+						slider.setValue(currentTime/1e9);
+						update = true;
+					}
 					break;
 				case RIGHT:
-					if (paused) currentTime = Math.min(currentTime + (int)1e8, endTime);;
+					if (paused) {
+						currentTime = Math.min(currentTime + (int)1e8, endTime);
+						slider.setValue(currentTime/1e9);
+						update = true;
+					}
 					break;
 				case HOME:
-					currentTime = 0;
+					if (paused) {
+						currentTime = 0;
+						slider.setValue(0);
+						update = true;
+					}
 				default:
 					break;
 				
@@ -266,6 +510,7 @@ public class RobotPlayback extends Application {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 				currentTime = (long)(newValue.doubleValue()*1e9);
+				update = true;
 			}
         });
 		
@@ -300,6 +545,7 @@ public class RobotPlayback extends Application {
 		
 		
 		parsedFile = parseFile(dataLogFile);
+		keys = getKeys(parsedFile);
 		paths = readPaths(parsedFile);
 //		for (RecordedPath p: paths) {
 //			p.print();
@@ -469,6 +715,15 @@ public class RobotPlayback extends Application {
 		return retval;
 	}
 	
+	private static TreeSet<String> getKeys(TreeMap<LocalTime, HashMap<String, String>> parsedLog) {
+		TreeSet<String> keys = new TreeSet<String>();
+		for (LocalTime time: parsedLog.keySet()) {
+			HashMap<String, String> line = parsedLog.get(time);
+			keys.addAll(line.keySet());
+		}
+		return keys;
+	}
+	
 	private static ArrayList<RecordedPath> readPaths(TreeMap<LocalTime, HashMap<String, String>> parsedLog) {
 		
 		ArrayList<RecordedPath> paths = new ArrayList<RecordedPath>();
@@ -535,7 +790,7 @@ public class RobotPlayback extends Application {
 				parsedLog.put(timestamp, data);
 				lineCount++;
 			}
-			
+			reader.close();
 			return parsedLog;
 		}
 		catch (IOException e) {

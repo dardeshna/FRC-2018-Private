@@ -3,7 +3,6 @@ package com.palyrobotics.frc2018.robot;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.Optional;
-import java.util.logging.Level;
 
 import com.palyrobotics.frc2018.config.Constants;
 import com.palyrobotics.frc2018.config.RobotState;
@@ -14,8 +13,8 @@ import com.palyrobotics.frc2018.subsystems.Elevator;
 import com.palyrobotics.frc2018.subsystems.ElevatorSimulation;
 import com.palyrobotics.frc2018.subsystems.Intake;
 import com.palyrobotics.frc2018.subsystems.IntakeSimulation;
+import com.palyrobotics.frc2018.subsystems.RobotSimulation;
 import com.palyrobotics.frc2018.util.TalonSRXOutput;
-import com.palyrobotics.frc2018.util.logger.DataLogger;
 import com.palyrobotics.frc2018.util.trajectory.Kinematics;
 import com.palyrobotics.frc2018.util.trajectory.RigidTransform2d;
 import com.palyrobotics.frc2018.util.trajectory.Rotation2d;
@@ -40,6 +39,7 @@ class MockHardwareUpdater extends HardwareUpdater {
 		this.mIntake = intake;
 	}
 	
+	private RobotSimulation mRobotSimulation = RobotSimulation.getInstance();
 	private DriveSimulation mDriveSimulation = DriveSimulation.getInstance();
 	private ElevatorSimulation mElevatorSimulation = ElevatorSimulation.getInstance();
 	private IntakeSimulation mIntakeSimulation = IntakeSimulation.getInstance();
@@ -105,7 +105,7 @@ class MockHardwareUpdater extends HardwareUpdater {
 			//Fall through
 			case Follower:
 			case PercentOutput:
-				robotState.leftSetpoint = mDriveSimulation.getLeftOutput();
+				robotState.leftSetpoint = mDriveSimulation.getLeftMotorOutputPercent();
 				break;
 			default:
 				break;
@@ -127,7 +127,7 @@ class MockHardwareUpdater extends HardwareUpdater {
 			//Fall through
 			case Follower:
 			case PercentOutput:
-				robotState.rightSetpoint = mDriveSimulation.getRightOutput();
+				robotState.rightSetpoint = mDriveSimulation.getRightMotorOutputPercent();
 				break;
 			default:
 				break;
@@ -306,15 +306,11 @@ class MockHardwareUpdater extends HardwareUpdater {
 	}
 
 	void logSimulations() {
-		mDriveSimulation.logState();
-		mElevatorSimulation.logState();
-		mIntakeSimulation.logState();
+		mRobotSimulation.logState();
 	}
 	
 	void updateSimulations() {
-		mElevatorSimulation.step();
-		mDriveSimulation.step();
-		mIntakeSimulation.step();
+		mRobotSimulation.step();
 		dumper.println(mDriveSimulation.getState() + "," + mElevatorSimulation.getState());
 	}
 	

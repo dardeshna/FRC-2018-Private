@@ -147,6 +147,12 @@ public class DifferentialDrive {
                 .voltage.left);
         dynamics.wheel_torque.right = right_transmission_.getTorqueForVoltage(dynamics.wheel_velocity.right, dynamics
                 .voltage.right);
+        
+        // Solve for motor currents
+        dynamics.current.left = left_transmission_.getCurrentForVoltage(dynamics.wheel_velocity.left, dynamics
+                .voltage.left);
+        dynamics.current.right = right_transmission_.getCurrentForVoltage(dynamics.wheel_velocity.right, dynamics
+                .voltage.right);
 
         // Add forces and torques about the center of mass.
         dynamics.chassis_acceleration.linear = (dynamics.wheel_torque.right + dynamics.wheel_torque.left) /
@@ -214,6 +220,12 @@ public class DifferentialDrive {
         dynamics.voltage.left = left_transmission_.getVoltageForTorque(dynamics.wheel_velocity.left, dynamics
                 .wheel_torque.left);
         dynamics.voltage.right = right_transmission_.getVoltageForTorque(dynamics.wheel_velocity.right, dynamics
+                .wheel_torque.right);
+        
+        // Solve for motor currents
+        dynamics.current.left = left_transmission_.getCurrentForTorque(dynamics.wheel_velocity.left, dynamics
+                .wheel_torque.left);
+        dynamics.current.right = right_transmission_.getCurrentForTorque(dynamics.wheel_velocity.right, dynamics
                 .wheel_torque.right);
     }
 
@@ -381,6 +393,7 @@ public class DifferentialDrive {
         public WheelState wheel_acceleration = new WheelState();  // rad/s^2
         public WheelState voltage = new WheelState();  // V
         public WheelState wheel_torque = new WheelState();  // N m
+        public WheelState current = new WheelState(); // A
 
         public String toCSV() {
             return curvature + "," + dcurvature + "," + chassis_velocity + ", " + chassis_acceleration + ", " + wheel_velocity + ", " + wheel_acceleration

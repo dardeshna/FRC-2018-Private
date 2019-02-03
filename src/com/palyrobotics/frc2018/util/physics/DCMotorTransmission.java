@@ -14,13 +14,16 @@ public class DCMotorTransmission {
     protected final double speed_per_volt_;  // rad/s per V (no load)
     protected final double torque_per_volt_;  // N m per V (stall)
     protected final double friction_voltage_;  // V
+    protected final double current_per_volt_; // A per V (stall)
 
     public DCMotorTransmission(final double speed_per_volt,
                                final double torque_per_volt,
-                               final double friction_voltage) {
+                               final double friction_voltage,
+                               final double current_per_volt) {
         speed_per_volt_ = speed_per_volt;
         torque_per_volt_ = torque_per_volt;
         friction_voltage_ = friction_voltage;
+        current_per_volt_ = current_per_volt;
     }
 
     public double speed_per_volt() {
@@ -33,6 +36,10 @@ public class DCMotorTransmission {
 
     public double friction_voltage() {
         return friction_voltage_;
+    }
+    
+    public double current_per_volt() {
+    	return current_per_volt_;
     }
 
     public double free_speed_at_voltage(final double voltage) {
@@ -65,6 +72,10 @@ public class DCMotorTransmission {
         }
         return torque_per_volt() * (-output_speed / speed_per_volt() + effective_voltage);
     }
+    
+    public double getCurrentForVoltage(final double output_speed, final double voltage) {
+        return current_per_volt() * (-output_speed / speed_per_volt() + voltage);
+    }
 
     public double getVoltageForTorque(final double output_speed, final double torque) {
         double friction_voltage;
@@ -85,5 +96,27 @@ public class DCMotorTransmission {
             return 0.0;
         }
         return torque / torque_per_volt() + output_speed / speed_per_volt() + friction_voltage;
+    }
+    
+    public double getCurrentForTorque(final double output_speed, final double torque) {
+    	double friction_voltage;
+        if (output_speed > kEpsilon) {
+            // Forward motion, rolling friction.
+            friction_voltage = friction_voltage();
+        } else if (output_speed < -kEpsilon) {
+            // Reverse motion, rolling friction.
+            friction_voltage = -friction_voltage();
+        } else if (torque > kEpsilon) {
+            // System is static, forward torque.
+            friction_voltage = friction_voltage();
+        } else if (torque < -kEpsilon) {
+            // System is static, reverse torque.
+            friction_voltage = -friction_voltage();
+        } else {
+            // System is idle.
+            return 0.0;
+        }
+        
+        return torque / torque_per_volt() + friction_voltage * current_per_volt();
     }
 }
