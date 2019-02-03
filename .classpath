@@ -20,5 +20,6 @@
 			<accessrule kind="accessible" pattern="javafx/**"/>
 		</accessrules>
 	</classpathentry>
+	<classpathentry kind="lib" path="lib/JavaPlot.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

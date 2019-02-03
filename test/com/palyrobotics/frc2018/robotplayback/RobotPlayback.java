@@ -27,6 +27,11 @@ import com.palyrobotics.frc2018.auto.AutoModeBase;
 import com.palyrobotics.frc2018.auto.AutoModeBase.Alliance;
 import com.palyrobotics.frc2018.config.AutoDistances;
 import com.palyrobotics.frc2018.config.Constants;
+import com.panayotis.gnuplot.JavaPlot;
+import com.panayotis.gnuplot.dataset.ArrayDataSet;
+import com.panayotis.gnuplot.plot.DataSetPlot;
+import com.panayotis.gnuplot.style.PlotStyle;
+import com.panayotis.gnuplot.style.Style;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -299,7 +304,10 @@ public class RobotPlayback extends Application {
 		Button reset = new Button();
 		reset.setText("Reset");
 		
-		plot_layout.getChildren().add(reset);
+		Button gnuplot = new Button();
+		gnuplot.setText("Plot in GNUPlot");
+		
+		plot_layout.getChildren().addAll(reset, gnuplot);
 		
 		
 		final NumberAxis xAxis = new NumberAxis();
@@ -326,6 +334,48 @@ public class RobotPlayback extends Application {
 				}
 				lineChart.getData().clear();
 				
+			}
+			
+		});
+		
+		gnuplot.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				JavaPlot plot = new JavaPlot();
+				for (CheckBox b: plot_boxes) {
+					if (b.isSelected()) {
+						String s = b.getText();
+						
+						double[][] values = new double[parsedFile.size()][2];
+						int i = 0;
+						
+						for (LocalTime time: parsedFile.keySet()) {
+							HashMap<String, String> line = parsedFile.get(time);
+
+							double value;
+
+							try {
+								value = Double.parseDouble(line.get(s)); 
+							}
+							catch (Exception e) {
+								value = 0;
+							}
+
+							values[i][0] = ChronoUnit.NANOS.between(parsedFile.firstKey(), time)/(1.0e9);
+							values[i][1] = value;
+							
+							i++;
+						}
+						DataSetPlot ds = new DataSetPlot(values);
+						ds.setTitle(s.replace("_", "\\_"));
+						PlotStyle ps = new PlotStyle();
+						ps.setStyle(Style.LINES);
+						ds.setPlotStyle(ps);
+						plot.addPlot(ds);
+					}
+				}
+				plot.plot();
 			}
 			
 		});
